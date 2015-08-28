@@ -51,3 +51,5 @@ SELECT LISTAGG(SUBSTR('&PALETTESTRING',VAL,1)) WITHIN GROUP (ORDER BY IX) GRAPH 
 FROM MANDELBROT_MAP                                                              -- PALETTESTRING provides the map values 
 GROUP BY IY
 ORDER BY IY DESC;
+
+

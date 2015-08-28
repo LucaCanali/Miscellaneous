@@ -37,3 +37,5 @@ define PALETTE_NUMCOLS=8
 select rownum-1 ID, &ANSICODE_PREFIX|| decode(rownum-1, &BLUE_PALETTE)|| 'm '|| &ANSICODE_BACKTONORMAL COLOR 
 from dual
 connect by level <= &PALETTE_NUMCOLS;
+
+
