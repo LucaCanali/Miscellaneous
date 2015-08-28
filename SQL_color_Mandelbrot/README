@@ -1,0 +1,30 @@
+
+Use of color palettes in SQL with an example of coloring the Mandelbrot set visualization in SQL 
+
+Mandelbrot SQL ported to Oracle (SQL*plus) from the PostgreSQL version
+Added color visualization taken from the code of OraLatencyMap and PyLatencyMap
+  https://github.com/LucaCanali
+
+Author: Luca.Canali@cern.ch, August 2015
+
+Additional references:
+  https://en.wikipedia.org/wiki/Mandelbrot_set
+  https://wiki.postgresql.org/wiki/Mandelbrot_set
+  http://thedailywtf.com/articles/Stupid-Coding-Tricks-The-TSQL-Madlebrot
+  https://www.sqlite.org/lang_with.html
+  https://community.oracle.com/message/3136057
+  http://xoph.co/20130917/mandelbrot-sql/
+  
+Contents:
+
+Example SQL for displaying color palettes 
+  - Color_palette_blue.sql
+  - Color_palette_yellow-red.sql
+
+Example of coloring Oracle SQL: Mandelbrot set in SQL:
+  - Mandelbrot_SQL_Oracle_text.sql (text version, no color)
+  - Mandelbrot_SQL_Oracle_color_blue.sql
+  - Mandelbrot_SQL_Oracle_color_yellow-red.sql
+
+PostgreSQL version:
+  - Mandelbrot_SQL_PostgreSQL_color_blue.sql
