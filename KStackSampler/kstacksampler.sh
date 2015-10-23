@@ -12,14 +12,14 @@
 # Notes and limitations: 
 #  - the use of shell for profiling does not allow for high frequency
 #  - stacks are captured "in flight" using the /proc filesystem this minimizes the risk but also reduces accuracy
-#  - stack values and process state are read in two different calls, they may not match is the process state changes
+#  - stack values and process state are read in two different calls, they may not match if the process state changes
 #  - the script traces one process (although it could be adapted to trace multiple pids)
 #  - the script does not trace threads (although it can be modified to trace tids from /proc/pid/task/tid/stack)
 #  - the script does not provide userspace traces
 #  - processes state "running" refers to both running and runnable (in run queue)  
 #                  
 # Example of usage together with Flamegraphs: 
-# ./kstacksampler.sh -p 1234 -n 10 -i .05 | grep -v 0xffffffffffffffff | sed 's/State:\t//g'| sed 's/\[<.*>] //g' \
+# ./kstacksampler.sh -p 1234 -n 10 -i .05 | grep -v 0xffffffffffffffff | sed 's/State:\t//g'| sed 's/\[<.*>] //g' | \
 # ../FlameGraph/stackcollapse-stap.pl | ../FlameGraph/flamegraph.pl
 #
 # Author Luca.Canali@cern.ch

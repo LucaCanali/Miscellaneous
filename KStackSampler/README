@@ -9,17 +9,17 @@ Note: for CPU-bound processes use rather perf for stack profiling and On-CPU fla
 This is a basic script, consider it as a proof of concept/study material.
 The overhead on the measured system is expected to be low when used with care.
 Notes and limitations: 
-  - the use of shell for profiling does not allow for high frequency
-  - stacks are captured "in flight" using the /proc filesystem this minimizes the risk but also reduces accuracy
-  - stack values and process state are read in two different calls, they may not match is the process state changes
-  - the script traces one process (although it could be adapted to trace multiple pids)
-  - the script does not trace threads (although it can be modified to trace tids from /proc/pid/task/tid/stack)
-  - the script does not provide userspace traces
-  - processes state "running" refers to both running and runnable (in run queue)  
+ - the use of shell for profiling does not allow for high frequency
+ - stacks are captured "in flight" using the /proc filesystem this minimizes risk but also reduces accuracy
+ - stack values and process state are read in two different calls, 
+   they may not match if the process state changes
+ - the script traces one process (although it could be adapted to trace multiple pids)
+ - the script does not trace threads (although it can be changed to trace tids from /proc/pid/task/tid/stack)
+ - the script does not provide userspace traces
+ - processes state "running" refers to both running and runnable (in run queue)  
                   
 Example of usage together with Flamegraphs: 
- ./kstacksampler.sh -p 1234 -n 10 -i .05 | grep -v 0xffffffffffffffff | sed 's/State:\t//g'| sed 's/\[<.*>] //g' \
- ../FlameGraph/stackcollapse-stap.pl | ../FlameGraph/flamegraph.pl
+ ./kstacksampler.sh -p 1234 -n 10 -i .05 | grep -v 0xffffffffffffffff | sed 's/State:\t//g'| sed 's/\[<.*>] //g' | ../FlameGraph/stackcollapse-stap.pl | ../FlameGraph/flamegraph.pl
 
 Author Luca.Canali@cern.ch
 First release, October 2015
