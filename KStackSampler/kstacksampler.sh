@@ -25,6 +25,9 @@
 # Author Luca.Canali@cern.ch
 # First release, October 2015
 #
+# See also blog post:
+# http://db-blog.web.cern.ch/blog/luca-canali/2015-10-linux-kernel-stack-profiling-and-flame-graphs-applied-oracle-investigations
+#
 # Additional credits and ideas who have inspired this: 
 # Brendan Gregg ->
 #   http://www.brendangregg.com/FlameGraphs/offcpuflamegraphs.html
@@ -74,3 +77,4 @@ for x in $(seq 1 $iterations); do
    echo ""
    sleep $interval
 done 
+
