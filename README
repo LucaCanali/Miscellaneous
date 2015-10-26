@@ -5,10 +5,12 @@ See README files in each directory for further details
 
 - KStackSampler 
   -> a simple kernel stack profiler
-     Use with Flame Graphs http://www.brendangregg.com/flamegraphs.html
-	 Use o investigate Off-CPU/Kernel-busy OS processes
+     http://externaltable.blogspot.com/2015/10/linux-kernel-stack-profiling-and-flame.html
+     Use to investigate processes that are often Off-CPU/Kernel-busy 
+     Use together with Flame Graphs
 				   
 - SQL_color_Mandelbrot 
   -> SQL to compute and display the Mandelbrot set with a color heat map
+     http://externaltable.blogspot.com/2015/08/add-color-to-your-sql.html
      For Oracle and PostgreSQL
 
