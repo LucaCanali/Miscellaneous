@@ -1,0 +1,14 @@
+This repository aggregates a few small projects and scripts.
+Author Luca.Canali@cern.ch
+
+See README files in each directory for further details
+
+- KStackSampler 
+  -> a simple kernel stack profiler
+     Use with Flame Graphs http://www.brendangregg.com/flamegraphs.html
+	 Use o investigate Off-CPU/Kernel-busy OS processes
+				   
+- SQL_color_Mandelbrot 
+  -> SQL to compute and display the Mandelbrot set with a color heat map
+     For Oracle and PostgreSQL
+

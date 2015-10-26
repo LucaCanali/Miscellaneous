@@ -6,10 +6,10 @@
 # What it does: it reads from /proc/pid/stack at regular intervals and prints the output to stdout      
 # Use it to investigate processes that are spending most of their time off CPU and/or in system calls.
 #
-# Note: for CPU-bound processes use rather perf for stack profiling and On-CPU flame graph techniques.
-# This is a basic script, consider it as a proof of concept/study material.
-# The overhead on the measured system is expected to be low when used with care.
-# Notes and limitations: 
+# Notes: 
+#  - this is a basic script, consider it as a proof of concept/study material.
+#  - the overhead on the measured system is expected to be low when used with care.
+#  - for CPU-bound processes use rather perf for stack profiling and On-CPU flame graph techniques.
 #  - the use of shell for profiling does not allow for high frequency
 #  - stacks are captured "in flight" using the /proc filesystem this minimizes the risk but also reduces accuracy
 #  - stack values and process state are read in two different calls, they may not match if the process state changes
@@ -25,8 +25,8 @@
 # Author Luca.Canali@cern.ch
 # First release, October 2015
 #
-# See also blog post:
-# http://db-blog.web.cern.ch/blog/luca-canali/2015-10-linux-kernel-stack-profiling-and-flame-graphs-applied-oracle-investigations
+# See also this blog post:
+# http://externaltable.blogspot.com/2015/10/linux-kernel-stack-profiling-and-flame.html
 #
 # Additional credits and ideas who have inspired this: 
 # Brendan Gregg ->
@@ -71,9 +71,9 @@ fi
 
 for x in $(seq 1 $iterations); do
    cat /proc/$pid/stack         # get kernel stack trace from /proc
-   # this is an approximation as the process state may have changed to runnable in the meantime
+             # this is an approximation as the process state may have changed to runnable in the meantime
    grep -m 1 State /proc/$pid/status
-   echo "1"          # this makes ingestable by FlameGraph-master/stackcollapse-stap.pl
+   echo "1"  # this makes the output ingestable by FlameGraph-master/stackcollapse-stap.pl
    echo ""
    sleep $interval
 done 
