@@ -1,14 +1,6 @@
-This repository aggregates a few small projects and scripts.
+This repository aggregates a small projects and scripts.
 Author Luca.Canali@cern.ch
 
-See README files in each directory for further details
-
-- KStackSampler 
-  -> a simple kernel stack profiler
-     http://externaltable.blogspot.com/2015/10/linux-kernel-stack-profiling-and-flame.html
-     Use to investigate processes that are often Off-CPU/Kernel-busy 
-     Use together with Flame Graphs
-				   
 - SQL_color_Mandelbrot 
   -> SQL to compute and display the Mandelbrot set with a color heat map
      http://externaltable.blogspot.com/2015/08/add-color-to-your-sql.html
