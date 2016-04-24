@@ -3,8 +3,10 @@
 
 
 Example notebooks:
-- [**Impala_Basic.ipynb**](Impala_Basic.ipynb) - basic example, using Cloudera's impyla 
-- [**Impala_SQL_Magic.ipynb**](Impala_SQL_Magic.ipynb) - improve the user interface with the use of 'SQL magic'
+- **Impala_Basic.ipynb** - basic example, SQL on Impala using Cloudera's impyla 
+- **Impala_SQL_Magic.ipynb** - SQL on Impala, better user interface using 'SQL magic'
+- **Impala_Basic_Kerberos.ipynb** - basic example, SQL on Impala using Cloudera's impyla. With Kerberos authentication. 
+- **Impala_SQL_Magic_Kerberos.ipynb** - SQL on Impala, better user interface using 'SQL magic'. With Kerberos authentication.
 
 
 Build a test environment with:
