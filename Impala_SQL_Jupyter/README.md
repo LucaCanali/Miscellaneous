@@ -3,8 +3,8 @@
 
 
 Example notebooks:
-- **Impala_Basic.ipynb** - basic example, using Cloudera's impyla 
-- **Impala_SQL_Magic.ipynb** - improve the user interface with the use of 'SQL magic'
+- [**Impala_Basic.ipynb**](Impala_Basic.ipynb) - basic example, using Cloudera's impyla 
+- [**Impala_SQL_Magic.ipynb**](Impala_SQL_Magic.ipynb) - improve the user interface with the use of 'SQL magic'
 
 
 Build a test environment with:
