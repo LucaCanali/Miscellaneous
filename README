@@ -1,8 +1,0 @@
-This repository aggregates a small projects and scripts.
-Author Luca.Canali@cern.ch
-
-- SQL_color_Mandelbrot 
-  -> SQL to compute and display the Mandelbrot set with a color heat map
-     http://externaltable.blogspot.com/2015/08/add-color-to-your-sql.html
-     For Oracle and PostgreSQL
-
