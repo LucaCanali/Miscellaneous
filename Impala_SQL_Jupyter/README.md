@@ -1,6 +1,6 @@
 # Apache Impala SQL on Jupyter/IPython notebooks, examples
-### Author: Luca.Canali@cern.ch, April 2016
 
+Author: Luca.Canali@cern.ch, April 2016
 
 Example notebooks:
 - [**Impala_Basic.ipynb**](Impala_Basic.ipynb) - basic example, SQL on Impala using Cloudera's impyla 
