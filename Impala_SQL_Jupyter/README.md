@@ -13,9 +13,12 @@ Author: Luca.Canali@cern.ch, April 2016
 
 ---
 **Dependencies and pointers on how to build a test environemnt:**
-- Set up Jupyter/IPython: download and install [Anaconda](https://www.continuum.io/downloads) from Continuum Analytics)
-- Install [Cloudera impyla](https://github.com/cloudera/impyla) for example with `pip install impyla`
-- Install ipython-sql from <https://github.com/LucaCanali/ipython-sql>
+- Install **IPython and Jupyter**. The following assumes [Anaconda](https://www.continuum.io/downloads) from Continuum Analytics)
+- Install **Cloudera impyla** <https://github.com/cloudera/impyla>
+    - `pip install impyla`
+- Install **ipython-sql** 
+   - download from <https://github.com/LucaCanali/ipython-sql>
+   - `cd ipython-sql` and `(sudo) python setup.py install`
 - Additional steps for Kerberos:
     - `yum install cyrus-sasl-devel`
     - `yum install gcc-c++`
