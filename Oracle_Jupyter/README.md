@@ -17,10 +17,10 @@ This folder contains example notebooks on how to use Jupyter/IPython for queryin
 - Install the **Oracle client**
     - Download the software from OTN: <http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html>
     - On that same link you can find the installation instructions (scroll down by the end of the page)
-    - In particular perform ln -s libclntsh.so.11.1 libclntsh.so and export LD_LIBRARY_PATH
-    - I have tested on Oracle client version 12.1.0.2 or 11.2.0.4
+    - Example of the actions: perform `ln -s libclntsh.so.12.1 libclntsh.so` (12c version) and `export LD_LIBRARY_PATH={oracle client home}`
+    - I have tested this with Oracle client versions 12.1.0.2 and 11.2.0.4 on Linux
 - Post client installation:
-    - set environment: `export ORACLE_HOME={path to the Oracile client installation}`
+    - set environment: `export ORACLE_HOME={path to the Oracle client installation}`
     - If not already installed, install libaio (yum install libaio)
 - Check that the Oracle client works and all dependencies are set by running sqlplus from the Oracle client home, example:
     - check client connectivity with: `sqlplus username/password@dbserver:port/service_name`
