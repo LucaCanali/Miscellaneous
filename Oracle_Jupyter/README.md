@@ -12,18 +12,18 @@ This folder contains example notebooks on how to use Jupyter/IPython for queryin
 | [**Oracle_IPython_SQL_magic**](Oracle_IPython_SQL_magic.ipynb) | Examples of how to query Oracle using %SQL line and cell magic and the integration with cx_Oracle and pandas.
 
 ---
-**Dependencies and pointers to build a test environemnt:**
+**Dependencies and pointers to build a test environment:**
 - Install **IPython and Jupyter**. The following assumes [Anaconda](https://www.continuum.io/downloads) from Continuum Analytics)
 - Install the **Oracle client**
     - Download the software from OTN: <http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html>
-    - On that same link you can find the installation istructions (scroll down by the end of the page)
+    - On that same link you can find the installation instructions (scroll down by the end of the page)
     - In particular perform ln -s libclntsh.so.11.1 libclntsh.so and export LD_LIBRARY_PATH
     - I have tested on Oracle client version 12.1.0.2 or 11.2.0.4
 - Post client installation:
-    - set environemnt: export ORACLE_HOME={*path to the Oralce client installation*}
+    - set environment: `export ORACLE_HOME={path to the Oracile client installation}`
     - If not already installed, install libaio (yum install libaio)
 - Check that the Oracle client works and all dependencies are set by running sqlplus from the Oracle client home, example:
-    - check client connectivity with: sqlplus username/passpord@dbserver:port/servicename
+    - check client connectivity with: `sqlplus username/password@dbserver:port/service_name`
 - Install **cx_Oracle**, for example with `pip install cx_Oracle`
 - Install **ipython-sql**
    - download from <https://github.com/LucaCanali/ipython-sql>
