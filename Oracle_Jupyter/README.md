@@ -9,7 +9,7 @@ This folder contains example notebooks on how to use Jupyter/IPython for queryin
 | -------------------------- | -------------------------------------------------------------------------------------
 | [**Oracle_IPython_sqlplus**](Oracle_IPython_sqlplus.ipynb) | Examples of how to use sqlplus inside Jupyter notebooks. It is based on the use of %%bash cell magic and here documents to wrap up sqlplus inside Jupyter cells.
 | [**Oracle_IPython_cx_Oracle_pandas**](Oracle_IPython_cx_Oracle_pandas.ipynb) | Examples of how to query Oracle from Python using cx_Oracle and how to integrate with pandas and visualization with matplotlib.
-| [**Oracle_IPython_SQL_magic**](Oracle_IPython_SQL_magic.ipynb) | Examples of how to query Oracle using %SQL line and cell magic and the integration with cx_Oracle and pandas.
+| [**Oracle_IPython_SQL_magic**](Oracle_IPython_SQL_magic.ipynb) | Examples of how to query Oracle using %sql line magic (or %%sql cell magic) and the integration with cx_Oracle and pandas.
 
 ---
 **Dependencies and pointers to build a test environment:**
