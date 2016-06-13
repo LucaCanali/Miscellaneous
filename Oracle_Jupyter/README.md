@@ -2,6 +2,8 @@
 
 Author: Luca.Canali@cern.ch, June 2016
 
+**Blog entry:http://externaltable.blogspot.com/2016/06/ipythonjupyter-notebooks-for-oracle.html**
+
 ---
 This folder contains example notebooks on how to use Jupyter/IPython for querying Oracle databases and integrating with Python data analysis and visualization tools.
 
