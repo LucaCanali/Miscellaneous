@@ -7,6 +7,8 @@ Author: Luca.Canali@cern.ch, June 2016
 ---
 This folder contains example notebooks on how to use Jupyter/IPython for querying Oracle databases and integrating with Python data analysis and visualization tools.
 
+**Example notebooks:**
+
 | Notebook                   | Short description
 | -------------------------- | -------------------------------------------------------------------------------------
 | [**Oracle_IPython_sqlplus**](Oracle_IPython_sqlplus.ipynb) | Examples of how to use sqlplus inside Jupyter notebooks. It is based on the use of %%bash cell magic and here documents to wrap up sqlplus inside Jupyter cells.
