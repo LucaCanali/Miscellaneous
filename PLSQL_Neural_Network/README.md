@@ -1,6 +1,6 @@
 # An example of how to build a neural network scoring engine in PL/SQL
 
-In this you will find the support material for the blog entry:     
+In this you will find the support material for the blog entry: https://db-blog.web.cern.ch/blog/luca-canali/2016-07-neural-network-scoring-engine-plsql-recognizing-handwritten-digits        
 This is an example of how to build and deploy a basic artificial neural network scoring engine using PL/SQL. It is intended for learning purposes, in particular for Oracle practitioners who want a hands-on introduction to neural networks.
 
 Author Luca.Canali@cern.ch - July 2016
