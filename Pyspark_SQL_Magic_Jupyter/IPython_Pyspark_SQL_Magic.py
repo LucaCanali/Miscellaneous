@@ -4,9 +4,9 @@
 # The defined functions are:
 #
 # %sql <statement>          - return a Spark DataFrame for lazy evaluation of the SQL
-# %sql_show <statement>     - run the SQL statement and show max_show_lines lines (50)
-# %sql_display <statement>  - run the SQL statement and display unsing an HTML table
-#                           - this is implemented unsing Pandas and displays max_show_lines (50)
+# %sql_show <statement>     - run the SQL statement and show max_show_lines (50) lines
+# %sql_display <statement>  - run the SQL statement and display the results using a HTML table 
+#                           - this is implemented passing via Pandas and displays up to max_show_lines (50)
 # %sql_explain <statement>  - display the execution plan of the SQL statement
 #
 # Use: %<magic> for line magic or %%<magic> for cell magic.
