@@ -37,7 +37,7 @@ def sql_show(line, cell=None):
 @register_line_cell_magic
 def sql_display(line, cell=None):
     """Execute sql and convert results to Pandas DataFrame for pretty display or further processing.
-    Use: %sql_toPandas or %%sql_toPandas"""
+    Use: %sql_display or %%sql_display"""
     val = cell if cell is not None else line 
     return sqlContext.sql(val).limit(max_show_lines).toPandas() 
 
