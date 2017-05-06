@@ -5,7 +5,7 @@
 
 Note: the reason for doing this is to enable access to resource protected by direct Kerberos authentication, notably this does not apply to the use of HDFS in a Hadoop cluster, where a more scalable token-based implementation is available
 
-Proposed strategy and notes:
+Strategy and techniques:
 
 * Distribute the Kerberos credential cache from the driver/client to all YARN containers
    * use the standard Spark functionatility, using `--files` (or `--conf spark.yarn.dist.files`)
