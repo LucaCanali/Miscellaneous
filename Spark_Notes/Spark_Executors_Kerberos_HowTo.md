@@ -20,21 +20,19 @@ Proposed strategy and notes:
 # Recipe:
 Tested on Apache Spark 2.1.x and YARN/Hadoop 2.6.0
 
-1. 
-use `kinit` to get the MIT Kerberos TGT in the credential cache file
+1. Use `kinit` to get the MIT Kerberos TGT in the credential cache file
 use `klist -l` to get path of credential cache file. A typical default path vlaue is: /tmp/krb5cc_$UID
 
-2. 
-This is an optional step: set KRB5CCNAME on the client/driver machine. Example:  
+2. This is an optional step: set KRB5CCNAME on the client/driver machine. Example:  
 `export KRB5CCNAME=/tmp/krb5cc_$UID`
 
-3. 
-Distribute the credential cache and set the KRB5CCNAME variable on the executors. Examples when using spark-submit/pyspark/spark-shell:  
+3. Distribute the credential cache and set the KRB5CCNAME variable on the executors. Examples when using spark-submit/pyspark/spark-shell:  
 
 ```bash
 spark-shell --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
 
-pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'```
+pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+```
 
    
    
@@ -49,6 +47,7 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
 * What is the key finding of this note? The fact that `$PWD` is set to the YARN container root, which is generated at runtime. Use $PWD inside single quotes if you need to set environment variables relative to the container root address.
 
 * You can adapt this method to setting other environment variables besides KRB5CCNAME that depend of a relative path based on YARN root container path.
+   
    
 # Credits:
    
