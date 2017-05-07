@@ -1,5 +1,5 @@
-# Goal: 
-* **Enable Spark jobs (executors) to access Kerberized resources**
+# Goal:   
+**Enable Spark jobs (executors) to access Kerberized resources**
   * distribute the Kerberos cache file from the driver/client machine
   * make this work for a YARN cluster 
 
