@@ -7,17 +7,6 @@ Note: the problem this solves is to enable Spark jobs to access resources protec
 Notably this does not apply to the use of HDFS in a Spark+Hadoop cluster, where a more scalable delegation token-based 
 implementation is available.
 
-Strategy and techniques:
-
-* Distribute the Kerberos credential cache from the driver/client to all YARN containers as a local copy
-   * use the standard Spark functionality, using `--files <path>` (or `--conf spark.yarn.dist.files=<path>`)
-* Set the executors' environment variable KRB5CCNAME to point to a local copy of the Kerberos credential cache file
-   * the non-standard point is that the actual PATH of the local copy of the credential cache can end up to be different 
-   for different machines/executors/YARN containers
-* How to set the Spark executor environment variable with a path relative to YARN container root directory
-   * use `'$PWD'` to prefix the path of the credential cache to address the location of the root of the YARN container
-   * use standard Spark configuration options to set the environemnt varialble KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
-    
   
 # Recipe:
 Tested on: Apache Spark 1.6, 2.0 and 2.1 + YARN/Hadoop 2.6.0 (CDH)
@@ -39,6 +28,17 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
    
    
 # Notes: 
+    
+* Strategy and techniques used:
+
+  * Distribute the Kerberos credential cache from the driver/client to all YARN containers as a local copy
+    * use the standard Spark functionality, using `--files <path>` (or `--conf spark.yarn.dist.files=<path>`)
+  * Set the executors' environment variable KRB5CCNAME to point to a local copy of the Kerberos credential cache file
+    * the non-standard point is that the actual PATH of the local copy of the credential cache can end up to be different 
+   for different machines/executors/YARN containers
+  * How to set the Spark executor environment variable with a path relative to YARN container root directory
+    * use `'$PWD'` to prefix the path of the credential cache to address the location of the root of the YARN container
+    * use standard Spark configuration options to set the environemnt varialble KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
     
 * An alternative method to shipping the credentail cache using Spark's --files is to copy the credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
     
