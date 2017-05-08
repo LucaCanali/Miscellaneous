@@ -3,7 +3,8 @@
   * distribute the Kerberos cache file from the driver/client machine
   * make this work in a Hadoop/YARN cluster 
 
-Note: the problem this solves is to enable Spark jobs to access resources protected by direct Kerberos authentication.
+Note: the problem this tries to solve is how to enable Spark jobs to access resources protected by direct
+Kerberos authentication.  
 Notably this does not apply to the use of HDFS in a Spark+Hadoop cluster, where a more scalable delegation token-based 
 implementation is available.
 
@@ -54,6 +55,6 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
 # Credits:
    
 Author: Luca.Canali@cern.ch, April 2017  
-Additional credits: Zbigniew.Baranowski@cern.ch and Prasanth.Kothuri@cern.ch
+This works includes contributions by: Zbigniew.Baranowski@cern.ch and Prasanth.Kothuri@cern.ch
 
 
