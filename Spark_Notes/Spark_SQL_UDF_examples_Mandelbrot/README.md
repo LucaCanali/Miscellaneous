@@ -11,6 +11,8 @@ Here are a few "fun" examples to illustrate some of the main techniques with spl
 | [**Spark_SQL_UDF_example_notebook_Mandelbrot_Scala_Jupyter_Toree.ipynb**](Spark_SQL_UDF_example_notebook_Mandelbrot_Scala_Jupyter_Toree.ipynb) | Jupyter notebook with Python kernel
 | [**Spark_SQL_UDF_example_notebook_Mandelbrot_Jupyter_Python.ipynb**](Spark_SQL_UDF_example_notebook_Mandelbrot_Jupyter_Python.ipynb) | Jupyter notebook in Scala with Apache Toree kernel
 
+## Eye candy 
+
 ![Mandelbrot SQL in color](Spark_SQL_UDF_example_Mandelbrot_Images.png)
 
 References:
