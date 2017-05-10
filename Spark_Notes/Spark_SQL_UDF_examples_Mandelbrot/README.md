@@ -15,7 +15,7 @@ Here are a few "fun" examples to illustrate some of the main techniques with spl
 
 ![Mandelbrot SQL in color](Spark_SQL_UDF_example_Mandelbrot_Images.png)
 
-References:
+## References:
 - https://github.com/LucaCanali/Miscellaneous/tree/master/SQL_color_Mandelbrot
 - https://en.wikipedia.org/wiki/Mandelbrot_set
 - https://wiki.postgresql.org/wiki/Mandelbrot_set
