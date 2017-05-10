@@ -1,4 +1,4 @@
-# SQL with color
+# How to add color to you SQL output, with an example of Mandelbrot set in SQL
 
 The terminal graphics is taken from the code of [OraLatencyMap](../../OraLatencyMap) and [PyLatencyMap](../../PyLatencyMap)
 The example with the Mandelbrot set in SQL is a port to Oracle (SQL*plus) from a PostgreSQL version (see references).   
@@ -22,11 +22,8 @@ Spark SQL version:
 
 # Eye candy
 
-![Mandelbrot SQL in color](http://2.bp.blogspot.com/-VEqSBLulncs/VeNd4ztamuI/AAAAAAAAEuQ/JC608pPcPqk/s1600/Mandelbrot_SQL_collage.png)
+![Mandelbrot SQL in color_Oracle](http://2.bp.blogspot.com/-VEqSBLulncs/VeNd4ztamuI/AAAAAAAAEuQ/JC608pPcPqk/s1600/Mandelbrot_SQL_collage.png)
    
-   
-![Mandelbrot SQL in color](Miscellaneous/Spark_Notes/Spark_SQL_UDF_examples_Mandelbrot/Spark_SQL_UDF_example_Mandelbrot_Images.png)
-
 ## References:
 - https://en.wikipedia.org/wiki/Mandelbrot_set
 - https://wiki.postgresql.org/wiki/Mandelbrot_set
@@ -34,5 +31,6 @@ Spark SQL version:
 - https://www.sqlite.org/lang_with.html
 - https://community.oracle.com/message/3136057
 - http://xoph.co/20130917/mandelbrot-sql/
+- https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Notes/Spark_SQL_UDF_examples_Mandelbrot   
 
 Author: @LucaCanaliDB, August 2015
