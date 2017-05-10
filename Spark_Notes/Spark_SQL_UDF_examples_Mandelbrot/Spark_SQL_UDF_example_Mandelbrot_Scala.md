@@ -9,7 +9,7 @@ How to run:
 * For the version "SQL with color", use a terminal/notebook that supports ANSI escape codes  
 
 This is the Scala version, a Python version is available at:
-[Spark_Notes/Spark_SQL_UDF_example_Mandelbrot](https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Notes/Spark_SQL_UDF_example_Mandelbrot)
+[Spark_Notes/Spark_SQL_UDF_examples_Mandelbrot](https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Notes/Spark_SQL_UDF_example_Mandelbrot)
    
 ## The vanilla ASCII version
 
