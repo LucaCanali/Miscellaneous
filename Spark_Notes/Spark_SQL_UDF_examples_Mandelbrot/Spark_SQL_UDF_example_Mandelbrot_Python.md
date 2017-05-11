@@ -13,7 +13,7 @@ This is the Python version, a Scala version is available at:
    
 ## The vanilla ASCII version
 
-**UDF:** This is an helper function, it implements the "Escape time algorithm" for the Mandelbrot set visualization 
+**UDF:** This is a helper function, it implements the "escape time algorithm" for the Mandelbrot set visualization 
 as a Spark user defined function.   
 Inputs: *cR and cI* represent the point in the set/image to evaluate (c is a complex number).
 *maxIterations* is maximum number of iterations.  
