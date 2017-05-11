@@ -10,7 +10,7 @@ Here are a few "fun" examples to illustrate some of the main techniques with spl
 | [**Spark_SQL_UDF_example_Mandelbrot_Images.png**](Spark_SQL_UDF_example_Mandelbrot_Images.png) | Output images of the Mandelbrot set example
 | [**Spark_SQL_UDF_example_notebook_Mandelbrot_Scala_Jupyter_Toree.ipynb**](Spark_SQL_UDF_example_notebook_Mandelbrot_Scala_Jupyter_Toree.ipynb) | Jupyter notebook with Python kernel
 | [**Spark_SQL_UDF_example_notebook_Mandelbrot_Jupyter_Python.ipynb**](Spark_SQL_UDF_example_notebook_Mandelbrot_Jupyter_Python.ipynb) | Jupyter notebook in Scala with Apache Toree kernel
-| [**SparkSQL_withUDF_Mandelbrot_Set_Scala**](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/2576201333635946/442806354506758/latest.html) [**SparkSQL_withUDF_Mandelbrot_Set_Python**](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3699864605233093/442806354506758/latest.html) | Notebooks on Databricks platform (community edition) 
+| [**SparkSQL_withUDF_Mandelbrot_Set_Scala_Databricks**](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/2576201333635946/442806354506758/latest.html) [**SparkSQL_withUDF_Mandelbrot_Set_Python_Databricks**](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3699864605233093/442806354506758/latest.html) | Notebooks on Databricks platform (community edition) 
   
 ## Eye candy 
 
