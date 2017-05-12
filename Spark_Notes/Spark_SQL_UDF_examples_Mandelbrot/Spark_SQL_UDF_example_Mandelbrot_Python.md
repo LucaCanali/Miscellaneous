@@ -114,5 +114,8 @@ for line in result:
     print(line[0])
 ```
 
+## Eye candy: visualization of the Mandelbrot set using Spark SQL
+
+![Mandelbrot SQL in color](Spark_SQL_UDF_example_Mandelbrot_Images.png)
 
 

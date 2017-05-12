@@ -106,5 +106,9 @@ group by y.id
 order by y.id desc""").collect().foreach(println)
 ```
 
+## Eye candy: visualization of the Mandelbrot set using Spark SQL
+
+![Mandelbrot SQL in color](Spark_SQL_UDF_example_Mandelbrot_Images.png)
+
 
 
