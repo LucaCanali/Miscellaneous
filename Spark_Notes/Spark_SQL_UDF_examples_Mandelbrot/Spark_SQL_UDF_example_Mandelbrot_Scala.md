@@ -51,7 +51,7 @@ select translate(cast(collect_list(substring(' .:::-----++++%%%%@@@@#### ',
        mandelbrot(x.cR, y.cI, 27), 1)) as string), ',', '') as Mandelbrot_Set
 from y cross join x 
 group by y.id 
-order by y.id desc""").show(200, False)
+order by y.id desc""").show(200, false)
 ```
    
       
