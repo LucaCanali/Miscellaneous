@@ -5,7 +5,7 @@
 
 Note: the problem this tries to solve is how to enable Spark jobs to access resources protected by direct
 Kerberos authentication.  
-Notably this does not apply to the use of HDFS in a Spark+Hadoop cluster, where a more scalable delegation token-based 
+Notablyi, this does not apply to the use of HDFS in a Spark+Hadoop cluster, where a more scalable delegation token-based 
 implementation is available.
 
   
@@ -41,7 +41,7 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
     * use `'$PWD'` to prefix the path of the credential cache to address the location of the root of the YARN container
     * use standard Spark configuration options to set the environment variable KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
     
-* An alternative method to shipping the credentail cache using Spark's --files is to copy the credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
+* An alternative method to shipping the credential cache using Spark command line option "--files", is to copy the credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
     
 * instead of distributing the credential cache with `--files` you can use `--conf spark.yarn.dist.files=<path>`
 
@@ -49,12 +49,12 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
 
 * What is the key finding of this note? The fact that `$PWD` is set to the YARN container root, which is generated at runtime. Use $PWD inside single quotes if you need to set environment variables relative to the container root address.
 
-* You can adapt this method to setting other environment variables, that similarly to KRB5CCNAME in this example, may depend on a relative path based on the YARN root container path.
+* You can adapt this method to setting other environment variables that, similarly to KRB5CCNAME in this example, may depend on a relative path based on the YARN root container path.
    
    
 # Credits:
    
 Author: Luca.Canali@cern.ch, April 2017  
-This works includes contributions by: Zbigniew.Baranowski@cern.ch and Prasanth.Kothuri@cern.ch
+This work includes contributions by: Zbigniew.Baranowski@cern.ch and Prasanth.Kothuri@cern.ch
 
 
