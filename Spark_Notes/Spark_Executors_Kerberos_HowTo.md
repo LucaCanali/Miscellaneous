@@ -13,7 +13,7 @@ implementation is available.
 Tested on: Apache Spark 1.6, 2.0 and 2.1 + YARN/Hadoop 2.6.0 (CDH)
 
 1. Use `kinit` to get the Kerberos TGT in the credential cache file
-use `klist -l` to get path of credential cache file. A typical default path value is: /tmp/krb5cc_$UID
+use `klist -l` to get the path of the credential cache file. A typical default path value is: /tmp/krb5cc_$UID
 
 2. This is an optional step: set KRB5CCNAME on the client/driver machine. Example:  
 `export KRB5CCNAME=/tmp/krb5cc_$UID`
@@ -39,17 +39,17 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
    for different machines/executors/YARN containers
   * How to set the Spark executor environment variable with a path relative to YARN container root directory
     * use `'$PWD'` to prefix the path of the credential cache to address the location of the root of the YARN container
-    * use standard Spark configuration options to set the environemnt varialble KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
+    * use standard Spark configuration options to set the environment variable KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
     
 * An alternative method to shipping the credentail cache using Spark's --files is to copy the credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
     
 * instead of distributing the credential cache with `--files` you can use `--conf spark.yarn.dist.files=<path>`
 
-* What is the advantage of shipping the credential cache to the executors, compared to shipping the keytab? The cache can only be used/renewed for a limited amount of time, so it offers less risk if "captured" and provides a more suitable solution for short-running jobs in a shared enviroment for example, which is the case of many Spark jobs in a YARN environment.
+* What is the advantage of shipping the credential cache to the executors, compared to shipping the keytab? The cache can only be used/renewed for a limited amount of time, so it offers less risk if "captured" and provides a more suitable solution for short-running jobs in a shared environment for example, which is the case of many Spark jobs in a YARN environment.
 
 * What is the key finding of this note? The fact that `$PWD` is set to the YARN container root, which is generated at runtime. Use $PWD inside single quotes if you need to set environment variables relative to the container root address.
 
-* You can adapt this method to setting other environment variables besides KRB5CCNAME that depend of a relative path based on YARN root container path.
+* You can adapt this method to setting other environment variables, that similarly to KRB5CCNAME in this example, may depend on a relative path based on the YARN root container path.
    
    
 # Credits:
