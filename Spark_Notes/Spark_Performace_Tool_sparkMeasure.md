@@ -10,14 +10,17 @@ SparkMeasure is a tool for performance investigations of Apache Spark workloads.
   * It can be used for instrumenting **applications**, see "flight recorder mode"
   * For Spark 2.1.x and higher
 
-Try it out:
+Try sparkMeasure out:
 
 ```
 bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.11
 
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000) cross join range(1000)").show)
+```
 
+The output should look like this:
+```
 Scheduling mode = FIFO
 Spark Context default degree of parallelism = 8
 Aggregated Spark stage metrics:
