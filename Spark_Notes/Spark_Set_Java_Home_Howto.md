@@ -17,3 +17,4 @@ bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/java-oracl
 
 3. to avoid using --conf each time, you can persist the parameters in `spark-defaults.conf` (in `$SPARK_CONF_DIR`)
 
+---
