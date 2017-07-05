@@ -1,12 +1,14 @@
-# Goal:   
-**Enable Spark jobs (executors) to access Kerberized resources**
-  * distribute the Kerberos cache file from the driver/client machine
-  * make this work in a Hadoop/YARN cluster 
+# HowTo: Enable Spark executors to access Kerberized resources
+This recipe allows to:
+  * distribute the Kerberos cache file from the driver to the executors
+  * set the relevant environment variables in the executors processes
+  * make this work for Hadoop/YARN clusters 
 
-Note: the problem this tries to solve is how to enable Spark jobs to access resources protected by direct
-Kerberos authentication.  
-Notablyi, this does not apply to the use of HDFS in a Spark+Hadoop cluster, where a more scalable delegation token-based 
-implementation is available.
+The problem this solves is enabling Spark jobs to access resources protected by direct
+Kerberos authentication.      
+
+Note: notably, this recipe does not apply to HDFS in a Spark+Hadoop cluster, there a more scalable delegation token-based 
+implementation is available out of the box.
 
   
 # Recipe:
