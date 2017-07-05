@@ -1,6 +1,5 @@
 # HowTo: Measure Spark Performance Metrics With sparkMeasure
-
-This is a get-started doc to sparkMeasure: 
+This is a get-started doc to sparkMeasure.
   * https://github.com/LucaCanali/sparkMeasure
   * https://mvnrepository.com/artifact/ch.cern.sparkmeasure
 
@@ -9,8 +8,8 @@ SparkMeasure is a tool for performance investigations of Apache Spark workloads.
   * It can be used from the command line (**spark-shell, PySpark, or Notebooks**)
   * It can be used for instrumenting **applications**, see "flight recorder mode"
   * For Spark 2.1.x and higher
-
-Try sparkMeasure out:
+   
+Try sparkMeasure out with a quick example:
 
 ```
 bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.11
@@ -56,6 +55,7 @@ sum(shuffleRecordsWritten) => 8
 **More info and examples:**
   * https://github.com/LucaCanali/sparkMeasure/blob/master/README.md
   * http://db-blog.web.cern.ch/blog/luca-canali/2017-03-measuring-apache-spark-workload-metrics-performance-troubleshooting
+  * https://github.com/LucaCanali/sparkMeasure/blob/master/examples/SparkTaskMetricsAnalysisExample.ipynb
   * Another example using TPC-DS table store_sales from http://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example
 
 ```
