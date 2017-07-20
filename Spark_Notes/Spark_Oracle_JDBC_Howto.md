@@ -40,6 +40,11 @@ Example:
        .option("upperBound",420000000)
        .option("numPartitions",12)
 ```
+
+Note: instead of a table name you can specify a query as in 
+```
+       .option("dbtable", "(select * from MYSCHEMA.MYTABLE where rownum<=20)")
+```
 ---
    
 #### What to check on the Oracle side and what to expect. 
