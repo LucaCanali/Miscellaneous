@@ -152,3 +152,13 @@ Notes:
 - Notably the way data is split among mappers uses methods that are native for Oracle (ROWID ranges by default, can also use partitions). 
 Also the reads bypass Oracle buffer cache (using serial direct reads) by default.
 
+---
+Issues and remarks:  
+1. In one system the I found the following blocking Oracle error while loading a DF from an Oracle table with timestamp columns
+```java.sql.SQLException: ORA-00604: error occurred at recursive SQL level 1
+   ORA-01882: timezone region not found
+```
+This is due to the client configuration and can be fixed by setting the TZ environment to a valid time zone value as in:
+ ```export TZ=CEST```
+ 
+ 
