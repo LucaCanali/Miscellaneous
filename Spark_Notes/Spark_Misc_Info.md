@@ -144,7 +144,7 @@ val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.roo
   - Short-circuit is a good feature to enable for Spark running on a Hadoop clusters as it improves performance of I/O
   that is local to the Spark executors.
   - Note: the warning message "WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded"
-  is generated after checking on the driver machine. This can be misleading, as what is important is that short-circuit is enabled on the executors!  
+  is generated after checking on the driver machine. This can be misleading if the driver is not part of the Hadoop cluster, as what is important is that short-circuit is enabled on the executors!  
   - if the library path of the executors as set up on the system defaults does not yet allow to find libhadoop.so, this can be used:
 `--conf spark.executor.extraLibraryPath=/usr/lib/hadoop/lib/native --conf spark.driver.extraLibraryPath=/usr/lib/hadoop/lib/native`
 
