@@ -132,7 +132,7 @@ Accid, Name => max(value) [group by accId, name]
 Apache Sqoop and in particular its Oracle connector orahoop have additional optimizations
 that can improve substantially the performance of data transfer from Oracle to Hadoop compared to the
 method described above using Spark.
-See [thi link to Scoop documentation](http://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_data_connector_for_oracle_and_hadoop)
+See [this link to Scoop documentation](http://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_data_connector_for_oracle_and_hadoop)
 
 An example of Sqoop/orahoop usage:
 
