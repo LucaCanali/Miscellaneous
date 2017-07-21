@@ -2,7 +2,7 @@
 Use this to transfer data from Oracle into Parquet or other formats.    
 With additional notes on performance and notes on how this compares to Apache Sqoop.
 
-####An example of how to create a Spark dataframe that reads from and Oracle table/view/query using JDBC.
+#### An example of how to create a Spark dataframe that reads from and Oracle table/view/query using JDBC.
 See also [Spark documentation]()https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
 
 ```
@@ -26,7 +26,7 @@ df.show(5)
 df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
 
-####Note on partitioning/parallelization of the JDBC source with Spark:
+#### Note on partitioning/parallelization of the JDBC source with Spark:
 - The instruction above will read from Oracle using a single Spark task, this will be most likely slow. 
 - When using partitioning Spark will use as many tasks as "numPartitions" 
 - Each task will issue a query to read the data with an additional "where condition" generated from the loower and upper bounds and the number of partitions.
@@ -40,9 +40,14 @@ Example:
        .option("upperBound",420000000)
        .option("numPartitions",12)
 ```
+
+Note: instead of a table name you can specify a query as in 
+```
+       .option("dbtable", "(select * from MYSCHEMA.MYTABLE where rownum<=20)")
+```
 ---
    
-####What to check on the Oracle side and what to expect. 
+#### What to check on the Oracle side and what to expect. 
 - Use an Oracle monitoring tool, such as Oracle EM, or use relevant ["DBA scripts" as in this repo](https://github.com/LucaCanali/Oracle_DBA_scripts) 
 - Check the number of sessions connected to Oracle from the Spark executors and the sql_id of the SQL they are executing.
   - expect numPartitions sessions in Oracle (1 session if you did not specify the option)   
@@ -60,7 +65,7 @@ Example:
   - for example if workload is reading from Oracle and writing into Parquet, you'll find that in many cases the bottleneck is the CPU needed by Spark tasks to write into Parquet
   - when the bottleneck is on the Spark side, Oracle sessions will report "wait events" such as: "SQL*Net more data to client", measning that Oracle sessions are waiting to be able to push more data to Spark executors which are otherwise busy 
   
-####What to check on the Spark side
+#### What to check on the Spark side
 - Check the SPARK UI to see the progress of the job and how many tasks are being used concurrently
   - you should expect "numPartitions" tasks (1 tasks if you did not specify a value for this option)
 - measure the workload with [sparkMeasure as described in this doc](Spark_Performace_Tool_sparkMeasure.md)
@@ -122,7 +127,7 @@ Accid, Name => max(value) [group by accId, name]
     1, number of output rows => 815956407
 ```
 ---
-##Notes on Apache Sqoop
+## Notes on Apache Sqoop
 
 Apache Sqoop and in particular its Oracle connector orahoop have additional optimizations
 that can improve substantially the performance of data transfer from Oracle to Hadoop compared to the
@@ -149,8 +154,8 @@ sqoop import \
 Notes:
 - Sqoop will generate a Map reduce job to process the data transfer
 - Compared to the JDBC method with Spark described above this has several optimizations for Oracle
-- Notably the way data is split among mappers uses methods that are native for Oracle (ROWID ranges by default, can also use partitions). 
-Also the reads bypass Oracle buffer cache (using serial direct reads) by default.
+- Notably the way data is split among mappers uses methods that are native for Oracle (ROWID ranges by default, Sqoop can also use Oracle partitions to chunk data with the option -Doraoop.chunk.method="PARTITION"). 
+Also data reads for Sqoop workloads by default do not interfere with the Oracle buffer cache (i.e. Sqoop uses serial direct reads).
 
 ---
 Issues and remarks:  
