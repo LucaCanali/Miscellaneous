@@ -179,3 +179,74 @@ df.persist(org.apache.spark.storage.StorageLevel.OFF_HEAP)
 ```
   - In addition clients may want to access the port for the WebUI (4040 by default)
  
+ ---
+ - Examples of Dataframe creation for testing
+ ```
+sql("select * from values (1, 'aa'), (2,'bb'), (3,'cc') as (id,desc)").show
++---+----+
+| id|desc|
++---+----+
+|  1|  aa|
+|  2|  bb|
+|  3|  cc|
++---+----+
+
+sql("select * from values (1, 'aa'), (2,'bb'), (3,'cc') as (id,desc)").createOrReplaceTempView("t1")
+spark.table("t1").printSchema
+root
+ |-- id: integer (nullable = false)
+ |-- desc: string (nullable = false)
+
+
+sql("select id, floor(200*rand()) bucket, floor(1000*rand()) val1, floor(10*rand()) val2 from range(10)").show(3)
++---+------+----+----+
+| id|bucket|val1|val2|
++---+------+----+----+
+|  0|     1| 223|   5|
+|  1|    26| 482|   5|
+|  2|    42| 384|   7|
++---+------+----+----+
+only showing top 3 rows
+
+scala> val df=Seq((1, "aaa", Map(1->"a") ,Array(1,2,3), Vector(1.1,2.1,3.1)), (2, "bbb", Map(2->"b") ,Array(4,5,6), Vector(4.1,5.1,6.1))).toDF("id","name","map","array","vector")
+df: org.apache.spark.sql.DataFrame = [id: int, name: string ... 3 more fields]
+
+df.printSchema
+root
+ |-- id: integer (nullable = false)
+ |-- name: string (nullable = true)
+ |-- map: map (nullable = true)
+ |    |-- key: integer
+ |    |-- value: string (valueContainsNull = true)
+ |-- array: array (nullable = true)
+ |    |-- element: integer (containsNull = false)
+ |-- vector: array (nullable = true)
+ |    |-- element: double (containsNull = false)
+
+
+df.show
++---+----+-----------+---------+---------------+
+| id|name|        map|    array|         vector|
++---+----+-----------+---------+---------------+
+|  1| aaa|Map(1 -> a)|[1, 2, 3]|[1.1, 2.1, 3.1]|
+|  2| bbb|Map(2 -> b)|[4, 5, 6]|[4.1, 5.1, 6.1]|
++---+----+-----------+---------+---------------+
+
+scala> case class myclass(id: Integer, name: String, myArray: Array[Double])
+scala> val df=Seq(myclass(1, "aaaa", Array(1.1,2.1,3.1)),myclass(2, "bbbb", Array(4.1,5.1,6.1))).toDF
+scala> df..show
++---+----+---------------+
+| id|name|        myArray|
++---+----+---------------+
+|  1|aaaa|[1.1, 2.1, 3.1]|
+|  2|bbbb|[4.1, 5.1, 6.1]|
++---+----+---------------+
+
+// Dataset API
+scala> df.as[myclass]
+res75: org.apache.spark.sql.Dataset[myclass] = [id: int, name: string ... 1 more field]
+
+scala> df.as[myclass].map(v  => v.id + 1).reduce(_ + _)
+res76: Int = 5
+
+```
