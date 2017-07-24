@@ -159,3 +159,23 @@ bin/spark-shell --master local[*] --driver-memory 64g --conf spark.memory.offHea
 val df = sql("select * from range(1000) cross join range(10000)")
 df.persist(org.apache.spark.storage.StorageLevel.OFF_HEAP)
 ```
+
+---
+- How to deploy Spark shell or a notebook behind a firewall
+  - This is relevant when using spark-shell or pyspark or a Jupyter Notebook, 
+  running the Spark driver on a client machine with a local firewall and
+  accessing Spark executors remotely on a cluster
+  - The driver listens on 2 TCP ports that need to be accessed by the executors on the cluster.
+  This is how you can specify the port numbers (35000 and 35001 are picked just as an example):
+```
+--conf spark.driver.port=35000 
+--conf spark.driver.blockManager.port=35001
+```
+  - You can set up the firewall rule on the driver to to allow connections from cluster node. 
+  This is a simplified example of rule when using iptables:
+```
+-A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35000 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35001 -j ACCEPT
+```
+  - In addition clients may want to access the port for the WebUI (4040 by default)
+ 

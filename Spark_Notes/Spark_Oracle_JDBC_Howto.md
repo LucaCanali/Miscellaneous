@@ -16,7 +16,8 @@ val df = spark.read.format("jdbc")
          .option("dbtable", "MYSCHEMA.MYTABLE")
          .option("user", "MYORAUSER")
          .option("password", "XXX")
-         .option("fetchsize",10000).load()
+         .option("fetchsize",10000)
+         .load()
          
 // test
 df.printSchema
@@ -167,3 +168,22 @@ This is due to the client configuration and can be fixed by setting the TZ envir
  ```export TZ=CEST```
  
  
+This proposes an option to the JDBC datasource, tentatively called " sessionInitStatement" to implement the functionality of session initialization present for example in the Sqoop connector for Oracle (see https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_oraoop_oracle_session_initialization_statements ) . After each database session is opened to the remote DB, and before starting to read data, this option executes a custom SQL statement (or a PL/SQL block in the case of Oracle).
+Example of usage, relevant to Oracle JDBC:
+
+```
+val preambleSQL="""
+begin 
+  execute immediate 'alter session set tracefile_identifier=sparkora'; 
+  execute immediate 'alter session set "_serial_direct_read"=true';
+  execute immediate 'alter session set time_zone=''+02:00''';
+end;
+
+bin/spark-shell jars ojdb6.jar
+
+val df = spark.read.format("jdbc").option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:1521/service_name").option("driver", "oracle.jdbc.driver.OracleDriver").option("dbtable", "(select 1, sysdate, systimestamp, current_timestamp, localtimestamp from dual)").option("user", "MYUSER").option("password", "MYPASSWORK").option("fetchsize",1000).option("sessionInitStatement", preambleSQL).load()
+
+df.show(5,false)
+```
+
+Comments: The proposal of this option comes from the need to use it for an Oracle database and enable serial direct read (this allows Oracle to perform read operations that bypass the buffer cache), however it can be used for other DBs too as it is quite generic. Note this mechanism allows to inject code into the database connection, this is not a security vulnerability as it requires password authentication, however beware of the possibilities for injecting SQL (and PL/SQL) that this opens.
