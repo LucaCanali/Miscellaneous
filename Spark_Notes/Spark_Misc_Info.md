@@ -197,6 +197,7 @@ root
  |-- id: integer (nullable = false)
  |-- desc: string (nullable = false)
 
+spark.sql("create or replace temporary view outer_v1 as select * from values (1, 'aa'), (2,'bb'), (3,'cc') as (id,desc)")
 
 sql("select id, floor(200*rand()) bucket, floor(1000*rand()) val1, floor(10*rand()) val2 from range(10)").show(3)
 +---+------+----+----+
@@ -248,5 +249,53 @@ res75: org.apache.spark.sql.Dataset[myclass] = [id: int, name: string ... 1 more
 
 scala> df.as[myclass].map(v  => v.id + 1).reduce(_ + _)
 res76: Int = 5
+
+// Manipulating rows, columns and arrays
+
+// collect_list agregates columns into rows
+sql("select collect_list(col1) from values 1,2,3").show
++------------------+
+|collect_list(col1)|
++------------------+
+|         [1, 2, 3]|
++------------------+
+
+// explode transforms aggregates into columns
+sql("select explode(Array(1,2,3))").show
++---+
+|col|
++---+
+|  1|
+|  2|
+|  3|
++---+
+
+sql("select col1, explode(Array(1,2,3)) from values Array(1,2,3)").show()
++---------+---+
+|     col1|col|
++---------+---+
+|[1, 2, 3]|  1|
+|[1, 2, 3]|  2|
+|[1, 2, 3]|  3|
++---------+---+
+
+// collect_list and explode combined, return to orginial values 
+sql("select collect_list(col1) from values 1,2,3").show
+sql("select collect_list(col) from (select explode(Array(1,2,3)))").show
++-----------------+
+|collect_list(col)|
++-----------------+
+|        [1, 2, 3]|
++-----------------+
+
+sql("select * from values 'a','b' lateral view explode(Array(1,2)) tab1").show()
++----+---+
+|col1|col|
++----+---+
+|   a|  1|
+|   a|  2|
+|   b|  1|
+|   b|  2|
++----+---+
 
 ```
