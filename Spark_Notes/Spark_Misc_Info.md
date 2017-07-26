@@ -59,6 +59,17 @@ sc.hadoopConfiguration.setInt("parquet.block.size", 256*1024*1024)
 ```
 
 ---
+- Distribute the Kerberos TGT cache to the executors
+```bash
+export KRB5CCNAME=/tmp/krb5cc_$UID
+kinit 
+
+spark-shell --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+
+pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+```
+
+---
 - Run OS commands from Spark
 ```scala
 // Scala, runs locally on the driver

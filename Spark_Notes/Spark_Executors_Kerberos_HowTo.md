@@ -12,16 +12,16 @@ implementation is available out of the box.
 
   
 # Recipe:
-Tested on: Apache Spark 1.6, 2.0 and 2.1 + YARN/Hadoop 2.6.0 (CDH)
+Tested on: Apache Spark 1.6, 2.0, 2.1, 2.2 + YARN/Hadoop (CDH 5)
 
-1. Use `kinit` to get the Kerberos TGT in the credential cache file
-use `klist -l` to get the path of the credential cache file. A typical default path value is: /tmp/krb5cc_$UID
+0. Optional step: set KRB5CCNAME on the client/driver. Note: use `klist -l` to get the path of the credential cache file. 
+Example:  
+`export KRB5CCNAME=/tmp/krb5cc_$UID`  
 
-2. This is an optional step: set KRB5CCNAME on the client/driver machine. Example:  
-`export KRB5CCNAME=/tmp/krb5cc_$UID`
 
-3. Distribute the credential cache and set the KRB5CCNAME variable on the executors. 
-Examples when using spark-submit/pyspark/spark-shell:  
+1. `kinit` to get the Kerberos TGT in the credential cache file if not already there.
+
+2. Distribute the executors the credential cache file and set the KRB5CCNAME variable. Examples:
 
 ```bash
 spark-shell --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
