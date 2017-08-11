@@ -40,7 +40,6 @@ sql(s"""
   """.stripMargin)
 
 sql("select * from mySparkTempView").show(5)
-
 ```
 
 #### Note on partitioning/parallelization of the JDBC source with Spark:
@@ -180,14 +179,19 @@ Issues and remarks:
 ```java.sql.SQLException: ORA-00604: error occurred at recursive SQL level 1
    ORA-01882: timezone region not found
 ```
-This is due to the client configuration and can be fixed by setting the TZ environment to a valid time zone value as in:
+This is due to the client configuration and can be fixed by setting the TZ environment to a valid time zone value as in:  
  ```export TZ=CEST```
  
- 
-This proposes an option to the JDBC datasource, tentatively called " sessionInitStatement" to implement the functionality of session initialization present for example in the Sqoop connector for Oracle (see https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_oraoop_oracle_session_initialization_statements ) . After each database session is opened to the remote DB, and before starting to read data, this option executes a custom SQL statement (or a PL/SQL block in the case of Oracle).
+---
+### SPARK-21519: Add an option to the JDBC data source to initialize the environment of the remote database session 
+
+[SPARK-21519](https://issues.apache.org/jira/browse/SPARK-21519) introduced an option to the JDBC datasource, "sessionInitStatement" to implement the functionality of session initialization present for example in the Sqoop connector for Oracle (see https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_oraoop_oracle_session_initialization_statements).   
+After each database session is opened to the remote DB, and before starting to read data, this option executes a custom SQL statement (or a PL/SQL block in the case of Oracle).
 Example of usage, relevant to Oracle JDBC:
 
 ```
+bin/spark-shell --jars ojdb6.jar
+
 val preambleSQL="""
 begin 
   execute immediate 'alter session set tracefile_identifier=sparkora'; 
@@ -195,9 +199,16 @@ begin
   execute immediate 'alter session set time_zone=''+02:00''';
 end;
 
-bin/spark-shell jars ojdb6.jar
-
-val df = spark.read.format("jdbc").option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:1521/service_name").option("driver", "oracle.jdbc.driver.OracleDriver").option("dbtable", "(select 1, sysdate, systimestamp, current_timestamp, localtimestamp from dual)").option("user", "MYUSER").option("password", "MYPASSWORK").option("fetchsize",1000).option("sessionInitStatement", preambleSQL).load()
+val df = spark.read
+           .format("jdbc")
+           .option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:1521/service_name")
+           .option("driver", "oracle.jdbc.driver.OracleDriver")
+           .option("dbtable", "(select 1, sysdate, systimestamp, current_timestamp, localtimestamp from dual)")
+           .option("user", "MYUSER")
+           .option("password", "MYPASSWORK")
+           .option("fetchsize",1000)
+           .option("sessionInitStatement", preambleSQL)
+           .load()
 
 df.show(5,false)
 ```

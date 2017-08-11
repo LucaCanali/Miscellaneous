@@ -2,6 +2,7 @@
 
 | Note                        | Short description
 | -------------------------- | -------------------------------------------------------------------------------------
+| [**Spark_For_High_Energy_Physics**](Spark_HEP_Examples) | Examples of using Spark to read and process High Energy Physics data.
 | [**Spark_Performace_Tool_sparkMeasure**](Spark_Performace_Tool_sparkMeasure.md)|Examples of how to use sparkMeasure to collect and display Spark metrics.
 | [**Spark_Executors_Kerberos_HowTo**](Spark_Executors_Kerberos_HowTo.md) | Example code of how to access Kerberized resources from Spark jobs/executors.
 | [**Spark_SQL_UDF_Examples_Mandelbrot**](Spark_SQL_UDF_examples_Mandelbrot) | Madelbrot set with Spark SQL:<br>some fun examples of Spark SQL with UDF in Python and Scala<br> + examples with Jupyter notebooks.
