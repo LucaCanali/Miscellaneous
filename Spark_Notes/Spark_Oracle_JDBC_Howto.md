@@ -23,8 +23,24 @@ val df = spark.read.format("jdbc")
 df.printSchema
 df.show(5)
          
-// write data as compressed Parquet files  
+// write Spark data frame as (snappy compressed) Parquet files  
 df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
+```
+
+```
+# alternative syntax to read from Oracle using Spark SQL
+sql(s"""
+  |CREATE OR REPLACE TEMPORARY VIEW mySparkTempView
+  |USING org.apache.spark.sql.jdbc
+  |OPTIONS (url 'jdbc:oracle:thin:@dbserver:port/service_name',
+  |driver 'oracle.jdbc.driver.OracleDriver',
+  |user 'MYORAUSER', password 'XXX',
+  |fetchsize 10000,
+  |dbtable 'MYSCHEMA.MYTABLE')
+  """.stripMargin)
+
+sql("select * from mySparkTempView").show(5)
+
 ```
 
 #### Note on partitioning/parallelization of the JDBC source with Spark:
