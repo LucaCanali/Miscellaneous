@@ -43,10 +43,14 @@ sql("select * from mySparkTempView").show(5)
 ```
 
 #### Note on partitioning/parallelization of the JDBC source with Spark:
-- The instruction above will read from Oracle using a single Spark task, this will be most likely slow. 
-- When using partitioning Spark will use as many tasks as "numPartitions" 
-- Each task will issue a query to read the data with an additional "where condition" generated from the loower and upper bounds and the number of partitions.
-- If the Oracle table is partitioned by the column "partitionColumn" this could be OK and use partition pruning for example, otherwise the query can generate multiple table scans or suboptimal index range scans of large parts of the table.
+- The instruction above will read from Oracle using a single Spark task, this can be slow. 
+- When using partitioning options Spark will use as many tasks as "numPartitions" 
+- Each task will issue a query to read the data with an additional "where condition" generated from the lower and upper bounds and the number of partitions.
+- If the Oracle table is partitioned by the column "partitionColumn" this could improve performance and use partition pruning
+ for example.
+ In other cases the query can generate multiple table scans or suboptimal index range scans of large parts of the table.
+ See also below the discussion on Sqoop, that has additional optimizations for mappers/partitioners to use with Oracle.
+ This functionality has not yet been ported to Spark.
 - When loading large tables you may want to check with a DBA that the load is acceptable on the source DB
 Example:
 
@@ -173,17 +177,16 @@ Notes:
 - Notably the way data is split among mappers uses methods that are native for Oracle (ROWID ranges by default, Sqoop can also use Oracle partitions to chunk data with the option -Doraoop.chunk.method="PARTITION"). 
 Also data reads for Sqoop workloads by default do not interfere with the Oracle buffer cache (i.e. Sqoop uses serial direct reads).
 
----
 Issues and remarks:  
-1. In one system the I found the following blocking Oracle error while loading a DF from an Oracle table with timestamp columns
-```java.sql.SQLException: ORA-00604: error occurred at recursive SQL level 1
+- In one system the I found the following blocking Oracle error while loading a DF from an Oracle table with timestamp columns
+  ```java.sql.SQLException: ORA-00604: error occurred at recursive SQL level 1
    ORA-01882: timezone region not found
-```
-This is due to the client configuration and can be fixed by setting the TZ environment to a valid time zone value as in:  
+  ```
+  This is due to the client configuration and can be fixed by setting the TZ environment to a valid time zone value as in:  
  ```export TZ=CEST```
  
 ---
-### SPARK-21519: Add an option to the JDBC data source to initialize the environment of the remote database session 
+## SPARK-21519: Add an option to the JDBC data source to initialize the environment of the remote database session 
 
 [SPARK-21519](https://issues.apache.org/jira/browse/SPARK-21519) introduced an option to the JDBC datasource, "sessionInitStatement" to implement the functionality of session initialization present for example in the Sqoop connector for Oracle (see https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_oraoop_oracle_session_initialization_statements).   
 After each database session is opened to the remote DB, and before starting to read data, this option executes a custom SQL statement (or a PL/SQL block in the case of Oracle).
