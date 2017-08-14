@@ -1,13 +1,13 @@
 # How to map Oracle tables into Spark dataframes using JDBC
-Use this to transfer data from Oracle into Parquet or other formats.    
-With additional notes on performance and notes on how this compares to Apache Sqoop.
+Notes and code snippets about querying Oracle from Apache Spark. Use this for example to transfer data from
+Oracle into Parquet or other formats. With additional notes on performance and notes on how this compares to Apache Sqoop.
 
 #### An example of how to create a Spark dataframe that reads from and Oracle table/view/query using JDBC.
 See also [Spark documentation]()https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
 
 ```
 # You need an Oracle client JDBC jar, available for download from the Oracle website
-# This exmaple uses ojdb8.jar from Oracle 12.2 client, older versions such as ojdbc6.jar work OK too
+# This example uses ojdb8.jar from Oracle 12.2 client, older versions such as ojdbc6.jar work OK too
 bin/spark-shell --jars oracle_client/instantclient_12_2/ojdbc8.jar
 
 val df = spark.read.format("jdbc")
@@ -43,6 +43,7 @@ sql("select * from mySparkTempView").show(5)
 ```
 
 #### Note on partitioning/parallelization of the JDBC source with Spark:
+
 - The instruction above will read from Oracle using a single Spark task, this can be slow. 
 - When using partitioning options Spark will use as many tasks as "numPartitions" 
 - Each task will issue a query to read the data with an additional "where condition" generated from the lower and upper bounds and the number of partitions.
@@ -67,7 +68,8 @@ Note: instead of a table name you can specify a query as in
 ```
 ---
    
-#### What to check on the Oracle side and what to expect. 
+#### What to check on the Oracle side and what to expect
+
 - Use an Oracle monitoring tool, such as Oracle EM, or use relevant ["DBA scripts" as in this repo](https://github.com/LucaCanali/Oracle_DBA_scripts) 
 - Check the number of sessions connected to Oracle from the Spark executors and the sql_id of the SQL they are executing.
   - expect numPartitions sessions in Oracle (1 session if you did not specify the option)   
