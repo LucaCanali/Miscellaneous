@@ -1,7 +1,9 @@
-# How to map Oracle tables into Spark dataframes using JDBC
-Notes and code snippets about querying Oracle from Apache Spark. Use this for example to transfer data from
-Oracle into Parquet or other formats. With additional notes on performance and notes on how this compares to Apache Sqoop.
+# Notes on querying Oracle from Apache Spark. 
 
+Relevant to reading Oracle tables using Spark SQl (Dataframes API), to transfer data from
+Oracle into Parquet or other formats.
+Find here also some notes on measuring performance, use of partitioning and also some thoughts on Apache Sqoop vs. Spark for data transfer.   
+   
 #### An example of how to create a Spark dataframe that reads from and Oracle table/view/query using JDBC.
 See also [Spark documentation]()https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
 
