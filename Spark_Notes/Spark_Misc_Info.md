@@ -310,3 +310,45 @@ sql("select * from values 'a','b' lateral view explode(Array(1,2)) tab1").show()
 +----+---+
 
 ```
+
+---
+ - Additional examples of dealing with nested structures in Spark SQL
+```
+scala> dsMuons.printSchema
+root
+ |-- muons: array (nullable = true)
+ |    |-- element: struct (containsNull = true)
+ |    |    |-- reco::Candidate: struct (nullable = true)
+ |    |    |-- qx3_: integer (nullable = true)
+ |    |    |-- pt_: float (nullable = true)
+ |    |    |-- eta_: float (nullable = true)
+ |    |    |-- phi_: float (nullable = true)
+ |    |    |-- mass_: float (nullable = true)
+ |    |    |-- vertex_: struct (nullable = true)
+ |    |    |    |-- fCoordinates: struct (nullable = true)
+ |    |    |    |    |-- fX: float (nullable = true)
+ |    |    |    |    |-- fY: float (nullable = true)
+ |    |    |    |    |-- fZ: float (nullable = true)
+ |    |    |-- pdgId_: integer (nullable = true)
+ |    |    |-- status_: integer (nullable = true)
+ |    |    |-- cachePolarFixed_: struct (nullable = true)
+ |    |    |-- cacheCartesianFixed_: struct (nullable = true)
+
+
+// the following 2 are equivalent and transform an array of struct into a table-like  format
+// explode can be used to deal withArrays
+// to deal with structs use "col.*"
+
+dsMuons.createOrReplaceTempView("t1")
+sql("select element.* from (select explode(muons) as element from t1)").show(2)
+
+dsMuons.selectExpr("explode(muons) as element").selectExpr("element.*").show(2)
+
++---------------+----+---------+----------+----------+----------+--------------------+------+-------+----------------+--------------------+
+|reco::Candidate|qx3_|      pt_|      eta_|      phi_|     mass_|             vertex_|pdgId_|status_|cachePolarFixed_|cacheCartesianFixed_|
++---------------+----+---------+----------+----------+----------+--------------------+------+-------+----------------+--------------------+
+|             []|  -3|1.7349417|-1.6098186| 0.6262487|0.10565837|[[0.08413784,0.03...|    13|      0|              []|                  []|
+|             []|  -3| 5.215807|-1.7931011|0.99229723|0.10565837|[[0.090448655,0.0...|    13|      0|              []|                  []|
++---------------+----+---------+----------+----------+----------+--------------------+------+-------+----------------+--------------------+
+
+```
