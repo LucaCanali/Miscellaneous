@@ -4,8 +4,8 @@ In this page you can find links and examples related to using Spark for reading 
 --- 
 ### LHCb Open Data Analysis Using PySpark
  * **Jupyter notebook on GitHub at: [LHCb_OpenData_Spark.ipynb](LHCb_OpenData_Spark.ipynb)**  
- * [CERN SWAN service](https://swan.web.cern.ch) users: run from CERN Box at [https://cernbox.cern.ch/index.php/s/98RK9xIU1s9Lf08](https://cernbox.cern.ch/index.php/s/nXdg55rWvBDxykY)
-
+ * [CERN SWAN service](https://swan.web.cern.ch) users, run from [this link to CERN Box](https://cernbox.cern.ch/index.php/s/98RK9xIU1s9Lf08)
+   
 ### CMS Big Data project
  * Example notebook using CMS opendata, spark-root and Hadoop-XRootD: [CMS_BigData_Opendata_Spark_Example1.ipynb](CMS_BigData_Opendata_Spark_Example1.ipynb)
 ---
