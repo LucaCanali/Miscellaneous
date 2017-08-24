@@ -59,6 +59,14 @@ sc.hadoopConfiguration.setInt("parquet.block.size", 256*1024*1024)
 ```
 
 ---
+- Print properties
+```
+println(System.getProperties)
+System.getProperties.toString.split(',').map(_.trim).foreach(println)
+
+```
+
+---
 - Distribute the Kerberos TGT cache to the executors
 ```bash
 export KRB5CCNAME=/tmp/krb5cc_$UID
@@ -162,6 +170,12 @@ val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.roo
 ---
 - Specify JAVA_HOME to use when running Spark on a YARN cluster   
 `bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/java-oracle --conf spark.executorEnv.JAVA_HOME=/usr/lib/jvm/java-oracle`
+
+---
+- Set logging level  
+Edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
+Example for the logging level of the REPL:
+`log4j.logger.org.apache.spark.repl.Main=INFO`
 
 ---
 - Use off-heap memory for caching DF
