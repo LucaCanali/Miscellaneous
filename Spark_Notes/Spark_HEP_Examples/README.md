@@ -1,5 +1,5 @@
 # Apache Spark for High Energy Physics
-In this page you can find links and examples related to using Spark for reading and processing experiments data.
+In this page you can find links and examples related to using Spark for reading and processing HEP data.
 
 --- 
 ### LHCb Open Data Analysis Using PySpark
