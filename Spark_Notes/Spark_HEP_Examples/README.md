@@ -13,5 +13,6 @@ Relevant technology and links:
  * [spark-root](https://github.com/diana-hep/spark-root): a library to read HEP files in ROOT format into Spark DataFrames.
  * [CERN Open Data portal](http://opendata.cern.ch/)
  * [CMS Big Data project](https://cms-big-data.github.io)
+ * [LHCb Open Data project](https://github.com/lhcb/opendata-project)
  * [Hadoop-XRootD connector](https://gitlab.cern.ch/awg/hadoop-xrootd-connector) - allows to read files from EOS using the XRootD protocol (currently available on CERN Gitlab, will be available on GitHub)
  
