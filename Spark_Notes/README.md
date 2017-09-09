@@ -10,4 +10,5 @@
 | [**Spark_YARN_Set_Custom_Java_Home_HowTo**](Spark_Set_Java_Home_Howto.md) | How use a custom Java Home/Version for Spark executors on YARN.
 | [**Spark_Misc_Commands and_Tips**](Spark_Misc_Info.md) | Miscellaneous info, commands, configurations and tips for Spark
 | [**Tools_Parquet_Diagnostics**](Tools_Parquet_Diagnostics.md) | Examples of Parquet diagnostic tools, parquet-tools and parquet_reader
-| [**Tools_Spark_Linux_FlameGraph**](Tools_Linux_Flamegraph.md) | Notes and examples of tools to for stack profiling and Flamegraph visualization relevant for Spark (Java/JVM) on Linux
+| [**Tools_Spark_Linux_FlameGraph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools to for stack profiling and Flamegraph visualization relevant for Spark (Java/JVM) on Linux
+
