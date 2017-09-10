@@ -5,9 +5,9 @@ In this note you can find a few links and basic examples relevant to using Flame
 Stack profiling and on-CPU Flame Graph visualization are very useful tools and techniques for investigating CPU workloads.   
 See [Brendan Gregg's page on Flame Graphs](http://www.brendangregg.com/flamegraphs.html)   
 Stack profiling is useful for understanding and drilling-down on "hot code": 
-you can use it to find parts of the code using considerable amount of time and provide insights for troublkeshooting.
+you can use it to find parts of the code using considerable amount of time and provide insights for troubleshooting.
 FlameGraph visualization of the stack profiles brings additional value, including the fact of 
-being an appealing interface and providing context about the running the code, by showing for example the parent funcitons.
+being an appealing interface and providing context about the running the code, by showing for example the parent functions.
 
 
 The main challenge that several tools undertake for profiling the JVM is on how to collect stack frames
