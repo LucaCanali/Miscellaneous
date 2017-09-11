@@ -38,6 +38,13 @@
   - `nethogs` # per-process metrics
   - `iftop` # per-process metrics
 
+- Config info
+  - `dmidecode`
+  - `/proc/cpuinfo`, `/proc/meminfo`
+  - `cpupower frequency-info`
+  - `turbostat --debug`
+  - `lspci`, `lscpu`, `lsscsi`, `lsblk`
+
 - Tracing, monitoring, debugging
   - `strace -f -p <pid>`
   - JVM jtools: `jstack <pid>`, `jmap`, `jvisualvm`, `jdb`, `jconsole`
