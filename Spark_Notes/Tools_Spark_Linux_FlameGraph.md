@@ -69,7 +69,7 @@ firefox flamegraph1.svg
 
 Example:   
 [Click here to get the SVG version](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_CPU-bound.svg)
-![Example](https://4.bp.blogspot.com/-_8L04QmdSzk/Wa6y1iqf7JI/AAAAAAAAE_g/3MhUCqf2XyMjUsqQdP2-vn8Y0iiN-UcAwCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_zoomed.PNG)]
+![Example](https://4.bp.blogspot.com/-_8L04QmdSzk/Wa6y1iqf7JI/AAAAAAAAE_g/3MhUCqf2XyMjUsqQdP2-vn8Y0iiN-UcAwCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_zoomed.PNG)
 
 
 
