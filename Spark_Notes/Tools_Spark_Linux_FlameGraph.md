@@ -12,7 +12,8 @@ being an appealing interface and providing context about the running the code, b
 
 The main challenge that several tools undertake for profiling the JVM is on how to collect stack frames
 precisely and with low overhead.
-For more details related to the challenges of profiling Java/JVM see also [Using FlameGraphs To Illuminate The JVM by Nitsan Wakart](Using FlameGraphs To Illuminate The JVM by Nitsan Wakart)
+For more details related to the challenges of profiling Java/JVM see 
+also [Using FlameGraphs To Illuminate The JVM by Nitsan Wakart](https://www.youtube.com/watch?v=ugRrFdda_JQ)
 and [Brendan Gregg's blog entry Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166)
 
 ## A list of profilers relevant for troubleshooting Spark workloads
