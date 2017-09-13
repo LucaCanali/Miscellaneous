@@ -42,7 +42,7 @@ and [Brendan Gregg's blog entry Java in Flames](https://medium.com/netflix-techb
 - Methods based on jstack
   - run [jstack](http://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html) on the executors at low frequency for profiling has high overhead. Typically you would do this manually to get an idea of a stuck process. Similarly one can dump executors stack traces "manually" from the WebUI 
   - I understood that Facebook used a jstack-sampling method for their flamegraph, as reported at the Spark Summit
-   Euorepe 2016 talk [Apache Spark at Scale: A 60 TB+ Production Use Case by Sital Kedia](https://www.slideshare.net/SparkSummit/spark-summit-eu-talk-by-sital-kedia) Reported to hav
+   Europe 2016 talk [Apache Spark at Scale: A 60 TB+ Production Use Case by Sital Kedia](https://www.slideshare.net/SparkSummit/spark-summit-eu-talk-by-sital-kedia) Reported to hav
 - Many commercial tools exist that provide profiling 
   - the talk [Using FlameGraphs To Illuminate The JVM by Nitsan Wakart](Using FlameGraphs To Illuminate The JVM by Nitsan Wakart)
     lists some of the tools 
@@ -114,7 +114,7 @@ jfr-report-tool/jfr-report-tool -e none -m 1 sparkProfile3.jfr
 ```
 
 In alternative can use:   
-[https://github.com/chrishantha/jfr-flame-graph]
+[https://github.com/chrishantha/jfr-flame-graph]   
 jfr-flame-graph/run.sh -f sparkProfile1.jfr -o spark_jfr_out.txt
 ../FlameGraph/flamegraph.pl spark_jfr_out.txt > perf2.svg
 
