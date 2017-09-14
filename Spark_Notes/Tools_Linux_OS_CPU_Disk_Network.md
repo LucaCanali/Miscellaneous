@@ -16,7 +16,7 @@
 
 - system-wide tools
    - `vmstat 3 10`
-   - `mpstat 3 10`
+   - `mpstat -P ALL 3 10`
    - `sar 3 10`
    - `top`
    - `htop`
