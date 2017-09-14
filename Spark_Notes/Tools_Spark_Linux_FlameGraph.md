@@ -48,7 +48,7 @@ and [Brendan Gregg's blog entry Java in Flames](https://medium.com/netflix-techb
     lists some of the tools 
   - most commercial profiling tool report prole data as trees
   - most commercial profiling tools use SafePoints rather than AsyncGetCallTrace
-- [Distributed Hadoop Profiler](https://github.com/cerndb/Hadoop-Profiler)
+- Distributed Hadoop Profiler [HProfiler](https://github.com/cerndb/Hadoop-Profiler)
   - based on perf, integrates with YARN and aggregates profiles
 
 ---
