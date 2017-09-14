@@ -18,7 +18,7 @@ and [Brendan Gregg's blog entry Java in Flames](https://medium.com/netflix-techb
 
 ## A list of profilers relevant for troubleshooting Spark workloads
 
-- [async-profiler](https://github.com/jvm-profiling-tools/async-profiler)
+- [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) (see also an example of usage later in this note)
   - based on AsyncGetCallTrace, also has perf events
   - also no need to install agents
   - read this [http://psy-lob-saw.blogspot.ch/2017/02/flamegraphs-intro-fire-for-everyone.html]
@@ -48,15 +48,17 @@ and [Brendan Gregg's blog entry Java in Flames](https://medium.com/netflix-techb
     lists some of the tools 
   - most commercial profiling tool report prole data as trees
   - most commercial profiling tools use SafePoints rather than AsyncGetCallTrace
+- [Distributed Hadoop Profiler](https://github.com/cerndb/Hadoop-Profiler)
+  - based on perf, integrates with YARN and aggregates profiles
 
 ---
 ## Flame Graph repo:
 Download: ```git clone https://github.com/brendangregg/FlameGraph```
 
-## Example of usage of async-profiler
+## Example of usage of async-profiler  
 
-Download from [https://github.com/jvm-profiling-tools/async-profiler]
-Example of use, stack profile collection in collapsed form:
+Download from [https://github.com/jvm-profiling-tools/async-profiler]  
+Example of use, stack profile collection in collapsed form:  
 ```
 ./profiler.sh -d 30 -o collapsed -f $PWD/flamegraph1.txt <pid_of_JVM>
 ```
