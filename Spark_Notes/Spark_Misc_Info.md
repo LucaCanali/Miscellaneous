@@ -313,6 +313,21 @@ sql("select collect_list(col) from (select explode(Array(1,2,3)))").show
 |        [1, 2, 3]|
 +-----------------+
 
+// How to push a filter on a nested field in a DataFrame
+// The general strategy is to unpack the array, apply a filter then repack
+// Note, Higher order functions in Spark SQL and other topics relatedon how to improve this
+// are discussed at https://databricks.com/blog/2017/05/24/working-with-nested-data-using-higher-order-functions-in-sql-on-databricks.html
+// Example:
+sql("select col1, collect_list(col) from (select col1, explode(col1) as col from values Array(1,2,3),Array(4,5,6)) where col%2 = 0 group by col1").show()
+
++---------+-----------------+
+|     col1|collect_list(col)|
++---------+-----------------+
+|[1, 2, 3]|              [2]|
+|[4, 5, 6]|           [4, 6]|
++---------+-----------------+
+
+// Example of usage of laterral view
 sql("select * from values 'a','b' lateral view explode(Array(1,2)) tab1").show()
 +----+---+
 |col1|col|
