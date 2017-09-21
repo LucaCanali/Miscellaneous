@@ -10,19 +10,23 @@ These notes are about tools for CPU, memory performance investigations and troub
   - For related topics in the Oracle context, see Tanel Poders's blog post ["RAM is the new disk"](https://blog.tanelpoder.com/2015/11/30/ram-is-the-new-disk-and-how-to-measure-its-performance-part-3-cpu-instructions-cycles/)
   - One of the key points is that a process on CPU can be busy executing instructions or waiting for memory  I/O. 
   - Another key point is that modern CPUs have instrumentation in the form of hardware counters. Use then to drill down beyond CPU utilization metrics.
+
+- Recap on perf
   - Use `perf stat -a <pid>` to measure **instruction** and **cycles** (and their ratio, instructions per cycle: **IPC**).
+  - perf can also be used to measure many more counters. See this example to add measurement on cache misses
+  `perf stat -e task-clock,cycles,instructions,branches,branch-misses -e stalled-cycles-frontend,salled-cycles-backend -e cache-references,cache-misses -e LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -e L1-dcache-loads,L1-dcache-lad-misses,L1-dcache-stores,L1-dcache-store-misses -p <pid>` 
     
 - Tools to measure CPU-to-memory throughput and performance metrics
   - [Intel Processor Counter Monitor](https://github.com/opcm/pcm) 
     - Performance monitoring and benchmarking tools suite, originally by Intel.
     - Multiplatform. Default on Linux is to use perf events.
-    - Suite of tools, see also docs at  [https://software.intel.com/en-us/articles/intel-performance-counter-monitor]
-    - measures memory throughput, IPC, power, etc (see examples)
+    - Measures many hardware counter of interest, including memory throughput, IPC, power consumption, cache misses, etc (see examples)
+    - See also docs at  [https://software.intel.com/en-us/articles/intel-performance-counter-monitor]
   - [Likwid](https://github.com/RRZE-HPC/likwid) 
     - Performance monitoring and benchmarking tools suite.
     - Works of a variety of Intel and AMD processors.
-    - see doc at [https://github.com/RRZE-HPC/likwid/wiki]
-    - measures memory throughput, IPC, power, etc (see examples)
+    - Similarly to Intel's pcm it measures memory throughput, cache misses, IPC, power, etc (see examples)
+    - See doc at [https://github.com/RRZE-HPC/likwid/wiki]
   - Also of interest:
     - [pmu-tools by Andi Kleen](https://github.com/andikleen/pmu-tools)
     - [Intel pqos](https://github.com/01org/intel-cmt-cat)
