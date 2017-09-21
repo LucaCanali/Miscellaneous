@@ -11,10 +11,10 @@ These notes are about tools for CPU, memory performance investigations and troub
   - One of the key points is that a process on CPU can be busy executing instructions or waiting for memory  I/O. 
   - Another key point is that modern CPUs have instrumentation in the form of hardware counters. Use then to drill down beyond CPU utilization metrics.
 
-- Recap on perf
-  - Use `perf stat -a <pid>` to measure **instruction** and **cycles** (and their ratio, instructions per cycle: **IPC**).
-  - perf can also be used to measure many more counters. See this example to add measurement on cache misses
-  `perf stat -e task-clock,cycles,instructions,branches,branch-misses -e stalled-cycles-frontend,salled-cycles-backend -e cache-references,cache-misses -e LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -e L1-dcache-loads,L1-dcache-lad-misses,L1-dcache-stores,L1-dcache-store-misses -p <pid>` 
+- Some info on perf
+  - Use `perf stat -a <pid>` to measure a default list of counters including **instructions** and **cycles** (and their ratio, instructions per cycle: **IPC**).
+  - perf can also be used to measure many more counters. See this example to add measurement on cache misses, see also [man perf-list](http://man7.org/linux/man-pages/man1/perf-list.1.html) and [man perf-stat](http://man7.org/linux/man-pages/man1/perf-stat.1.html) 
+  - `perf stat -a -e task-clock,cycles,instructions,branches,branch-misses -e stalled-cycles-frontend,salled-cycles-backend -e cache-references,cache-misses -e LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -e L1-dcache-loads,L1-dcache-lad-misses,L1-dcache-stores,L1-dcache-store-misses -p <pid>` 
     
 - Tools to measure CPU-to-memory throughput and performance metrics
   - [Intel Processor Counter Monitor](https://github.com/opcm/pcm) 
