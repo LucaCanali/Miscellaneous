@@ -1,11 +1,12 @@
 # Notes and tools for measuring CPU-to-memory throughput in Linux
 
 Many workloads in the data management/analytics space are CPU-bound and in particular depend
-critically on memory access patterns, cache utilization and throughput between CPUs and memory.
-These notes are about tools for memory performance investigations and troubleshooting in Linux.
+critically on memory access patterns, cache utilization, cache misses and throughput between CPUs and memory.
+These notes are about tools for CPU, memory performance investigations and troubleshooting in Linux.
 
 - Here some links about the general picture to understand CPU measurement and pitfalls on modern systems
   - Brendan Gregg's blog post [CPU Utilization is Wrong](http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html)
+  - The presentation: [A Crash Course in Modern Hardware](https://www.youtube.com/watch?v=OFgxAFdxYAQ) by Cliff Click
   - For related topics in the Oracle context, see Tanel Poders's blog post ["RAM is the new disk"](https://blog.tanelpoder.com/2015/11/30/ram-is-the-new-disk-and-how-to-measure-its-performance-part-3-cpu-instructions-cycles/)
   - One of the key points is that a process on CPU can be busy executing instructions or waiting for memory  I/O. 
   - Another key point is that modern CPUs have instrumentation in the form of hardware counters. Use then to drill down beyond CPU utilization metrics.
