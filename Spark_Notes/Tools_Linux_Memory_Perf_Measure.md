@@ -516,11 +516,11 @@ Writer Socket        0       1
 
 
 ---
-## Example of stream_om
+## Example of stream memory test by John D. McCalpin
 A tool for benchmarking memory.
 ```
 gcc -O3 -fopenmp stream.c -DSTREAM_ARRAY_SIZE=100000000 -o stream_om.100M.O3
-export OMP_NUM_THREADS=8
+export OMP_NUM_THREADS=40
 
 $ ./stream_om.100M.O3
 -------------------------------------------------------------

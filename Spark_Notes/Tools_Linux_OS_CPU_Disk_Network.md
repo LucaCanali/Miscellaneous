@@ -21,6 +21,7 @@
    - `top`
    - `htop`
    - `atop`
+   - `dstat`
 
 - tiptop
    - measures CPU metrics, including IPC, can be run with -p <pid> option
