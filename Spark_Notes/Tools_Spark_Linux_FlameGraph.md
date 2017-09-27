@@ -73,7 +73,7 @@ firefox flamegraph1.svg
 
 Example:   
 [Click here to get the SVG version](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_CPU-bound.svg)
-![Example](https://4.bp.blogspot.com/-_8L04QmdSzk/Wa6y1iqf7JI/AAAAAAAAE_g/3MhUCqf2XyMjUsqQdP2-vn8Y0iiN-UcAwCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_zoomed.PNG)
+![Example](https://2.bp.blogspot.com/--ztWmafuqf8/WcwIo70cslI/AAAAAAAAFAg/wO4luMn0OGQ1Wyv5soqV1B8cs3gjxUrUQCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound.PNG)
 
 
 
@@ -89,9 +89,11 @@ run Spark with extra java options. examples:
 ```--conf "spark.driver.extraJavaOptions"="-XX:+PreserveFramePointer"```   
 or:  
 ```--conf "spark.driver.extraJavaOptions"="-XX:+PreserveFramePointer -XX:+UnlockDiagnosticVMOptions -XX:+DebugNonSafepoints"```   
+note:  
+similarly add options on executors with `--conf "spark.driver.extraJavaOptions"=...` 
 
-Gather data with:
-```perf record -a -g -p <pid> sleep 10; FlameGraph/jmaps```
+Gather data with (example):
+```perf record -a -g -F 99 -p <pid> sleep 10; FlameGraph/jmaps```  
 
 Generate the flamegraph:
 ```perf script |../FlameGraph/stackcollapse-perf.pl | ../FlameGraph/flamegraph.pl > perfFlamegraph1.svg```   
