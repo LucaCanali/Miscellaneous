@@ -13,7 +13,7 @@ being an appealing interface and providing context about the running the code, b
 The main challenge that several tools undertake for profiling the JVM is on how to collect stack frames
 precisely and with low overhead.
 For more details related to the challenges of profiling Java/JVM see 
-- [Nitsan Wakart](https://twitter.com/nitsanw): [Using FlameGraphs To Illuminate The JVM by ](https://www.youtube.com/watch?v=ugRrFdda_JQ), [Exploring Java Perf Flamegraphs](https://2017.javazone.no/program/56179b136b91458a843383e13fd2efa1)
+- [Nitsan Wakart](https://twitter.com/nitsanw): [Using FlameGraphs To Illuminate The JVM by](https://en.wikipedia.org/wiki/DTracehttps://www.youtube.com/watch?v=ugRrFdda_JQ), [Exploring Java Perf Flamegraphs](https://2017.javazone.no/program/56179b136b91458a843383e13fd2efa1)
 - [Brendan Gregg](https://twitter.com/brendangregg): [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166)
 
 ## A list of profilers relevant for troubleshooting Spark workloads
@@ -64,17 +64,26 @@ Example of use, stack profile collection in collapsed form:
 ./profiler.sh -d 30 -o collapsed -f $PWD/flamegraph1.txt <pid_of_JVM>
 ```
 
-Generate and visualize the flamegraph:
+Generate and visualize the on-CPU flamegraph:
 ```
 ../FlameGraph/flamegraph.pl --colors=java flamegraph1.txt >flamegraph1.svg
 
 firefox flamegraph1.svg
 ```
 
-Example:   
-[Click here to get the SVG version](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_CPU-bound.svg)
+Example of the output:   
+[Click here to get the SVG version of the on-CPU Flamegraph](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_CPU-bound.svg)
 ![Example](https://1.bp.blogspot.com/-HMAOBL9gl58/Wcy7HBUBghI/AAAAAAAAFAw/YrvKqOGhSwEn9QuOAQqBJvoKNn7IweiuQCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_javacolors.PNG)
 
+---
+async-profiler can also do heap profiling which can also be visualized as a flamegrpah (measure where large memory allocations happen). Example:
+
+```
+./profiler.sh -d 30  -m heap -o collapsed -f $PWD/flamegraph_heap.txt <pid_of_JVM>
+
+../FlameGraph/flamegraph.pl --colors=mem flamegraph_heap.txt >flamegraph_heap.svg
+```
+Example of the output:   [Click here to get the SVG version of the Heap Flamegraph](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_Parquet_annotated.svg)
 
 
 ---
