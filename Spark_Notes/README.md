@@ -10,6 +10,7 @@
 | [**Spark_YARN_Set_Custom_Java_Home_HowTo**](Spark_Set_Java_Home_Howto.md) | How use a custom Java Home/Version for Spark executors on YARN.
 | [**Spark_Misc_Commands and_Tips**](Spark_Misc_Info.md) | Miscellaneous info, commands, configurations and tips for Spark.
 | [**Tools_Parquet_Diagnostics**](Tools_Parquet_Diagnostics.md) | Examples of Parquet diagnostic tools: parquet-tools and parquet_reader.
+| [**Tools_Linux_OS_CPU_Disk_Network**](Tools_Linux_OS_CPU_Disk_Network.md) | Notes and examples of OS tools for diagnostics and troubleshooting on Linux
 | [**Tools_Spark_Linux_FlameGraph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools for stack profiling and Flamegraph visualization relevant for Spark (Java/JVM) on Linux
-| [**Tools_Linux_Memory_Performance**](Tools_Linux_Memory_Perf_Measure.md) | Notes and examples of tools for measuring CPU-ound workload and memory throughput in Linux
+| [**Tools_Linux_Memory_Performance**](Tools_Linux_Memory_Perf_Measure.md) | Notes and examples of tools for measuring CPU-ound workload and memory throughput on Linux
 
