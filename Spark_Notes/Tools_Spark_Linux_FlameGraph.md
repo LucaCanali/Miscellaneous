@@ -66,14 +66,14 @@ Example of use, stack profile collection in collapsed form:
 
 Generate and visualize the flamegraph:
 ```
-../FlameGraph/flamegraph.pl flamegraph1.txt >flamegraph1.svg
+../FlameGraph/flamegraph.pl --colors=java flamegraph1.txt >flamegraph1.svg
 
 firefox flamegraph1.svg
 ```
 
 Example:   
 [Click here to get the SVG version](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_CPU-bound.svg)
-![Example](https://2.bp.blogspot.com/--ztWmafuqf8/WcwIo70cslI/AAAAAAAAFAg/wO4luMn0OGQ1Wyv5soqV1B8cs3gjxUrUQCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound.PNG)
+![Example](https://1.bp.blogspot.com/-HMAOBL9gl58/Wcy7HBUBghI/AAAAAAAAFAw/YrvKqOGhSwEn9QuOAQqBJvoKNn7IweiuQCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_javacolors.PNG)
 
 
 
