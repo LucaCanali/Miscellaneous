@@ -38,6 +38,10 @@ These notes are about tools for CPU/memory performance investigations and troubl
   - perf can also be used to measure many more counters. See this example to add measurement on cache misses, see also [man perf-list](http://man7.org/linux/man-pages/man1/perf-list.1.html) and [man perf-stat](http://man7.org/linux/man-pages/man1/perf-stat.1.html) 
   - `perf stat -a -e task-clock,cycles,instructions,branches,branch-misses -e stalled-cycles-frontend,salled-cycles-backend -e cache-references,cache-misses -e LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -e L1-dcache-loads,L1-dcache-lad-misses,L1-dcache-stores,L1-dcache-store-misses -p <pid>` 
 
+- Relevant docs and discussions:
+  - Blog post [Performance Analysis of a CPU-Intensive Workload in Apache Spark](https://db-blog.web.cern.ch/blog/luca-canali/2017-09-performance-analysis-cpu-intensive-workload-apache-spark)
+  - [Intel 64 and IA-32 Architectures, Optimization Reference Manual](https://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html)
+  - [Intel Tuning Guides and Performance Analysis Papers](https://software.intel.com/en-us/articles/processor-specific-performance-analysis-papers)
 ---
 
 ## Examples of [Intel Processor Counter Monitor](https://github.com/opcm/pcm)   
