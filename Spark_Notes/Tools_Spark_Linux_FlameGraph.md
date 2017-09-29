@@ -83,8 +83,9 @@ async-profiler can also do heap profiling which can also be visualized as a flam
 
 ../FlameGraph/flamegraph.pl --colors=mem flamegraph_heap.txt >flamegraph_heap.svg
 ```
-Example of the output:   [Click here to get the SVG version of the Heap Flamegraph](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_Parquet_annotated.svg)
-
+Example of the output:   
+[Click here to get the SVG version of the Heap Flamegraph](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_Parquet_annotated.svg)
+![Example](https://2.bp.blogspot.com/-Bxaa4CCKfx8/Wc60YfC2A5I/AAAAAAAAFBA/aENnOyv-SjQZFkUUMWwJjahrssmdlpekACLcBGAs/s1600/Flamegraph_HEAP_Spark_SQL_read_Parquet.png)
 
 ---
 ## Example of usage of perf for java/Spark:
