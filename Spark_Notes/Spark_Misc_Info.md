@@ -172,6 +172,12 @@ val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.roo
 `bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/java-oracle --conf spark.executorEnv.JAVA_HOME=/usr/lib/jvm/java-oracle`
 
 ---
+- Change Garbage Collector algorith
+  - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
+  - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
+
+
+---
 - Set logging level  
 Edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
 Example for the logging level of the REPL:
