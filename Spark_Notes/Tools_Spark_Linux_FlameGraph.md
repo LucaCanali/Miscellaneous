@@ -21,8 +21,9 @@ For more details related to the challenges of profiling Java/JVM see
 - [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) (see also an example of usage later in this note)
   - based on AsyncGetCallTrace, also has perf events
   - also no need to install agents
-  - read this [http://psy-lob-saw.blogspot.ch/2017/02/flamegraphs-intro-fire-for-everyone.html]
-  - and this [http://blogs.microsoft.co.il/sasha/2017/07/07/profiling-the-jvm-on-linux-a-hybrid-approach/]
+  - Info from the tool's author: [Andrei Pangin](https://twitter.com/AndreiPangin): [Everything you wanted to know about Stack Traces and Heap Dumps](https://2017.javazone.no/program/c5577d90198b474cbf14c7867209d96c)
+  - more info at [http://psy-lob-saw.blogspot.ch/2017/02/flamegraphs-intro-fire-for-everyone.html]
+  - see also this [http://blogs.microsoft.co.il/sasha/2017/07/07/profiling-the-jvm-on-linux-a-hybrid-approach/]
   - issues with sampling at safepoint: [http://psy-lob-saw.blogspot.ch/2016/02/why-most-sampling-java-profilers-are.html]
 - [honest-profiler](https://github.com/jvm-profiling-tools/honest-profiler)
   - also based on AsyncGetCallTrace, deploy an agent on the JVM, which allows also remote control
