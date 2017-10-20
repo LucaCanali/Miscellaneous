@@ -1,9 +1,24 @@
 # Spark Event Log
-How to read SparkEventlog files to extract workload metrics. Using Spark SQL.  
-- What is SparkEventLog
-- What info are in there
-- How to read them
-- Related work: WebUI API, SparkMeasure, Dropwizard metrics,..
+You can find in this note a few examples on how to read SparkEventlog files to extract SQL workload/performance metrics using Spark SQL.
+Some of the topics addressed are:   
+- What is Spark EventLog and what info you can find there
+- How to read them using Spark SQL reader
+- Relevant SQL to extract and run aggregation on the data, notably working with nested structures present in the Event Log
+
+### Motivations
+This is useful if you want to analyze the performance of your applications by processing the eventLog data beyond
+what is available using Spark history server. For example you want to process data to perform custom aggregations
+and/or use notebook-style tools. Another scenario is that you want to automate the analysis of multiple eventLog files. 
+
+---
+### Some background on Spark EventLog/applicationHistory files
+
+- The Spark driver logs into job workload/perf metrics in the spark.evenLog.dir directory as JSON files.
+- There is one file per application, the file names contains the application id (therefore including a timestamp)
+application_1502789566015_17671. 
+- While the application is running the file as a suffix .inprogress, the suffix is removed if the application gracefully stops. This means that the .inprogress suffix can stick to the file in certains cases, such as driver crashes.
+- Typically these files are read with the Web UI and the history server.
+- EventLog JSON files can also be read directly. 
 
 ---
 ### Config
@@ -13,16 +28,6 @@ This feature is activated and configured with spark config options. This is an e
 spark.eventLog.enabled=true
 spark.eventLog.dir=hdfs:///user/spark/applicationHistory
 ```
-
----
-### Spark EventLog/applicationHistory files
-
-- The Spark driver logs into job details the spark.evenLog.dir directory as a JSON file.
-- There is one file per application, the file names contains the application id (therefore including a timestamp)
-application_1502789566015_17671. 
-- While the application is running the file as a suffix .inprogress, the suffix is removed if the application gracefully stops. This means that the .inprogress suffix can stick to the file in certains cases, such as driver crashes.
-- Typically these files are read with the Web UI and the history server.
-- EventLog JSON files can also be read directly. 
 
 ---
 ### Example of how to read Event Log JSON files with Spark SQL 
