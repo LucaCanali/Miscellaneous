@@ -172,7 +172,7 @@ val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.roo
 `bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/java-oracle --conf spark.executorEnv.JAVA_HOME=/usr/lib/jvm/java-oracle`
 
 ---
-- Change Garbage Collector algorith
+- Change Garbage Collector algorithm
   - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
   - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
 
@@ -386,4 +386,42 @@ dsMuons.selectExpr("explode(muons) as element").selectExpr("element.*").show(2)
 |             []|  -3| 5.215807|-1.7931011|0.99229723|0.10565837|[[0.090448655,0.0...|    13|      0|              []|                  []|
 +---------------+----+---------+----------+----------+----------+--------------------+------+-------+----------------+--------------------+
 
+```
+---
+- Spark TPCDS benchmark
+  - Download and build the Spark package from [https://github.com/databricks/spark-sql-perf]
+  - Download and build tpcds-kit for generating data from [https://github.com/databricks/tpcds-kit]
+  - Testing
+    1. Generate schema
+    2. Run benchmark
+    3. Extract results
+
+See instructions on the spark-sql-perf package for more info. Here is an example:
+```
+///// 1. Generate schema
+$ bin/spark-shell --num-executors 200 --driver-memory 32g --executor-memory 16g --driver-cores 8 --executor-cores 1 --jars <path>/spark-sql-perf/spark-sql-perf-scala-2.11.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.11:2.1.2
+// NOTE: actually only 1 core used per executor, so rather have more executors with 1 core. Each executor will spawn dsgen (100 processes max)
+
+import com.databricks.spark.sql.perf.tpcds.Tables
+val tables = new Tables(spark.sqlContext, "<path>/tpcds-kit/tools", 10000)
+tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, false, true, false)
+
+///// 2. Run Benchmark 
+bin/spark-shell --num-executors 80 --executor-cores 6 --driver-memory 8g  --executor-memory 55g --jars <path>/spark-sql-perf/spark-sql-perf-scala-2.11.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2 --conf spark.sql.crossJoin.enabled=true
+
+sql("SET spark.sql.perf.results=/user/canali/TPCDS/perftest_results")
+import com.databricks.spark.sql.perf.tpcds.Tables
+val tables = new Tables(spark.sqlContext, "<path>/tpcds-kit/tools",10000)
+tables.createTemporaryTables("/user/luca/TPCDS/tpcds_10000", "parquet")
+
+import com.databricks.spark.sql.perf.tpcds._
+val tpcds = new TPCDS (spark.sqlContext)
+
+val experiment = tpcds.runExperiment(tpcds.tpcds1_4Queries)
+
+///// 3. Extract results
+experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
+
+spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").show(200)
+spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").repartition(1).write.csv("TPCDS/test_results_<optionally_add_date_suffix>.csv")
 ```
