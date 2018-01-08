@@ -12,7 +12,7 @@ implementation is available out of the box.
 
   
 # Recipe:
-Tested on: Apache Spark 1.6, 2.0, 2.1, 2.2 + YARN/Hadoop (CDH 5)
+Tested on: Apache Spark 1.6, 2.0, 2.1, 2.2 + YARN/Hadoop
 
 0. Optional step: set KRB5CCNAME on the client/driver. Note: use `klist -l` to get the path of the credential cache file. 
 Example:  
@@ -24,9 +24,9 @@ Example:
 2. Distribute the executors the credential cache file and set the KRB5CCNAME variable. Examples:
 
 ```bash
-spark-shell --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+spark-shell --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:./krbcache'
 
-pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:./krbcache'
 ```
    
    
@@ -40,7 +40,8 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
     * the non-standard point is that the actual PATH of the local copy of the credential cache can end up to be different 
    for different machines/executors/YARN containers
   * How to set the Spark executor environment variable with a path relative to YARN container root directory
-    * use `'$PWD'` to prefix the path of the credential cache to address the location of the root of the YARN container
+    * use `./` to prefix the path of the credential cache to address the location of the root of the YARN container 
+       * note, using `'$PWD'` as a prefix for the YARN container root is also possible however does not seem to work OK on PySpark, so I currently prefer using `./`
     * use standard Spark configuration options to set the environment variable KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
     
 * An alternative method to shipping the credential cache using Spark command line option "--files", is to copy the credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
@@ -56,7 +57,7 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
    
 # Credits:
    
-Author: Luca.Canali@cern.ch, April 2017  
+Author: Luca.Canali@cern.ch, April 2017 + updated Jan 2018  
 This work includes contributions by: Zbigniew.Baranowski@cern.ch and Prasanth.Kothuri@cern.ch
 
 
