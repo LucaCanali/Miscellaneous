@@ -1,6 +1,30 @@
 # Flame Graphs for Spark - Tools and Notes
 
-In this note you can find a few links and basic examples relevant to using Flame Graphs for Apache Spark on Linux.
+In this note you can find a few links and basic examples relevant to using Flame Graphs for profiling Apache Spark workloads
+running in the JVM on Linux.
+
+####;TLDR use async-profiler
+
+Download from [https://github.com/jvm-profiling-tools/async-profiler]   
+Build as in the README (export JAVA_HOME and run make)  
+Find the pid of the JVM runnign the Spark executor, example:
+```aidl
+$ jps
+171657 SparkSubmit
+171870 Jps
+```
+
+Profile JVM and create the flamegraph, example:
+```
+./profiler.sh -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+```
+
+Visualize the on-CPU flamegraph:
+```
+firefox flamegraph1.svg
+```
+
+## Intro
 
 Stack profiling and on-CPU Flame Graph visualization are very useful tools and techniques for investigating CPU workloads.   
 See [Brendan Gregg's page on Flame Graphs](http://www.brendangregg.com/flamegraphs.html)   
@@ -20,8 +44,8 @@ For more details related to the challenges of profiling Java/JVM see
 
 - [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) (see also an example of usage later in this note)
   - based on AsyncGetCallTrace, also has perf events
-  - also no need to install agents
-  - Info from the tool's author: [Andrei Pangin](https://twitter.com/AndreiPangin): [Everything you wanted to know about Stack Traces and Heap Dumps](https://2017.javazone.no/program/c5577d90198b474cbf14c7867209d96c)
+  - no need to install agents
+  - info from the tool's author: [Andrei Pangin](https://twitter.com/AndreiPangin): [Everything you wanted to know about Stack Traces and Heap Dumps](https://2017.javazone.no/program/c5577d90198b474cbf14c7867209d96c)
   - more info at [http://psy-lob-saw.blogspot.ch/2017/02/flamegraphs-intro-fire-for-everyone.html]
   - see also this [http://blogs.microsoft.co.il/sasha/2017/07/07/profiling-the-jvm-on-linux-a-hybrid-approach/]
   - issues with sampling at safepoint: [http://psy-lob-saw.blogspot.ch/2016/02/why-most-sampling-java-profilers-are.html]
@@ -59,16 +83,22 @@ Download: ```git clone https://github.com/brendangregg/FlameGraph```
 
 ## Example of usage of async-profiler  
 
-Download from [https://github.com/jvm-profiling-tools/async-profiler]  
-Example of use, stack profile collection in collapsed form:  
-```
-./profiler.sh -d 30 -o collapsed -f $PWD/flamegraph1.txt <pid_of_JVM>
+Download from [https://github.com/jvm-profiling-tools/async-profiler]   
+Build as in the README (export JAVA_HOME and make)  
+Find the pid of the JVM runnign the Spark executor, example:
+```aidl
+$ jps
+171657 SparkSubmit
+171870 Jps
 ```
 
-Generate and visualize the on-CPU flamegraph:
+Profile JVM and create the flamegraph, example:
 ```
-../FlameGraph/flamegraph.pl --colors=java flamegraph1.txt >flamegraph1.svg
+./profiler.sh -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+```
 
+Visualize the on-CPU flamegraph:
+```
 firefox flamegraph1.svg
 ```
 
@@ -77,8 +107,13 @@ Example of the output:
 ![Example](https://1.bp.blogspot.com/-HMAOBL9gl58/Wcy7HBUBghI/AAAAAAAAFAw/YrvKqOGhSwEn9QuOAQqBJvoKNn7IweiuQCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_javacolors.PNG)
 
 ---
-async-profiler can also do heap profiling which can also be visualized as a flamegrpah (measure where large memory allocations happen). Example:
+async-profiler can also do heap profiling which can also be visualized as a flamegraph (measure where large memory allocations happen). Example:
 
+```
+./profiler.sh -d 30  -e alloc -f $PWD/flamegraph_heap.svg <pid_of_JVM>
+```
+
+Syntax for older version (eventually delete from this doc)
 ```
 ./profiler.sh -d 30  -m heap -o collapsed -f $PWD/flamegraph_heap.txt <pid_of_JVM>
 
