@@ -3,7 +3,7 @@
 In this note you can find a few links and basic examples relevant to using Flame Graphs for profiling Apache Spark workloads
 running in the JVM on Linux.
 
-###TL;DR use async-profiler
+### TL;DR use async-profiler
 
 Download from [https://github.com/jvm-profiling-tools/async-profiler]   
 Build as in the README (export JAVA_HOME and run make)  
