@@ -107,16 +107,40 @@ Example of the output:
 ![Example](https://1.bp.blogspot.com/-HMAOBL9gl58/Wcy7HBUBghI/AAAAAAAAFAw/YrvKqOGhSwEn9QuOAQqBJvoKNn7IweiuQCLcBGAs/s1600/Flamegraph_Spark_SQL_read_CPU-bound_javacolors.PNG)
 
 ---
-async-profiler can also do heap profiling which can also be visualized as a flamegraph (measure where large memory allocations happen). Example:
+async-profiler by default records stack traces on CPU events, it can also be configured to record stack traces on other type of events.
+The list of available events is available as in this example:
+```
+./profiler.sh list <pid_of_JVM>
 
+Perf events:
+  cpu
+  page-faults
+  context-switches
+  cycles
+  instructions
+  cache-references
+  cache-misses
+  branches
+  branch-misses
+  bus-cycles
+  L1-dcache-load-misses
+  LLC-load-misses
+  dTLB-load-misses
+Java events:
+  alloc
+  lock
+```
+
+
+Example of profile on alloc (heap memory allocation) events
 ```
 ./profiler.sh -d 30  -e alloc -f $PWD/flamegraph_heap.svg <pid_of_JVM>
 ```
 
-Syntax for older version (eventually delete from this doc)
+This is the syntax for an older version of async profiler used to profile heap memory allocations (eventually delete from this doc)
 ```
+# obsolete syntax for an older version of async-profiler
 ./profiler.sh -d 30  -m heap -o collapsed -f $PWD/flamegraph_heap.txt <pid_of_JVM>
-
 ../FlameGraph/flamegraph.pl --colors=mem flamegraph_heap.txt >flamegraph_heap.svg
 ```
 Example of the output:   
