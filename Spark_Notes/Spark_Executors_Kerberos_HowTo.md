@@ -51,10 +51,12 @@ pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5
 * What is the advantage of shipping the credential cache to the executors, compared to shipping the keytab? 
 The cache can only be used/renewed for a limited amount of time, so it offers less risk if "captured" and provides a more suitable solution for short-running jobs in a shared environment for example, which is the case of many Spark jobs in a YARN environment.
 
-* What are the key points of this note? 
-The fact that Spark executors have their working directory set to the YARN container root, which is also
-the destination of files "shipped" via --files and that we can set the relevant environment varialble, KRB5CCNAME
-to point to the credential files in the working directory of the YARN container.
+* What are the key findings in this note? 
+   * When using YARN/Hadoop, Spark executors have their working directory set to the YARN container 
+   directory 
+   * That Spark executors working directory is also where the "shipped" via `--files` are located
+   * You can set relevant environment variables, for example KRB5CCNAME, to point to the files shipped 
+   to executor's containers. If you need an absolute path, use the `$PWD` prefix. 
 
 * You can adapt this method to setting other environment variables that, similarly to KRB5CCNAME in this example, may depend on a relative path based on the YARN root container path.
    
