@@ -1,17 +1,17 @@
 # HowTo: Enable Spark executors to access Kerberized resources
+The problem this solves is enabling Spark jobs to access resources protected by Kerberos authentication.      
 This recipe allows to:
   * distribute the Kerberos credentials cache file from the driver to the executors
   * set the relevant environment variables in the executors processes
   * enable the use of Kerberos authentication for Spark executors in a Hadoop/YARN clusters 
 
-The problem this solves is enabling Spark jobs to access resources protected by Kerberos authentication.      
-
-Note: this recipe does not apply to Kerberos authentication for HDFS in a Spark+Hadoop cluster.
+Limitations:
+   * this recipe does not apply to Kerberos authentication for HDFS in a Spark+Hadoop cluster.
  In that case a more scalable, delegation token-based, implementation is available.
 
   
 # Recipe:
-Tested on: Apache Spark 1.6, 2.0, 2.1, 2.2 + YARN/Hadoop
+Tested on: Apache Spark 1.6, 2.0, 2.1, 2.2, 2.3 + YARN/Hadoop
 
 - `kinit` to get the Kerberos TGT in the credential cache file if not already there.
 
@@ -26,7 +26,7 @@ luca@CERN.CH                 FILE:/tmp/krb5cc_1001_Ve9jN3
 
 - Send the Kerberos credentials cache file to the Spark executors YARN containers and set
 the KRB5CCNAME variable to point to the credential files. Examples:  
-Pyspark:
+Pyspark (Python):
 ```bash
 pyspark --master yarn --files <path_to_Kerbero_Cache_File>#krbcache --conf spark.executorEnv.KRB5CCNAME="FILE:krbcache"
 # Example:
@@ -38,38 +38,29 @@ spark-shell --master yarn --files <path_to_Kerbero_Cache_File>#krbcache --conf s
 # Example:
 spark-shell --master yarn --files /tmp/krb5cc_1001_Ve9jN3#krbcache --conf spark.executorEnv.KRB5CCNAME="FILE:krbcache"
 ```
- - Alternative config, use this if you want to have a stable path and name for Kerberos cache file:
- set KRB5CCNAME on the machine used to launch Spark.
-Example:  
-`export KRB5CCNAME=/tmp/krb5cc_$UID`  
-Note, if KRB5CCNAME is already set in your environment, check its value, in particular check if it has 
-"FILE:" as a prefix, in that case override it to just use a path as in the example above. 
-Launch Spark as in the following examples:  
-
-```bash
-pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME="FILE:krbcache"
-or
-spark-shell --master yarn --files $KRB5CCNAME>#krbcache --conf spark.executorEnv.KRB5CCNAME="FILE:krbcache"
-```
    
 # Notes: 
     
+* If KRB5CCNAME is already set in your environment startup scripts, you can use it to get the path to the Kerberos cache, beware of 
+handling the "FILE:" prefix
+
 * Strategy and techniques used:
 
   * Distribute the Kerberos credential cache from the driver/client to all YARN containers as a local copy
     * use the standard Spark functionality, using `--files <path>` (or `--conf spark.yarn.dist.files=<path>`)
-  * Set the executors' environment variable KRB5CCNAME to point to a local copy of the Kerberos credential cache file
-    * the non-standard point is that the actual PATH of the local copy of the credential cache can end up to be different 
-   for different machines/executors/YARN containers
+    * `#krbcache` suffix provides an alias to the file which is handy to use in this context
+  * Set the executors' environment variable KRB5CCNAME to point to a local copy of the Kerberos credential cache file 
+  that is distributed in the YARN containes for the Spark executors
   * How to set the Spark executor environment variable with a path relative to YARN container root directory
-    * use Spark configuration options to set the environment variable KRB5CCNAME: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
+    * use Spark configuration to set the environment variable KRB5CCNAME as in: `--conf spark.executorEnv.KRB5CCNAME=FILE:<PATH_to_credential_cache>`
     * using `FILE:krbcache` appears to be working and pick the file in the working directory of the YARN container
     * another possibility is using `./` to prefix the path of the credential cache to address the location of the root of the YARN container 
     * another option is using `'$PWD'` as a prefix for the YARN container working directory. 
      Note the need of using of single quotes to avoid resolving $PWD locally. 
-     Note also that this method does not seem to work well for Pythons/PySpark use cases.
+     Note also that this particular method does not seem to work well for Python/PySpark use cases.
     
-* An alternative method to shipping the credential cache using Spark command line option "--files", is to copy the credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
+* An alternative method to shipping the credential cache using Spark command line option "--files", is to copy the 
+credential cache to all nodes of the cluster using a given value for the path (for example /tmp/krb5cc_$UID) and then set KRB5CCNAME to the path value.
     
 * An alternative syntax for distributing the credentials to the YARN containers instead of using `--files` from the command line is 
  to explicitly set the configuration parameter: `--conf spark.yarn.dist.files=<path>`
@@ -89,7 +80,7 @@ The cache can only be used/renewed for a limited amount of time, so it offers le
    
 # Credits:
    
-Author: Luca.Canali@cern.ch, April 2017, last updated on February 2018  
+Author: Luca.Canali@cern.ch, April 2017, last updated on April 2018  
 This work includes contributions by: Zbigniew.Baranowski@cern.ch and Prasanth.Kothuri@cern.ch
 
 
