@@ -60,6 +60,7 @@ For more details related to the challenges of profiling Java/JVM see
 - Perf
   - see Brendan's pages and the blog post [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166) 
   - goes together with [perf-map-agent](https://github.com/jvm-profiling-tools/perf-map-agent)
+  - See also [Profiling JVM applications](https://developer.lightbend.com/blog/2018-04-09-profiling-JVM-applications/)
   - perf is a great tool, but not my favourite method for Spark profiling, as many functions appear listed as "interpreter" and cannot be resolved by this method.
   - see also the additional JVM options when running Spark (see examples below)
 - method with the statsd-jvm-profiler
