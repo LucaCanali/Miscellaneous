@@ -7,24 +7,6 @@ val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark)
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
 ```
 ---
-- Spark SQL execution plan and code generation
-```
-sql("select count(*) from range(10) cross join range(10)").explain(true)
-sql("explain select count(*) from range(10) cross join range(10)").collect.foreach(println)
-
-// CBO
-sql("explain cost select count(*) from range(10) cross join range(10)").collect.foreach(println)
-
-// Code generation
-sql("select count(*) from range(10) cross join range(10)").queryExecution.debug.codegen
-sql("explain codegen select count(*) from range(10) cross join range(10)").collect.foreach(println)
-```
-
----
-- Example command line for spark-shell/pyspark/spark-submit  
-`--master yarn --num-executors 5 --executor-cores 4 --executor-memory 7g --driver-memory 7g`
-
----
 - Allocate Spark Session from API
 ```
 // Scala
@@ -51,7 +33,7 @@ get list of driver and executors from Spark Context:
 `sc.getExecutorMemoryStatus.foreach(println)`
 
 ---
-- Read and set configuration variables from Hadoop  
+- Read and set configuration variables of Hadoop environment from Spark  
 ```
 sc.hadoopConfiguration.get("dfs.blocksize")
 sc.hadoopConfiguration.getValByRegex(".").toString.split(", ").sorted.foreach(println)
@@ -65,7 +47,88 @@ println(System.getProperties)
 System.getProperties.toString.split(',').map(_.trim).foreach(println)
 
 ```
+---
+- Spark SQL execution plan and code generation
+```
+sql("select count(*) from range(10) cross join range(10)").explain(true)
+sql("explain select count(*) from range(10) cross join range(10)").collect.foreach(println)
 
+// CBO
+sql("explain cost select count(*) from range(10) cross join range(10)").collect.foreach(println)
+
+// Code generation
+sql("select count(*) from range(10) cross join range(10)").queryExecution.debug.codegen
+sql("explain codegen select count(*) from range(10) cross join range(10)").collect.foreach(println)
+```
+
+---
+- Example command line for spark-shell/pyspark/spark-submit on YARN  
+`spark-shell --master yarn --num-executors 5 --executor-cores 4 --executor-memory 7g --driver-memory 7g`
+
+---
+- THow to turn off dynamic allocation
+`--conf spark.dynamicAllocation.enabled=false`
+
+---
+- Specify JAVA_HOME to use when running Spark on a YARN cluster   
+```
+export JAVA_HOME=/usr/lib/jvm/myJAvaHome # this is the JAVA_HOME of the driver
+bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/myJAvaHome --conf spark.executorEnv.JAVA_HOME=/usr/lib/jvm/myJAvaHome
+```
+
+---
+- Change Garbage Collector algorithm
+  - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
+  - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
+
+---
+- Set logging level  
+Edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
+Example for the logging level of the REPL:
+`log4j.logger.org.apache.spark.repl.Main=INFO`
+
+---
+- Caching dataframes using off-heap memory
+```
+bin/spark-shell --master local[*] --driver-memory 64g --conf spark.memory.offHeap.enabled=true --conf spark.memory.offHeap.size=64g --jars ../spark-measure_2.11-0.11-SNAPSHOT.jar
+val df = sql("select * from range(1000) cross join range(10000)")
+df.persist(org.apache.spark.storage.StorageLevel.OFF_HEAP)
+```
+---
+- Other options for caching dataframes
+```
+df.persist(org.apache.spark.storage.StorageLevel.
+DISK_ONLY     MEMORY_AND_DISK     MEMORY_AND_DISK_SER     MEMORY_ONLY     MEMORY_ONLY_SER     
+DISK_ONLY_2   MEMORY_AND_DISK_2   MEMORY_AND_DISK_SER_2   MEMORY_ONLY_2   MEMORY_ONLY_SER_2   OFF_HEAP)
+```
+
+---
+- Spark-root, read high energy physics data in ROOT format into Spark dataframes
+```
+bin/spark-shell --packages org.diana-hep:spark-root_2.11:0.1.11
+
+val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.root")
+```
+
+---
+- How to deploy Spark shell or a notebook behind a firewall
+  - This is relevant when using spark-shell or pyspark or a Jupyter Notebook, 
+  running the Spark driver on a client machine with a local firewall and
+  accessing Spark executors remotely on a cluster
+  - The driver listens on 2 TCP ports that need to be accessed by the executors on the cluster.
+  This is how you can specify the port numbers (35000 and 35001 are picked just as an example):
+```
+--conf spark.driver.port=35000 
+--conf spark.driver.blockManager.port=35001
+```
+  - You can set up the firewall rule on the driver to to allow connections from cluster node. 
+  This is a simplified example of rule when using iptables:
+```
+-A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35000 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35001 -j ACCEPT
+```
+  - In addition clients may want to access the port for the WebUI (4040 by default)
+ 
 ---
 - Distribute the Kerberos TGT cache to the executors
 ```bash
@@ -146,18 +209,6 @@ df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
 
 ---
-- Spark-root, read high energy physics data in ROOT format into Spark dataframes
-```
-bin/spark-shell --packages org.diana-hep:spark-root_2.11:0.1.11
-
-val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.root")
-```
-
----
-- Turn off dynamic allocation for this session
-`--conf spark.dynamicAllocation.enabled=false`
-
----
 - Enable short-circuit reads for Spark on a Hadoop cluster
   - Spark executors need to have libhadoop.so in the library path
   - Short-circuit is a good feature to enable for Spark running on a Hadoop clusters as it improves performance of I/O
@@ -168,49 +219,18 @@ val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.roo
 `--conf spark.executor.extraLibraryPath=/usr/lib/hadoop/lib/native --conf spark.driver.extraLibraryPath=/usr/lib/hadoop/lib/native`
 
 ---
-- Specify JAVA_HOME to use when running Spark on a YARN cluster   
-`bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/java-oracle --conf spark.executorEnv.JAVA_HOME=/usr/lib/jvm/java-oracle`
+- Power mode and print long strings in spark-shell REPL
+  - Enter power mode set max print string to 1000:
 
+```
+scala> :power
+Power mode enabled. :phase is at typer.
+import scala.tools.nsc._, intp.global._, definitions._
+Try :help or completions for vals._ and power._
+
+vals.isettings.maxPrintString=1000
+```
 ---
-- Change Garbage Collector algorithm
-  - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
-  - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
-
-
----
-- Set logging level  
-Edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
-Example for the logging level of the REPL:
-`log4j.logger.org.apache.spark.repl.Main=INFO`
-
----
-- Use off-heap memory for caching DF
-```
-bin/spark-shell --master local[*] --driver-memory 64g --conf spark.memory.offHeap.enabled=true --conf spark.memory.offHeap.size=64g --jars ../spark-measure_2.11-0.11-SNAPSHOT.jar
-val df = sql("select * from range(1000) cross join range(10000)")
-df.persist(org.apache.spark.storage.StorageLevel.OFF_HEAP)
-```
-
----
-- How to deploy Spark shell or a notebook behind a firewall
-  - This is relevant when using spark-shell or pyspark or a Jupyter Notebook, 
-  running the Spark driver on a client machine with a local firewall and
-  accessing Spark executors remotely on a cluster
-  - The driver listens on 2 TCP ports that need to be accessed by the executors on the cluster.
-  This is how you can specify the port numbers (35000 and 35001 are picked just as an example):
-```
---conf spark.driver.port=35000 
---conf spark.driver.blockManager.port=35001
-```
-  - You can set up the firewall rule on the driver to to allow connections from cluster node. 
-  This is a simplified example of rule when using iptables:
-```
--A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35000 -j ACCEPT
--A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35001 -j ACCEPT
-```
-  - In addition clients may want to access the port for the WebUI (4040 by default)
- 
- ---
  - Examples of Dataframe creation for testing
  ```
 sql("select * from values (1, 'aa'), (2,'bb'), (3,'cc') as (id,desc)").show
@@ -399,25 +419,34 @@ dsMuons.selectExpr("explode(muons) as element").selectExpr("element.*").show(2)
 See instructions on the spark-sql-perf package for more info. Here is an example:
 ```
 ///// 1. Generate schema
-$ bin/spark-shell --num-executors 200 --driver-memory 32g --executor-memory 16g --driver-cores 8 --executor-cores 1 --jars <path>/spark-sql-perf/spark-sql-perf-scala-2.11.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.11:2.1.2
-// NOTE: actually only 1 core used per executor, so rather have more executors with 1 core. Each executor will spawn dsgen (100 processes max)
+bin/spark-shell --master yarn --num-executors 80 --driver-memory 32g --executor-memory 90g --driver-cores 4 --executor-cores 3 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2
 
-import com.databricks.spark.sql.perf.tpcds.Tables
-val tables = new Tables(spark.sqlContext, "<path>/tpcds-kit/tools", 10000)
-tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, false, true, false)
+NOTES:
+  - Each executor will spawn dsdgen to create data, using the parameters for size (e.g. 10000) and number of partitions (e.g. 1000)
+  - Example: bash -c cd /home/luca/tpcds-kit/tools && ./dsdgen -table catalog_sales -filter Y -scale 10000 -RNGSEED 100 -parallel 1000 -child 107
+  - Each "core" in the executor spawns one dsdgen
+  - This workloads is memory hungry, to avoid excessive GC activity, allocate abundant executor memory
+
+val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10000")
+tables.genData("/user/canali/TPCDS/tpcds_10000", "parquet", true, true, false, false)
 
 ///// 2. Run Benchmark 
-bin/spark-shell --num-executors 80 --executor-cores 6 --driver-memory 8g  --executor-memory 55g --jars <path>/spark-sql-perf/spark-sql-perf-scala-2.11.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2 --conf spark.sql.crossJoin.enabled=true
+export SPARK_CONF_DIR=/usr/hdp/spark/conf
+export HADOOP_CONF_DIR=/etc/hadoop/conf
+export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
+cd spark-2.3.0-bin-hadoop2.7
 
-sql("SET spark.sql.perf.results=/user/canali/TPCDS/perftest_results")
+bin/spark-shell --master yarn --num-executors 60 --executor-cores 7 --driver-cores 4 --driver-memory 32g  --executor-memory 100g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2 --conf spark.sql.crossJoin.enabled=true --conf spark.sql.hive.filesourcePartitionFileCacheSize=4000000000 --conf spark.executor.extraLibraryPath=/usr/hdp/hadoop/lib/native --conf spark.sql.shuffle.partitions=800
+
+sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
 import com.databricks.spark.sql.perf.tpcds.Tables
-val tables = new Tables(spark.sqlContext, "<path>/tpcds-kit/tools",10000)
+val tables = new Tables(spark.sqlContext, "/home/luca/tpcds-kit/tools",10000)
 tables.createTemporaryTables("/user/luca/TPCDS/tpcds_10000", "parquet")
 
-import com.databricks.spark.sql.perf.tpcds._
-val tpcds = new TPCDS (spark.sqlContext)
-
-val experiment = tpcds.runExperiment(tpcds.tpcds1_4Queries)
+val tpcds = new com.databricks.spark.sql.perf.tpcds.TPCDS(spark.sqlContext)
+//for spark2.3, avoid regression on q14a q14b and q72
+val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
+val experiment = tpcds.runExperiment(benchmarkQueries)
 
 ///// 3. Extract results
 experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
