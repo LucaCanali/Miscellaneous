@@ -25,6 +25,15 @@ mySparkSession = SparkSession.builder.appName("my app").master("local[*]").confi
 ```
 
 ---
+- Spark commit and PRs, see what's new
+  - Spark commits to master: https://github.com/apache/spark/commits/master
+  - Spark PRs: https://spark-prs.appspot.com/
+  - Documentation: 
+     - https://github.com/apache/spark/tree/master/docs 
+     - https://spark.apache.org/docs/latest/
+     - https://docs.databricks.com/index.html 
+
+---
 - Spark configuration
 configuration files are: in SPARK_CONF_DIR (defaults SPARK_HOME/conf)  
 get configured parameters from running Spark Session with  
@@ -77,6 +86,12 @@ bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/myJAvaHome
 ```
 
 ---
+- Run Pyspark on a jupyter notebook
+export PYSPARK_DRIVER_PYTHON=jupyter-notebook
+export PYSPARK_DRIVER_PYTHON_OPTS="--ip=`hostname` --no-browser= --port=8888"
+pyspark ...
+
+---
 - Change Garbage Collector algorithm
   - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
   - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
@@ -105,9 +120,10 @@ DISK_ONLY_2   MEMORY_AND_DISK_2   MEMORY_AND_DISK_SER_2   MEMORY_ONLY_2   MEMORY
 ---
 - Spark-root, read high energy physics data in ROOT format into Spark dataframes
 ```
-bin/spark-shell --packages org.diana-hep:spark-root_2.11:0.1.11
+bin/spark-shell --packages org.diana-hep:spark-root_2.11:0.1.16
 
 val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.root")
+val df = spark.read.format("org.dianahep.sparkroot.experimental").load("<path>/myrootfile.root")
 ```
 
 ---
@@ -219,10 +235,12 @@ df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 `--conf spark.executor.extraLibraryPath=/usr/lib/hadoop/lib/native --conf spark.driver.extraLibraryPath=/usr/lib/hadoop/lib/native`
 
 ---
-- Power mode and print long strings in spark-shell REPL
+- Spark-shell power mode and change config to avoid truncating print for long strings
   - Enter power mode set max print string to 1000:
+  - BTW, see more spark shell commands: `:help`
 
 ```
+spark-shell
 scala> :power
 Power mode enabled. :phase is at typer.
 import scala.tools.nsc._, intp.global._, definitions._
@@ -230,6 +248,7 @@ Try :help or completions for vals._ and power._
 
 vals.isettings.maxPrintString=1000
 ```
+
 ---
  - Examples of Dataframe creation for testing
  ```
