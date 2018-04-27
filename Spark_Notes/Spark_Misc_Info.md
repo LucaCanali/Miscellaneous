@@ -148,12 +148,12 @@ val df = spark.read.format("org.dianahep.sparkroot.experimental").load("<path>/m
 ---
 - Distribute the Kerberos TGT cache to the executors
 ```bash
-export KRB5CCNAME=/tmp/krb5cc_$UID
-kinit 
+kinit    # get a Kerberos TGT if you don't already have one
+klist -l # list details of Kerberos credentials file
 
-spark-shell --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+spark-shell --master yarn --files <path to kerberos credentials file>#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:./krbcache'
 
-pyspark --master yarn --files $KRB5CCNAME#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:$PWD/krbcache'
+pyspark --master yarn --files path to kerberos credentials file>#krbcache --conf spark.executorEnv.KRB5CCNAME='FILE:./krbcache'
 ```
 
 ---
@@ -472,4 +472,20 @@ experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
 
 spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").show(200)
 spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").repartition(1).write.csv("TPCDS/test_results_<optionally_add_date_suffix>.csv")
+```
+
+---
+- Example of CPU load with Spark
+  - Note: scale up the test using larger values in tables range(xx)
+```  
+bin/spark-shell --master local[*]
+
+// 1. basic
+spark.time(sql("select count(*) from range(10000) cross join range(1000) cross join range(100)").show)
+  
+// 2. this other example exercices more code path in Spark execution
+sql("select id, floor(200*rand()) bucket, floor(1000*rand()) val1, floor(10*rand()) val2 from range(1000000)").cache().createOrReplaceTempView("t1")
+sql("select count(*) from t1").show()
+ 
+spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=b.bucket and a.val1+b.val1<1000 group by a.bucket order by a.bucket").show())
 ```
