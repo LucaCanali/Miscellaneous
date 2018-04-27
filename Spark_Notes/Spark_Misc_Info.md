@@ -173,6 +173,11 @@ import sys.process._
 sc.parallelize(1 to sc.defaultParallelism).map(_ => "uname -a" !).collect()
 sc.parallelize(1 to sc.defaultParallelism).map(_ => "uname -a" !!).collect().foreach(println)
 ```
+Alternative method to run OS commands on Spark executors in Scala
+```
+val a = sc.parallelize(1 to sc.defaultParallelism).map(x => org.apache.hadoop.util.Shell.execCommand("uname","-a")).collect()
+val a = sc.parallelize(1 to sc.defaultParallelism).map(x => org.apache.hadoop.util.Shell.execCommand("/usr/bin/bash","-c","echo $PWD")).collect()
+```
 ```
 # Python, run on the executors (see comments in the Scala version) 
 # method 1
