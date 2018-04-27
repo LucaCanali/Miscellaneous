@@ -475,8 +475,8 @@ spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MA
 ```
 
 ---
-- Example of CPU load with Spark
-  - Note: scale up the test using larger values in tables range(xx)
+- Generate simple benchmark load, CPU-bound with Spark
+  - Note: scale up the tests by using larger test tables "range(xx)"
 ```  
 bin/spark-shell --master local[*]
 
