@@ -23,7 +23,6 @@ import pyspark.sql
 mySparkSession = SparkSession.builder.appName("my app").master("local[*]").config("spark.driver.memory","2g").getOrCreate()
 
 ```
-
 ---
 - Spark commit and PRs, see what's new
   - Spark commits to master: https://github.com/apache/spark/commits/master
@@ -31,7 +30,22 @@ mySparkSession = SparkSession.builder.appName("my app").master("local[*]").confi
   - Documentation: 
      - https://github.com/apache/spark/tree/master/docs 
      - https://spark.apache.org/docs/latest/
+     - SQL grammar https://github.com/apache/spark/blob/master/sql/catalyst/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4
      - https://docs.databricks.com/index.html 
+
+---
+- How to build Spark
+  - see also https://spark.apache.org/docs/latest/building-spark.html
+```
+git clone https://github.com/apache/spark.git
+cd spark
+git fetch
+# git checkout branch-2.3
+# git cherry-pick xxxx
+export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
+./build/mvn -DskipTests compile
+./dev/make-distribution.sh --name custom-spark --pip --r --tgz -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
+```
 
 ---
 - Spark configuration
