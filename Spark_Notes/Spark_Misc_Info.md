@@ -101,10 +101,11 @@ bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/myJAvaHome
 
 ---
 - Run Pyspark on a jupyter notebook
+```
 export PYSPARK_DRIVER_PYTHON=jupyter-notebook
 export PYSPARK_DRIVER_PYTHON_OPTS="--ip=`hostname` --no-browser= --port=8888"
 pyspark ...
-
+```
 ---
 - Change Garbage Collector algorithm
   - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
