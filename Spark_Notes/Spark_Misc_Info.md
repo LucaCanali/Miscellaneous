@@ -19,7 +19,7 @@ val mySparkSession = SparkSession.
     getOrCreate() 
 
 # Python
-import pyspark.sql
+from pyspark.sql import SparkSession
 mySparkSession = SparkSession.builder.appName("my app").master("local[*]").config("spark.driver.memory","2g").getOrCreate()
 
 ```
