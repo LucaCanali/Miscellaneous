@@ -89,7 +89,7 @@ sql("explain codegen select count(*) from range(10) cross join range(10)").colle
 `spark-shell --master yarn --num-executors 5 --executor-cores 4 --executor-memory 7g --driver-memory 7g`
 
 ---
-- THow to turn off dynamic allocation
+- How to turn off dynamic allocation
 `--conf spark.dynamicAllocation.enabled=false`
 
 ---
