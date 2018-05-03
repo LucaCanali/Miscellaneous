@@ -497,14 +497,15 @@ spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MA
 
 ---
 - Generate simple benchmark load, CPU-bound with Spark
-  - Note: scale up the tests by using larger test tables "range(xx)"
+  - Note: scale up the tests by using larger test tables, that is extending the values of  "range(xx)"
 ```  
 bin/spark-shell --master local[*]
 
-// 1. basic
+// 1. Test Query 1
 spark.time(sql("select count(*) from range(10000) cross join range(1000) cross join range(100)").show)
   
-// 2. this other example exercices more code path in Spark execution
+// 2. Test Query 2
+// this other example exercices more code path in Spark execution
 sql("select id, floor(200*rand()) bucket, floor(1000*rand()) val1, floor(10*rand()) val2 from range(1000000)").cache().createOrReplaceTempView("t1")
 sql("select count(*) from t1").show()
  
