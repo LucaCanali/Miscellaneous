@@ -104,7 +104,7 @@ bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/myJAvaHome
 ```
 export PYSPARK_DRIVER_PYTHON=jupyter-notebook
 # export PYSPARK_DRIVER_PYTHON=jupyter-lab
-export PYSPARK_DRIVER_PYTHON_OPTS="--ip=`hostname` --no-browser= --port=8888"
+export PYSPARK_DRIVER_PYTHON_OPTS="--ip=`hostname` --no-browser --port=8888"
 pyspark ...<add options here>
 ```
 ---
