@@ -162,6 +162,12 @@ val df = spark.read.format("org.dianahep.sparkroot.experimental").load("<path>/m
   - In addition clients may want to access the port for the WebUI (4040 by default)
  
 ---
+- Get username and security details via Apache Hadoop security API
+```
+scala> org.apache.hadoop.security.UserGroupInformation.getCurrentUser()
+res1: org.apache.hadoop.security.UserGroupInformation = luca@MYDOMAIN.COM (auth:KERBEROS)
+```
+---
 - Distribute the Kerberos TGT cache to the executors
 ```bash
 kinit    # get a Kerberos TGT if you don't already have one
