@@ -221,10 +221,10 @@ spark.read.parquet("fileNameAndPath")
 spark.conf.set("spark.sql.files.maxPartitionBytes", ..) // default 128MB, small files are grouped into partitions up to this size
 
 // Write
+spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, lzo, snappy, {zstd, brotli, lz4} 
 df.write
   .partitionBy("colPartition") // partitioning column if relevant 
   .bucketBy(numBuckets, "colBucket")   // This feature currently gives error, follow SPARK-19256
-  .option("compress","snappy") // this is the default, set to none if you don't want compression
   .parquet("fileNameAndPath")
 
 // relevant parameters:
