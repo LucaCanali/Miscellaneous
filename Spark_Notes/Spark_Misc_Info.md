@@ -487,23 +487,45 @@ bin/spark-shell --master yarn --num-executors 60 --executor-cores 7 --driver-cor
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
 import com.databricks.spark.sql.perf.tpcds.Tables
 val tables = new Tables(spark.sqlContext, "/home/luca/tpcds-kit/tools",10000)
-tables.createTemporaryTables("/user/luca/TPCDS/tpcds_10000", "parquet")
 
+///// 3. Setup tables and run benchmask
+
+tables.createTemporaryTables("/user/luca/TPCDS/tpcds_10000", "parquet")
 val tpcds = new com.databricks.spark.sql.perf.tpcds.TPCDS(spark.sqlContext)
-//for spark2.3, avoid regression on q14a q14b and q72
+
+// for spark 2.3, avoid regression on q14a q14b and q72
 val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
+
 val experiment = tpcds.runExperiment(benchmarkQueries)
 
-///// 3. Extract results
+///// 4. Extract results
 experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
 
 spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").show(200)
 spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").repartition(1).write.csv("TPCDS/test_results_<optionally_add_date_suffix>.csv")
+
+///// Use CBO, modify step 3 as follows
+
+// one-off: setup tables using catalog (do not use temporary tables as in example above
+tables.createExternalTables("/user/canali/TPCDS/tpcds_1500", "parquet", "tpcds1500", overwrite = true, discoverPartitions = true)
+// compute statistics
+tables.analyzeTables("tpcds1500", analyzeColumns = true) 
+
+tables.createExternalTables("/user/canali/TPCDS/tpcds_1500", "parquet", "tpcds10000", overwrite = true, discoverPartitions = true)
+tables.analyzeTables("tpcds10000", analyzeColumns = true) 
+
+spark.conf.set("spark.sql.cbo.enabled",true)
+// --conf spark.sql.cbo.enabled=true
+sql("use tpcds10000")
+sql("show tables").show
+
+spark.conf.set("spark.sql.cbo.enabled",true)
+// --conf spark.sql.cbo.enabled=true
 ```
 
 ---
 - Generate simple benchmark load, CPU-bound with Spark
-  - Note: scale up the tests by using larger test tables, that is extending the values of  "range(xx)"
+  - Note: scale up the tests by using larger test tables, that is extending the (xx) value in "range(xx)"
 ```  
 bin/spark-shell --master local[*]
 
