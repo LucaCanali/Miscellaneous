@@ -10,7 +10,7 @@ stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross joi
 - Allocate Spark Session from API
 ```
 // Scala
-import org.apache.spark.sql
+import org.apache.spark.sql._
 val mySparkSession = SparkSession.
     builder().
     appName("my app").
@@ -55,6 +55,17 @@ get configured parameters from running Spark Session with
 get list of driver and executors from Spark Context:  
 `sc.getExecutorMemoryStatus.foreach(println)`
 
+---
+- Set log level in PySpark
+If you have a SparkContext, use `sc.setLogLevel(newLevel)`
+
+Otherwise edit:
+/bin/vi conf/log4j.properties
+
+```
+log4j.logger.org.apache.spark.api.python.PythonGatewayServer=INFO
+#log4j.logger.org.apache.spark.api.python.PythonGatewayServer=DEBUG
+```
 ---
 - Read and set configuration variables of Hadoop environment from Spark  
 ```
