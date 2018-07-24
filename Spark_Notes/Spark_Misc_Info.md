@@ -55,17 +55,7 @@ get configured parameters from running Spark Session with
 get list of driver and executors from Spark Context:  
 `sc.getExecutorMemoryStatus.foreach(println)`
 
----
-- Set log level in PySpark
-If you have a SparkContext, use `sc.setLogLevel(newLevel)`
 
-Otherwise edit:
-/bin/vi conf/log4j.properties
-
-```
-log4j.logger.org.apache.spark.api.python.PythonGatewayServer=INFO
-#log4j.logger.org.apache.spark.api.python.PythonGatewayServer=DEBUG
-```
 ---
 - Read and set configuration variables of Hadoop environment from Spark  
 ```
@@ -124,9 +114,20 @@ pyspark ...<add options here>
   - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
 
 ---
-- Set logging level  
-Edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
-Example for the logging level of the REPL:
+---
+- Set log level in spark-shell and PySpark
+If you have a SparkContext, use `sc.setLogLevel(newLevel)`
+
+Otherwise edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
+/bin/vi conf/log4j.properties
+  
+Example for the logging level of PySpark REPL  
+```
+log4j.logger.org.apache.spark.api.python.PythonGatewayServer=INFO
+#log4j.logger.org.apache.spark.api.python.PythonGatewayServer=DEBUG
+```
+
+Example for the logging level of the Scala REPL:  
 `log4j.logger.org.apache.spark.repl.Main=INFO`
 
 ---
@@ -234,15 +235,29 @@ spark.conf.set("spark.sql.files.maxPartitionBytes", ..) // default 128MB, small 
 // Write
 spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, lzo, snappy, {zstd, brotli, lz4} 
 df.write
-  .partitionBy("colPartition") // partitioning column if relevant 
-  .bucketBy(numBuckets, "colBucket")   // This feature currently gives error, follow SPARK-19256
-  .parquet("fileNameAndPath")
+  .partitionBy("colPartition1", "colOptionalSubPart") // partitioning column(s) 
+  .bucketBy(numBuckets, "colBucket")   // This feature currently gives error with save, follow SPARK-19256
+  .format("parquet")
+  .save("filePathandName")             // you can use saveAsTable as an alternative
 
 // relevant parameters:
 sc.hadoopConfiguration.setInt("parquet.block.size", .. ) // default to 128 MB parquet block size (size of the column groups)
 spark.conf.set("spark.sql.files.maxRecordsPerFile", ...) // defaults to 0, use if you need to limit size of files being written  
 ```
 
+---
+- Repartition / Compact Parquet tables
+
+Parquet table repartition is an operation that you may want to use in the case you ended up with
+multiple small files into each partition folder and want to compact them in a smaller number of larger files.
+Example:  
+```
+val df = spark.read.parquet("myPartitionedTableToComapct")
+df.repartition('colPartition1,'colOptionalSubPartition)
+  .write.partitionBy("colPartition1","colOptionalSubPartition")
+  .format("parquet")
+  .save("filePathandName")
+```
 ---
 - Read from Oracle via JDBC, example from [Spark_Oracle_JDBC_Howto.md](Spark_Oracle_JDBC_Howto.md)
 ```
