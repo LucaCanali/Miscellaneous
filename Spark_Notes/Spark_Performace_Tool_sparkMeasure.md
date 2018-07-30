@@ -15,7 +15,7 @@ Or see this [example Notebook on Databricks](https://databricks-prod-cloudfront.
 
 
 ```
-bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.11
+bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.13
 
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000) cross join range(1000)").show)
