@@ -50,11 +50,20 @@ export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
 ---
 - Spark configuration
 configuration files are: in SPARK_CONF_DIR (defaults SPARK_HOME/conf)  
-get configured parameters from running Spark Session with  
-`spark.conf.getAll.foreach(println)`  
-get list of driver and executors from Spark Context:  
-`sc.getExecutorMemoryStatus.foreach(println)`
 
+```Scala  
+// get configured parameters from running Spark Session with  
+spark.conf.getAll.foreach(println)  
+// get list of driver and executors from Spark Context:  
+sc.getExecutorMemoryStatus.foreach(println)
+```
+ 
+```
+# PySpark
+from pyspark.conf import SparkConf
+conf = SparkConf()
+print(conf.toDebugString())
+```
 
 ---
 - Read and set configuration variables of Hadoop environment from Spark  
