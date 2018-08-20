@@ -520,15 +520,15 @@ cd spark-2.3.0-bin-hadoop2.7
 bin/spark-shell --master yarn --num-executors 60 --executor-cores 7 --driver-cores 4 --driver-memory 32g  --executor-memory 100g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2 --conf spark.sql.crossJoin.enabled=true --conf spark.sql.hive.filesourcePartitionFileCacheSize=4000000000 --conf spark.executor.extraLibraryPath=/usr/hdp/hadoop/lib/native --conf spark.sql.shuffle.partitions=800
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
-import com.databricks.spark.sql.perf.tpcds.Tables
-val tables = new Tables(spark.sqlContext, "/home/luca/tpcds-kit/tools",10000)
+import com.databricks.spark.sql.perf.tpcds.TPCDSTables
+val tables = new TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools",10000)
 
 ///// 3. Setup tables and run benchmask
 
 tables.createTemporaryTables("/user/luca/TPCDS/tpcds_10000", "parquet")
 val tpcds = new com.databricks.spark.sql.perf.tpcds.TPCDS(spark.sqlContext)
 
-// for spark 2.3, avoid regression on q14a q14b and q72
+// for spark 2.3, avoid regression at scale on q14a q14b and q72
 val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
 
 val experiment = tpcds.runExperiment(benchmarkQueries)
