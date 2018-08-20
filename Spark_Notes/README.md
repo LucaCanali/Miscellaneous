@@ -12,6 +12,7 @@
 | [**Spark_Misc_Commands and_Tips**](Spark_Misc_Info.md) | Miscellaneous info, commands, configurations and tips for Spark.
 | [**Tools_Parquet_Diagnostics**](Tools_Parquet_Diagnostics.md) | Examples of Parquet diagnostic tools: parquet-tools and parquet_reader.
 | [**Tools_Linux_OS_CPU_Disk_Network**](Tools_Linux_OS_CPU_Disk_Network.md) | Notes and examples of OS tools for diagnostics and troubleshooting on Linux
-| [**Tools_Spark_Linux_FlameGraph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools for stack profiling and Flamegraph visualization relevant for Spark (Java/JVM) on Linux
-| [**Tools_Linux_Memory_Performance**](Tools_Linux_Memory_Perf_Measure.md) | Notes and examples of tools for measuring CPU-ound workload and memory throughput on Linux
+| [**Tools_Spark_Linux_FlameGraph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools for stack profiling and Flame Graph visualization relevant for Spark (Java/JVM) on Linux
+| [**Tools_Linux_Memory_Performance**](Tools_Linux_Memory_Perf_Measure.md) | Notes and examples of tools for measuring CPU-bound workload and memory throughput on Linux
+| [**Spark Task Metrics**](Spark_TaskMetrics.md) | Short description of Spark task Metrics
 
