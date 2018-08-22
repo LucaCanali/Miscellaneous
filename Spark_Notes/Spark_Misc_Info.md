@@ -574,3 +574,67 @@ sql("select count(*) from t1").show()
  
 spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=b.bucket and a.val1+b.val1<1000 group by a.bucket order by a.bucket").show())
 ```
+
+---
+- Monitor Spark workloads with Dropwizard metrics for Spark, Influxdb Grafana   
+  - Three main steps: (A) configure [Dropwizard (codahale) Metrics library](https://metrics.dropwizard.io) for Spark
+   (B) sink the metrics to influxdb
+   (C) Setup Grafana dashboards to read the metrics from influxdb 
+
+  - (A) Configure Dropwizard Metrics as described in the [Spark monitoring guide](https://spark.apache.org/docs/latest/monitoring.html) 
+    - Option 1: use con use the metrics.properties
+    - Option 2: use Spark configuration parameters of the form `--conf spark.metrics.conf.<property_name>=value`
+
+  - Example of using metrics.proerties file:
+  - Note: when using metrics.properties you need to set`--conf spark.metrics.conf`. The file 
+  metrics.properties need to be visible to all the executors as well as the driver. Example for yarn:
+    - copy the file to the current directory and use the --files option to distribute it to the 
+    YARN containers:  
+     `--files metrics.properties --conf spark.metrics.conf=metrics.properties`
+
+  ```
+  metrics.properties file content for using a graphite sink:
+  
+  *.sink.graphite.class=org.apache.spark.metrics.sink.GraphiteSink
+  *.sink.graphite.host=<graphiteendpoint_influxdb_listening_host>
+  *.sink.graphite.port=<listening_port>
+  *.sink.graphite.period=10   # Configurable
+  *.sink.graphite.unit=seconds
+  *.sink.graphite.prefix=luca # Optional value/label
+  *.source.jvm.class=org.apache.spark.metrics.source.JvmSource # Optional JVM metrics
+  ```
+
+  - Example of using Spark configuration parameters:
+  ```
+  spark-submit/spark-shell/pyspark:
+  --conf "spark.metrics.conf.*.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" 
+  --conf "spark.metrics.conf.*.sink.graphite.host"="graphiteendpoint_influxdb_listening_host>"
+  --conf "spark.metrics.conf.*.sink.graphite.port"=<listening_port>
+  --conf "spark.metrics.conf.*.sink.graphite.period"=10
+  --conf "spark.metrics.conf.*.sink.graphite.unit"=seconds
+  --conf "spark.metrics.conf.*.sink.graphite.prefix"="luca"
+  --conf "spark.metrics.conf.*.source.jvm.class"="org.apache.spark.metrics.source.JvmSource"
+  ```
+
+  - (B) Influxdb can provide a graphite sink. Configure it in `/etc/influxdb/influxdb.conf`   
+  Note in particular the configuration of the template, Example:
+  ```
+  [[graphite]]
+    enabled = true
+    bind-address = ":2003"
+    database = "graphite"
+    ...
+    templates = [
+       "*.*.jvm.pools.* applicationid.process.namespace.namespace.measurement.measurement.measurement",
+       "prefix.applicationid.process.namespace.measurement.measurement.measurement",
+    ]
+    
+  ```
+
+  - (C) Setup Grafana dashboards 
+    - Create a Grafana data source that connets to influxdb "graphite" database
+    - create dashboards for the metrics of interest, including active tasks metrics
+    - executor task metrics emit aggregate values, you will need to use derivatives 
+    to get values of interest for monitoring, as in:  
+   `SELECT non_negative_derivative(last("value"), 15s)  / 1000000000 FROM "cpuTime.count" WHERE ("applicationid" =~ /^$ApplicationId$/) AND $timeFilter GROUP BY time($__interval), "process"`  
+---
