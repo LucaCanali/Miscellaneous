@@ -607,13 +607,13 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
   - Example of using Spark configuration parameters:
   ```
   spark-submit/spark-shell/pyspark:
-  --conf "spark.metrics.conf.*.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" 
-  --conf "spark.metrics.conf.*.sink.graphite.host"="graphiteendpoint_influxdb_listening_host>"
-  --conf "spark.metrics.conf.*.sink.graphite.port"=<listening_port>
-  --conf "spark.metrics.conf.*.sink.graphite.period"=10
-  --conf "spark.metrics.conf.*.sink.graphite.unit"=seconds
-  --conf "spark.metrics.conf.*.sink.graphite.prefix"="luca"
-  --conf "spark.metrics.conf.*.source.jvm.class"="org.apache.spark.metrics.source.JvmSource"
+  --conf "spark.metrics.conf.*.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" \
+  --conf "spark.metrics.conf.*.sink.graphite.host"="graphiteendpoint_influxdb_listening_host>" \
+  --conf "spark.metrics.conf.*.sink.graphite.port"=<listening_port> \
+  --conf "spark.metrics.conf.*.sink.graphite.period"=10 \
+  --conf "spark.metrics.conf.*.sink.graphite.unit"=seconds \
+  --conf "spark.metrics.conf.*.sink.graphite.prefix"="luca" \
+  --conf "spark.metrics.conf.*.source.jvm.class"="org.apache.spark.metrics.source.JvmSource" \
   ```
 
   - (B) Influxdb can provide a graphite sink. Configure it in `/etc/influxdb/influxdb.conf`   
@@ -625,8 +625,8 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
     database = "graphite"
     ...
     templates = [
-       "*.*.jvm.pools.* applicationid.process.namespace.namespace.measurement.measurement.measurement",
-       "prefix.applicationid.process.namespace.measurement.measurement.measurement",
+    "*.*.jvm.pools.* username.applicationid.process.namespace.namespace.measurement.measurement",
+    "username.applicationid.process.namespace.measurement.measurement.measurement",
     ]
     
   ```
