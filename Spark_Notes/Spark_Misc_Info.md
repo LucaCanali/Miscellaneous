@@ -74,6 +74,13 @@ sc.hadoopConfiguration.setInt("parquet.block.size", 256*1024*1024)
 ```
 
 ---
+- Read filesystem statistcs from all registered filesystem in Hadoop (default is HDFS and local)
+```
+scala> org.apache.hadoop.fs.FileSystem.printStatistics()
+  FileSystem org.apache.hadoop.hdfs.DistributedFileSystem: 0 bytes read, 213477639 bytes written, 8 read ops, 0 large read ops, 10 write ops
+  FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 213444546 bytes read, 0 bytes written, 0 read ops, 0 large read ops, 0 write ops
+```
+---
 - Print properties
 ```
 println(System.getProperties)
