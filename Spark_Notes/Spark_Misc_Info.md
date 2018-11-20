@@ -66,7 +66,8 @@ print(conf.toDebugString())
 ```
 
 ---
-- Read and set configuration variables of Hadoop environment from Spark  
+- Read and set configuration variables of Hadoop environment from Spark.
+  Note this code works with the local JVM, i.e. the driver (will not read/write on executors's JVM)  
 ```
 sc.hadoopConfiguration.get("dfs.blocksize")
 sc.hadoopConfiguration.getValByRegex(".").toString.split(", ").sorted.foreach(println)
@@ -74,7 +75,8 @@ sc.hadoopConfiguration.setInt("parquet.block.size", 256*1024*1024)
 ```
 
 ---
-- Read filesystem statistcs from all registered filesystem in Hadoop (default is HDFS and local)
+- Read filesystem statistcs from all registered filesystem in Hadoop (notably HDFS and local).
+  Note this code reads in the local JVM, i.e. the driver (will not read stats from executors)
 ```
 scala> org.apache.hadoop.fs.FileSystem.printStatistics()
   FileSystem org.apache.hadoop.hdfs.DistributedFileSystem: 0 bytes read, 213477639 bytes written, 8 read ops, 0 large read ops, 10 write ops
@@ -643,5 +645,5 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
     - create dashboards for the metrics of interest, including active tasks metrics
     - executor task metrics emit aggregate values, you will need to use derivatives 
     to get values of interest for monitoring, as in:  
-   `SELECT non_negative_derivative(last("value"), 15s)  / 1000000000 FROM "cpuTime.count" WHERE ("applicationid" =~ /^$ApplicationId$/) AND $timeFilter GROUP BY time($__interval), "process"`  
+   `SELECT non_negative_derivative(last("value"), 1s)  / 1000000000 FROM "cpuTime.count" WHERE ("applicationid" =~ /^$ApplicationId$/) AND $timeFilter GROUP BY time($__interval), "process"`  
 ---

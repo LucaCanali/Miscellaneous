@@ -8,6 +8,7 @@ A short description of the metrics can be found in the
 [Spark Core Executor source code](https://github.com/apache/spark/tree/master/core/src/main/scala/org/apache/spark/executor).
 I sum up here relevant details. 
 See also the work on [sparkMeasure](https://github.com/LucaCanali/sparkMeasure) for further details.  
+Note: following work on [SPARK-25170](https://issues.apache.org/jira/browse/SPARK-25170) this is now available in the Spark doc: [Spark Task Metrics](https://spark.apache.org/docs/latest/monitoring.html#executor-task-metrics)
   
 
 <table class="table">
