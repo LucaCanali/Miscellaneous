@@ -69,19 +69,67 @@ print(conf.toDebugString())
 - Read and set configuration variables of Hadoop environment from Spark.
   Note this code works with the local JVM, i.e. the driver (will not read/write on executors's JVM)  
 ```
+// Scala:
 sc.hadoopConfiguration.get("dfs.blocksize")
 sc.hadoopConfiguration.getValByRegex(".").toString.split(", ").sorted.foreach(println)
 sc.hadoopConfiguration.setInt("parquet.block.size", 256*1024*1024)
 ```
 
+```
+# PySpark
+sc._jsc.hadoopConfiguration().get("dfs.blocksize")
+sc.hadoopConfiguration.set(key,value)
+```
+
 ---
-- Read filesystem statistcs from all registered filesystem in Hadoop (notably HDFS and local).
-  Note this code reads in the local JVM, i.e. the driver (will not read stats from executors)
+- Read filesystem statistics from all registered filesystem in Hadoop (notably HDFS and local).
+  Note this code reports statistics for the local JVM, i.e. the driver (will not read stats from executors)
 ```
 scala> org.apache.hadoop.fs.FileSystem.printStatistics()
   FileSystem org.apache.hadoop.hdfs.DistributedFileSystem: 0 bytes read, 213477639 bytes written, 8 read ops, 0 large read ops, 10 write ops
   FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 213444546 bytes read, 0 bytes written, 0 read ops, 0 large read ops, 0 write ops
 ```
+
+---
+How to use the Spark Scala REPL to access Hadoop API, exmaples:
+
+```
+// get Hadoop filesystem object
+val fs = org.apache.hadoop.fs.FileSystem.get(sc.hadoopConfiguration)
+// alternative:
+val fs = org.apache.hadoop.fs.FileSystem.get(spark.sessionState.newHadoopConf)
+
+//get local filesystem
+val fslocal = org.apache.hadoop.fs.FileSystem.getLocal(spark.sessionState.newHadoopConf)
+
+// get file status
+fs.getFileStatus(new org.apache.hadoop.fs.Path("<file_path>"))
+
+scala> fs.getFileStatus(new org.apache.hadoop.fs.Path("<file_path>")).toString.split("; ").foreach(println)
+FileStatus{path=hdfs://analytix/user/canali/cms-dataset-20/20005/DE909CD0-F878-E211-AB7A-485B398971EA.root
+isDirectory=false
+length=2158964874
+replication=3
+blocksize=268435456
+modification_time=1542653647906
+access_time=1543245001357
+owner=canali
+group=supergroup
+permission=rw-r--r--
+isSymlink=false}
+
+
+fs.getBlockSize(new org.apache.hadoop.fs.Path("<file_path>"))
+
+fs.getLength(new org.apache.hadoop.fs.Path("<file_path>"))
+
+// get block map
+scala> fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("<file_path>"), 0L, 2000000000000000L).foreach(println)
+0,268435456,host1.cern.ch,host2.cern.ch,host3.cern.ch
+268435456,268435456,host4.cern.ch,host5.cern.ch,host6.cern.ch
+...
+```
+
 ---
 - Print properties
 ```
