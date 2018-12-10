@@ -39,12 +39,16 @@ mySparkSession = SparkSession.builder.appName("my app").master("local[*]").confi
 ```
 git clone https://github.com/apache/spark.git
 cd spark
-git fetch
+# export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
+./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
+
+# customize Hadoop version
+./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Dhadoop.version=3.1.1 -Pyarn -Pkubernetes
+
+# compile a version with cherry-picked changes
 # git checkout branch-2.3
 # git cherry-pick xxxx
-export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
-./build/mvn -DskipTests compile
-./dev/make-distribution.sh --name custom-spark --pip --r --tgz -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
+
 ```
 
 ---
@@ -695,3 +699,53 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
     to get values of interest for monitoring, as in:  
    `SELECT non_negative_derivative(last("value"), 1s)  / 1000000000 FROM "cpuTime.count" WHERE ("applicationid" =~ /^$ApplicationId$/) AND $timeFilter GROUP BY time($__interval), "process"`  
 ---
+
+- How to access AWS s3 Filesystem with Spark  
+  -  Deploy the jars for hadoop-aws with the implementation of the s3a filesystem in Hadoop.  
+  Note, I have tested this with Spark compiled for Hadoop 3.1.1 ("-Dhadoop.version=3.1.1") it did not work for me yet for Spark on Hadoop 2.7.x
+  ```
+  bin/spark-shell --packages org.apache.hadoop:hadoop-aws:3.1.1  # customize for the relevant Hadoop version
+  ```
+  -  Set the Hadoop configuration for s3a in the Hadoop client of the driver
+  (note, Spark executors will take care of setting in the executors's JVM Hadoop client,
+   see org.apache.spark.deploy.SparkHadoopUtil.scala)
+  ```
+  export AWS_SECRET_ACCESS_KEY="XXXX"
+  export AWS_ACCESS_KEY_ID="YYYY"
+  bin/spark-shell \
+    --conf spark.hadoop.fs.s3a.endpoint="https://s3.cern.ch" \
+    --conf spark.hadoop.fs.s3a.impl="org.apache.hadoop.fs.s3a.S3AFileSystem" \
+    --packages org.apache.hadoop:hadoop-aws:3.1.1 # edit Hadoop version
+  ```
+  - Other options (alternatives to the recipe above): 
+    - Set config in driver's Hadoop client
+     ```
+     sc.hadoopConfiguration.set("fs.s3a.endpoint", "https://s3.cern.ch") 
+     sc.hadoopConfiguration.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+     sc.hadoopConfiguration.set("fs.s3a.secret.key", "XXXXXXXX..")
+     sc.hadoopConfiguration.set("fs.s3a.access.key", "YYYYYYY...")
+     
+     // note for Python/PySpark use sc._jsc.hadoopConfiguration().set(...)
+     ```
+    - Set config in Hadoop client core-site.xml 
+     ```
+     <property>
+       <name>fs.s3a.secret.key</name>
+       <value>XXXX</value>
+     </property>
+   
+     <property>
+       <name>fs.s3a.access.key</name>
+       <value>YYYY</value>
+     </property>
+   
+     <property>
+       <name>fs.s3a.endpoint</name>
+       <value>https://s3.cern.ch</value>
+     </property>
+   
+     <property>
+       <name>fs.s3a.impl</name>
+       <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+     </property>
+    ```
