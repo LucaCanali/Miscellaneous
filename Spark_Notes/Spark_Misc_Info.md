@@ -740,6 +740,11 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
     --conf spark.hadoop.fs.s3a.endpoint="https://s3.cern.ch" \
     --conf spark.hadoop.fs.s3a.impl="org.apache.hadoop.fs.s3a.S3AFileSystem" \
     --packages org.apache.hadoop:hadoop-aws:3.1.1 # edit Hadoop version
+
+  # example use
+  # use s3cmd la to list buckets
+  val df=spark.read.parquet("s3a://datasets/tpcds-1g/web_sales")
+  df.count
   ```
   - Other options (alternatives to the recipe above): 
     - Set config in driver's Hadoop client
