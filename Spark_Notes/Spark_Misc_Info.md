@@ -95,7 +95,7 @@ scala> org.apache.hadoop.fs.FileSystem.printStatistics()
 ```
 
 ---
-How to use the Spark Scala REPL to access Hadoop API, exmaples:
+How to use the Spark Scala REPL to access Hadoop API, examples:
 
 ```
 // get Hadoop filesystem object
@@ -133,7 +133,31 @@ scala> fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("<file_path>"), 0L
 268435456,268435456,host4.cern.ch,host5.cern.ch,host6.cern.ch
 ...
 ```
+---
+Example od analysis of Hadoop file data block locations using Spark SQL
 
+```
+bin/spark-shell
+// get filesystem obejct
+val fs = org.apache.hadoop.fs.FileSystem.get(sc.hadoopConfiguration)
+// get blocks list (with replicas)
+val l1=fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("mydataset-20/20005/myfile1.parquet.snappy"), 0L, 2000000000000000L)
+// transform in a Spark Dataframe
+l1.flatMap(x => x.getHosts).toList.toDF("hostname").createOrReplaceTempView("filemap")
+// query
+spark.sql("select hostname, count(*) from filemap group by hostname").show
+
++-----------------+--------+
+|         hostname|count(1)|
++-----------------+--------+
+|mynode01.cern.ch|       5|
+|mynode12.cern.ch|       4|
+|mynode02.cern.ch|       4|
+|mynode08.cern.ch|       3|
+|mynode06.cern.ch|       6|
+|...             |        |
++-----------------+--------+
+```
 ---
 - Print properties
 ```
