@@ -726,12 +726,8 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
 
 - How to access AWS s3 Filesystem with Spark  
   -  Deploy the jars for hadoop-aws with the implementation of the s3a filesystem in Hadoop.  
-  Note, I have tested this with Spark compiled for Hadoop 3.1.1 ("-Dhadoop.version=3.1.1") it did not work for me yet for Spark on Hadoop 2.7.x
-  ```
-  bin/spark-shell --packages org.apache.hadoop:hadoop-aws:3.1.1  # customize for the relevant Hadoop version
-  ```
   -  Set the Hadoop configuration for s3a in the Hadoop client of the driver
-  (note, Spark executors will take care of setting in the executors's JVM Hadoop client,
+  (note, Spark executors will take care of setting the Hadoop client in the classpath of executors's JVM,
    see org.apache.spark.deploy.SparkHadoopUtil.scala)
   ```
   export AWS_SECRET_ACCESS_KEY="XXXX"
@@ -742,10 +738,16 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
     --packages org.apache.hadoop:hadoop-aws:3.1.1 # edit Hadoop version
 
   # example use
-  # use s3cmd la to list buckets
   val df=spark.read.parquet("s3a://datasets/tpcds-1g/web_sales")
   df.count
   ```
+  - Note, I have tested this on yarn with Spark compiled for Hadoop 3.1.1 as it worked better me 
+  (note use "-Dhadoop.version=3.1.1" to package Spark with Hadoop 3.1.1), 
+  use for example org.apache.hadoop:hadoop-aws:2.7.4 on Hadoop 2.7.x.
+  - hadoop-aws package will also cause the pull of dependencies from com.amazonaws:aws-java-sdk:version
+  - hint: use `s3cmd la` to list available s3 buckets
+
+
   - Other options (alternatives to the recipe above): 
     - Set config in driver's Hadoop client
      ```
