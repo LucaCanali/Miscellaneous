@@ -166,7 +166,7 @@ System.getProperties.toString.split(',').map(_.trim).foreach(println)
 
 ```
 ---
-- Spark SQL execution plan and code generation
+- Spark SQL execution plan and code generation (from Spark 3.0)
 ```
 sql("select count(*) from range(10) cross join range(10)").explain(true)
 sql("explain select count(*) from range(10) cross join range(10)").collect.foreach(println)
@@ -174,11 +174,29 @@ sql("explain select count(*) from range(10) cross join range(10)").collect.forea
 // CBO
 sql("explain cost select count(*) from range(10) cross join range(10)").collect.foreach(println)
 
-// Code generation
+// Print Code generation
 sql("select count(*) from range(10) cross join range(10)").queryExecution.debug.codegen
 sql("explain codegen select count(*) from range(10) cross join range(10)").collect.foreach(println)
-```
 
+for longer plans:
+df.queryExecution.debug.codegenToSeq -> dumps to sequence of strings
+df.queryExecution.debug.toFile -> dumps to filesystem file
+
+```
+---
+- Spark SQL measure time spent in query plan parsing and optimization
+
+```
+scala> df.queryExecution.tracker.
+measureTime   phases   recordRuleInvocation   rules   topRulesByTime
+
+scala> sql("select 1").queryExecution.tracker.
+measurePhase   phases   recordRuleInvocation   rules   topRulesByTime
+
+scala> sql("select 1").queryExecution.tracker.phases
+res5: Map[String,org.apache.spark.sql.catalyst.QueryPlanningTracker.PhaseSummary] = Map(parsing -> PhaseSummary(1547216115744, 1547216115745), analysis -> PhaseSummary(1547216115745, 1547216115749))
+
+```
 ---
 - Example command line for spark-shell/pyspark/spark-submit on YARN  
 `spark-shell --master yarn --num-executors 5 --executor-cores 4 --executor-memory 7g --driver-memory 7g`
