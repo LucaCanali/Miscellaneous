@@ -166,7 +166,7 @@ System.getProperties.toString.split(',').map(_.trim).foreach(println)
 
 ```
 ---
-- Spark SQL execution plan and code generation (from Spark 3.0)
+- Spark SQL execution plan and code generation
 ```
 sql("select count(*) from range(10) cross join range(10)").explain(true)
 sql("explain select count(*) from range(10) cross join range(10)").collect.foreach(println)
@@ -184,9 +184,11 @@ df.queryExecution.debug.toFile -> dumps to filesystem file
 
 ```
 ---
-- Spark SQL measure time spent in query plan parsing and optimization
+- Spark SQL measure time spent in query plan parsing and optimization (Spark 3.0)
 
 ```
+scala> val df=sql("select 1")
+
 scala> df.queryExecution.tracker.
 measureTime   phases   recordRuleInvocation   rules   topRulesByTime
 
@@ -194,8 +196,8 @@ scala> sql("select 1").queryExecution.tracker.
 measurePhase   phases   recordRuleInvocation   rules   topRulesByTime
 
 scala> sql("select 1").queryExecution.tracker.phases
-res5: Map[String,org.apache.spark.sql.catalyst.QueryPlanningTracker.PhaseSummary] = Map(parsing -> PhaseSummary(1547216115744, 1547216115745), analysis -> PhaseSummary(1547216115745, 1547216115749))
-
+scala> df.queryExecution.tracker.phases
+resX: Map[String,org.apache.spark.sql.catalyst.QueryPlanningTracker.PhaseSummary] = Map(planning -> PhaseSummary(1547411782661, 1547411782824), optimization -> PhaseSummary(1547411782509, 1547411782648), parsing -> PhaseSummary(1547411764974, 1547411765852), analysis -> PhaseSummary(1547411765854, 1547411766069))
 ```
 ---
 - Example command line for spark-shell/pyspark/spark-submit on YARN  
