@@ -602,7 +602,7 @@ dsMuons.selectExpr("explode(muons) as element").selectExpr("element.*").show(2)
     2. Run benchmark
     3. Extract results
 
-See instructions on the spark-sql-perf package for more info. Here is an example:
+See instructions on the [spark-sql-perf](https://github.com/databricks/spark-sql-perf) package for more info. Here is an example:
 ```
 ///// 1. Generate schema
 bin/spark-shell --master yarn --num-executors 80 --driver-memory 32g --executor-memory 90g --driver-cores 4 --executor-cores 3 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2
@@ -614,13 +614,13 @@ NOTES:
   - This workloads is memory hungry, to avoid excessive GC activity, allocate abundant executor memory
 
 val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10000")
-tables.genData("/user/canali/TPCDS/tpcds_10000", "parquet", true, true, false, false)
+tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, false, false)
 
 ///// 2. Run Benchmark 
 export SPARK_CONF_DIR=/usr/hdp/spark/conf
 export HADOOP_CONF_DIR=/etc/hadoop/conf
 export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
-cd spark-2.3.0-bin-hadoop2.7
+cd spark-2.4.0-bin-hadoop2.7
 
 bin/spark-shell --master yarn --num-executors 60 --executor-cores 7 --driver-cores 4 --driver-memory 32g  --executor-memory 100g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2 --conf spark.sql.crossJoin.enabled=true --conf spark.sql.hive.filesourcePartitionFileCacheSize=4000000000 --conf spark.executor.extraLibraryPath=/usr/hdp/hadoop/lib/native --conf spark.sql.shuffle.partitions=800
 
@@ -633,10 +633,12 @@ val tables = new TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools",1000
 tables.createTemporaryTables("/user/luca/TPCDS/tpcds_10000", "parquet")
 val tpcds = new com.databricks.spark.sql.perf.tpcds.TPCDS(spark.sqlContext)
 
-// for spark 2.3, avoid regression at scale on q14a q14b and q72
-val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
+// Run benchmark
+val experiment = tpcds.runExperiment(tpcds.tpcds2_4Queries)
 
-val experiment = tpcds.runExperiment(benchmarkQueries)
+// Example I used for some Spark 2.3 tests to avoid regression at scale on q14a q14b and q72
+//val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
+//val experiment = tpcds.runExperiment(benchmarkQueries)
 
 ///// 4. Extract results
 experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
@@ -647,11 +649,11 @@ spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MA
 ///// Use CBO, modify step 3 as follows
 
 // one-off: setup tables using catalog (do not use temporary tables as in example above
-tables.createExternalTables("/user/canali/TPCDS/tpcds_1500", "parquet", "tpcds1500", overwrite = true, discoverPartitions = true)
+tables.createExternalTables("/user/luca/TPCDS/tpcds_1500", "parquet", "tpcds1500", overwrite = true, discoverPartitions = true)
 // compute statistics
 tables.analyzeTables("tpcds1500", analyzeColumns = true) 
 
-tables.createExternalTables("/user/canali/TPCDS/tpcds_1500", "parquet", "tpcds10000", overwrite = true, discoverPartitions = true)
+tables.createExternalTables("/user/luca/TPCDS/tpcds_1500", "parquet", "tpcds10000", overwrite = true, discoverPartitions = true)
 tables.analyzeTables("tpcds10000", analyzeColumns = true) 
 
 spark.conf.set("spark.sql.cbo.enabled",true)
