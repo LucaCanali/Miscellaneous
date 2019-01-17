@@ -42,7 +42,7 @@ cd spark
 # export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
 
-# customize Hadoop version
+# Compile for a specific Hadoop version, for exmaple use this to compile for Hadoop 3
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Dhadoop.version=3.1.1 -Pyarn -Pkubernetes
 
 # compile a version with cherry-picked changes
