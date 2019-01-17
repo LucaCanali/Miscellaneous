@@ -602,19 +602,20 @@ dsMuons.selectExpr("explode(muons) as element").selectExpr("element.*").show(2)
     2. Run benchmark
     3. Extract results
 
-See instructions on the [spark-sql-perf](https://github.com/databricks/spark-sql-perf) package for more info. Here is an example:
+See instructions at the [spark-sql-perf](https://github.com/databricks/spark-sql-perf) git repo
+for additional info on how to generate data and tun the package. Here some pointers/examples:
 ```
 ///// 1. Generate schema
-bin/spark-shell --master yarn --num-executors 80 --driver-memory 32g --executor-memory 90g --driver-cores 4 --executor-cores 3 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2
+bin/spark-shell --master yarn --num-executors 25 --driver-memory 12g --executor-memory 12g --executor-cores 4 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.11:2.1.2
 
 NOTES:
   - Each executor will spawn dsdgen to create data, using the parameters for size (e.g. 10000) and number of partitions (e.g. 1000)
   - Example: bash -c cd /home/luca/tpcds-kit/tools && ./dsdgen -table catalog_sales -filter Y -scale 10000 -RNGSEED 100 -parallel 1000 -child 107
   - Each "core" in the executor spawns one dsdgen
-  - This workloads is memory hungry, to avoid excessive GC activity, allocate abundant executor memory
+  - This workloads is memory hungry, to avoid excessive GC activity, allocate abundant memory per executor core
 
 val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10000")
-tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, false, false)
+tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, true, false, "", 100)
 
 ///// 2. Run Benchmark 
 export SPARK_CONF_DIR=/usr/hdp/spark/conf
@@ -622,7 +623,8 @@ export HADOOP_CONF_DIR=/etc/hadoop/conf
 export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
 cd spark-2.4.0-bin-hadoop2.7
 
-bin/spark-shell --master yarn --num-executors 60 --executor-cores 7 --driver-cores 4 --driver-memory 32g  --executor-memory 100g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.10:2.1.2 --conf spark.sql.crossJoin.enabled=true --conf spark.sql.hive.filesourcePartitionFileCacheSize=4000000000 --conf spark.executor.extraLibraryPath=/usr/hdp/hadoop/lib/native --conf spark.sql.shuffle.partitions=800
+bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-memory 12g  --executor-memory 12g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-sl4j_2.11:2.1.2 --conf spark.sql.crossJoin.enabled=true
+// if using larger number of cores consider bumping up --conf spark.sql.shuffle.partitions=400
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
 import com.databricks.spark.sql.perf.tpcds.TPCDSTables
@@ -636,7 +638,9 @@ val tpcds = new com.databricks.spark.sql.perf.tpcds.TPCDS(spark.sqlContext)
 // Run benchmark
 val experiment = tpcds.runExperiment(tpcds.tpcds2_4Queries)
 
-// Example I used for some Spark 2.3 tests to avoid regression at scale on q14a q14b and q72
+// optionally: experiment.waitForFinish(timeout)
+
+// Example, I used this for some Spark 2.3 tests to avoid regression at scale on q14a q14b and q72
 //val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
 //val experiment = tpcds.runExperiment(benchmarkQueries)
 
