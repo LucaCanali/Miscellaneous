@@ -159,7 +159,7 @@ spark.sql("select hostname, count(*) from filemap group by hostname").show
 +-----------------+--------+
 ```
 ---
-- Print properties
+- Print Properties
 ```
 println(System.getProperties)
 System.getProperties.toString.split(',').map(_.trim).foreach(println)
@@ -204,9 +204,15 @@ resX: Map[String,org.apache.spark.sql.catalyst.QueryPlanningTracker.PhaseSummary
 `spark-shell --master yarn --num-executors 5 --executor-cores 4 --executor-memory 7g --driver-memory 7g`
 
 ---
-- How to turn off dynamic allocation
-`--conf spark.dynamicAllocation.enabled=false`
+- Basic Scala methods to trigger actions for testing
 
+This fetches the output and discards
+ ```
+sql("select id from range(10)").show
+sql("select id from range(10)").collect
+sql("select id from range(10)").foreach(_ => ()) // discrds output
+ ```
+ 
 ---
 - Specify JAVA_HOME to use when running Spark on a YARN cluster   
 ```
@@ -215,7 +221,7 @@ bin/spark-shell --conf spark.yarn.appMasterEnv.JAVA_HOME=/usr/lib/jvm/myJAvaHome
 ```
 
 ---
-- Run Pyspark on a jupyter notebook
+- Run Pyspark on a Jupyter notebook
 ```
 export PYSPARK_DRIVER_PYTHON=jupyter-notebook
 # export PYSPARK_DRIVER_PYTHON=jupyter-lab
