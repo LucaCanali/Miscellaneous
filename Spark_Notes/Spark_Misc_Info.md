@@ -702,13 +702,19 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
     - Option 1: use con use the metrics.properties
     - Option 2: use Spark configuration parameters of the form `--conf spark.metrics.conf.<property_name>=value`
 
-  - Example of using metrics.proerties file:
+  - Examples of using metrics.properties file:
   - Note: when using metrics.properties you need to set`--conf spark.metrics.conf`. The file 
-  metrics.properties need to be visible to all the executors as well as the driver. Example for yarn:
-    - copy the file to the current directory and use the --files option to distribute it to the 
-    YARN containers:  
+  metrics.properties need to be visible to all the executors as well as the driver. 
+  In the case of YARN:
+    - option 1 edit the file in SPARK_CONF_DIR, it will be used by the driver and properly shipped
+    to the executors (and picked up there)
+    - option 2: put the file in a shared directory and set -conf spark.metrics.conf to the path
+    - option 3: copy metrics.properties in local directory in the driver + 
+    use --files option to distribute it to the 
+    YARN containers root. Set --conf spark.metrics.conf to a relative path, it will work both for
+    driver and executor
      `--files metrics.properties --conf spark.metrics.conf=metrics.properties`
-
+     
   ```
   metrics.properties file content for using a graphite sink:
   
