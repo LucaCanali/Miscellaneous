@@ -5,6 +5,8 @@ using InfluxDB and Grafana. The dashboard is useful for performance troubleshoot
 online monitoring. 
 
 ### Step 1: Understand the architecture
+![Spark metrics dashboard architecture](Spark_metrics_dashboard_arch.PNG "Spark metrics dashboard architecture")
+
 Spark is instrumented with the [Dropwizard/Codahale metrics library](https://metrics.dropwizard.io).
 Several components of Spark are instrumented with metrics, see also the 
 [spark monitoring guide](https://spark.apache.org/docs/latest/monitoring.html#metrics), 
@@ -22,9 +24,7 @@ flow through the driver in that case
 for further details).
 The number of metrics instrumenting Spark components is quite large. 
 You can find a [list at this link](Spark_dropwizard_metrics_info.md)
-Here is a basic architecture diagram illustrating the Spark dashboard described in this post:  
 
-![Spark metrics dashboard architecture](Spark_metrics_dashboard_arch.PNG "Spark metrics dashboard architecture")
 
 ### Step 2: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
