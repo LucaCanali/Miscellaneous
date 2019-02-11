@@ -95,7 +95,7 @@ as workload to monitor.
 ### Example Graphs
 
 The next step is to understand the metrics and how they can help you troubleshoot your application
-performance. The (available metrics are many)[Spark_dropwizard_metrics_info.md], while
+performance. The [available metrics are many](Spark_dropwizard_metrics_info.md), while
 the  [example Grafana dashboard](Spark_Dashboard/Spark_Perf_Dashboard_v01_20190211.json)
 provides only a small selection.
 Here a few representative graphs.
@@ -121,7 +121,7 @@ Various graphs in the dashboard can help you understand memory usage and Garbage
 - GRAPH [SPARK JOB TIME COMPONENTS](GRAPH_Time_components.PNG)
 
 - **Dashboard view**
-  - Part1 [Summary metrics](dashboard_part1_summary.PNG)
-  - Part2 [Workload metrics](dashboard_part2_workload.PNG)
-  - Part3 [Memory metrics](dashboard_part3_memory.PNG)
-  - Part4 [I/O metrics](dashboard_part4_IO.PNG)  
+  - Part 1: [Summary metrics](dashboard_part1_summary.PNG)
+  - Part 2: [Workload metrics](dashboard_part2_workload.PNG)
+  - Part 3: [Memory metrics](dashboard_part3_memory.PNG)
+  - Part 4: [I/O metrics](dashboard_part4_IO.PNG)  
