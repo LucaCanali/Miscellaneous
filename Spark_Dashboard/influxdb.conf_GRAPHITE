@@ -1,0 +1,29 @@
+#
+# this is a snippet of configuration taken from influxdb.conf file
+# use this for setting up the graphite endpoint and the templates for ingesting Spark dropwizard metrics
+# you still need the rest of the config file (for example from the default installation)
+# L.C. Feb 2019
+
+[[graphite]]
+  enabled = true
+  bind-address = ":2003"
+  database = "graphite"
+  retention-policy = ""
+  protocol = "tcp"
+  batch-size = 5000
+  batch-pending = 10
+  batch-timeout = "1s"
+  consistency-level = "one"
+  separator = "."
+  udp-read-buffer = 0
+  templates = [
+    # JVM source
+    "*.*.jvm.pools.* username.applicationid.process.namespace.namespace.measurement*",
+    # YARN source
+    "*.*.applicationMaster.* username.applicationid.namespace.measurement*",
+    # shuffle service source
+    "*.shuffleService.* username.namespace.measurement*",
+    # streaming
+    "*.*.*.spark.streaming.* username.applicationid.process.namespace.namespace.id.measurement*",
+    # generic template for driver and executor sources
+    "username.applicationid.process.namespace.measurement*" ]
