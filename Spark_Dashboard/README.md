@@ -25,14 +25,13 @@ for further details).
 The number of metrics instrumenting Spark components is quite large. 
 You can find a [list at this link](Spark_dropwizard_metrics_info.md)
 
-
 ### Step 2: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
   - Note: tested in Feb 2019 with InfluxDB version 1.7.3
 - Edit the config file `/etc/influxdb/influxdb.conf` and enable the graphite endpoint
 - **Key step:** Setup the templates configuration
-  - The configuration used for this work is provided at: [influxDB graphite endpoint configuration snippet](influxdb.conf_GRAPHITE)  
   - This instructs InfluxDB on how to map data received on the graphite endpoint to the measurements and tags in the DB
+  - The configuration used for this work is provided at: [influxDB graphite endpoint configuration snippet](influxdb.conf_GRAPHITE)  
 - Optionally configure other influxDB parameters of interest as data location and retention
 - Start/restart influxDB service: systemctl restart influxdb.service
 
@@ -47,7 +46,7 @@ You can find a [list at this link](Spark_dropwizard_metrics_info.md)
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
     - Set the influxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
-    - To get started import the [example Grafana dashboard](Spark_Dashboard/Spark_Perf_Dashboard_v01_20190211.json)
+    - To get started import the [example Grafana dashboard](Spark_Dashboard/Spark_Perf_Dashboard_v01.json)
     - You can also experiment with building your dashboard or augmenting the example.
 
 ### Step 4: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
@@ -111,7 +110,7 @@ CPU used by the executors is another key metric to understand the workload.
 The dashboard also reports the CPU consumed by tasks, the difference is that the
 CPU consumed by the JVM includes for example of the CPU used by Garbage collection and more.
 
-- GRAPH: JVMMEMORY USAGE
+- GRAPH: JVM MEMORY USAGE
 ![](GRAPH_JVM_Memory.PNG)  
 Memory is another important aspect of Spark workload (think of the many cases of OOM errors).
 Various graphs in the dashboard can help you understand memory usage and Garbage collection activity.
