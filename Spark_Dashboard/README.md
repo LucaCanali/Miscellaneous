@@ -94,30 +94,42 @@ as workload to monitor.
 ### Example Graphs
 
 The next step is to understand the metrics and how they can help you troubleshoot your application
-performance. The [available metrics are many](Spark_dropwizard_metrics_info.md), while
-the  [example Grafana dashboard](Spark_Dashboard/Spark_Perf_Dashboard_v01_20190211.json)
-provides only a small selection.
-Here a few representative graphs.
+performance. One way to start is to run a simple workload that you can understand and reproduce.
+In the following you will find example graphs from a simple Spark SQL query reading a Parquet table from HDFS.
+- The query used is `spark.sql("select * from web_sales where ws_list_price=10.123456").show`
+- `web_sales` is a 1.3 TB table from the Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf) generated at scale 10000.
+- What the query does is reading the entire table, applying the given filter and finally returning an empty result set.
+This query is used as a "trick to the Spark engine" to force a full read of the table and intentionally avoiding optimization, like Parquet filter pushdown. 
+- This follows the discussion of [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example) 
+- Reource details: the Spark Session ran on a test YARN cluster, using 24 executors, with 5 cores and 12G of RAM each.
 
-- GRAPH: NUMBER ACTIVE TASKS  
-![](GRAPH_number_active_tasks.PNG "NUMBER ACTIVE TASKS")  
-One key metric is the graph of the number of active sessions as a function of time.
+- Graph: Number of Active Tasks
+![](Graph_number_active_tasks.PNG "NUMBER ACTIVE TASKS")  
+One key metric when troubleshooting distributed workloads is the graph of the number of active sessions as a
+function of time.
 This shows how Spark is able to make use of the available cores allocated by the executors.
 
-- GRAPH: JVM CPU USAGE
-![](GRAPH_JVM_CPU.PNG "JVM CPU USAGE")  
+- Graph: JVM CPU Usage
+![](Graph_JVM_CPU.PNG "JVM CPU USAGE")    
 CPU used by the executors is another key metric to understand the workload.
-The dashboard also reports the CPU consumed by tasks, the difference is that the
-CPU consumed by the JVM includes for example of the CPU used by Garbage collection and more.
+The dashboard also reports the [CPU consumed by tasks](Graph_task_CPU_time.PNG), the difference is that the
+CPU consumed by the JVM includes for example of the CPU used by Garbage collection and more.  
+Garbage collection can take an important amount of time, in particular when processing large amounts of data
+ as in this case, see [Graph: JVM Garbage Collection Time](Graph_garbage_collection.PNG "JVM Garbage Collection Time")
 
-- GRAPH: JVM MEMORY USAGE
-![](GRAPH_JVM_Memory.PNG)  
-Memory is another important aspect of Spark workload (think of the many cases of OOM errors).
-Various graphs in the dashboard can help you understand memory usage and Garbage collection activity.
+- Graph: Time components
+![](Graph_Time_components.PNG "")  
+Decomposing the run time in component run time and/or wait time can be of help to pinpoint the bottlenecks.
+In this graph you can see that CPU time and Garbage collection are important components of the workload.
+A large component of time, between the "executor run time" and the sum of "cpu time and GC time" is not instrumented.
+From previous studies and by knowing the workload, we can take the educated guess that this is the read time.
+See also the discussion at [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example)
 
-- GRAPH: [HDFS BYTES READ](GRAPH_HDFS_bytes_read.PNG)
-
-- GRAPH [SPARK JOB TIME COMPONENTS](GRAPH_Time_components.PNG)
+- Graph: HDFS read throughput
+![](Graph_HDFS_read_throughput.PNG "HDFS read thorughput")   
+Reading from HDFS is an important part of this workload.
+In this graph you can see the measured throughput using HDFS instrumentation exported via the Spark metrics system
+into the dashboard.
 
 - **Dashboard view**
   - Part 1: [Summary metrics](dashboard_part1_summary.PNG)
