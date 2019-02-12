@@ -101,15 +101,15 @@ In the following you will find example graphs from a simple Spark SQL query read
 - What the query does is reading the entire table, applying the given filter and finally returning an empty result set.
 This query is used as a "trick to the Spark engine" to force a full read of the table and intentionally avoiding optimization, like Parquet filter pushdown. 
 - This follows the discussion of [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example) 
-- Reource details: the Spark Session ran on a test YARN cluster, using 24 executors, with 5 cores and 12G of RAM each.
+- Infrastructure and resources allocated: the Spark Session ran on a test YARN cluster, using 24 executors, with 5 cores and 12G of RAM each.
 
-- Graph: Number of Active Tasks
+**Graph: Number of Active Tasks**
 ![](Graph_number_active_tasks.PNG "NUMBER ACTIVE TASKS")  
 One key metric when troubleshooting distributed workloads is the graph of the number of active sessions as a
 function of time.
 This shows how Spark is able to make use of the available cores allocated by the executors.
 
-- Graph: JVM CPU Usage
+**Graph: JVM CPU Usage**
 ![](Graph_JVM_CPU.PNG "JVM CPU USAGE")    
 CPU used by the executors is another key metric to understand the workload.
 The dashboard also reports the [CPU consumed by tasks](Graph_task_CPU_time.PNG), the difference is that the
@@ -117,7 +117,7 @@ CPU consumed by the JVM includes for example of the CPU used by Garbage collecti
 Garbage collection can take an important amount of time, in particular when processing large amounts of data
  as in this case, see [Graph: JVM Garbage Collection Time](Graph_garbage_collection.PNG "JVM Garbage Collection Time")
 
-- Graph: Time components
+**Graph: Time components**
 ![](Graph_Time_components.PNG "")  
 Decomposing the run time in component run time and/or wait time can be of help to pinpoint the bottlenecks.
 In this graph you can see that CPU time and Garbage collection are important components of the workload.
@@ -125,13 +125,17 @@ A large component of time, between the "executor run time" and the sum of "cpu t
 From previous studies and by knowing the workload, we can take the educated guess that this is the read time.
 See also the discussion at [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example)
 
-- Graph: HDFS read throughput
+**Graph: HDFS read throughput**
 ![](Graph_HDFS_read_throughput.PNG "HDFS read thorughput")   
 Reading from HDFS is an important part of this workload.
 In this graph you can see the measured throughput using HDFS instrumentation exported via the Spark metrics system
 into the dashboard.
 
-- **Dashboard view**
+**Dashboard view:**  
+
+This gives a general overview of the dashboard. The workload running in this case is a snapshot of the 
+ [Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf) at scale 100G, running on a test 
+ YARN cluster, using 24 executors, with 5 cores and 12G of RAM each.
   - Part 1: [Summary metrics](dashboard_part1_summary.PNG)
   - Part 2: [Workload metrics](dashboard_part2_workload.PNG)
   - Part 3: [Memory metrics](dashboard_part3_memory.PNG)
