@@ -1,4 +1,40 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_SPARK_DROPWIZARD",
+      "label": "spark_dropwizard",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "6.0.0-beta1"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": "5.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": "5.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -17,8 +53,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 5,
-  "iteration": 1549635584538,
+  "id": null,
+  "iteration": 1549970122271,
   "links": [],
   "panels": [
     {
@@ -43,7 +79,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Latest sample of the value of number of active tasks, summed over all executors active in the selected time filter interval.",
       "format": "none",
       "gauge": {
@@ -153,7 +189,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total executor CPU time computed from from executor metrics. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for tasks and other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not counted.",
       "format": "ns",
       "gauge": {
@@ -275,7 +311,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total task CPU usage from task metrics. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
       "format": "ns",
       "gauge": {
@@ -394,7 +430,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total time spent in GC operations during task execution. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
       "format": "ms",
       "gauge": {
@@ -513,7 +549,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -626,7 +662,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -739,7 +775,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#299c46"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "JVM metric from MemoryMXBean. Latest value of the % of heap memory used, averaging over executors and driver.",
       "format": "none",
       "gauge": {
@@ -868,7 +904,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Bytes read from HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "format": "bytes",
       "gauge": {
@@ -987,7 +1023,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Bytes written to HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "format": "bytes",
       "gauge": {
@@ -1106,7 +1142,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
       "format": "none",
       "gauge": {
@@ -1219,7 +1255,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Number of succeeded jobs, from the appsource metric introduced in Spark 3.0",
       "format": "none",
       "gauge": {
@@ -1347,7 +1383,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Number of active tasks per executor\n",
       "fill": 2,
       "gridPos": {
@@ -1472,7 +1508,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total executor CPU utilization computed from executors' metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
       "fill": 2,
       "gridPos": {
@@ -1601,7 +1637,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
       "fill": 2,
       "gridPos": {
@@ -1733,7 +1769,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
       "fill": 2,
       "gridPos": {
@@ -1871,7 +1907,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fill": 1,
       "gridPos": {
@@ -2274,7 +2310,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 2,
       "gridPos": {
         "h": 11,
@@ -2405,7 +2441,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 1,
       "gridPos": {
         "h": 11,
@@ -2544,7 +2580,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 2,
       "gridPos": {
         "h": 11,
@@ -2688,7 +2724,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
       "fill": 2,
       "gridPos": {
@@ -2820,7 +2856,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Heap memory used per executor.  From MemoryMXBean.",
       "fill": 2,
       "gridPos": {
@@ -2952,7 +2988,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
       "fill": 2,
       "gridPos": {
@@ -3084,7 +3120,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "Storage memory and disk used by the block manager.",
       "fill": 2,
       "gridPos": {
@@ -3305,7 +3341,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 2,
       "gridPos": {
         "h": 10,
@@ -3436,7 +3472,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 2,
       "gridPos": {
         "h": 10,
@@ -3567,7 +3603,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "description": "",
       "fill": 2,
       "gridPos": {
@@ -3699,7 +3735,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 2,
       "gridPos": {
         "h": 11,
@@ -3830,7 +3866,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "spark_dropwizard",
+      "datasource": "${DS_SPARK_DROPWIZARD}",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -4004,11 +4040,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "text": "luca",
-          "value": "luca"
-        },
-        "datasource": "spark_dropwizard",
+        "current": {},
+        "datasource": "${DS_SPARK_DROPWIZARD}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -4029,11 +4062,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "application_1549330477085_2696",
-          "value": "application_1549330477085_2696"
-        },
-        "datasource": "spark_dropwizard",
+        "current": {},
+        "datasource": "${DS_SPARK_DROPWIZARD}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -4055,8 +4085,8 @@
     ]
   },
   "time": {
-    "from": "now-8m",
-    "to": "now"
+    "from": "now-50m",
+    "to": "now-40m"
   },
   "timepicker": {
     "refresh_intervals": [
