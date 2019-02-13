@@ -23,7 +23,7 @@ flow through the driver in that case
 ([see this link](https://raw.githubusercontent.com/LucaCanali/sparkMeasure/master/docs/sparkMeasure_architecture_diagram.png)
 for further details).
 The number of metrics instrumenting Spark components is quite large. 
-You can find a [list at this link](Spark_dropwizard_metrics_info.md)
+You can find a [list of the available metrics at this link](Spark_dropwizard_metrics_info.md)
 
 ### Step 2: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
@@ -92,7 +92,7 @@ in local mode (up to Spark 2.4.0 included).
 **Dashboard view:** The following links show an example and general overview of the example dashboard,
 measuring a test workload.
 You can find there a large number of graphs and gauges, however that is still a small selection
- of all the available metrics in Spark instrumentation.
+ of the [available metrics in Spark instrumentation](Spark_dropwizard_metrics_info.md).
 For reference, the test workload is 
  [Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf) at scale 100 GB, running on a test 
  YARN cluster, using 24 executors, with 5 cores and 12 GB of RAM each.
