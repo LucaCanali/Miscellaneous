@@ -698,6 +698,27 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
    (B) sink the metrics to influxdb
    (C) Setup Grafana dashboards to read the metrics from InfluxDB 
   - See [Spark Performance Dashboard](../Spark_Dashboard)
+---
+- Spark has 2 configurable metrics sources in the driver introduced by [SPARK-26285](https://issues.apache.org/jira/browse/SPARK-26285)
+  - The namespace is AccumulatorSource
+  - The metrics are: DoubleAccumulatorSource, LongAccumulatorSource
+  - They allow to export accumulator variables (LongAccumulator and DoubleAccumulator)
+  . These metrics can be used in the grafana dashboard or with other sinks
+  - Example:
+```
+import org.apache.spark.util.{AccumulatorV2, DoubleAccumulator, LongAccumulator}
+import org.apache.spark.metrics.source.{DoubleAccumulatorSource, LongAccumulatorSource}
+val acc1 = new LongAccumulator()
+LongAccumulatorSource.register(spark.sparkContext, Map("my-accumulator-1" -> acc1))
+scala> acc1.value
+res5: Long = 0
+
+scala> acc1.add(1L)
+scala> acc1.value
+
+This will appear in the sink, for example as a record:
+my-accumulator-1,applicationid=application_1549330477085_0257,namespace=AccumulatorSource,process=driver,username=luca
+```
 
 ---
 - How to access AWS s3 Filesystem with Spark  
