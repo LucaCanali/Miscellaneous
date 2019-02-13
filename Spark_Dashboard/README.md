@@ -5,7 +5,7 @@ using InfluxDB and Grafana. The dashboard is useful for performance troubleshoot
 online monitoring. 
 
 ### Step 1: Understand the architecture
-![Spark metrics dashboard architecture](Spark_metrics_dashboard_arch.PNG "Spark metrics dashboard architecture")
+![Spark metrics dashboard architecture](images/Spark_metrics_dashboard_arch.PNG "Spark metrics dashboard architecture")
 
 Spark is instrumented with the [Dropwizard/Codahale metrics library](https://metrics.dropwizard.io).
 Several components of Spark are instrumented with metrics, see also the 
@@ -46,7 +46,7 @@ You can find a [list at this link](Spark_dropwizard_metrics_info.md)
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
     - Set the influxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
-    - To get started import the [example Grafana dashboard](Spark_Dashboard/Spark_Perf_Dashboard_v01.json)
+    - To get started import the [example Grafana dashboard](Spark_Perf_Dashboard_v01.json)
     - You can also experiment with building your dashboard or augmenting the example.
 
 ### Step 4: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
@@ -88,12 +88,24 @@ note to set the Grafana time range selector (top right of the dashboard) to a su
 testing this. Most of the interesting metrics are in the executor source, which is not populated 
 in local mode (up to Spark 2.4.0 included). 
 - If you want to "kick the tires" of the dashboard, 
-I can recommend running the [Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf)
-as workload to monitor. 
+
+**Dashboard view:** The following links show an example and general overview of the example dashboard,
+measuring a test workload.
+You can find there a large number of graphs and gauges, however that is still a small selection
+ of all the available metrics in Spark instrumentation.
+For reference, the test workload is 
+ [Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf) at scale 100 GB, running on a test 
+ YARN cluster, using 24 executors, with 5 cores and 12 GB of RAM each.
+  - Dashboard part 1: [Summary metrics](images/dashboard_part1_summary.PNG)
+  - Part 2: [Workload metrics](images/dashboard_part2_workload.PNG)
+  - Part 3: [Memory metrics](images/dashboard_part3_memory.PNG)
+  - Part 4: [I/O metrics](images/dashboard_part4_IO.PNG)  
+
 
 ### Example Graphs
 
-The next step is to understand the metrics and how they can help you troubleshoot your application
+The next step is to further drill down in understanding Spark metrics, the dashboard graphs
+and in general investigate how the dashboard can help you troubleshoot your application
 performance. One way to start is to run a simple workload that you can understand and reproduce.
 In the following you will find example graphs from a simple Spark SQL query reading a Parquet table from HDFS.
 - The query used is `spark.sql("select * from web_sales where ws_list_price=10.123456").show`
@@ -101,24 +113,25 @@ In the following you will find example graphs from a simple Spark SQL query read
 - What the query does is reading the entire table, applying the given filter and finally returning an empty result set.
 This query is used as a "trick to the Spark engine" to force a full read of the table and intentionally avoiding optimization, like Parquet filter pushdown. 
 - This follows the discussion of [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example) 
-- Infrastructure and resources allocated: the Spark Session ran on a test YARN cluster, using 24 executors, with 5 cores and 12G of RAM each.
+- Infrastructure and resources allocated: the Spark Session ran on a test YARN cluster,
+using 24 executors, with 5 cores and 12 GB of RAM each.
 
 **Graph: Number of Active Tasks**
-![](Graph_number_active_tasks.PNG "NUMBER ACTIVE TASKS")  
+![Graph: Number of Active Tasks](images/Graph_number_active_tasks.PNG "NUMBER ACTIVE TASKS")  
 One key metric when troubleshooting distributed workloads is the graph of the number of active sessions as a
 function of time.
 This shows how Spark is able to make use of the available cores allocated by the executors.
 
 **Graph: JVM CPU Usage**
-![](Graph_JVM_CPU.PNG "JVM CPU USAGE")    
+![Graph: JVM CPU Usage*](images/Graph_JVM_CPU.PNG "JVM CPU USAGE")    
 CPU used by the executors is another key metric to understand the workload.
-The dashboard also reports the [CPU consumed by tasks](Graph_task_CPU_time.PNG), the difference is that the
+The dashboard also reports the [CPU consumed by tasks](images/Graph_task_CPU_time.PNG), the difference is that the
 CPU consumed by the JVM includes for example of the CPU used by Garbage collection and more.  
 Garbage collection can take an important amount of time, in particular when processing large amounts of data
- as in this case, see [Graph: JVM Garbage Collection Time](Graph_garbage_collection.PNG "JVM Garbage Collection Time")
+ as in this case, see [Graph: JVM Garbage Collection Time](images/Graph_garbage_collection.PNG "JVM Garbage Collection Time")
 
 **Graph: Time components**
-![](Graph_Time_components.PNG "")  
+![Graph: Time components](images/Graph_Time_components.PNG "Graph: Time components")  
 Decomposing the run time in component run time and/or wait time can be of help to pinpoint the bottlenecks.
 In this graph you can see that CPU time and Garbage collection are important components of the workload.
 A large component of time, between the "executor run time" and the sum of "cpu time and GC time" is not instrumented.
@@ -126,17 +139,8 @@ From previous studies and by knowing the workload, we can take the educated gues
 See also the discussion at [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example)
 
 **Graph: HDFS read throughput**
-![](Graph_HDFS_read_throughput.PNG "HDFS read thorughput")   
+![Graph: HDFS read throughput](images/Graph_HDFS_read_throughput.PNG "HDFS read thorughput")   
 Reading from HDFS is an important part of this workload.
 In this graph you can see the measured throughput using HDFS instrumentation exported via the Spark metrics system
 into the dashboard.
 
-**Dashboard view:**  
-
-This gives a general overview of the dashboard. The workload running in this case is a snapshot of the 
- [Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf) at scale 100G, running on a test 
- YARN cluster, using 24 executors, with 5 cores and 12G of RAM each.
-  - Part 1: [Summary metrics](dashboard_part1_summary.PNG)
-  - Part 2: [Workload metrics](dashboard_part2_workload.PNG)
-  - Part 3: [Memory metrics](dashboard_part3_memory.PNG)
-  - Part 4: [I/O metrics](dashboard_part4_IO.PNG)  
