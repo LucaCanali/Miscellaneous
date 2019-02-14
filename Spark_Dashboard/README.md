@@ -12,7 +12,7 @@ Several components of Spark are instrumented with metrics, see also the
 [spark monitoring guide](https://spark.apache.org/docs/latest/monitoring.html#metrics), 
 notably the driver and executors components are instrumented with multiple metrics each.
 In addition, Spark provides various sink solutions for the metrics. 
-This work makes use of the Spark graphite sink and utilizes InfluxDB with a graphite 
+This work makes use of the Spark Graphite sink and utilizes InfluxDB with a graphite 
 endpoint to collect the metrics. Finally, Grafana is used for querying InfluxDB and 
 plotting the graphs (see architectural diagram below).
 An important architectural detail of the metrics system is that the metrics are sent directly
@@ -32,7 +32,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
 - **Key step:** Setup the templates configuration
   - This instructs InfluxDB on how to map data received on the graphite endpoint to the measurements and tags in the DB
   - The configuration used for this work is provided at: [influxDB graphite endpoint configuration snippet](influxdb.conf_GRAPHITE)  
-- Optionally configure other influxDB parameters of interest as data location and retention
+- Optionally configure other InfluxDB parameters of interest as data location and retention
 - Start/restart influxDB service: systemctl restart influxdb.service
 
 ###  Step 3: Configure Grafana and prepare/import the dashboard
@@ -44,7 +44,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
   - By default: http://yourGrafanaMachine:3000
   - Create a data source to connect to InfluxDB. 
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
-    - Set the influxDB database name: default is graphite (no password)
+    - Set the InfluxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
     - To get started import the [example Grafana dashboard](Spark_Perf_Dashboard_v01.json)
     - You can also experiment with building your dashboard or augmenting the example.
@@ -58,7 +58,7 @@ Configuration for the metrics sink need to be provided to all the components bei
 See details at [Spark_metrics_config_options](Spark_metrics_config_options.md)
 Example:  
   ```
-  spark-submit/spark-shell/pyspark
+  $SPARK_HOME/bin/spark-shell
   --conf "spark.metrics.conf.*.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" \
   --conf "spark.metrics.conf.*.sink.graphite.host"="graphiteEndPoint_influxDB_hostName>" \
   --conf "spark.metrics.conf.*.sink.graphite.port"=<graphite_listening_port> \

@@ -15,7 +15,7 @@ This is an example of to configure the Spark metrics system to sink to a graphit
 Spark configuration parameters. There are many options t set parameters in Spark, refer to doc,
 this is an example with spark-submit:
   ```
-  spark-submit/spark-shell/pyspark
+  bin/spark-submit
   --conf "spark.metrics.conf.*.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" \
   --conf "spark.metrics.conf.*.sink.graphite.host"="graphiteEndPoint_influxDB_hostName>" \
   --conf "spark.metrics.conf.*.sink.graphite.port"=<graphite_listening_port> \
@@ -44,7 +44,7 @@ Spark metrics can be configured using a metrics properties file, byt default loc
 This is an example of metrics.properties to configure a graphite sink:
   ```
   *.sink.graphite.class=org.apache.spark.metrics.sink.GraphiteSink
-  *.sink.graphite.host=<raphiteEndPoint_influxDB_hostName>
+  *.sink.graphite.host=<graphiteEndPoint_influxDB_hostName>
   *.sink.graphite.port=<listening_port> # must match influxDB configuration file
   *.sink.graphite.period=10   # Configurable
   *.sink.graphite.unit=seconds
@@ -63,3 +63,16 @@ This is an example of metrics.properties to configure a graphite sink:
     filesystem or by distributing copies of the metrics file 
   - If you are using YARN --files metrics.properties will ship the file to the home directory 
     of the executors containers.
+
+## Default values from metrics.conf parameters
+The following values are default/hardcoded:
+```
+"*.sink.servlet.class" = "org.apache.spark.metrics.sink.MetricsServlet"
+"*.sink.servlet.path" = "/metrics/json"
+"master.sink.servlet.path" = "/metrics/master/json"
+"applications.sink.servlet.path" = "/metrics/applications/json"
+```
+This means, for example, that even if you do not specify any spark.metrics.conf parameter, 
+by default driver metrics are being sunk and made available by a servlet 
+at the address of the Web UI + "/metrics/json"
+

@@ -20,11 +20,17 @@ for example).
 - shuffleService: The Spark shuffle service.
 - applicationMaster: The Spark ApplicationMaster when running on YARN.
 
-Metrics used by Spark are of type: gauge, counter, histogram, meter and timer (see dropwizard doc for details).
-The following is list of metrics available per component, grouped per namespace relevant.
-Some of the metrics need to be enabled with configuration parameters, as detailed.
+Metrics used by Spark are of type: gauge, counter, histogram, meter and timer
+(see dropwizard documentation for details)[https://metrics.dropwizard.io/4.0.0/manual/core.html].
+The following list documents the metrics available, grouped per component
+ instance and source namespace.
+The most common time of metrics used in Spark instrumentation are gauges and counters. 
+Counters can be recognized as they have the `.count` suffix. Timers, meters and histograms are annotated in the list,
+the default is that a metric is a gauge.
+Some of the metrics is the list are only active if a corresponding Spark configuration parameters
+is used to enable them, as detailed in the list.
 
-### Component = Driver
+### Component instance = Driver
 This is the component with the largest amount of instrumented metrics
 
 - namespace=BlockManager
@@ -104,7 +110,7 @@ This is the component with the largest amount of instrumented metrics
   - states-rowsTotal
   - states-usedBytes
 
-### Component = Executor
+### Component instance = Executor
 These metrics are exposed by Spark executors. Note, currently they are not available
 when running in local mode.
  
@@ -230,7 +236,7 @@ Activate with: `spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.s
   - total.max
   - total.used
 
-### Component = applicationMaster
+### Component instance = applicationMaster
 Note: applies when running on YARN
 
 - numContainersPendingAllocate
@@ -239,13 +245,13 @@ Note: applies when running on YARN
 - numLocalityAwareTasks
 - numReleasedContainers
 
-### Source = mesos_cluster
+### Component instance = mesos_cluster
 Note: applies when running on mesos
 - waitingDrivers
 - launchedDrivers
 - retryDrivers
 
-### Source = master
+### Component instance = master
 Note: applies when running in Spark standalone as master
 
 - workers
@@ -253,14 +259,14 @@ Note: applies when running in Spark standalone as master
 - apps
 - waitingApps
 
-### Source = ApplicationSource
+### Component instance = ApplicationSource
 Note: applies when running in Spark standalone as master
 
 - status
 - runtime_ms
 - cores
 
-### Source = worker
+### Component instance = worker
 Note: applies when running in Spark standalone as worker
 
 - executors
@@ -269,7 +275,7 @@ Note: applies when running in Spark standalone as worker
 - coresFree
 - memFree_MB
 
-## Source = shuffleService
+## Component instance = shuffleService
 Note: applies to the shuffle service
 
 - blockTransferRateBytes (meter)
