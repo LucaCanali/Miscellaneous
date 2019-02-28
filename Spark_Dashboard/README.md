@@ -59,7 +59,8 @@ See details at [Spark_metrics_config_options](Spark_metrics_config_options.md)
 Example:  
   ```
   $SPARK_HOME/bin/spark-shell
-  --conf "spark.metrics.conf.*.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" \
+  --conf "spark.metrics.conf.driver.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" \
+  --conf "spark.metrics.conf.executor.sink.graphite.class"="org.apache.spark.metrics.sink.GraphiteSink" \
   --conf "spark.metrics.conf.*.sink.graphite.host"="graphiteEndPoint_influxDB_hostName>" \
   --conf "spark.metrics.conf.*.sink.graphite.port"=<graphite_listening_port> \
   --conf "spark.metrics.conf.*.sink.graphite.period"=10 \

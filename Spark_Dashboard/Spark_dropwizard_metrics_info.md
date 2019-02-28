@@ -1,5 +1,9 @@
 # Spark Dropwizard metrics instrumentation
 
+**Note:** this info is also in
+[Spark monitoring documentation](https://github.com/apache/spark/blob/master/docs/monitoring.md)
+following [SPARK-26890](https://issues.apache.org/jira/browse/SPARK-26890)
+
 Spark is instrumented with the Dropwizard/Codahale metrics library.
 Several components of Spark are instrumented, notable for this work several metrics generating 
 from Spark driver and executors components can be instrumented. 
