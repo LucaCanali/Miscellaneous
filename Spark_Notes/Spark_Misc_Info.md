@@ -777,3 +777,21 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
        <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
      </property>
     ```
+---
+- How to use/choose pyspark version to import from python
+  - simple way to make import pyspark work in python (`pip install pyspark`)
+  - more sofisticated: you want to choose the Spark version and/or (re)use an existing Spark home:
+     ```
+        pip install findspark
+        
+        python
+        import findspark
+        findspark.init('/home/luca/Spark/spark-2.4.0-bin-hadoop2.7') #set path to SPARK_HOME
+     ```
+  - note: when using bin/pyspark, this is not relevant, 
+    as pyspark from the current SPARK_HOME will be used in this case
+ ---
+ - How to add a description to a Spark job:
+   - spark.sparkContext.setJobDescription("job description")
+   - see also: spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)
+ ---
