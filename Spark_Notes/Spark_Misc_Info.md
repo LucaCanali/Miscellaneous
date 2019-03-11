@@ -612,7 +612,7 @@ See instructions at the [spark-sql-perf](https://github.com/databricks/spark-sql
 for additional info on how to generate data and tun the package. Here some pointers/examples:
 ```
 ///// 1. Generate schema
-bin/spark-shell --master yarn --num-executors 25 --driver-memory 12g --executor-memory 12g --executor-cores 4 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-slf4j_2.11:2.1.2
+bin/spark-shell --master yarn --num-executors 25 --driver-memory 12g --executor-memory 12g --executor-cores 4 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar
 
 NOTES:
   - Each executor will spawn dsdgen to create data, using the parameters for size (e.g. 10000) and number of partitions (e.g. 1000)
@@ -629,7 +629,7 @@ export HADOOP_CONF_DIR=/etc/hadoop/conf
 export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
 cd spark-2.4.0-bin-hadoop2.7
 
-bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-memory 12g  --executor-memory 12g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.0-SNAPSHOT.jar --packages com.typesafe.scala-logging:scala-logging-sl4j_2.11:2.1.2 --conf spark.sql.crossJoin.enabled=true
+bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-memory 12g  --executor-memory 12g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.crossJoin.enabled=true
 // if using larger number of cores consider bumping up --conf spark.sql.shuffle.partitions=400
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
