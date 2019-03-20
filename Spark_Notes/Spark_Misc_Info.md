@@ -11,7 +11,7 @@ stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross joi
 ```
 // Scala
 import org.apache.spark.sql._
-val mySparkSession = SparkSession.
+val spark = SparkSession.
     builder().
     appName("my app").
     master("local[*]").   // use master("yarn") for a YARN cluster
@@ -20,8 +20,15 @@ val mySparkSession = SparkSession.
 
 # Python
 from pyspark.sql import SparkSession
-mySparkSession = SparkSession.builder.appName("my app").master("local[*]").config("spark.driver.memory","2g").getOrCreate()
-
+spark = SparkSession.builder \
+        .appName("my app")  \
+        .master("yarn") \
+        .config("spark.driver.memory","8g") \
+        .config("spark.executor.memory","14g") \
+        .config("spark.executor.cores","4") \
+        .config("spark.executor.instances","8") \
+        .config("spark.dynamicAllocation.enables","false") \
+        .getOrCreate()
 ```
 ---
 - Spark commit and PRs, see what's new
