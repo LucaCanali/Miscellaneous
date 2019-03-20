@@ -43,7 +43,8 @@ cd spark
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
 
 # Compile for a specific Hadoop version, for exmaple use this to compile for Hadoop 3
-./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Dhadoop.version=3.1.1 -Pyarn -Pkubernetes
+./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-3.2 -Pyarn -Pkubernetes
+# old versions: ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Dhadoop.version=3.2.0 -Pyarn -Pkubernetes
 
 # compile a version with cherry-picked changes
 # git checkout branch-2.3
@@ -738,8 +739,8 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
   val df=spark.read.parquet("s3a://datasets/tpcds-1g/web_sales")
   df.count
   ```
-  - Note, I have tested this on yarn with Spark compiled for Hadoop 3.1.1 as it worked better me 
-  (note use "-Dhadoop.version=3.1.1" to package Spark with Hadoop 3.1.1), 
+  - Note, I have tested this on yarn with Spark compiled for Hadoop 3.1.1 (it should probably be Hadoop 3.2 in current versions)
+   as it worked better me (note use "-Dhadoop.version=3.2.0" to package Spark with Hadoop 3.2.0), 
   use for example org.apache.hadoop:hadoop-aws:2.7.4 on Hadoop 2.7.x.
   - hadoop-aws package will also cause the pull of dependencies from com.amazonaws:aws-java-sdk:version
   - hint: use `s3cmd la` to list available s3 buckets
