@@ -237,6 +237,56 @@ export PYSPARK_DRIVER_PYTHON_OPTS="--ip=`hostname` --no-browser --port=8888"
 pyspark ...<add options here>
 ```
 ---
+- Python UDF and pandas_udf, examples and tests
+
+Examples of udf and pandas_udf. time.sleep is introduced for testing purposes
+```python
+def slowf(s):
+  for i in range(10000):
+    a = 2**i
+  return a
+
+import time
+def slowf(s):
+  for i in range(10000):
+    a = 2**i
+  time.sleep(10)
+  return a
+
+sqlContext.udf.register("slowf", slowf)
+
+sql("select slowf(1)").show()
+
+sql("select avg(slowf(id)) from range(1000)").show()
+```
+
+```python
+import pandas as pd
+import time
+
+from pyspark.sql.functions import col, pandas_udf
+from pyspark.sql.types import LongType
+
+def multiply_func(a, b):
+  time.sleep(10)
+  return a * b
+
+multiply = pandas_udf(multiply_func, returnType=LongType())
+
+spark.udf.register("multiply_func", multiply)
+
+time.time()
+sql("select multiply_func(1,1)").show()
+time.time()
+
+# By default pandas_udf batch 10000 rows (for each concurrently executing task)
+# You expect that the execution time for 10k rows is the same as for 1 row for this exmaple
+time.time()
+sql("select avg(multiply_func(id,2)) from range(10000)").show()
+time.time()
+```
+
+---
 - Change Garbage Collector algorithm
   - For a discussion on tests with different GC algorithms for spark see the post [Tuning Java Garbage Collection for Apache Spark Applications](https://databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
   - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
