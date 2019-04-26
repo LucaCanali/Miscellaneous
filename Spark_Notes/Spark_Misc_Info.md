@@ -174,7 +174,7 @@ System.getProperties.toString.split(',').map(_.trim).foreach(println)
 
 ```
 ---
-- Spark SQL execution plan and code generation
+- Spark SQL execution plan, explain cost and code generation
 ```
 sql("select count(*) from range(10) cross join range(10)").explain(true)
 sql("explain select count(*) from range(10) cross join range(10)").collect.foreach(println)
@@ -208,6 +208,52 @@ scala> df.queryExecution.tracker.phases
 resX: Map[String,org.apache.spark.sql.catalyst.QueryPlanningTracker.PhaseSummary] = Map(planning -> PhaseSummary(1547411782661, 1547411782824), optimization -> PhaseSummary(1547411782509, 1547411782648), parsing -> PhaseSummary(1547411764974, 1547411765852), analysis -> PhaseSummary(1547411765854, 1547411766069))
 ```
 ---
+- Table and column statistics
+
+Examples: as preparation create test tables and views
+```
+sql("create view v1 as select id, 't1' from range(10)") // vew in the default db namespace
+sql("cache table my_cachedquery1 as select id, 'v2' from range(10)") //temporary table
+sql("create table t1 as select id, 't1' from range(10)") // this requires hive support
+```
+
+Display catalog info:
+```
+spark.catalog.listDatabases.show(false)
+spark.catalog.listTables.show(false)
+```
+
+Compute statistics on tables and cached views:
+```
+sql("analyze table t1 compute statistics")
+
+// new in Spark 3.0, stats can be collected for cached views
+sql("cache lazy table v1")
+sql("analyze table v1 compute statistics")
+```
+
+Display table/view stats:
+```
+spark.table("v1").queryExecution.optimizedPlan.stats 
+spark.table("v1").queryExecution.stringWithStats
+sql("explain cost select * from v1").show(false)
+```
+
+Compute column stats on tables, cached queries and cached views:
+```
+sql("analyze table t1 compute statistics for all columns")
+
+// Spark 3, allows to compute column stats on cached views in addition 
+// to computing table defined in Hive metastore
+sql("analyze table my_cachedquery1 compute statistics for all columns")
+sql("analyze table v1 compute statistics for all columns")
+
+spark.table("t1").queryExecution.optimizedPlan.stats.attributeStats
+spark.table("my_cachedquery1").queryExecution.optimizedPlan.stats.attributeStats
+spark.table("v1").queryExecution.optimizedPlan.stats.attributeStats
+```
+
+---
 - Example command line for spark-shell/pyspark/spark-submit on YARN  
 `spark-shell --master yarn --num-executors 5 --executor-cores 4 --executor-memory 7g --driver-memory 7g`
 
@@ -218,7 +264,7 @@ This fetches the output and discards
  ```
 sql("select id from range(10)").show
 sql("select id from range(10)").collect
-sql("select id from range(10)").foreach(_ => ()) // discrds output
+sql("select id from range(10)").foreach(_ => ()) // discards output
  ```
  
 ---
