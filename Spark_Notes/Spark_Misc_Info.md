@@ -704,6 +704,25 @@ dsMuons.selectExpr("explode(muons) as element").selectExpr("element.*").show(2)
 
 ```
 ---
+- Multi select statements in Spark sql
+Example:
+```
+scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
++---+
+| id|
++---+
+|  6|
+|  7|
+|  8|
+|  9|
+| 10|
+| 11|
+| 12|
+| 13|
++---+
+```
+
+---
 - Spark TPCDS benchmark
   - Download and build the Spark package from [https://github.com/databricks/spark-sql-perf]
   - Download and build tpcds-kit for generating data from [https://github.com/databricks/tpcds-kit]
