@@ -3,7 +3,7 @@
 In this note you can find a few links and basic examples relevant to using Flame Graphs for profiling Apache Spark workloads
 running in the JVM on Linux.
 
-### TL;DR use async-profiler
+### TL;DR use async-profiler for JVM and py-spy for Python
 
 Download from [https://github.com/jvm-profiling-tools/async-profiler]   
 Build as in the README (export JAVA_HOME and run make)  
@@ -23,6 +23,19 @@ Visualize the on-CPU flamegraph:
 ```
 firefox flamegraph1.svg
 ```
+
+As written in the async profiler instructions, you may need to set the following:
+```
+# echo 1 > /proc/sys/kernel/perf_event_paranoid
+# echo 0 > /proc/sys/kernel/kptr_restrict
+```
+
+For Python (when using PySpark and Python UDF for example), use py-spy:
+```python
+pip install py-spy
+py-spy -p <pid> -f <flamegraph_file>
+```
+
 
 ## Intro
 
@@ -77,7 +90,7 @@ For more details related to the challenges of profiling Java/JVM see
   - most commercial profiling tools use SafePoints rather than AsyncGetCallTrace
 - Distributed Hadoop Profiler [HProfiler](https://github.com/cerndb/Hadoop-Profiler)
   - based on perf, integrates with YARN and aggregates profiles
-
+- Python: [py-spy](https://github.com/benfred/py-spy)
 ---
 ## Flame Graph repo:
 Download: ```git clone https://github.com/brendangregg/FlameGraph```
