@@ -721,7 +721,23 @@ scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
 | 13|
 +---+
 ```
+---
+Spark binaryfile format (Spark 3.0)
+Example:
+```
+scala> val df = spark.read.format("binaryFile").load("README.md")
+df: org.apache.spark.sql.DataFrame = [path: string, modificationTime: timestamp ... 2 more fields]
 
+scala> df.count
+res2: Long = 1
+
+scala> df.show
++--------------------+-------------------+------+--------------------+
+|                path|   modificationTime|length|             content|
++--------------------+-------------------+------+--------------------+
+|file:///home/luca...|2019-04-24 21:20:23|  4620|[23 20 41 70 61 6...|
++--------------------+-------------------+------+--------------------+
+```
 ---
 - Spark TPCDS benchmark
   - Download and build the Spark package from [https://github.com/databricks/spark-sql-perf]
