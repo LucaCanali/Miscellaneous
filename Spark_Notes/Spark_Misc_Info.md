@@ -239,7 +239,7 @@ spark.table("v1").queryExecution.stringWithStats
 sql("explain cost select * from v1").show(false)
 ```
 
-Compute column stats on tables, cached queries and cached views:
+Compute and display column stats on tables, cached queries and cached views:
 ```
 sql("analyze table t1 compute statistics for all columns")
 
@@ -251,7 +251,30 @@ sql("analyze table v1 compute statistics for all columns")
 spark.table("t1").queryExecution.optimizedPlan.stats.attributeStats
 spark.table("my_cachedquery1").queryExecution.optimizedPlan.stats.attributeStats
 spark.table("v1").queryExecution.optimizedPlan.stats.attributeStats
+
+spark.table("t1").queryExecution.optimizedPlan.stats.attributeStats.foreach{case (k, v) => println(s"[$k]: $v")}
+
+[id#0L]: ColumnStat(Some(10),Some(0),Some(9),Some(0),Some(8),Some(8),None,2)
+
 ```
+
+Histograms and statistics
+```
+sql("SET spark.sql.cbo.enabled=true")
+sql("SET spark.sql.statistics.histogram.enabled=true")
+spark.range(1000).selectExpr("id % 33 AS c0", "rand() AS c1", "0 AS c2").write.saveAsTable("t")
+sql("ANALYZE TABLE t COMPUTE STATISTICS FOR COLUMNS c0, c1, c2")
+spark.table("t").groupBy("c0").agg(count("c1").as("v1"), sum("c2").as("v2")).createTempView("temp")
+
+spark.table("t").queryExecution.optimizedPlan.stats.attributeStats.foreach{case (k, v) => println(s"[$k]: $v")}
+[c0#24320L]: ColumnStat(Some(33),Some(0),Some(32),Some(0),Some(8),Some(8),Some(Histogram(3.937007874015748,[Lorg.apache.spark.sql.catalyst.plans.logical.HistogramBin;@77c9db55)),2)
+[c1#24321]: ColumnStat(Some(896),Some(7.45430597672625E-4),Some(0.9986498874940231),Some(0),Some(8),Some(8),Some(Histogram(3.937007874015748,[Lorg.apache.spark.sql.catalyst.plans.logical.HistogramBin;@258f3e5)),2)
+[c2#24322]: ColumnStat(Some(1),Some(0),Some(0),Some(0),Some(4),Some(4),Some(Histogram(3.937007874015748,[Lorg.apache.spark.sql.catalyst.plans.logical.HistogramBin;@45f675a4)),2)
+
+spark.table("temp").queryExecution.optimizedPlan.stats.attributeStats.foreach{case (k, v) => println(s"[$k]: $v")}
+[c0#12161L]: ColumnStat(Some(33),Some(0),Some(32),Some(0),Some(8),Some(8),Some(Histogram(3.937007874015748,[Lorg.apache.spark.sql.catalyst.plans.logical.HistogramBin;@4d6cfa5)),2)
+```
+
 
 ---
 - Example command line for spark-shell/pyspark/spark-submit on YARN  
