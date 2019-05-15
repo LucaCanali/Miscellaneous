@@ -894,15 +894,16 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
   bin/spark-shell \
     --conf spark.hadoop.fs.s3a.endpoint="https://s3.cern.ch" \
     --conf spark.hadoop.fs.s3a.impl="org.apache.hadoop.fs.s3a.S3AFileSystem" \
-    --packages org.apache.hadoop:hadoop-aws:3.1.1 # edit Hadoop version
+    --packages org.apache.hadoop:hadoop-aws:2.7.7 # edit hadoop-aws version to match Spark's Hadoop
 
   # example use
   val df=spark.read.parquet("s3a://datasets/tpcds-1g/web_sales")
   df.count
   ```
-  - Note, I have tested this on yarn with Spark compiled for Hadoop 3.1.1 (it should probably be Hadoop 3.2 in current versions)
-   as it worked better me (note use "-Dhadoop.version=3.2.0" to package Spark with Hadoop 3.2.0), 
-  use for example org.apache.hadoop:hadoop-aws:2.7.4 on Hadoop 2.7.x.
+  - Note, I have tested this on yarn with Spark compiled for Hadoop 3.2 and with Hadoop 2.7
+  use for example `--packages org.apache.hadoop:hadoop-aws:2.7.7` on Hadoop 2.7  
+  I have noticed that Hadoop 3.2/hadoop-aws 3.2 have issues when listing directories with a large number of files,
+  so I stick to hadoop 2.7 for the moment.
   - hadoop-aws package will also cause the pull of dependencies from com.amazonaws:aws-java-sdk:version
   - hint: use `s3cmd la` to list available s3 buckets
 
