@@ -793,6 +793,7 @@ cd spark-2.4.0-bin-hadoop2.7
 
 bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-memory 12g  --executor-memory 12g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.crossJoin.enabled=true
 // if using larger number of cores consider bumping up --conf spark.sql.shuffle.partitions=400
+// if running on k8s client mode, add: --conf spark.task.maxDirectResultSize=100000000000 to work around SPARK-26087
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
 import com.databricks.spark.sql.perf.tpcds.TPCDSTables
