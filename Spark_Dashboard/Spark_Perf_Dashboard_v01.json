@@ -4085,8 +4085,8 @@
     ]
   },
   "time": {
-    "from": "now-50m",
-    "to": "now-40m"
+    "from": "now",
+    "to": "now-5m"
   },
   "timepicker": {
     "refresh_intervals": [
