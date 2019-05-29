@@ -995,3 +995,15 @@ df1.hint("merge").join(df2, 'key1==='key2).explain(true)
 df1.hint("shuffle_hash").join(df2, 'key1==='key2).explain(true)
 df1.hint("shiffle_replicate_nl").join(df2, 'key1==='key2).explain(true)
 ``` 
+---
+Use of regular expression in Spark SQL, example and gotcha:
+When using SQL or selectExpr, you need to double the backslashes (maybe a bug?)
+```
+val df=sql("select id, 'aadd ffggg sss wwwaaa' name from range(10)")
+df.selectExpr("regexp_extract(name, '(\\\\w+)', 0)").show(2)
+```
+All OK with the direct use of the function:
+```
+df.select(regexp_extract(col("name"), "(\\w+)", 0)).show(2)
+```
+
