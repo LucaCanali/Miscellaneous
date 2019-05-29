@@ -487,6 +487,10 @@ df.write
   .format("parquet")
   .save("filePathandName")             // you can use saveAsTable as an alternative
 
+//Options
+.option("parquet.block.size", <blockSize>) // defalut 128MB, see also c.hadoopConfiguration.setInt("parquet.block.size", <blocksize>
+.option("compression", <compression_codec>) // default snappy, see also spark.sql.parquet.compression.codec
+
 // relevant configuration parameters:
 sc.hadoopConfiguration.setInt("parquet.block.size", .. ) // default to 128 MB parquet block size (size of the column groups)
 spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, lzo, snappy, {zstd, brotli, lz4} 
