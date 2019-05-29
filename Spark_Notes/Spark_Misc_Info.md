@@ -980,3 +980,18 @@ df1.join(df2, 'key1==='key2)
 df1b.join(df2b, 'key1==='key2 and 'salt1==='salt2)
 ``` 
 ---
+Spark SQL hints for join are:  
+"broadcast" -> Spark 2.x,
+"merge", "shuffle_hash", "shuffle_replicate_nl" -> Spark 3.0
+
+Examples, note for sql use /*+ hint_name(t1, t2)*/:
+```
+val df1 = spark.sql("select id as id1, id % 2 as key1, 'aaaaaaaa' name1 from range(100)")
+val df2 = spark.sql("select id+5 id2, id % 2 as key2, 'bbbbbbbbb' name2 from range(100)")
+df1.join(df2, 'key1==='key2).explain(true)
+
+df1.hint("broadcast").join(df2, 'key1==='key2).explain(true)
+df1.hint("merge").join(df2, 'key1==='key2).explain(true)
+df1.hint("shuffle_hash").join(df2, 'key1==='key2).explain(true)
+df1.hint("shiffle_replicate_nl").join(df2, 'key1==='key2).explain(true)
+``` 
