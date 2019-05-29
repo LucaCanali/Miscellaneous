@@ -476,19 +476,20 @@ sc.parallelize(range(0, sc.defaultParallelism)).map(lambda i: subprocess.check_o
 ```
 // Read
 spark.read.parquet("fileNameAndPath")
-// relevant parameters:
+// relevant configuration:
 spark.conf.set("spark.sql.files.maxPartitionBytes", ..) // default 128MB, small files are grouped into partitions up to this size
 
 // Write
-spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, lzo, snappy, {zstd, brotli, lz4} 
 df.write
+  .coalesce(N_partitions)   // use this if you want to reduce the number of output partitions (beware that it also affects num of concurrent write tasks) 
   .partitionBy("colPartition1", "colOptionalSubPart") // partitioning column(s) 
-  .bucketBy(numBuckets, "colBucket")   // This feature currently gives error with save, follow SPARK-19256
+  .bucketBy(numBuckets, "colBucket")   // This feature currently gives error with save, follow SPARK-19256 or use saveAsTable (Hive)
   .format("parquet")
   .save("filePathandName")             // you can use saveAsTable as an alternative
 
-// relevant parameters:
+// relevant configuration parameters:
 sc.hadoopConfiguration.setInt("parquet.block.size", .. ) // default to 128 MB parquet block size (size of the column groups)
+spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, lzo, snappy, {zstd, brotli, lz4} 
 spark.conf.set("spark.sql.files.maxRecordsPerFile", ...) // defaults to 0, use if you need to limit size of files being written  
 ```
 
@@ -958,4 +959,20 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
  - How to add a description to a Spark job:
    - spark.sparkContext.setJobDescription("job description")
    - see also: spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)
+ 
  ---
+ Salting SQL joins to work around problems with data skew on large tables, exmaple:
+Add a salt column to the tables to be joined:
+```
+val df1b = df1.selectExpr("id1", "key1", "name1", "int(rand()*10) as salt1")
+val df2b = df2.selectExpr("id2", "key2", "name2", "int(rand()*10) as salt2")
+ ```
+Transform the query
+```
+// original join
+df1.join(df2, 'key1==='key2)
+
+// join using the salt column
+df1b.join(df2b, 'key1==='key2 and 'salt1==='salt2)
+``` 
+---
