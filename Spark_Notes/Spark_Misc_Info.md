@@ -890,31 +890,36 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
 
 ---
 - How to access AWS s3 Filesystem with Spark  
-  -  Deploy the jars for hadoop-aws with the implementation of the s3a filesystem in Hadoop.  
-  -  Set the Hadoop configuration for s3a in the Hadoop client of the driver
-  (note, Spark executors will take care of setting the Hadoop client in the classpath of executors's JVM,
-   see org.apache.spark.deploy.SparkHadoopUtil.scala)
+  -  Deploy the jars for hadoop-aws with the implementation of S3A as an Hadoop filesystem.  
+  -  The following lists multiple (redundant) ways to set the Hadoop client configuration 
+  for s3a in the Spark driver JVM.Spark executors will take care of setting the Hadoop client
+  configuration in the classpath of executors's JVM (see org.apache.spark.deploy.SparkHadoopUtil.scala).
   ```
-  export AWS_SECRET_ACCESS_KEY="XXXX"
-  export AWS_ACCESS_KEY_ID="YYYY"
+  export AWS_SECRET_ACCESS_KEY="XXXX..." # either set this or use spark conf as listed below: multiple ways to config 
+  export AWS_ACCESS_KEY_ID="YYYY..."
   bin/spark-shell \
     --conf spark.hadoop.fs.s3a.endpoint="https://s3.cern.ch" \
     --conf spark.hadoop.fs.s3a.impl="org.apache.hadoop.fs.s3a.S3AFileSystem" \
+    --conf spark.hadoop.fs.s3a.secret.key="XXX..." \
+    --conf spark.hadoop.fs.s3a.access.key="YYY..." \
     --packages org.apache.hadoop:hadoop-aws:2.7.7 # edit hadoop-aws version to match Spark's Hadoop
 
-  # example use
+  # example of how to use
   val df=spark.read.parquet("s3a://datasets/tpcds-1g/web_sales")
   df.count
   ```
-  - Note, I have tested this on yarn with Spark compiled for Hadoop 3.2 and with Hadoop 2.7
-  use for example `--packages org.apache.hadoop:hadoop-aws:2.7.7` on Hadoop 2.7  
-  I have noticed that Hadoop 3.2/hadoop-aws 3.2 have issues when listing directories with a large number of files,
-  so I stick to hadoop 2.7 for the moment.
+  - Note, I have tested this on Spark compiled for Hadoop 3.2 and with Hadoop 2.7.  
+  I have noticed that Hadoop 3.2/hadoop-aws 3.2 reading from s3.cern.ch gets stuck when listing 
+  directories with a large number of files (as in the TPCDS benchmark). The workaround is:
+  ```
+  --packages org.apache.hadoop:hadoop-aws:3.2.0
+  --conf spark.hadoop.fs.s3a.list.version=1
+  ```
   - hadoop-aws package will also cause the pull of dependencies from com.amazonaws:aws-java-sdk:version
-  - hint: use `s3cmd la` to list available s3 buckets
+  - note: use `s3cmd la` to list available s3 buckets
 
 
-  - Other options (alternatives to the recipe above): 
+  - More configuration options (alternatives to the recipe above): 
     - Set config in driver's Hadoop client
      ```
      sc.hadoopConfiguration.set("fs.s3a.endpoint", "https://s3.cern.ch") 
