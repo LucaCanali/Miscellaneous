@@ -94,14 +94,30 @@ sc.hadoopConfiguration.set(key,value)
 ```
 
 ---
-- Read filesystem statistics from all registered filesystem in Hadoop (notably HDFS and local).
-  Note this code reports statistics for the local JVM, i.e. the driver (will not read stats from executors)
+- Read filesystem statistics from all registered filesystem in Hadoop (notably HDFS and local, also s3a if used).  
+  Note: this code reports statistics for the local JVM, i.e. the driver (will not read stats from executors)  
+  Note: when using this programmatically, use `org.apache.hadoop.fs.FileSystem.getAllStatistics`, 
+  `org.apache.hadoop.fs.FileSystem.getStatistics` also works. These options are being/have been deprecated.  
+  See also extended statistics with the API getGlobalStorageStatistics example below.
 ```
 scala> org.apache.hadoop.fs.FileSystem.printStatistics()
-  FileSystem org.apache.hadoop.hdfs.DistributedFileSystem: 0 bytes read, 213477639 bytes written, 8 read ops, 0 large read ops, 10 write ops
-  FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 213444546 bytes read, 0 bytes written, 0 read ops, 0 large read ops, 0 write ops
+  FileSystem org.apache.hadoop.hdfs.DistributedFileSystem: 0 bytes read, 4130784 bytes written, 1 read ops, 0 large read ops, 3 write ops
+  FileSystem org.apache.hadoop.fs.s3a.S3AFileSystem: 23562931 bytes read, 0 bytes written, 14591 read ops, 0 large read ops, 0 write ops
+  FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 0 bytes read, 0 bytes written, 0 read ops, 0 large read ops, 0 write ops
 ```
 
+- Read extended filesystem statistics,  applies to Hadoop 2.8.0 and higher.
+
+```scala
+val stats=org.apache.hadoop.fs.FileSystem.getGlobalStorageStatistics.iterator
+stats.forEachRemaining {entry =>
+  println(s"Stats for scheme: ${entry.getScheme}")
+  entry.getLongStatistics.forEachRemaining(println)
+  println
+  }
+  ```
+}
+ 
 ---
 How to use the Spark Scala REPL to access Hadoop API, examples:
 
