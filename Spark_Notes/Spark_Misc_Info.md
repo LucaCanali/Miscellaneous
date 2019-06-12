@@ -810,7 +810,7 @@ tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, true, fals
 export SPARK_CONF_DIR=/usr/hdp/spark/conf
 export HADOOP_CONF_DIR=/etc/hadoop/conf
 export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
-cd spark-2.4.0-bin-hadoop2.7
+cd spark-2.4.3-bin-hadoop2.7
 
 bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-memory 12g  --executor-memory 12g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.crossJoin.enabled=true
 // if using larger number of cores consider bumping up --conf spark.sql.shuffle.partitions=400
@@ -818,7 +818,7 @@ bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-me
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
 import com.databricks.spark.sql.perf.tpcds.TPCDSTables
-val tables = new TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools",10000)
+val tables = new TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools","10000")
 
 ///// 3. Setup tables and run benchmask
 
@@ -830,7 +830,7 @@ val experiment = tpcds.runExperiment(tpcds.tpcds2_4Queries)
 
 // optionally: experiment.waitForFinish(timeout)
 
-// Example, I used this for some Spark 2.3 tests to avoid regression at scale on q14a q14b and q72
+// Example of how to put exclude list (or similarly use for include lists) to limit number of querries:
 //val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
 //val experiment = tpcds.runExperiment(benchmarkQueries)
 
