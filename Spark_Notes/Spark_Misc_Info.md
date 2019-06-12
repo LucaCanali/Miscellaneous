@@ -983,7 +983,8 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
  ---
  - How to add a description to a Spark job:
    - spark.sparkContext.setJobDescription("job description")
-   - see also: spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)
+   - Note: in Spark 3.0, when using Spark SQL/Dataframes: "job description" will be displayed in SQL tab
+   - See also: spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)
  
  ---
  Salting SQL joins to work around problems with data skew on large tables, exmaple:
