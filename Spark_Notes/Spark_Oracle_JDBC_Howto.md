@@ -4,7 +4,7 @@ Relevant to reading Oracle tables using Spark SQl (Dataframes API), to transfer 
 Oracle into Parquet or other formats.
 Find here also some notes on measuring performance, use of partitioning and also some thoughts on Apache Sqoop vs. Spark for data transfer.   
    
-#### An example of how to create a Spark dataframe that reads from and Oracle table/view/query using JDBC.
+#### An example of how to create a Spark DataFrame that reads from and Oracle table/view/query using JDBC.
 See also [Spark documentation]()https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
 
 ```
@@ -28,6 +28,16 @@ df.show(5)
 // write Spark data frame as (snappy compressed) Parquet files  
 df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
+```
+// Similar to above, alternative syntax
+val connectionProperties = new java.util.Properties()
+connectionProperties.put("user", "MYORAUSER)
+connectionProperties.put("password", "XXX")
+
+val df = spark.read.option("driver","oracle.jdbc.driver.OracleDriver").option("fetchsize",1000)
+         .jdbc("jdbc:oracle:thin:@dbserver:port/service_name", "MYSCHEMA.MYTABLE", connectionProperties )
+```
+
 
 ```
 # alternative syntax to read from Oracle using Spark SQL
@@ -42,6 +52,44 @@ sql(s"""
   """.stripMargin)
 
 sql("select * from mySparkTempView").show(5)
+```
+
+### Examples on how to write to Oracle
+```
+import org.apache.spark.sql.SaveMode
+
+df.write.mode(SaveMode.Append).format("jdbc")
+        .option("driver", "oracle.jdbc.driver.OracleDriver")
+        .option("url", "jdbc:oracle:thin:@dbserver:port/service_name")
+        .option("dbtable", "MYSCHEMA.MYTABLE")
+        .option("user", "MYORAUSER")
+        .option("password", "XXX")
+        .save()
+
+val connectionProperties = new java.util.Properties()
+connectionProperties.put("user", "MYORAUSER)
+connectionProperties.put("password", "XXX")
+df.write.mode(SaveMode.Append)
+        .option("driver", "oracle.jdbc.driver.OracleDriver")
+        .jdbc("jdbc:oracle:thin:@dbserver:port/service_name", "MYSCHEMA.MYTABLE", connectionProperties )
+
+```
+
+### Example with TPCS protocol
+```
+bin/spark-shell --jars <path>/ojdbc8.jar
+
+val connectionProperties = new java.util.Properties()
+connectionProperties.put("user", "MYUSER")
+connectionProperties.put("password", "MYPASS")
+connectionProperties.put("javax.net.ssl.trustStore","<path>/keystore.jks")
+//connectionProperties.put("javax.net.ssl.trustStoreType","JKS")
+connectionProperties.put("javax.net.ssl.trustStorePassword","MyKeystorPassword")
+
+val df = spark.read.format("jdbc").option("driver","oracle.jdbc.driver.OracleDriver")
+              .option("fetchsize",1000)
+              .jdbc("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=tcps)(HOST=hostname)(PORT=TPCDS_port)))(CONNECT_DATA=(SERVICE_NAME=orcl.cern.ch)))", "MYSCHEMA.MYTABLE", connectionProperties )
+
 ```
 
 #### Note on partitioning/parallelization of the JDBC source with Spark:
