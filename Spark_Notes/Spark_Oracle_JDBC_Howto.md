@@ -76,6 +76,7 @@ df.write.mode(SaveMode.Append)
 ```
 
 ### Example with TPCS protocol
+Tested with Oracle 18c
 ```
 bin/spark-shell --jars <path>/ojdbc8.jar
 
