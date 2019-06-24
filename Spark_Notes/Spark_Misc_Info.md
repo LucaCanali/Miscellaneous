@@ -533,6 +533,9 @@ spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, 
 spark.conf.set("spark.sql.files.maxRecordsPerFile", ...) // defaults to 0, use if you need to limit size of files being written  
 ```
 
+// Savemode:
+df.coalesce(4).write.mode(org.apache.spark.sql.SaveMode.Overwrite).parquet("..PATH..")
+
 ---
 - Repartition / Compact Parquet tables
 
