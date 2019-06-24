@@ -119,7 +119,7 @@ stats.forEachRemaining {entry =>
 }
  
 ---
-How to use the Spark Scala REPL to access Hadoop API, examples:
+How to use the Spark Scala REPL to access Hadoop Filesystem API. Example for HDFS and s3a metrics:
 
 ```
 // get Hadoop filesystem object
@@ -129,6 +129,26 @@ val fs = org.apache.hadoop.fs.FileSystem.get(spark.sessionState.newHadoopConf)
 
 //get local filesystem
 val fslocal = org.apache.hadoop.fs.FileSystem.getLocal(spark.sessionState.newHadoopConf)
+
+// get S3A Filesystem, 
+// Use if you want to read metrics for s3a stats (or another Hadoop compatible filesystem)
+val fullPathUri = java.net.URI.create("s3a://luca/")
+val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri, spark.sessionState.newHadoopConf)
+// alternative:
+val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri,sc.hadoopConfiguration).asInstanceOf[org.apache.hadoop.fs.s3a.S3AFileSystem]
+
+// Note, in the case of S3A/Hadoop v2.8.0 or higher this prints extended filesystem stats and S#A instrumentation values:
+print(fs.toString)
+// List of available statistics
+fs.getStorageStatistics.forEach(println) 
+// Get a single metric value:
+fs.getInstrumentation.getCounterValue("stream_bytes_read")
+
+
+// Silimarly for HDFS you can use this to explicitly cast to HDFS Client class:
+val fullPathUri = java.net.URI.create("hdfs://myHDFSCLuster/")
+val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri,sc.hadoopConfiguration).asInstanceOf[org.apache.hadoop.hdfs.DistributedFileSystem]
+
 
 // get file status
 fs.getFileStatus(new org.apache.hadoop.fs.Path("<file_path>"))
