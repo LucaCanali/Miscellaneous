@@ -358,7 +358,7 @@ def slowf(s):
   time.sleep(10)
   return a
 
-sqlContext.udf.register("slowf", slowf)
+spark.udf.register("slowf", slowf)
 
 sql("select slowf(1)").show()
 
