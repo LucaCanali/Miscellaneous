@@ -294,7 +294,7 @@ spark.table("t1").queryExecution.optimizedPlan.stats.attributeStats.foreach{case
 
 ```
 
-Histograms and statistics
+Table statistics and column statistics histograms
 ```
 sql("SET spark.sql.cbo.enabled=true")
 sql("SET spark.sql.statistics.histogram.enabled=true")
@@ -788,6 +788,20 @@ scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
 | 13|
 +---+
 ```
+---
+- Spark SQL aggregate funcitions, SQl vs. declarative API
+
+  - spark-shell:
+  ```
+  val df=sql("select id, id % 3 id2 from range(10)")
+  df.groupBy('id2).agg(avg('id)).show
+  ```
+  - sql:
+  ```
+  sql("select id, id % 3 id2 from range(10)").createOrReplaceTempView("t1")
+  sql("select id2, avg(id) from t1 group by id2").show
+  ```
+
 ---
 Spark binaryfile format (Spark 3.0)
 Example:
