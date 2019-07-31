@@ -789,7 +789,7 @@ scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
 +---+
 ```
 ---
-- Spark SQL aggregate funcitions, SQl vs. declarative API
+- Spark SQL aggregate functions, SQL vs. declarative API
 
   - spark-shell:
   ```
@@ -801,6 +801,42 @@ scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
   sql("select id, id % 3 id2 from range(10)").createOrReplaceTempView("t1")
   sql("select id2, avg(id) from t1 group by id2").show
   ```
+---
+Columns count/Frequency histograms with Spark SQL
+
+As I write this, Spark dSQL oes not yet implement the width_bucket and/or other histogram-related functions.
+An example of how to use Spark SQL to work around this. Spark shell:
+```
+sql("select id from range(10)").createOrReplaceTempView("t1")
+val df=spark.table("t1")
+
+val maxID = df.select(max('id)).collect()(0)(0)
+val minID = df.select(min('id)).collect()(0)(0)
+val numBuckets = 3
+
+// debug code
+//spark.sql(s"select id, least(floor(round((id-$minID)/($maxID-$minID)*$numBuckets,2)),$numBuckets-1) bucketId from t1").show
+
+spark.sql(s"select count(*) id_count, least(floor(round((id-$minID)/($maxID-$minID)*$numBuckets,2)),$numBuckets-1) bucketId from t1 group by bucketId order by bucketId").show
+
++--------+--------+
+|id_count|bucketId|
++--------+--------+
+|       3|       0|
+|       3|       1|
+|       4|       2|
++--------+--------+
+
+```
+Note that Spark RDD API has a histogram function [see doc](https://spark.apache.org/docs/latest/api/python/pyspark.html)
+It can be used with Spark Dataframes as a workaround as in:
+```
+sql("select cast(id as double) from t1").rdd.map(x => x(0).asInstanceOf[Double]).histogram(3)
+
+res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
+```  
+See [link](http://www.silota.com/docs/recipes/sql-histogram-summary-frequency-distribution.html) for
+additional examples on creating histograms with SQL.
 
 ---
 Spark binaryfile format (Spark 3.0)
