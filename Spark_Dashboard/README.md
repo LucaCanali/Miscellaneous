@@ -105,7 +105,7 @@ For reference, the test workload is
 
 ### Spark metrics dashboard with query/job/stage annotations
 
-Main ideas: 
+**Main ideas:** 
 - Grafana "[annotations provide a way to mark points on the graph with rich events](https://grafana.com/docs/reference/annotations/)".
 - You can use this to mark important point in the
 graph, with details about the start or end time of queries, jobs, stages.
@@ -116,7 +116,7 @@ a data source to add annotation to the Grafana dashboard.
 metrics and resource utilization with meaningful data about the workload and answer questions like:
 which query/Spark job caused the CPU utilization spike at time X? How much shuffle did I use for a given job? etc. 
 
-Recipe to add Spark query/job/stage information to the Spark performance dashboard
+**Recipe** to add Spark query/job/stage information to the Spark performance dashboard:
 - Log Spark execution information (query/job/stage start and end time) to an InfluxDB instance.
 For this use [sparkMeasure](https://github.com/LucaCanali/sparkMeasure) in Flight recorder mode
 with [InfluxDB Sink](https://github.com/LucaCanali/sparkMeasure/blob/master/docs/Flight_recorder_DBwrite.md)
