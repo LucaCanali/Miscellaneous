@@ -103,6 +103,34 @@ For reference, the test workload is
   - Part 4: [I/O metrics](images/dashboard_part4_IO.PNG)  
 
 
+### Spark metrics dashboard with query/job/stage annotations
+
+Main ideas: 
+- Grafana "[annotations provide a way to mark points on the graph with rich events](https://grafana.com/docs/reference/annotations/)".
+- You can use this to mark important point in the
+graph, with details about the start or end time of queries, jobs, stages.
+- Grafana allows to add annotation [queries using an InfluxDB source] (https://grafana.com/docs/features/datasources/influxdb/#annotations) 
+- If you log the query/job/stage start and time into an InfluxDB instance, you can use that information as
+a data source to add annotation to the Grafana dashboard. 
+- The motivation for this is that it allows you to relate
+metrics and resource utilization with meaningful data about the workload and answer questions like:
+which query/Spark job caused the CPU utilization spike at time X? How much shuffle did I use for a given job? etc. 
+
+This is a way you can use to write Spark query/job/stage information to an InfluxDB:
+- Use [sparkMeasure](https://github.com/LucaCanali/sparkMeasure) in Flight recorder mode
+with [InfluxDB Sink](https://github.com/LucaCanali/sparkMeasure/blob/master/docs/Flight_recorder_DBwrite.md)
+as in this example:
+```
+bin/spark-shell --master local[*] --packages ch.cern.sparkmeasure:spark-measure_2.11:0.15 \
+--conf spark.sparkmeasure.influxdbURL="http://myInfluxDB:8086" 
+--conf spark.extraListeners=ch.cern.sparkmeasure.InfluxDBSink
+```
+
+- import the [example Grafana dashboard_with_annotations](Spark_Perf_Dashboard_v01_with_annotations.json)
+ 
+- An example of the result is show below (see "Example Grafana dashboard with annotations")
+
+
 ### Example Graphs
 
 The next step is to further drill down in understanding Spark metrics, the dashboard graphs
@@ -145,3 +173,8 @@ Reading from HDFS is an important part of this workload.
 In this graph you can see the measured throughput using HDFS instrumentation exported via the Spark metrics system
 into the dashboard.
 
+**Example Grafana dashboard with annotations**
+![Graph: Grafana dashboard with query start time annotations](images/Spark_dashboard_with_annotations.PNG "Grafana dashboard with annotations")
+This picture shows an example of Grafana dashboard displaying Spark metrics and augmented with annotations
+of query start time. Each vertical line is a new query being run. Details on the query id can be found
+by drilling down on the graphs. Details on how this is run are describe above at "Spark metrics dashboard with query/job/stage annotations".
