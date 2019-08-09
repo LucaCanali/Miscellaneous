@@ -116,8 +116,9 @@ a data source to add annotation to the Grafana dashboard.
 metrics and resource utilization with meaningful data about the workload and answer questions like:
 which query/Spark job caused the CPU utilization spike at time X? How much shuffle did I use for a given job? etc. 
 
-This is a way you can use to write Spark query/job/stage information to an InfluxDB:
-- Use [sparkMeasure](https://github.com/LucaCanali/sparkMeasure) in Flight recorder mode
+Recipe to add Spark query/job/stage information to the Spark performance dashboard
+- Log Spark execution information (query/job/stage start and end time) to an InfluxDB instance.
+For this use [sparkMeasure](https://github.com/LucaCanali/sparkMeasure) in Flight recorder mode
 with [InfluxDB Sink](https://github.com/LucaCanali/sparkMeasure/blob/master/docs/Flight_recorder_DBwrite.md)
 as in this example:
 ```
@@ -126,7 +127,8 @@ bin/spark-shell --master local[*] --packages ch.cern.sparkmeasure:spark-measure_
 --conf spark.extraListeners=ch.cern.sparkmeasure.InfluxDBSink
 ```
 
-- import the [example Grafana dashboard_with_annotations](Spark_Perf_Dashboard_v01_with_annotations.json)
+- Import the [example Grafana dashboard_with_annotations](Spark_Perf_Dashboard_v01_with_annotations.json)
+and setup the data source for annotations to point to the InfluxDB instance. The DB name used by sparkMeasure by default is "sparkmeasure"
  
 - An example of the result is show below (see "Example Grafana dashboard with annotations")
 
