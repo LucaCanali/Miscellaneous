@@ -1908,7 +1908,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_SPARK_DROPWIZARD}",
-      "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
+      "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between run time and wait time measurements can be interpreted as due to missing instrumentation (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fill": 1,
       "gridPos": {
         "h": 11,
