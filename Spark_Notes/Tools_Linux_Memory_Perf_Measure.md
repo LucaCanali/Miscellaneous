@@ -36,7 +36,7 @@ These notes are about tools for CPU/memory performance investigations and troubl
 - Some additional info on **perf**
   - Use `perf stat -a <pid>` to measure a default list of counters including **instructions** and **cycles** (and their ratio, instructions per cycle: **IPC**).
   - perf can also be used to measure many more counters. See this example to add measurement on cache misses, see also [man perf-list](http://man7.org/linux/man-pages/man1/perf-list.1.html) and [man perf-stat](http://man7.org/linux/man-pages/man1/perf-stat.1.html) 
-  - `perf stat -a -e task-clock,cycles,instructions,branches,branch-misses -e stalled-cycles-frontend,salled-cycles-backend -e cache-references,cache-misses -e LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -e L1-dcache-loads,L1-dcache-lad-misses,L1-dcache-stores,L1-dcache-store-misses -p <pid>` 
+  - `perf stat -a -e task-clock,cycles,instructions,branches,branch-misses -e stalled-cycles-frontend,stalled-cycles-backend -e cache-references,cache-misses -e LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -e L1-dcache-loads,L1-dcache-load-misses,L1-dcache-stores,L1-dcache-store-misses -p <pid>` 
 
 - Relevant docs and discussions:
   - Blog post [Performance Analysis of a CPU-Intensive Workload in Apache Spark](https://db-blog.web.cern.ch/blog/luca-canali/2017-09-performance-analysis-cpu-intensive-workload-apache-spark)
