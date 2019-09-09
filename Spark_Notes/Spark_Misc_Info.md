@@ -6,8 +6,9 @@ bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.11
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
 ```
+```
 ---
-- Allocate Spark Session from API
+- Build Spark Session from API
 ```
 // Scala
 import org.apache.spark.sql._
@@ -58,7 +59,12 @@ cd spark
 # git cherry-pick xxxx
 
 ```
-
+--- 
+- Spark executor plugins  
+Executor plugins allow to run custom code at Executor startup. The y can be useful to extend instrumentation/monitoring and for 
+advanced configuration. See examples at:
+  - [Spark executo plugin for Spark 2.4](https://github.com/cerndb/SparkExecutorPlugins2.4)
+  - [Spark executor plugin for Spark 3.0](https://github.com/cerndb/SparkExecutorPlugins)
 ---
 - Spark configuration
 configuration files are: in SPARK_CONF_DIR (defaults SPARK_HOME/conf)  
