@@ -50,7 +50,7 @@ cd spark
 # export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
 
-# Compile for a specific Hadoop version, for exmaple use this to compile for Hadoop 3
+# Compile for a specific Hadoop version, for example use this to compile for Hadoop 3
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-3.2 -Pyarn -Pkubernetes
 # old versions: ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Dhadoop.version=3.2.0 -Pyarn -Pkubernetes
 
@@ -391,7 +391,7 @@ sql("select multiply_func(1,1)").show()
 time.time()
 
 # By default pandas_udf batch 10000 rows (for each concurrently executing task)
-# You expect that the execution time for 10k rows is the same as for 1 row for this exmaple
+# You expect that the execution time for 10k rows is the same as for 1 row for this example
 time.time()
 sql("select avg(multiply_func(id,2)) from range(10000)").show()
 time.time()
@@ -1084,7 +1084,7 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
    - See also: spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)
  
  ---
- Salting SQL joins to work around problems with data skew on large tables, exmaple:
+ Salting SQL joins to work around problems with data skew on large tables, example:
 Add a salt column to the tables to be joined:
 ```
 val df1b = df1.selectExpr("id1", "key1", "name1", "int(rand()*10) as salt1")
