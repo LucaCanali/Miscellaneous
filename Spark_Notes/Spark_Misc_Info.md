@@ -2,10 +2,9 @@
 
 - Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)   
 ```
-bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.11
+bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.15
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
-```
 ```
 ---
 - Build Spark Session from API
