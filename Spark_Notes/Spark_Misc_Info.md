@@ -143,7 +143,7 @@ val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri, spark.sessionState.new
 // alternative:
 val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri,sc.hadoopConfiguration).asInstanceOf[org.apache.hadoop.fs.s3a.S3AFileSystem]
 
-// Note, in the case of S3A/Hadoop v2.8.0 or higher this prints extended filesystem stats and S#A instrumentation values:
+// Note, in the case of S3A/Hadoop v2.8.0 or higher this prints extended filesystem stats and S3A instrumentation values:
 print(fs.toString)
 // List of available statistics
 fs.getStorageStatistics.forEach(println) 
@@ -600,7 +600,7 @@ vals.isettings.maxPrintString=1000
 ```
 
 ---
- - Examples of Dataframe creation for testing
+ - Examples of DataFrame creation for testing
  ```
 sql("select * from values (1, 'aa'), (2,'bb'), (3,'cc') as (id,desc)").show
 +---+----+
@@ -653,6 +653,10 @@ df.show
 |  2| bbb|Map(2 -> b)|[4, 5, 6]|[4.1, 5.1, 6.1]|
 +---+----+-----------+---------+---------------+
 
+# Python
+df = spark.createDataFrame([(1, "event1"), (2,"event2"), (3, "event3")], ("id","name"))
+
+// Scala
 scala> case class myclass(id: Integer, name: String, myArray: Array[Double])
 scala> val df=Seq(myclass(1, "aaaa", Array(1.1,2.1,3.1)),myclass(2, "bbbb", Array(4.1,5.1,6.1))).toDF
 scala> df..show
@@ -795,6 +799,20 @@ scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
 +---+
 ```
 ---
+- Fun with Spark SQL, FizBuzz
+```
+sql("""
+select case
+    when id % 15 = 0 then 'FizzBuzz'
+    when id % 3 = 0 then 'Fizz'
+    when id % 5 = 0 then 'Buzz'
+    else cast(id as string)
+    end as FizzBuzz
+from range(20)
+order by id""").show()
+```
+
+---
 - Spark SQL aggregate functions, SQL vs. declarative API
 
   - spark-shell:
@@ -810,7 +828,7 @@ scala> sql("from range(10) select id where id>5 select id+10 where id<4").show
 ---
 Columns count/Frequency histograms with Spark SQL
 
-As I write this, Spark dSQL oes not yet implement the width_bucket and/or other histogram-related functions.
+As I write this, Spark SQL oes not yet implement the width_bucket and/or other histogram-related functions.
 An example of how to use Spark SQL to work around this. Spark shell:
 ```
 sql("select id from range(10)").createOrReplaceTempView("t1")
