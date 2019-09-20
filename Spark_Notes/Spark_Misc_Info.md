@@ -810,7 +810,30 @@ select case
 from range(20)
 order by id""").show()
 ```
+---
+- Classic join example with parent-child relationship using Departments and Employees tables
+ ```
+# Create test tables
+emp = spark.createDataFrame([(1, "Emp1", 10), (2,"Emp2", 10), (3, "Emp3", 20)], ("id","name","dep_id"))
+emp.createOrReplaceTempView("employees")
 
+dep = spark.createDataFrame([(10, "Department1"), (20, "Department2"), (30, "Department3")], ("id","name"))
+dep.createOrReplaceTempView("departments")
+
+# Inner join
+spark.sql("""
+select employees.id, employees.name emp_name, departments.name dep_name
+from employees join departments
+on employees.dep_id = departments.id
+order by employees.id""").show()
+
+# Outer join
+spark.sql("""
+select departments.id, departments.name dep_name, employees.name emp_name
+from departments left outer join employees
+on employees.dep_id = departments.id
+order by departments.id""").show() 
+```
 ---
 - Spark SQL aggregate functions, SQL vs. declarative API
 
