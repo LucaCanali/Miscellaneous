@@ -15,4 +15,4 @@
 | [**Tools: Measure Linux Memory Performance**](Tools_Linux_Memory_Perf_Measure.md) | Notes and examples of tools for measuring CPU-bound workload and memory throughput on Linux
 | [**Tools: Spark and Linux Flame Graph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools for stack profiling and Flame Graph visualization relevant for Spark (Java/JVM) on Linux
 | [**Spark Task Metrics**](Spark_TaskMetrics.md) | Short description of Spark task Metrics
-
+| [**Test Scala Project**](testScalaProject) | A simple example of a working Scala project with Spark SQL  
