@@ -132,6 +132,10 @@ and setup the data source for annotations to point to the InfluxDB instance. The
  
 - An example of the result is show below (see "Example Grafana dashboard with annotations")
 
+### Helm chart for Kubernetes
+If you plan to deploy a Spark dashboard as described here on Kubernetes, you can check out the helm chart
+at the following link, it performs installation and configuration:    
+- [Helm chart for the Spark dashboard](https://github.com/cerndb/spark-dashboard)
 
 ### Example Graphs
 
