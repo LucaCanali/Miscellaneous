@@ -996,6 +996,19 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
 ```
 
 ---
+- Generate a simple I-O intensive benchmark load with spark
+  - Setup or copy a large test table, using TPCDS schema
+  - query a large fact table, for example store_sales with a filter condition that forces a full scan
+  - additional tip: use a filter condition that returns 0 (or very few rows) and use "select *" (all columns)
+  - Check the execution plan: you want to confirm that Spark is not using partition pruning nor is managing to push down filters successfully
+  - In the following example this is achieved adding a filter condition with a decimal value that has higher precision than the table values
+  This also causes a cast operation
+  - Use Spark dashboard and/or sparkMeasure and/or OS tools to make sure the query runs as intended, i.e. performing a full table scan.
+  - Example query:
+  ```
+  spark.sql("select * from store_sales where ss_sales_price=37.8688").collect
+  ``` 
+---
 - Monitor Spark workloads with Dropwizard metrics for Spark, Influxdb Grafana   
   - Three main steps: (A) configure [Dropwizard (codahale) Metrics library](https://metrics.dropwizard.io) for Spark
    (B) sink the metrics to influxdb
