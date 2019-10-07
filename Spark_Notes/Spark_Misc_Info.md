@@ -996,7 +996,7 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
 ```
 
 ---
-- Generate a simple I-O intensive benchmark load with spark
+- Generate a simple I-O intensive benchmark load with Spark
   - Setup or copy a large test table, using TPCDS schema
   - query a large fact table, for example store_sales with a filter condition that forces a full scan
   - additional tip: use a filter condition that returns 0 (or very few rows) and use "select *" (all columns)
