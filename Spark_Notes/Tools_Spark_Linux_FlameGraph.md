@@ -5,32 +5,40 @@ running in the JVM on Linux.
 
 ### TL;DR use async-profiler for JVM and py-spy for Python
 
-Download from [https://github.com/jvm-profiling-tools/async-profiler]   
-Build as in the README (export JAVA_HOME and run make)  
-Find the pid of the JVM runnign the Spark executor, example:
+**Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**    
+
+Build as in the README:
+ - `export JAVA_HOME=..` to a valid JDK and 
+ - run `make`  
+ 
+Example how on to use for Spark running in local mode: 
+- first find the pid of the JVM running the Spark executor, example:
 ```aidl
 $ jps
 171657 SparkSubmit
-171870 Jps
 ```
 
-Profile JVM and create the flamegraph, example:
+Profile JVM and create the FlameGraph, example:
 ```
-./profiler.sh -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+./profiler.sh -e wall -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
 ```
 
-Visualize the on-CPU flamegraph:
+Visualize the JVM execution FlameGraph:
 ```
 firefox flamegraph1.svg
 ```
+Drill down to the part of the FlameGraph of interest (click on svg to zoom in), for example:
+zoom in to `java/util/concurrent/ThreadPoolExecutor$Worker.run` +
+ firther zoom in to `org/apache/spark/executor/Executor$TaskRunner.run`
 
-As written in the async profiler instructions, you may need to set the following:
+If you want to use CPU profiling with perf (mode `-e cpu` instead of `-e wall`) you need also
+to set the following and run as root:
 ```
 # echo 1 > /proc/sys/kernel/perf_event_paranoid
 # echo 0 > /proc/sys/kernel/kptr_restrict
 ```
 
-For Python (when using PySpark and Python UDF for example), use py-spy:
+**Python:** (when using PySpark and Python UDF for example), use py-spy:
 ```python
 pip install py-spy
 py-spy -p <pid> -f <flamegraph_file>
