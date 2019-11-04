@@ -3,7 +3,7 @@
 In this note you can find a few links and basic examples relevant to using Flame Graphs for profiling Apache Spark workloads
 running in the JVM on Linux.
 
-### TL;DR use async-profiler for JVM and py-spy for Python
+## TL;DR use async-profiler for JVM and py-spy for Python
 
 **Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**    
 
@@ -42,20 +42,29 @@ to set the following and run profiling as root:
 # echo 0 > /proc/sys/kernel/kptr_restrict
 ```
 
-**Python:** (when using PySpark and Python UDF for example), use [py-spy](https://github.com/benfred/py-spy):  
+**Python:**
+Profile Python code with flame graph for Spark when using PySpark and Python UDF, for example.
+A good to use is [py-spy](https://github.com/benfred/py-spy):  
 Install and example:
 ```python
 pip install py-spy
 py-spy -p <pid> -f <flamegraph_file>
 ```
 
-**Profiling on YARN**
-Start by tracing one executor as follows:
- - Find the executor machine and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
+### FlameGraph and Async JVM stack profiling for Spark on YARN
+How to trace one executor, example:
+ - First, find the executor hostname and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
  - WIth `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
   on Spark 2.4 is instead `CoarseGrainedExecutorBackend`
  - Profile the executor pid as detailed above 
 
+### FlameGraph and Async JVM stack profiling for Spark on Kubernetes
+How to trace one executor, example:
+ - Identify a pod to trace `kubectl get pods -n yournamspace`
+ - copy async profiler from driver to executor:
+ `kubectl cp async-profiler-1.6 <pod_name_here>:/opt/spark/work-dir`
+ - run profiler as described above, in `-e wall` or `-e itimer` mode
+ - using async profiler with perf in `-e cpu` mode, is also possible, ideally running from host system/VM, [details here](https://github.com/jvm-profiling-tools/async-profiler#profiling-java-in-a-container) 
 
 ## Context
 
