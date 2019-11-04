@@ -231,6 +231,8 @@ for longer plans:
 df.queryExecution.debug.codegenToSeq -> dumps to sequence of strings
 df.queryExecution.debug.toFile -> dumps to filesystem file
 
+// New in Spark 3.0, explain foramtted
+sql("explain formatted select count(*) from range(10) cross join range(10)").collect.foreach(println)
 ```
 ---
 - Spark SQL measure time spent in query plan parsing and optimization (Spark 3.0)
