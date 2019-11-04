@@ -42,14 +42,22 @@ to set the following and run profiling as root:
 # echo 0 > /proc/sys/kernel/kptr_restrict
 ```
 
-**Python:** (when using PySpark and Python UDF for example), use py-spy:
+**Python:** (when using PySpark and Python UDF for example), use [py-spy](https://github.com/benfred/py-spy):  
+Install and example:
 ```python
 pip install py-spy
 py-spy -p <pid> -f <flamegraph_file>
 ```
 
+**Profiling on YARN**
+Start by tracing one executor as follows:
+ - Find the executor machine and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
+ - WIth `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
+  on Spark 2.4 is instead `CoarseGrainedExecutorBackend`
+ - Profile the executor pid as detailed above 
 
-## Intro
+
+## Context
 
 Stack profiling and on-CPU Flame Graph visualization are very useful tools and techniques for investigating CPU workloads.   
 See [Brendan Gregg's page on Flame Graphs](http://www.brendangregg.com/flamegraphs.html)   
@@ -81,7 +89,8 @@ For more details related to the challenges of profiling Java/JVM see
   - an example at [Apache Spark 2.0 Performance Improvements Investigated With Flame Graphs](https://externaltable.blogspot.com/2016/09/spark-20-performance-improvements.html): 
   - only measures the JVM
   - needs also [https://github.com/lhotari/jfr-report-tool]
-  - currently requires license from Oracle if used in production, recent announcements hint Oracle fully open sourcing this
+  - JFR requires license from Oracle if used in production up to Java version 1.8, for Java 9 and higher
+  I understand with is now in open source
 - Perf
   - see Brendan's pages and the blog post [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166) 
   - goes together with [perf-map-agent](https://github.com/jvm-profiling-tools/perf-map-agent)
@@ -138,8 +147,13 @@ The list of available events is available as in this example:
 ```
 ./profiler.sh list <pid_of_JVM>
 
-Perf events:
+Basic events:
   cpu
+  alloc
+  lock
+  wall
+  itimer
+Perf events:
   page-faults
   context-switches
   cycles
@@ -152,24 +166,17 @@ Perf events:
   L1-dcache-load-misses
   LLC-load-misses
   dTLB-load-misses
-Java events:
-  alloc
-  lock
+  mem:breakpoint
+  trace:tracepoint
 ```
 
 
 Example of profile on alloc (heap memory allocation) events
 ```
 ./profiler.sh -d 30  -e alloc -f $PWD/flamegraph_heap.svg <pid_of_JVM>
-```
-
-This is the syntax for an older version of async profiler used to profile heap memory allocations (eventually delete from this doc)
-```
-# obsolete syntax for an older version of async-profiler
-./profiler.sh -d 30  -m heap -o collapsed -f $PWD/flamegraph_heap.txt <pid_of_JVM>
 ../FlameGraph/flamegraph.pl --colors=mem flamegraph_heap.txt >flamegraph_heap.svg
 ```
-Example of the output:   
+Example output:   
 [Click here to get the SVG version of the Heap Flamegraph](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_Parquet_annotated.svg)
 ![Example](https://2.bp.blogspot.com/-Bxaa4CCKfx8/Wc60YfC2A5I/AAAAAAAAFBA/aENnOyv-SjQZFkUUMWwJjahrssmdlpekACLcBGAs/s1600/Flamegraph_HEAP_Spark_SQL_read_Parquet.png)
 
