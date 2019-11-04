@@ -18,9 +18,13 @@ $ jps
 171657 SparkSubmit
 ```
 
-Profile JVM and create the FlameGraph, example:
+Profile JVM and create the FlameGraph, basic example:
 ```
+# profile by time (regardless if process is on CPU or waiting)
 ./profiler.sh -e wall -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+
+# profile on-CPU threads, without using perf
+./profiler.sh -e itimer -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
 ```
 
 Visualize the JVM execution FlameGraph:
@@ -29,10 +33,10 @@ firefox flamegraph1.svg
 ```
 Drill down to the part of the FlameGraph of interest (click on svg to zoom in), for example:
 zoom in to `java/util/concurrent/ThreadPoolExecutor$Worker.run` +
- firther zoom in to `org/apache/spark/executor/Executor$TaskRunner.run`
+ further zoom in to `org/apache/spark/executor/Executor$TaskRunner.run`
 
-If you want to use CPU profiling with perf (mode `-e cpu` instead of `-e wall`) you need also
-to set the following and run as root:
+If you want to use CPU profiling (or profileing other events) usingperf (mode `-e cpu` you need also
+to set the following and run profiling as root:
 ```
 # echo 1 > /proc/sys/kernel/perf_event_paranoid
 # echo 0 > /proc/sys/kernel/kptr_restrict
