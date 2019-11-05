@@ -61,7 +61,7 @@ Profile one executor, example:
 
 ### FlameGraph and Async JVM stack profiling for Spark on Kubernetes
 How to profile one executor, example:
- - Identify a Kubernetes pod to profile `kubectl get pods -n yournamspace`
+ - Identify a Kubernetes pod to profile `kubectl get pods [-n namespace]`
  - copy async profiler from driver to executor:
  `kubectl cp async-profiler-1.6 <pod_name_here>:/opt/spark/work-dir`
  - run profiler as described above, in `-e wall` or `-e itimer` mode
