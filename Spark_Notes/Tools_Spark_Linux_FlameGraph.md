@@ -5,20 +5,21 @@ running in the JVM on Linux.
 
 ## TL;DR use async-profiler for JVM and py-spy for Python
 
-**Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**    
-
-Build as in the README:
+**Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**. Build async profiler as in the README:
  - `export JAVA_HOME=..` to a valid JDK and 
  - run `make`  
  
-Example how on to use for Spark running in local mode: 
-- first find the pid of the JVM running the Spark executor, example:
+**Example** of how to use async profiler for Spark
+ 
+- Simple test in local mode (`bin/spark-shell --master local[*]`)
+ 
+- First find the pid of the JVM running Spark driver and executor, example:
 ```aidl
 $ jps
 171657 SparkSubmit
 ```
 
-Profile JVM and create the FlameGraph, basic example:
+- Profile JVM and create the FlameGraph:
 ```
 # profile by time (regardless if process is on CPU or waiting)
 ./profiler.sh -e wall -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
@@ -27,15 +28,15 @@ Profile JVM and create the FlameGraph, basic example:
 ./profiler.sh -e itimer -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
 ```
 
-Visualize the JVM execution FlameGraph:
+- Visualize the JVM execution FlameGraph:
 ```
 firefox flamegraph1.svg
 ```
-Drill down to the part of the FlameGraph of interest (click on svg to zoom in), for example:
+- Drill down to the part of the FlameGraph of interest (click on svg to zoom in), for example:
 zoom in to `java/util/concurrent/ThreadPoolExecutor$Worker.run` +
  further zoom in to `org/apache/spark/executor/Executor$TaskRunner.run`
 
-If you want to use CPU profiling (or profileing other events) usingperf (mode `-e cpu` you need also
+If you want to use CPU profiling (or profiling other per events) using perf (mode `-e cpu` you need also
 to set the following and run profiling as root:
 ```
 # echo 1 > /proc/sys/kernel/perf_event_paranoid
@@ -44,7 +45,7 @@ to set the following and run profiling as root:
 
 **Python:**
 Profile Python code with flame graph for Spark when using PySpark and Python UDF, for example.
-A good to use is [py-spy](https://github.com/benfred/py-spy):  
+A good tool to use is [py-spy](https://github.com/benfred/py-spy):  
 Install and example:
 ```python
 pip install py-spy
@@ -52,15 +53,15 @@ py-spy -p <pid> -f <flamegraph_file>
 ```
 
 ### FlameGraph and Async JVM stack profiling for Spark on YARN
-How to trace one executor, example:
+Profile one executor, example:
  - First, find the executor hostname and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
- - WIth `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
+ - With `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
   on Spark 2.4 is instead `CoarseGrainedExecutorBackend`
  - Profile the executor pid as detailed above 
 
 ### FlameGraph and Async JVM stack profiling for Spark on Kubernetes
-How to trace one executor, example:
- - Identify a pod to trace `kubectl get pods -n yournamspace`
+How to profile one executor, example:
+ - Identify a Kubernetes pod to profile `kubectl get pods -n yournamspace`
  - copy async profiler from driver to executor:
  `kubectl cp async-profiler-1.6 <pod_name_here>:/opt/spark/work-dir`
  - run profiler as described above, in `-e wall` or `-e itimer` mode
