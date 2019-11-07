@@ -816,10 +816,15 @@ order by id""").show()
 - Classic join example with parent-child relationship using Departments and Employees tables
  ```
 # Create test tables
+# Python
 emp = spark.createDataFrame([(1, "Emp1", 10), (2,"Emp2", 10), (3, "Emp3", 20)], ("id","name","dep_id"))
-emp.createOrReplaceTempView("employees")
-
 dep = spark.createDataFrame([(10, "Department1"), (20, "Department2"), (30, "Department3")], ("id","name"))
+
+// Scala
+val emp = Seq((1, "Emp1", 10), (2,"Emp2", 10), (3, "Emp3", 20)).toDF("id","name","dep_id")
+val dep = Seq((10, "Department1"), (20, "Department2"), (30, "Department3")).toDF("id","name")
+
+emp.createOrReplaceTempView("employees")
 dep.createOrReplaceTempView("departments")
 
 # Inner join
