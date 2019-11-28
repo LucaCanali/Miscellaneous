@@ -49,7 +49,7 @@ A good tool to use is [py-spy](https://github.com/benfred/py-spy):
 Install and example:
 ```python
 pip install py-spy
-py-spy -p <pid> -f <flamegraph_file>
+py-spy record -d 30 -p <pid> -o myFlamegraph.svg
 ```
 
 ### FlameGraph and Async JVM stack profiling for Spark on YARN
