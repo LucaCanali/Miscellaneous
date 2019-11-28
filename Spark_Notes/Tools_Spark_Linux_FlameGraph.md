@@ -3,8 +3,9 @@
 In this note you can find a few links and basic examples relevant to using Flame Graphs for profiling Apache Spark workloads
 running in the JVM on Linux.
 
-## TL;DR use async-profiler for JVM and py-spy for Python
+## TL;DR use async-profiler for profiling JVM and py-spy for Python
 
+### JVM/Scala
 **Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**. Build async profiler as in the README:
  - `export JAVA_HOME=..` to a valid JDK and 
  - run `make`  
@@ -43,7 +44,7 @@ to set the following and run profiling as root:
 # echo 0 > /proc/sys/kernel/kptr_restrict
 ```
 
-**Python:**
+### Python
 Profile Python code with flame graph for Spark when using PySpark and Python UDF, for example.
 A good tool to use is [py-spy](https://github.com/benfred/py-spy):  
 Install and example:
@@ -51,8 +52,8 @@ Install and example:
 pip install py-spy
 py-spy record -d 30 -p <pid> -o myFlamegraph.svg
 ```
-
-### FlameGraph and Async JVM stack profiling for Spark on YARN
+----
+### FlameGraph and async JVM stack profiling for Spark on YARN
 Profile one executor, example:
  - First, find the executor hostname and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
  - With `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
