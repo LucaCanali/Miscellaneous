@@ -46,12 +46,14 @@ to set the following and run profiling as root:
 
 ### Python
 Profile Python code with flame graph for Spark when using PySpark and Python UDF, for example.
-A good tool to use is [py-spy](https://github.com/benfred/py-spy):  
+A good tool to use (for test environemnts) is [py-spy](https://github.com/benfred/py-spy):  
 Install and example:
 ```python
 pip install py-spy
 py-spy record -d 30 -p <pid> -o myFlamegraph.svg
 ```
+
+note for py-spy: I found at least one case where `--nonblocking` was needed, see also [this](https://github.com/benfred/py-spy/issues/83)
 ----
 ### FlameGraph and async JVM stack profiling for Spark on YARN
 Profile one executor, example:
