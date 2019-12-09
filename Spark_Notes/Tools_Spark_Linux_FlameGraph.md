@@ -50,10 +50,12 @@ A good tool to use (for test environments) is [py-spy](https://github.com/benfre
 Install and example:
 ```python
 pip install py-spy
-py-spy record -d 30 -p <pid> -o myFlamegraph.svg
+py-spy record -d 30 -p <pid> --nonblocking -o myFlamegraph.svg
 ```
 
-note for py-spy: I found at least one case where `--nonblocking` was needed, see also [this](https://github.com/benfred/py-spy/issues/83)
+Ideas on how to profile Python UDF: attach the profiler to the pyspark.daemon coordinator with `-s` option
+to profile also the subprocesses spawned by it (the pyspark.daemon workers). 
+Note: I found at least one case where `--nonblocking` was needed, see also [this](https://github.com/benfred/py-spy/issues/83)  
 
 ----
 ### FlameGraph and async JVM stack profiling for Spark on YARN
