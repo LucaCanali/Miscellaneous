@@ -351,7 +351,8 @@ pyspark ...<add options here>
 ---
 - Python UDF and pandas_udf, examples and tests
 
-Examples of udf and pandas_udf. time.sleep is introduced for testing purposes
+Examples of udf and pandas_udf (of type SCALAR) using Spark SQL.
+Note: time.sleep is introduced for testing purposes
 ```python
 def slowf(s):
   for i in range(10000):
@@ -396,6 +397,36 @@ time.time()
 time.time()
 sql("select avg(multiply_func(id,2)) from range(10000)").show()
 time.time()
+```
+
+Example without registering pandas_udf as SQL function 
+```python
+df = sql("select cast(1.0 as double) col1, rand(42) col2, Array(rand(42),rand(42),rand(42)) col3 from range(1e8)")
+df.printSchema()
+
+root
+ |-- col1: double (nullable = false)
+ |-- col2: double (nullable = false)
+ |-- col3: array (nullable = false)
+ |    |-- element: double (containsNull = false)
+
+
+from pyspark.sql.functions import pandas_udf
+from pyspark.sql.functions import col, pandas_udf, PandasUDFType
+from pyspark.sql.types import *
+
+@pandas_udf(ArrayType(DoubleType()), PandasUDFType.SCALAR)
+def test_pandas(col1):
+  return col1*col1
+
+# dry run
+df.withColumn('test', test_pandas(df.col3)).selectExpr("max(test)").show()
+
+import time
+start = time.time()
+df.withColumn('test', test_pandas(df.col3)).write.format("noop").mode("overwrite").save()
+end = time.time()
+print(end - start)
 ```
 
 ---
