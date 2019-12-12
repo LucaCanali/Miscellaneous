@@ -14,16 +14,15 @@ Some of the main points about Parquet internals that I want to highlight are:
 - Parquet can store complex data types and support nested structures. This is quite a powerful feature and it goes beyond the simple examples presented in this post.
 
 
-##Parquet-tools
+## Parquet-tools
 
 Parquet-tools is part of the main Apache Parquet repository, you can download it from  https://github.com/apache/parquet-mr/releases
 The tests described here are based on Parquet version 1.8.2, released in January 2017. 
-Note: Parquet version 1.9.0 is also out since October 2016, but it is not used by Spark, at least up to Spark version 2.2.0.
 
 Tip: you can build and package the jar for parquet-tools with:
 ```
 cd parquet-mr-apache-parquet-1.8.2/parquet-tools
-mvn package
+mvn package -DskipTests
 ```
 
 You can use parquet tools to examine the metadata of a Parquet file on HDFS using: "hadoop jar <path_to_jar> meta <path_to_Parquet_file>".  Other commands available with parquet-tools, besides "meta" include: cat, head, schema, meta, dump, just run parquet-tools with -h option to see the syntax.
@@ -82,7 +81,7 @@ Note: If you want to investigate further, you can also dump information down to 
 
 Parquet_reader This is another utility that can help you navigate the internals and metadata of Parquet files. In particular parquet-cpp displays the statistics associated with Parquet columns and is useful to understand predicate push down.
 Parquet_reader is a utility distributed with the Parquet-cpp project.
-You can download it from https://github.com/apache/parquet-cpp/releases
+You can download it from https://github.com/apache/parquet-cpp/releases. This has since moved to Apache Arrow, see: https://github.com/apache/parquet-cpp
 The tests reported here have been run using version 1.1.0 released in May 2017.
 Tips: You can build the project with: "cmake ." followed by "make". After that you can find the utility parquet_reader in the folder build/latest.
 
