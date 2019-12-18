@@ -435,7 +435,6 @@ print(end - start)
   - Example of how to use G1 GC: `--conf spark.driver.extraJavaOptions="-XX:+UseG1GC" --conf spark.executor.extraJavaOptions="-XX:+UseG1GC"` 
 
 ---
----
 - Set log level in spark-shell and PySpark
 If you have a SparkContext, use `sc.setLogLevel(newLevel)`
 
@@ -605,7 +604,11 @@ df.show(5)
 // write data as compressed Parquet files  
 df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
-
+---
+- Configuration to switch back to use datasource V1 (as opposed to use datasource V2). 
+  - See also bug SPARK-29304 Input Bytes Metric for Datasource v2 is absent
+  - Example for parquet:  
+`bin/spark-shell --master local[*] --conf spark.sql.sources.useV1SourceList="parquet"`
 ---
 - Enable short-circuit reads for Spark on a Hadoop cluster
   - Spark executors need to have libhadoop.so in the library path
