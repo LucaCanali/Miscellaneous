@@ -1040,19 +1040,22 @@ spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=
 - Generate a simple I/O intensive benchmark load with Spark
   - Setup or copy a large test table, using TPCDS schema
   - query a large fact table, for example store_sales with a filter condition that forces a full scan
-  - additional tip: use a filter condition that returns 0 (or very few rows) and use "select *" (all columns)
-  - Check the execution plan: you want to confirm that Spark is not using partition pruning nor is managing to push down filters successfully
-  - In the following example this is achieved adding a filter condition with a decimal value that has higher precision than the table values
-  This also causes a cast operation
+  - use the noop data source to write data "to dev/null" as in: `df.write.format("noop").mode("overwrite").save`
+  - Previously (Spark 2x) I have used this workaround instead: 
+     - Use a filter condition that returns 0 (or very few rows) and use "select *" (all columns)
+     - Check the execution plan: you want to confirm that Spark is not using partition pruning nor is managing to push down filters successfully
+     - In the following example this is achieved adding a filter condition with a decimal value that has higher precision than the table values
   - Use Spark dashboard and/or sparkMeasure and/or OS tools to make sure the query runs as intended, i.e. performing a full table scan.
   - Example query:
   ```
   val df=spark.read.parquet("/TPCDS/tpcds_1500/store_sales")
-  df.where("ss_sales_price=37.8688").collect
+  df.write.format("noop").mode("overwrite").save
+  // workaround used for Spark 2.x -> df.where("ss_sales_price=37.8688").collect
   
   # SQL version
   df.createOrReplaceTempView("store_sales")
-  spark.sql("select * from store_sales where ss_sales_price=37.8688").collect
+  spark.sql("select * from store_sales").write.format("noop").mode("overwrite").save
+  // workaround used for Spark 2.x -> spark.sql("select * from store_sales where ss_sales_price=37.8688").collect
   ``` 
 ---
 - Monitor Spark workloads with Dropwizard metrics for Spark, Influxdb Grafana   
