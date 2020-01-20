@@ -27,7 +27,7 @@ spark = SparkSession.builder \
         .config("spark.executor.memory","14g") \
         .config("spark.executor.cores","4") \
         .config("spark.executor.instances","8") \
-        .config("spark.dynamicAllocation.enables","false") \
+        .config("spark.dynamicAllocation.enabled","false") \
         .getOrCreate()
 ```
 ---
