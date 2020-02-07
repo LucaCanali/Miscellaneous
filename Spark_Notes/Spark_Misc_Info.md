@@ -637,6 +637,7 @@ vals.isettings.maxPrintString=1000
 ---
  - Examples of DataFrame creation for testing
  ```
+// SQL
 sql("select * from values (1, 'aa'), (2,'bb'), (3,'cc') as (id,desc)").show
 +---+----+
 | id|desc|
@@ -664,6 +665,22 @@ sql("select id, floor(200*rand()) bucket, floor(1000*rand()) val1, floor(10*rand
 +---+------+----+----+
 only showing top 3 rows
 
+# Python
+df = spark.createDataFrame([(1, "event1"), (2,"event2"), (3, "event3")], ("id","name"))
+df = spark.createDataFrame([[1, "a string", (1,2,3), ("aa","bb","cc")]],"long_col long, string_col string, array_col array<long>, struct_col struct<col1:string,col2:string,col3:string>")
+
+df.printSchema()
+root
+ |-- long_col: long (nullable = true)
+ |-- string_col: string (nullable = true)
+ |-- array_col: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- struct_col: struct (nullable = true)
+ |    |-- col1: string (nullable = true)
+ |    |-- col2: string (nullable = true)
+ |    |-- col3: string (nullable = true)
+
+// Scala
 scala> val df=Seq((1, "aaa", Map(1->"a") ,Array(1,2,3), Vector(1.1,2.1,3.1)), (2, "bbb", Map(2->"b") ,Array(4,5,6), Vector(4.1,5.1,6.1))).toDF("id","name","map","array","vector")
 df: org.apache.spark.sql.DataFrame = [id: int, name: string ... 3 more fields]
 
@@ -688,10 +705,7 @@ df.show
 |  2| bbb|Map(2 -> b)|[4, 5, 6]|[4.1, 5.1, 6.1]|
 +---+----+-----------+---------+---------------+
 
-# Python
-df = spark.createDataFrame([(1, "event1"), (2,"event2"), (3, "event3")], ("id","name"))
-
-// Scala
+// using case class
 scala> case class myclass(id: Integer, name: String, myArray: Array[Double])
 scala> val df=Seq(myclass(1, "aaaa", Array(1.1,2.1,3.1)),myclass(2, "bbbb", Array(4.1,5.1,6.1))).toDF
 scala> df..show
@@ -701,6 +715,29 @@ scala> df..show
 |  1|aaaa|[1.1, 2.1, 3.1]|
 |  2|bbbb|[4.1, 5.1, 6.1]|
 +---+----+---------------+
+
+// case class with  struct
+case class myclass2(id: Integer, name: String)
+case class myclass(id: Integer, name: String, myArray: Array[Double], mynested: myclass2)
+val df=Seq(myclass(1, "aaaa", Array(1.1,2.1,3.1), myclass2(11, "zzzz")),myclass(2, "bbbb", Array(4.1,5.1,6.1),myclass2(22,"www"))).toDF
+
+df.printSchema
+root
+ |-- id: integer (nullable = true)
+ |-- name: string (nullable = true)
+ |-- myArray: array (nullable = true)
+ |    |-- element: double (containsNull = false)
+ |-- mynested: struct (nullable = true)
+ |    |-- id: integer (nullable = true)
+ |    |-- name: string (nullable = true)
+
+ df.show
++---+----+---------------+----------+
+| id|name|        myArray|  mynested|
++---+----+---------------+----------+
+|  1|aaaa|[1.1, 2.1, 3.1]|[11, zzzz]|
+|  2|bbbb|[4.1, 5.1, 6.1]| [22, www]|
++---+----+---------------+----------+
 
 // Dataset API
 scala> df.as[myclass]
