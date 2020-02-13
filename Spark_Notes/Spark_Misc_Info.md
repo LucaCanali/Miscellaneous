@@ -810,7 +810,53 @@ sql("select * from values 'a','b' lateral view explode(Array(1,2)) tab1").show()
 +----+---+
 
 ```
+---
+- Load numpy arrays into a Spark Dataframe
+  - example load MNIST dataset from keras.datasets 
+```
+$ pyspark --master local[*] --driver-memory 4g 
 
+import tensorflow as tf
+
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+# normalize features to 0..1
+x_train = x_train / 255.0
+
+# flatten 28x28 arrays with images into one array of 784 elements
+x_train = x_train.reshape((x_train.shape[0], -1))
+data = [(x_train[i].astype(float).tolist(), int(y_train[i])) for i in range(len(y_train))]
+
+from pyspark.sql.types import *
+schema = StructType([StructField("features", ArrayType(FloatType())),
+                     StructField("labels_raw", LongType())])
+
+# Use this instead if not flattening the 28x28 array
+#schema = StructType([StructField("features", ArrayType(ArrayType(FloatType()))),
+#                     StructField("labels_raw", LongType())])
+
+# this is slow, only 1 thread used
+df = spark.createDataFrame(data, schema)
+
+from pyspark.ml.feature import OneHotEncoderEstimator
+encoder = OneHotEncoderEstimator(inputCols=['labels_raw'],outputCols=['labels'],dropLast=False)
+model = encoder.fit(df)
+df_train = model.transform(df).select("features","labels")
+
+>>> df_train.printSchema()
+root
+ |-- features: array (nullable = true)
+ |    |-- element: float (containsNull = true)
+ |-- labels: vector (nullable = true)
+
+####
+# test dataset
+#####
+x_test = x_test / 255.0
+data = [(x_test[i].astype(float).tolist(), int(y_test[i])) for i in range(len(y_test))]
+df = spark.createDataFrame(data, schema)
+model = encoder.fit(df)
+df_test = model.transform(df).select("features","labels")
+```
 ---
  - Additional examples of dealing with nested structures in Spark SQL
 ```
