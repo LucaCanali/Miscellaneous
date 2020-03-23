@@ -180,7 +180,7 @@ scala> fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("<file_path>"), 0L
 ...
 ```
 ---
-Example od analysis of Hadoop file data block locations using Spark SQL
+Example analysis of Hadoop file data block locations using Spark SQL
 
 ```
 bin/spark-shell
