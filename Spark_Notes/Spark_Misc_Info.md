@@ -184,7 +184,7 @@ Example analysis of Hadoop file data block locations using Spark SQL
 
 ```
 bin/spark-shell
-// get filesystem obejct
+// get filesystem object
 val fs = org.apache.hadoop.fs.FileSystem.get(sc.hadoopConfiguration)
 // get blocks list (with replicas)
 val l1=fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("mydataset-20/20005/myfile1.parquet.snappy"), 0L, 2000000000000000L)
