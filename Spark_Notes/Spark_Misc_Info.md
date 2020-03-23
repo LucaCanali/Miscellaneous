@@ -149,28 +149,25 @@ fs.getStorageStatistics.forEach(println)
 // Get a single metric value:
 fs.getInstrumentation.getCounterValue("stream_bytes_read")
 
-
-// Silimarly for HDFS you can use this to explicitly cast to HDFS Client class:
+// Similarly for HDFS you can use this to explicitly cast to HDFS Client class:
 val fullPathUri = java.net.URI.create("hdfs://myHDFSCLuster/")
 val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri,sc.hadoopConfiguration).asInstanceOf[org.apache.hadoop.hdfs.DistributedFileSystem]
-
 
 // get file status
 fs.getFileStatus(new org.apache.hadoop.fs.Path("<file_path>"))
 
 scala> fs.getFileStatus(new org.apache.hadoop.fs.Path("<file_path>")).toString.split("; ").foreach(println)
-FileStatus{path=hdfs://analytix/user/canali/cms-dataset-20/20005/DE909CD0-F878-E211-AB7A-485B398971EA.root
+FileStatus{path=hdfs://cluster/user/myusername/cms-dataset-20/20005/DE909CD0-F878-E211-AB7A-485B398971EA.root
 isDirectory=false
 length=2158964874
 replication=3
 blocksize=268435456
 modification_time=1542653647906
 access_time=1543245001357
-owner=canali
+owner=myusername
 group=supergroup
 permission=rw-r--r--
 isSymlink=false}
-
 
 fs.getBlockSize(new org.apache.hadoop.fs.Path("<file_path>"))
 
