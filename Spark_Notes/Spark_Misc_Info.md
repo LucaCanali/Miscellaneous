@@ -188,7 +188,7 @@ bin/spark-shell
 val fs = org.apache.hadoop.fs.FileSystem.get(sc.hadoopConfiguration)
 // get blocks list (with replicas)
 val l1=fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("mydataset-20/20005/myfile1.parquet.snappy"), 0L, 2000000000000000L)
-// transform in a Spark Dataframe
+// transform into a Spark Dataframe
 l1.flatMap(x => x.getHosts).toList.toDF("hostname").createOrReplaceTempView("filemap")
 // query
 spark.sql("select hostname, count(*) from filemap group by hostname").show
