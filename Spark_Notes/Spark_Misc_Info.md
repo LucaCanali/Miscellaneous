@@ -550,8 +550,7 @@ spark.read.parquet("fileNameAndPath")
 spark.conf.set("spark.sql.files.maxPartitionBytes", ..) // default 128MB, small files are grouped into partitions up to this size
 
 // Write
-df.write
-  .coalesce(N_partitions)   // use this if you want to reduce the number of output partitions (beware that it also affects num of concurrent write tasks) 
+df.coalesce(N_partitions).write   // optionally use coalesce if you want to reduce the number of output partitions (beware that it also affects num of concurrent write tasks) 
   .partitionBy("colPartition1", "colOptionalSubPart") // partitioning column(s) 
   .bucketBy(numBuckets, "colBucket")   // This feature currently gives error with save, follow SPARK-19256 or use saveAsTable (Hive)
   .format("parquet")
@@ -567,7 +566,7 @@ spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, 
 spark.conf.set("spark.sql.files.maxRecordsPerFile", ...) // defaults to 0, use if you need to limit size of files being written  
 ```
 
-// Savemode:
+// Example with use of savemode:
 df.coalesce(4).write.mode(org.apache.spark.sql.SaveMode.Overwrite).parquet("..PATH..")
 
 ---
