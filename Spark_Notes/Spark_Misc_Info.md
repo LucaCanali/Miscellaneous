@@ -1051,8 +1051,8 @@ export HADOOP_CONF_DIR=/etc/hadoop/conf
 export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
 cd spark-2.4.3-bin-hadoop2.7
 
-bin/spark-shell --master yarn --num-executors 40 --executor-cores 4  --driver-memory 12g  --executor-memory 12g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.crossJoin.enabled=true
-// if using larger number of cores consider bumping up --conf spark.sql.shuffle.partitions=400
+bin/spark-shell --master yarn --num-executors 32 --executor-cores 8 --driver-memory 8g --executor-memory 16g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.shuffle.partitions=512 --conf spark.sql.crossJoin.enabled=true --conf spark.eventLog.enabled=false --conf spark.sql.autoBroadcastJoinThreshold=100000000
+// when using a large number of cores consider bumping up conf spark.sql.shuffle.partitions (defaiut is 200)
 // if running on k8s client mode, add: --conf spark.task.maxDirectResultSize=100000000000 to work around SPARK-26087
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
@@ -1069,13 +1069,17 @@ val experiment = tpcds.runExperiment(tpcds.tpcds2_4Queries)
 
 // optionally: experiment.waitForFinish(timeout)
 
+--------------------
 // Example of how to put exclude list (or similarly use for include lists) to limit number of querries:
 //val benchmarkQueries = for (q <- tpcds.tpcds1_4Queries if !q.name.matches("q14a-v1.4|q14b-v1.4|q72-v1.4")) yield(q)
 //val experiment = tpcds.runExperiment(benchmarkQueries)
 
 ///// 4. Extract results
-experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
+// simply print execution time results
+df.selectExpr("name", "round(executionTime/1000,3) as exec_time_sec").show(1000)
 
+// or use this:
+experiment.currentResults.toDF.createOrReplaceTempView("currentResults")
 spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").show(200)
 spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MAX_Exec, avg(executiontime) as AVG_Exec_Time_ms from currentResults group by name order by name").repartition(1).write.csv("TPCDS/test_results_<optionally_add_date_suffix>.csv")
 
@@ -1096,6 +1100,14 @@ sql("show tables").show
 
 spark.conf.set("spark.sql.cbo.enabled",true)
 // --conf spark.sql.cbo.enabled=true
+
+////// Eperiment with caching large tables prior to running the benchmak (you need to have enough memory allocated to the executors)
+
+//Tables/views to cache
+//val list_tables=List("catalog_returns","inventory","store_sales","store_returns","web_sales","web_returns","call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
+val list_tables=List("catalog_returns","inventory","store_sales","store_returns","web_sales","web_returns","customer")
+for (t <- list_tables) spark.table(t).persist(org.apache.spark.storage.StorageLevel.MEMORY_ONLY).count()
+
 ```
 
 ---
