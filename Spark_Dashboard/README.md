@@ -27,7 +27,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
 
 ### Step 2: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
-  - Note: tested in Feb 2019 with InfluxDB version 1.7.3
+  - Note: tested with InfluxDB versions 1.7.3 up to 1.8.0
 - Edit the config file `/etc/influxdb/influxdb.conf` and enable the graphite endpoint
 - **Key step:** Setup the templates configuration
   - This instructs InfluxDB on how to map data received on the graphite endpoint to the measurements and tags in the DB
@@ -38,7 +38,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
 ###  Step 3: Configure Grafana and prepare/import the dashboard
 - Download and install Grafana 
   - download rpm from https://grafana.com/ and start Grafana service: `systemctl start grafana-server.service`
-  - Note: tested in Feb 2019 using Grafana 6.0.0 beta.
+  - Note: tested using Grafana versions 6.0.0 up to 6.7.2
 - Alternative: run Grafana on a Docker container: http://docs.grafana.org/installation/docker/
 - Connect to the Grafana web interface as admin and configure
   - By default: http://yourGrafanaMachine:3000
@@ -46,7 +46,8 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
     - Set the InfluxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
-    - To get started import the [example Grafana dashboard](Spark_Perf_Dashboard_v01.json)
+    - To get started import the example Grafana dashboard [Spark_Perf_Dashboard_v01](Spark_Perf_Dashboard_v01.json)
+      - For Spark 3.0 use [Spark_Perf_Dashboard_Spark3.0_v02[(Spark_Perf_Dashboard_Spark3.0_v02.json)
     - You can also experiment with building your dashboard or augmenting the example.
 
 ### Step 4: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
@@ -184,3 +185,4 @@ into the dashboard.
 This picture shows an example of Grafana dashboard displaying Spark metrics and augmented with annotations
 of query start time. Each vertical line is a new query being run. Details on the query id can be found
 by drilling down on the graphs. Details on how this is run are describe above at "Spark metrics dashboard with query/job/stage annotations".
+
