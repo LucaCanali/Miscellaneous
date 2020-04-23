@@ -34,6 +34,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
   - The configuration used for this work is provided at: [influxDB graphite endpoint configuration snippet](influxdb.conf_GRAPHITE)  
 - Optionally configure other InfluxDB parameters of interest as data location and retention
 - Start/restart influxDB service: systemctl restart influxdb.service
+- If needed, open the firewall port (port 2003 by default)
 
 ###  Step 3: Configure Grafana and prepare/import the dashboard
 - Download and install Grafana 
@@ -42,12 +43,13 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
 - Alternative: run Grafana on a Docker container: http://docs.grafana.org/installation/docker/
 - Connect to the Grafana web interface as admin and configure
   - By default: http://yourGrafanaMachine:3000
+  - If needed, open the firewall port (port 3000 by default) 
   - Create a data source to connect to InfluxDB. 
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
     - Set the InfluxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
     - To get started import the example Grafana dashboard [Spark_Perf_Dashboard_v01](Spark_Perf_Dashboard_v01.json)
-      - For Spark 3.0 use [Spark_Perf_Dashboard_Spark3.0_v02[(Spark_Perf_Dashboard_Spark3.0_v02.json)
+      - For Spark 3.0 use [Spark_Perf_Dashboard_Spark3.0_v02](Spark_Perf_Dashboard_Spark3.0_v02.json)
     - You can also experiment with building your dashboard or augmenting the example.
 
 ### Step 4: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
