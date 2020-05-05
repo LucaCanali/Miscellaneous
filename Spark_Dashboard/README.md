@@ -112,7 +112,7 @@ For reference, the test workload is
 - Grafana "[annotations provide a way to mark points on the graph with rich events](https://grafana.com/docs/reference/annotations/)".
 - You can use this to mark important point in the
 graph, with details about the start or end time of queries, jobs, stages.
-- Grafana allows to add annotation [queries using an InfluxDB source] (https://grafana.com/docs/features/datasources/influxdb/#annotations) 
+- Grafana allows to add annotation [queries using an InfluxDB source](https://grafana.com/docs/features/datasources/influxdb/#annotations) 
 - If you log the query/job/stage start and time into an InfluxDB instance, you can use that information as
 a data source to add annotation to the Grafana dashboard. 
 - The motivation for this is that it allows you to relate
@@ -147,7 +147,7 @@ and in general investigate how the dashboard can help you troubleshoot your appl
 performance. One way to start is to run a simple workload that you can understand and reproduce.
 In the following you will find example graphs from a simple Spark SQL query reading a Parquet table from HDFS.
 - The query used is `spark.sql("select * from web_sales where ws_list_price=10.123456").show`
-- `web_sales` is a 1.3 TB table from the Spark TPCDS benchmark](https://github.com/databricks/spark-sql-perf) generated at scale 10000.
+- `web_sales` is a 1.3 TB table from the Spark [TPCDS benchmark](https://github.com/databricks/spark-sql-perf) generated at scale 10000.
 - What the query does is reading the entire table, applying the given filter and finally returning an empty result set.
 This query is used as a "trick to the Spark engine" to force a full read of the table and intentionally avoiding optimization, like Parquet filter pushdown. 
 - This follows the discussion of [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example) 
