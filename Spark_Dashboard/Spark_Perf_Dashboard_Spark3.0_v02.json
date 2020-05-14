@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_SPARK_DROPWIZARD",
-      "label": "spark_dropwizard",
+      "name": "DS_INFLUX-GRAPHITE",
+      "label": "influx-graphite",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.7.2"
+      "version": "6.7.3"
     },
     {
       "type": "panel",
@@ -61,12 +61,12 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1587500337815,
+  "iteration": 1589454861110,
   "links": [],
   "panels": [
     {
       "collapsed": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -80,7 +80,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Latest sample of the value of number of active tasks, summed over all executors active in the selected time filter interval.",
       "gridPos": {
         "h": 5,
@@ -126,7 +126,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -171,7 +171,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total executor CPU time computed from from executor metrics. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
       "gridPos": {
         "h": 5,
@@ -217,7 +217,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -272,7 +272,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total task CPU usage from task metrics. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
       "gridPos": {
         "h": 5,
@@ -318,7 +318,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -370,7 +370,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total time spent in GC operations during task execution. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
       "gridPos": {
         "h": 5,
@@ -416,7 +416,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -468,7 +468,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Number of failed stages from the DAG scheduler.",
       "gridPos": {
         "h": 5,
@@ -514,7 +514,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -561,7 +561,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Number of succeeded jobs, from the appsource metric introduced in Spark 3.0. Only available if spark.metrics.appStatusSource.enabled=true (default is false)",
       "gridPos": {
         "h": 5,
@@ -607,7 +607,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -659,7 +659,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "JVM metric from MemoryMXBean. Latest value of the % of heap memory used, averaging over executors and driver.",
       "gridPos": {
         "h": 5,
@@ -711,7 +711,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -772,7 +772,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Bytes read from HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "gridPos": {
         "h": 5,
@@ -818,7 +818,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -870,7 +870,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Bytes written to HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "gridPos": {
         "h": 5,
@@ -904,10 +904,6 @@
                 {
                   "color": "green",
                   "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
                 }
               ]
             },
@@ -920,7 +916,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -972,7 +968,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
       "gridPos": {
         "h": 5,
@@ -1018,7 +1014,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -1064,7 +1060,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Number of running stages from the DAG scheduler.",
       "gridPos": {
         "h": 5,
@@ -1110,7 +1106,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -1157,7 +1153,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": " Only available if spark.metrics.appStatusSource.enabled=true (default is false)",
       "gridPos": {
         "h": 5,
@@ -1207,7 +1203,7 @@
         "justifyMode": "auto",
         "orientation": "horizontal"
       },
-      "pluginVersion": "6.7.2",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "groupBy": [
@@ -1254,7 +1250,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1271,7 +1267,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Number of active tasks per executor\n",
       "fill": 2,
       "fillGradient": 0,
@@ -1401,7 +1397,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total executor CPU utilization computed from executors' metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
       "fill": 2,
       "fillGradient": 0,
@@ -1535,7 +1531,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
       "fill": 2,
       "fillGradient": 0,
@@ -1672,7 +1668,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
       "fill": 2,
       "fillGradient": 0,
@@ -1815,7 +1811,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fill": 1,
       "fillGradient": 0,
@@ -2223,7 +2219,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fill": 1,
       "fillGradient": 0,
@@ -2673,7 +2669,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -2819,7 +2815,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -2955,7 +2951,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Storage memory and disk used by the block manager.",
       "fill": 2,
       "fillGradient": 0,
@@ -3168,7 +3164,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3301,7 +3297,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3318,7 +3314,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "JVM Heap Memory",
       "fill": 2,
       "fillGradient": 0,
@@ -3448,7 +3444,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "JVM Off Heap Memory",
       "fill": 2,
       "fillGradient": 0,
@@ -3580,7 +3576,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OnHeapUnifiedMemory",
       "fill": 2,
       "fillGradient": 0,
@@ -3710,7 +3706,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OffHeapUnifiedMemory",
       "fill": 2,
       "fillGradient": 0,
@@ -3842,7 +3838,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OnHeapExecutionMemory",
       "fill": 2,
       "fillGradient": 0,
@@ -3972,7 +3968,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OnHeap Storage Memory",
       "fill": 2,
       "fillGradient": 0,
@@ -4102,7 +4098,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "MinorGCTime",
       "fill": 2,
       "fillGradient": 0,
@@ -4239,7 +4235,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "MajorGCTime",
       "fill": 2,
       "fillGradient": 0,
@@ -4376,7 +4372,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "ProcessTreeJVMRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fill": 2,
       "fillGradient": 0,
@@ -4506,7 +4502,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "DirectPoolMemory",
       "fill": 2,
       "fillGradient": 0,
@@ -4633,7 +4629,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -4650,7 +4646,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
       "fill": 2,
       "fillGradient": 0,
@@ -4787,7 +4783,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Heap memory used per executor.  From MemoryMXBean.",
       "fill": 2,
       "fillGradient": 0,
@@ -4924,7 +4920,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
       "fill": 2,
       "fillGradient": 0,
@@ -5058,7 +5054,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5075,7 +5071,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5211,7 +5207,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5347,7 +5343,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "",
       "fill": 2,
       "fillGradient": 0,
@@ -5484,7 +5480,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5620,7 +5616,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_SPARK_DROPWIZARD}",
+      "datasource": "${DS_INFLUX-GRAPHITE}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -5791,7 +5787,7 @@
       }
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "schemaVersion": 22,
   "style": "dark",
   "tags": [],
@@ -5800,7 +5796,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_SPARK_DROPWIZARD}",
+        "datasource": "${DS_INFLUX-GRAPHITE}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -5823,7 +5819,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_SPARK_DROPWIZARD}",
+        "datasource": "${DS_INFLUX-GRAPHITE}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -5846,7 +5842,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -5876,9 +5872,9 @@
   },
   "timezone": "",
   "title": "Spark_Perf_Dashboard_Spark3.0_v02",
-  "uid": "-H0ElOqmk",
+  "uid": "-H0ElOqmiv",
   "variables": {
     "list": []
   },
-  "version": 13
+  "version": 1
 }
