@@ -146,8 +146,10 @@ val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri,sc.hadoopConfiguration)
 print(fs.toString)
 // List of available statistics
 fs.getStorageStatistics.forEach(println) 
+fs.getStorageStatistics.getLongStatistics.forEachRemaining(println)
 // Get a single metric value:
 fs.getInstrumentation.getCounterValue("stream_bytes_read")
+fs.getStorageStatistics.getLong("stream_bytes_read")
 
 // Similarly for HDFS you can use this to explicitly cast to HDFS Client class:
 val fullPathUri = java.net.URI.create("hdfs://myHDFSCLuster/")
