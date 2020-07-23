@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.7.3"
+      "version": "7.1.0"
     },
     {
       "type": "panel",
@@ -61,7 +61,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1589454861110,
+  "iteration": 1595514726429,
   "links": [],
   "panels": [
     {
@@ -82,6 +82,33 @@
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Latest sample of the value of number of active tasks, summed over all executors active in the selected time filter interval.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:863",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -92,41 +119,19 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:863",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -173,6 +178,33 @@
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total executor CPU time computed from from executor metrics. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1637",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ns"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -183,41 +215,19 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1637",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "ns"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -274,6 +284,33 @@
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total task CPU usage from task metrics. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1839",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ns"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -284,41 +321,19 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1839",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "ns"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -372,6 +387,33 @@
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total time spent in GC operations during task execution. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1953",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -382,41 +424,19 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "last"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1953",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "ms"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -469,52 +489,57 @@
     {
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Number of failed stages from the DAG scheduler.",
+      "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1896",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
         "x": 16,
         "y": 1
       },
-      "id": 42,
+      "id": 34,
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
-            "mean"
+            "last"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:2032",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -525,109 +550,10 @@
               "type": "tag"
             }
           ],
-          "hide": false,
-          "measurement": "stage.failedStages",
+          "measurement": "threadpool.completeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"stage.failedStages\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            }
-          ]
-        }
-      ],
-      "title": "Failed Stages",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Number of succeeded jobs, from the appsource metric introduced in Spark 3.0. Only available if spark.metrics.appStatusSource.enabled=true (default is false)",
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 20,
-        "y": 1
-      },
-      "id": 13,
-      "links": [],
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:2672",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
-          "values": false
-        },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "pluginVersion": "6.7.3",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "jobs.succeededJobs.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM \"jobs.succeededJobs.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter",
+          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -654,13 +580,146 @@
           ]
         }
       ],
-      "title": "Succeeded Jobs Count",
+      "title": "N# of Completed Tasks",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "JVM metric from MemoryMXBean. Latest value of the % of heap memory used, averaging over executors and driver.",
+      "description": "Number of running stages from the DAG scheduler.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:2032",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 79,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "stage.failedStages",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"stage.runningStages\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Current N# of Running Stages - latest value",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "Latest value of the % of heap memory used, averaging over executors and driver. JVM metric from MemoryMXBean. Conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1558",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -671,47 +730,18 @@
       "id": 32,
       "links": [],
       "options": {
-        "fieldOptions": {
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1558",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "max": 100,
-            "min": 0,
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "orientation": "horizontal",
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -774,6 +804,33 @@
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Bytes read from HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1697",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -784,41 +841,19 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1697",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "bytes"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -872,6 +907,33 @@
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Bytes written to HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:1798",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -882,41 +944,19 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1798",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "bytes"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -969,66 +1009,77 @@
     {
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Number of succeeded jobs, from the appStatus metric (introduced in Spark 3.0). Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:2672",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
         "x": 12,
         "y": 6
       },
-      "id": 34,
+      "id": 13,
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:1896",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "horizontal"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
             {
               "params": [
-                "process"
+                "$__interval"
               ],
-              "type": "tag"
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
             }
           ],
-          "measurement": "threadpool.completeTasks",
+          "measurement": "jobs.succeededJobs.count",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) \n",
+          "query": "SELECT value FROM \"jobs.succeededJobs.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1055,155 +1106,63 @@
           ]
         }
       ],
-      "title": "N# of Completed Tasks",
+      "title": "Succeeded Jobs Count",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Number of running stages from the DAG scheduler.",
+      "description": "Failed tasks for the appStatus metrics. Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:2748",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
         "x": 16,
         "y": 6
       },
-      "id": 79,
-      "links": [],
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:2032",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
-          "values": false
-        },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "pluginVersion": "6.7.3",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "process"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": false,
-          "measurement": "stage.failedStages",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"stage.runningStages\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            }
-          ]
-        }
-      ],
-      "title": "Current N# of Running Stages - latest value",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": " Only available if spark.metrics.appStatusSource.enabled=true (default is false)",
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 20,
-        "y": 6
-      },
       "id": 44,
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "defaults": {
-            "mappings": [
-              {
-                "$$hashKey": "object:2748",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "horizontal"
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
       },
-      "pluginVersion": "6.7.3",
+      "pluginVersion": "7.1.0",
       "targets": [
         {
           "groupBy": [
@@ -1218,7 +1177,7 @@
           "measurement": "tasks.completedTasks.count",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"tasks.killedTasks.count\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter",
+          "query": "SELECT \"value\" FROM \"tasks.failedTasks.count\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1245,7 +1204,105 @@
           ]
         }
       ],
-      "title": "N# of Tasks Killed",
+      "title": "N# of Failed Tasks",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "Number of failed stages from the appStatus \n metrics.\nConditional to a configuration parameter:\nspark.metrics.appStatusSource.enabled=true (default is false)",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [
+            {
+              "$$hashKey": "object:2032",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "nullValueMode": "connected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 6
+      },
+      "id": 42,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "stage.failedStages",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"stages.failedStages.count\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "title": "Failed Stages",
       "type": "stat"
     },
     {
@@ -1268,7 +1325,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Number of active tasks per executor\n",
+      "description": "Number of active tasks per executor.\n",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -1295,11 +1359,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1398,7 +1460,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Total executor CPU utilization computed from executors' metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
+      "description": "Total executor CPU utilization computed from executors' JVM instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -1423,11 +1492,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1533,6 +1600,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -1557,11 +1631,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1670,6 +1742,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -1694,11 +1773,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1813,6 +1890,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1837,11 +1921,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2221,6 +2303,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -2245,11 +2334,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2670,6 +2757,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -2694,11 +2789,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2769,7 +2862,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Number of completed tasks per executor",
+      "title": "Number of completed tasks per executor.",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -2816,6 +2909,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -2840,11 +2941,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2953,6 +3052,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Storage memory and disk used by the block manager.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -2977,11 +3083,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3165,6 +3269,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "Time the Executor has spent writing shuffle data. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on shuffle writing that would give an equivalent result.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3189,11 +3301,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3316,6 +3426,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "JVM Heap Memory",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3342,11 +3459,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3446,6 +3561,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "JVM Off Heap Memory",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3472,11 +3594,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3486,7 +3606,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "JVM heap memory - Executor $tag_process",
+          "alias": "JVM off heap memory - Executor $tag_process",
           "groupBy": [
             {
               "params": [
@@ -3550,7 +3670,7 @@
         {
           "$$hashKey": "object:2981",
           "format": "short",
-          "label": "JVM Heap Memory",
+          "label": "JVM Off Heap Memory",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -3578,6 +3698,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OnHeapUnifiedMemory",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3604,11 +3731,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3708,6 +3833,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OffHeapUnifiedMemory",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3734,11 +3866,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3748,7 +3878,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "OnHeapUnifiedMemory - Executor $tag_process",
+          "alias": "OffHeapUnifiedMemory - Executor $tag_process",
           "groupBy": [
             {
               "params": [
@@ -3812,7 +3942,7 @@
         {
           "$$hashKey": "object:3079",
           "format": "short",
-          "label": "OnHeapUnifiedMemory",
+          "label": "OffHeapUnifiedMemory",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -3840,6 +3970,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OnHeapExecutionMemory",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3866,11 +4003,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3970,6 +4105,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "OnHeap Storage Memory",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -3996,11 +4138,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4010,7 +4150,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "OnHeapUnifiedMemory - Executor $tag_process",
+          "alias": "OnHeapStorageMemory - Executor $tag_process",
           "groupBy": [
             {
               "params": [
@@ -4100,6 +4240,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "MinorGCTime",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4124,11 +4271,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4237,6 +4382,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "MajorGCTime",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4261,11 +4413,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4374,6 +4524,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "ProcessTreeJVMRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4400,11 +4557,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4414,7 +4569,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "MajorGCTime - Executor $tag_process",
+          "alias": "JMV RSS - Executor $tag_process",
           "groupBy": [
             {
               "params": [
@@ -4503,7 +4658,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "DirectPoolMemory",
+      "description": "ProcessTreePythonRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4513,7 +4675,7 @@
         "y": 114
       },
       "hiddenSeries": false,
-      "id": 72,
+      "id": 82,
       "interval": "10s",
       "legend": {
         "alignAsTable": false,
@@ -4530,11 +4692,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4544,7 +4704,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "DirectPoolMemory - Executor $tag_process",
+          "alias": "Python RSS - Executor $tag_process",
           "groupBy": [
             {
               "params": [
@@ -4563,7 +4723,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"DirectPoolMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT value FROM \"ProcessTreePythonRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4590,7 +4750,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "DirectPoolMemory",
+      "title": "ProcessTreePythonRSSMemory",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -4607,7 +4767,7 @@
       "yaxes": [
         {
           "format": "short",
-          "label": "DirectPoolMemory",
+          "label": "ProcessTreeJVMRSSMemory",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -4638,7 +4798,7 @@
       },
       "id": 63,
       "panels": [],
-      "title": "JVM source  memory metrics",
+      "title": "JVM source  memory metrics (conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource)",
       "type": "row"
     },
     {
@@ -4648,6 +4808,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4672,11 +4839,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4785,6 +4950,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Heap memory used per executor.  From MemoryMXBean.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4809,11 +4981,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4922,6 +5092,13 @@
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -4946,11 +5123,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5031,6 +5206,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1327",
           "format": "bytes",
           "label": "JVM total memory used",
           "logBase": 1,
@@ -5039,6 +5215,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1328",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5072,6 +5249,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "HDFS read throughput.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5096,11 +5281,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5208,6 +5391,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "HDFS write throughput.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5232,11 +5423,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5344,7 +5533,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "",
+      "description": "Shuffle read throughput.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5369,11 +5565,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5481,6 +5675,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "Shuffle write throughput.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
@@ -5505,11 +5707,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5617,6 +5817,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_INFLUX-GRAPHITE}",
+      "description": "Details of shuffle I/O operations, local and remote.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -5641,11 +5849,9 @@
       "linewidth": 3,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5788,7 +5994,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 22,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -5800,7 +6006,6 @@
         "definition": "",
         "hide": 0,
         "includeAll": false,
-        "index": -1,
         "label": "User",
         "multi": false,
         "name": "UserName",
@@ -5823,7 +6028,6 @@
         "definition": "",
         "hide": 0,
         "includeAll": false,
-        "index": -1,
         "label": "Spark Application Id",
         "multi": false,
         "name": "ApplicationId",
@@ -5873,8 +6077,5 @@
   "timezone": "",
   "title": "Spark_Perf_Dashboard_Spark3.0_v02",
   "uid": "-H0ElOqmiv",
-  "variables": {
-    "list": []
-  },
   "version": 1
 }
