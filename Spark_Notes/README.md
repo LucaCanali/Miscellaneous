@@ -16,3 +16,4 @@
 | [**Tools: Spark and Linux Flame Graph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools for stack profiling and Flame Graph visualization relevant for Spark (Java/JVM) on Linux
 | [**Spark Task Metrics**](Spark_TaskMetrics.md) | Short description of Spark task Metrics
 | [**Scala Project and Spark SQL**](testScalaProject) | A basic example of a working Scala project using Spark SQL  
+| [**Spark Memory Configuration**](Spark_Memory_Configuration.md) | Info on how to configure Spark executor memory
