@@ -17,4 +17,4 @@
 | [**Spark Task Metrics**](Spark_TaskMetrics.md) | Short description of Spark task Metrics
 | [**Scala Project and Spark SQL**](testScalaProject) | A basic example of a working Scala project using Spark SQL  
 | [**Spark Memory Configuration**](Spark_Memory_Configuration.md) | Info on how to configure Spark executor memory
-| [**Spark HBase_Connector**](Spark_Habase_Connector.md) | How to access Hbase from Spark
+| [**Spark HBase_Connector**](Spark_HBase_Connector.md) | How to access Hbase from Spark
