@@ -19,9 +19,9 @@
   - You need to compile the connector with scala 2.12 (Spark 3.x does not support scala 2.11)
   - As of October 2020, you need an extra small set of changes to be able to build and use with Spark 3.0
     - See the [HBase-connectors repo experimental branch for Spark 3](https://github.com/LucaCanali/hbase-connectors/tree/spark3/spark) 
-  - Build with:
+  - Build with (example):
     ```
-    mvn -Dspark.version=3.0.1 -Dscala.version=2.12.10 -Dscala.binary.version=2.12 -DskipTests clean install 
+    mvn -Dspark.version=3.0.1 -Dscala.version=2.12.10 -Dscala.binary.version=2.12 -Dhbase.version=2.2.6 -Dhadoop.profile=3.0 -Dhadoop-three.version=3.2.1 -DskipTests clean package
     ```
   - Deploy with:
   ```
