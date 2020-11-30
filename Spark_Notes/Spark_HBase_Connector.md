@@ -2,24 +2,23 @@
 
 ### Why
 Spark needs a connector library to access HBase.
-  - **[Apache Hbase Connectors](https://github.com/apache/hbase-connectors)** provides a Spark-Hbase connector
+  - **[Apache HBase Connectors](https://github.com/apache/hbase-connectors)** provides a Spark-HBase connector
    - [Hortonworks Spark-HBase connector](https://github.com/hortonworks-spark/shc) is another connector, it has been quite popular
     over the years, it appears to be no more supported nor updated.
 
 ### Configuration
   - You need the HBase client configuration file `hbase-site.xml` 
     - Copy it to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`, note: HBASE_CONF_DIR does not work)
-    - Note: possibly you need to send the file to the executors via `--files hbase-site.xml` (note this is not needed in my environment)
-  - See also the note below on server-side jar configuration to use SQl filter pushdown
+  - See also the note below on server-side jar configuration to use SQL filter pushdown
 
-### Spark 2.x and the Apache Spark Hbase connector 
-  - Deploy using packages from maven central. Example:
+### Spark 2.x and the Apache Spark HBase connector 
+  - Deploy the connector using packages from Maven Central. Example:
   ```
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
     --packages org.apache.hbase:hbase-server:2.2.4,org.apache.hbase:hbase-common:2.2.4,org.apache.hbase:hbase-zookeeper:2.2.4,org.apache.hbase.connectors.spark:hbase-spark:1.0.0
   ```
   
-### Spark 3.x and the Apache Spark Hbase connector
+### Spark 3.x and the Apache Spark HBase connector
 - You need to compile the connector with scala 2.12 (Spark 3.x does not support scala 2.11)
 - An extra PR is needed: 
   - See HBase Connectors - [HBASE-25326](https://issues.apache.org/jira/browse/HBASE-25326)
@@ -31,6 +30,7 @@ Spark needs a connector library to access HBase.
     ```
   - Deploy using Spark 3.0, as in this example:
   ```
+  # Customize the JAR path, for convenience there are versions uploaded to a web server
   JAR1=http://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.0.1-cern1_3.jar
   JAR2=http://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.0.1-cern1_3.jar
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
@@ -48,39 +48,33 @@ Spark needs a connector library to access HBase.
 ---
 ## How to run a test workload of Spark writing and reading from HBase using the Spark-Hbase connector:
 
-    
-### Write + Read, example 1
+### Spark-HBase connector: write and read example 
 
-- Note this may be needed: 
-  - On HBase:
-    `grant '<your_username_here>', 'X', 'hbase:meta'`
 
-- On HBase, create the test table and grant the related privileges to your user:
+- On HBase, create the test table and grant the related privileges to your user (use `hbase shell`):
   ```
   create 'testspark1', 'cf'
   grant '<your_username_here>', 'XRW', 'testspark1'
   ```
-
+  - Note this may be too needed: `grant '<your_username_here>', 'X', 'hbase:meta'`
+ 
 - On Spark:
-  - Start spark 2.x or 3.x as detailed above
+  - Start Spark 2.x or 3.x as detailed above
   - Write:
   ```  
   val df = sql("select id, 'myline_'||id  name from range(10)")
-
   df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).save()
   ```
   
 - Read back from Spark
   ``` 
   val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).load()
-
   df.show()
   ```
 
-- Read back from Spark using a filter, without server-side installation for SQL Filter pushdown [HBASE-22769](https://issues.apache.org/jira/browse/HBASE-22769)
+- Read back from Spark using a filter, without server-side installation for SQL filter pushdown [HBASE-22769](https://issues.apache.org/jira/browse/HBASE-22769)
   ``` 
   val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", false).load()
-
   df.show()
   ```
 
@@ -108,9 +102,6 @@ Spark needs a connector library to access HBase.
     - Example of how to use SQL filter pushdown
   ``` 
   val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", true).load()
-
-  df.show()
-
   df.filter("id==9").show()
   ```
   
@@ -179,17 +170,12 @@ Spark needs a connector library to access HBase.
   ```
   
   - Important notes:
-    - You need the hbase client configuration file `hbase-site.xml` 
+    - You need the HBase client configuration file `hbase-site.xml` 
       - Copy it to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`, note: HBASE_CONF_DIR does not work)
-      - Note: possibly you need to send the file to the executors via `--files hbase-site.xml` (note this is not needed in my environment)
-  
-    - On HBase:
-      `grant '<your_username_here>', 'X', 'hbase:meta'`
       
 - Write
   ```  
   df = spark.sql("select id, 'myline_'||id  name from range(10)")
-
   df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", False).save()
   ```
 
@@ -197,10 +183,8 @@ Spark needs a connector library to access HBase.
 
   ```
   df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", False).load()
-
   df.show()
-
-  df.filter("id==9").show()
+  df.filter("id==9").show() # see above note on SQL filter pushdown server-side configuration
   ```
   
 - Another option for reading: explicitly specify the catalog in JSON format:
