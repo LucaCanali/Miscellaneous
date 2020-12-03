@@ -43,7 +43,7 @@ Spark needs a connector library to access HBase.
       - Note this is a workaround solution, as I had to rename the group id to ch.cern to push to maven central
       - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --packages ch.cern.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.0.1_4`
     - **CERN users only**: deploy from artifactory.cern.ch (only visible from CERN network)
-      - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.0.1-cern1_3`
+      - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.0.1-cern1_4`
 
 ---
 ## How to run a test workload of Spark writing and reading from HBase using the Spark-Hbase connector:
