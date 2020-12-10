@@ -34,8 +34,7 @@ Spark needs a connector library to access HBase.
   JAR1=http://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.0.1-cern1_4.jar
   JAR2=http://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.0.1-cern1_4.jar
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
-  --jars $JAR1,$JAR2 \
-  --packages org.apache.hbase:hbase-server:2.2.4,org.apache.hbase:hbase-common:2.2.4,org.apache.hbase:hbase-mapreduce:2.2.4,org.apache.hbase:hbase-zookeeper:2.2.4,org.scala-lang:scala-library:2.12.10
+  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.2.4
   ```
 
   - Other options:
