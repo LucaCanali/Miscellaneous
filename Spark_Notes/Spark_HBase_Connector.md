@@ -4,18 +4,43 @@
 Spark needs a connector library to access HBase.
   - **[Apache HBase Connectors](https://github.com/apache/hbase-connectors)** provides a Spark-HBase connector
    - [Hortonworks Spark-HBase connector](https://github.com/hortonworks-spark/shc) is another connector, it has been quite popular
-    over the years, it appears to be no more supported nor updated.
+    over the years, it appears to be no more supported nor updated?
 
 ### Configuration
   - You need the HBase client configuration file `hbase-site.xml` 
     - Copy it to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`, note: HBASE_CONF_DIR does not work)
   - See also the note below on server-side jar configuration to use SQL filter pushdown
 
+### Spark 2.4 and the Spark-HBase Hortonworks connector
+  - See additional details: [note on using HBC HBase with Spark 2.4](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-using-spark-query-hbase)
+  ```
+  bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
+  --repositories http://repo.hortonworks.com/content/groups/public/ \
+  --packages com.hortonworks.shc:shc-core:1.1.0.3.1.2.2-1 
+  ```
+  ```
+  import org.apache.spark.sql.execution.datasources.hbase.HBaseTableCatalog
+
+  val catalog = s"""{
+    |"table":{"namespace":"default", "name":"testspark1"},
+    |"rowkey":"key",
+    |"columns":{
+    |"id":{"col":"key", "type":"int"},
+    |"name":{"cf":"cf", "col":"name", "type":"string"}
+    |}
+    |}""".stripMargin
+
+  val df = spark.read.options(Map(HBaseTableCatalog.tableCatalog->catalog)).format("org.apache.spark.sql.execution.datasources.hbase").option("hbase.spark.use.hbasecontext", false).load()
+
+  df.show()
+ ```
+
 ### Spark 2.x and the Apache Spark HBase connector 
   - Deploy the connector using packages from Maven Central. Example:
   ```
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
-    --packages org.apache.hbase:hbase-server:2.2.4,org.apache.hbase:hbase-common:2.2.4,org.apache.hbase:hbase-zookeeper:2.2.4,org.apache.hbase.connectors.spark:hbase-spark:1.0.0
+  --repositories https://repository.cloudera.com/artifactory/libs-release-local \
+  --packages org.apache.hbase.connectors.spark:hbase-spark-protocol-shaded:1.0.0.7.2.2.2-1,org.apache.hbase.connectors.spark:hbase-spark:1.0.0.7.2.2.2-1,org.apache.hbase:hbase-shaded-mapreduce:2.2.4
   ```
   
 ### Spark 3.x and the Apache Spark HBase connector
@@ -48,7 +73,6 @@ Spark needs a connector library to access HBase.
 ## How to run a test workload of Spark writing and reading from HBase using the Spark-Hbase connector:
 
 ### Spark-HBase connector: write and read example 
-
 
 - On HBase, create the test table and grant the related privileges to your user (use `hbase shell`):
   ```
