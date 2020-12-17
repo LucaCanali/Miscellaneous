@@ -1,13 +1,6 @@
 ## Spark Miscellaneous - Info, commands and tips
 
-- Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)   
-```
-bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.15
-val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
-stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
-```
----
-- Build Spark Session from API
+- Explicitly allocate a Spark Session
 ```
 // Scala
 import org.apache.spark.sql._
@@ -15,20 +8,45 @@ val spark = SparkSession.
     builder().
     appName("my app").
     master("local[*]").   // use master("yarn") for a YARN cluster
-    config("spark.driver.memory","2g").  // set all the parameters as needed
+    config("spark.driver.memory","2g").  // set config the parameters as needed
     getOrCreate() 
 
 # Python
+# Optionally choose which python to use 
+import os
+os. environ['PYSPARK_PYTHON']="PATH/python3"
+
 from pyspark.sql import SparkSession
 spark = SparkSession.builder \
         .appName("my app")  \
         .master("yarn") \
-        .config("spark.driver.memory","8g") \
-        .config("spark.executor.memory","14g") \
+        .config("spark.driver.memory","2g") \
+        .config("spark.executor.memory","12g") \
         .config("spark.executor.cores","4") \
         .config("spark.executor.instances","8") \
         .config("spark.dynamicAllocation.enabled","false") \
+        .config("spark.pyspark.python", "PATH/python3") \
         .getOrCreate()
+```
+---
+- How to use/choose Spark/PySpark home to use from python
+  - simple way to make import pyspark work in python (`pip install pyspark`)
+  - more sofisticated: you want to choose the Spark version and/or (re)use an existing Spark home:
+     ```
+        pip install findspark
+        
+        python
+        import findspark
+        findspark.init('/home/luca/Spark/spark-3.0.1-bin-hadoop3.2') #set path to SPARK_HOME
+     ```
+  - note: when using bin/pyspark, this is not relevant,
+    as pyspark from the current SPARK_HOME will be used in this case
+---
+- Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)
+```
+bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.17
+val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
+stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
 ```
 ---
 - Spark commit and PRs, see what's new
@@ -47,11 +65,9 @@ spark = SparkSession.builder \
 git clone https://github.com/apache/spark.git
 cd spark
 # export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
-./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Phive -Pyarn -Pkubernetes
 
 # Compile for a specific Hadoop version, for example use this to compile for Hadoop 3.2
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-3.2 -Pyarn -Pkubernetes
-# old versions: ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-2.7 -Dhadoop.version=3.2.0 -Pyarn -Pkubernetes
 
 # Compile Spark 3.0 with Hadoop 3.2.1, this currently requires a workaround for Guava vesion compatibility
 ./dev/make-distribution.sh --name custom_spark --pip --tgz -Pyarn -Pkubernetes -Phadoop-3.2 -Dhadoop.version=3.2.1 -Dguava.version=27.0-jre
@@ -1244,24 +1260,11 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
        <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
      </property>
     ```
----
-- How to use/choose pyspark version to import from python
-  - simple way to make import pyspark work in python (`pip install pyspark`)
-  - more sofisticated: you want to choose the Spark version and/or (re)use an existing Spark home:
-     ```
-        pip install findspark
-        
-        python
-        import findspark
-        findspark.init('/home/luca/Spark/spark-2.4.0-bin-hadoop2.7') #set path to SPARK_HOME
-     ```
-  - note: when using bin/pyspark, this is not relevant, 
-    as pyspark from the current SPARK_HOME will be used in this case
  ---
  - How to add a description to a Spark job:
    - spark.sparkContext.setJobDescription("job description")
    - Note: in Spark 3.0, when using Spark SQL/Dataframes: "job description" will be displayed in SQL tab
-   - See also: spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)
+   - See also: `spark.sparkContext.setJobGroup(groupId: String,description: String,interruptOnCancel: Boolean)`
  
  ---
  Salting SQL joins to work around problems with data skew on large tables, example:
