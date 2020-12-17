@@ -14,7 +14,7 @@ val spark = SparkSession.
 # Python
 # Optionally choose which python to use 
 import os
-os. environ['PYSPARK_PYTHON']="PATH/python3"
+os. environ['PYSPARK_PYTHON']="PATH_EDIT_HERE/python3"
 
 from pyspark.sql import SparkSession
 spark = SparkSession.builder \
@@ -25,7 +25,7 @@ spark = SparkSession.builder \
         .config("spark.executor.cores","4") \
         .config("spark.executor.instances","8") \
         .config("spark.dynamicAllocation.enabled","false") \
-        .config("spark.pyspark.python", "PATH/python3") \
+        .config("spark.pyspark.python", "PATH_EDIT_HERE/python3") \
         .getOrCreate()
 ```
 ---
