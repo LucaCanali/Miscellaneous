@@ -1308,4 +1308,17 @@ All OK with the direct use of the function:
 ```
 df.select(regexp_extract(col("name"), "(\\w+)", 0)).show(2)
 ```
+---
+Collect query results into an array
 
+Python example:
+```
+>>> spark.sql("select id from range(10)").rdd.map(lambda x: x[0]).collect()
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+Scala example:
+```
+scala> spark.sql("select id from range(10)").rdd.map(x => x(0)).collect()
+res1: Array[Any] = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+```
