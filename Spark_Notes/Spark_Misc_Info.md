@@ -59,6 +59,30 @@ stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross joi
      - https://docs.databricks.com/index.html 
 
 ---
+- How to read SQL Metrics using Status Store
+```
+val df=spark.sql("select count(*) from range(10) join range(10)")
+df.collect()
+
+val statusStore = spark.sharedState.statusStore
+statusStore.execution(0).get.metrics
+statusStore.planGraph(0).nodes(2).metrics
+statusStore.executionMetrics(0)
+```
+
+from Python:
+```python
+df=spark.sql("select count(*) from range(10) join range(10)")
+df.collect()
+
+statusStore=spark._jsparkSession.sharedState().statusStore()
+spark._jsparkSession.sharedState().statusStore().executionMetrics(0).toString()
+statusStore.execution(0).get().metrics()
+statusStore.execution(0).get().metrics().toString()
+statusStore.execution(0).get().metrics().mkString()
+```
+
+---
 - How to build Spark
   - see also https://spark.apache.org/docs/latest/building-spark.html
 ```
@@ -419,30 +443,21 @@ time.time()
 
 Example without registering pandas_udf as SQL function 
 ```python
-df = sql("select cast(1.0 as double) col1, rand(42) col2, Array(rand(42),rand(42),rand(42)) col3 from range(1e8)")
-df.printSchema()
-
-root
- |-- col1: double (nullable = false)
- |-- col2: double (nullable = false)
- |-- col3: array (nullable = false)
- |    |-- element: double (containsNull = false)
-
-
 from pyspark.sql.functions import pandas_udf
-from pyspark.sql.functions import col, pandas_udf, PandasUDFType
-from pyspark.sql.types import *
 
-@pandas_udf(ArrayType(DoubleType()), PandasUDFType.SCALAR)
+@pandas_udf("long")
 def test_pandas(col1):
-  return col1*col1
+  return col1 * col1
 
-# dry run
-df.withColumn('test', test_pandas(df.col3)).selectExpr("max(test)").show()
+res = spark.range(10).select(test_pandas("id")).collect()
+
+# register to use with SQL
+spark.udf.register("test_pandas", test_pandas)
+res = spark.sql("select test_pandas(id) from range(10)").collect()
 
 import time
 start = time.time()
-df.withColumn('test', test_pandas(df.col3)).write.format("noop").mode("overwrite").save()
+res = spark.sql("select test_pandas(id) from range(10000)").collect()
 end = time.time()
 print(end - start)
 ```
