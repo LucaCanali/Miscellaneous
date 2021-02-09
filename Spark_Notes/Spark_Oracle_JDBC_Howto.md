@@ -115,6 +115,9 @@ Example:
 
 Note: instead of a table name you can specify a query as in 
 ```
+       .option("query", "select * from MYSCHEMA.MYTABLE where rownum<=20")
+       
+       // this will also work:
        .option("dbtable", "(select * from MYSCHEMA.MYTABLE where rownum<=20)")
 ```
 ---
