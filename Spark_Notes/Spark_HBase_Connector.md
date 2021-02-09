@@ -45,9 +45,8 @@ Spark needs a connector library to access HBase.
   
 ### Spark 3.x and the Apache Spark HBase connector
 - You need to compile the connector with scala 2.12 (Spark 3.x does not support scala 2.11)
-- An extra PR is needed: 
-  - See HBase Connectors - [HBASE-25326](https://issues.apache.org/jira/browse/HBASE-25326)
-  - See also HBase-connectors fork and experimental [branch for Spark 3 compatibility](https://github.com/LucaCanali/hbase-connectors/tree/compileWithSpark3) 
+- Build the connector from the [github repo Apache HBase Connectors](https://github.com/apache/hbase-connectors)
+  - See also the patch to allow building for Spark 3 - [HBASE-25326 Allow hbase-connector to be used with Apache Spark 3.0 ](https://issues.apache.org/jira/browse/HBASE-25326)
 
  - Build as in this example (customize HBase, Spark and Hadoop versions, as needed):  
     ```
