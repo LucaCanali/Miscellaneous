@@ -9,7 +9,7 @@ See also [Spark documentation]()https://spark.apache.org/docs/latest/sql-program
 
 ```
 # You need an Oracle client JDBC jar, available for download from the Oracle website
-# This example uses ojdb8.jar from Oracle 12.2 client, older versions such as ojdbc6.jar work OK too
+# This example uses ojdb8.jar from Oracle 19.10 client, older versions of this jar, such as ojdbc6.jar work OK too
 bin/spark-shell --jars oracle_client/instantclient_12_2/ojdbc8.jar
 
 val df = spark.read.format("jdbc")
