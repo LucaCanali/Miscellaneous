@@ -225,6 +225,14 @@ scala> fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("<file_path>"), 0L
 ...
 ```
 ---
+PySpark list files in a directory
+```
+fs = sc._jvm.org.apache.hadoop.fs.FileSystem.get(sc._jsc.hadoopConfiguration())
+status = fs.listStatus(sc._jvm.org.apache.hadoop.fs.Path("/mypath_here/"))
+for fileStatus in status:
+    print(fileStatus.getPath())
+```
+---
 Example analysis of Hadoop file data block locations using Spark SQL
 
 ```
