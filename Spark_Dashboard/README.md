@@ -25,9 +25,14 @@ for further details).
 The number of metrics instrumenting Spark components is quite large. 
 You can find a [list of the available metrics at this link](Spark_dropwizard_metrics_info.md)
 
+### Simplified configuration
+- See the repository [Spark Dashboard](https://github.com/cerndb/spark-dashboard) for a simplified procedure to 
+  configure and run the dashboard using InfluxDB and Grafana.
+- The steps 2-to-4 below detail how to do the configuration if you prefer to install it yourself.
+
 ### Step 2: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
-  - Note: tested with InfluxDB versions 1.7.3 up to 1.8.0
+  - Note: tested with InfluxDB versions 1.7.3 up to 1.8.4
 - Edit the config file `/etc/influxdb/influxdb.conf` and enable the graphite endpoint
 - **Key step:** Setup the templates configuration
   - This instructs InfluxDB on how to map data received on the graphite endpoint to the measurements and tags in the DB
@@ -39,7 +44,8 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
 ###  Step 3: Configure Grafana and prepare/import the dashboard
 - Download and install Grafana 
   - download rpm from https://grafana.com/ and start Grafana service: `systemctl start grafana-server.service`
-  - Note: tested using Grafana versions 6.0.0 up to 6.7.2
+  - Note: tested using Grafana versions up to 7.5.4 
+  - Note: For the older Spark_Perf_Dashboard_v01 do not use Grafana 7.4.0 or higher
 - Alternative: run Grafana on a Docker container: http://docs.grafana.org/installation/docker/
 - Connect to the Grafana web interface as admin and configure
   - By default: http://yourGrafanaMachine:3000
@@ -48,8 +54,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
     - Set the InfluxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
-    - To get started import the example Grafana dashboard [Spark_Perf_Dashboard_v01](Spark_Perf_Dashboard_v01.json)
-      - For Spark 3.0 use [Spark_Perf_Dashboard_Spark3.0_v02](Spark_Perf_Dashboard_Spark3.0_v02.json)
+    - To get started import the example Grafana dashboard [Spark_Perf_Dashboard_v03](Spark_Perf_Dashboard_v03.json)
     - You can also experiment with building your dashboard or augmenting the example.
 
 ### Step 4: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
@@ -86,12 +91,10 @@ Open the web page of the Grafana dashboard:
 Metrics related to the selected application should start being populated as time and workload progresses.
 - If you use the dashboard to measure a workload that has already been running for some time,
 note to set the Grafana time range selector (top right of the dashboard) to a suitable time window
-- For best results test this using Spark 2.4.0 or higher
-(note Spark 2.3.x will also work, but it will not populate executor JVM CPU)
-- Avoid local mode and use Spark with a cluster manager (for example YARN or Kubernetes) when
-testing this. Most of the interesting metrics are in the executor source, which is not populated 
-in local mode (up to Spark 2.4.0 included). 
-- If you want to "kick the tires" of the dashboard, 
+- For best results test this using Spark 3.x
+(note Spark 2.4 and 2.3 will also work, but it will not populate all the graphs/metrics)
+- The instrumentation works with Spark on a cluster manager (for example YARN or Kubernetes).
+  Use this instrumentation for Spark in local mode only with Spark 3.1 or higher.
 
 **Dashboard view:** The following links show an example and general overview of the example dashboard,
 measuring a test workload.
@@ -130,8 +133,9 @@ bin/spark-shell --master local[*] --packages ch.cern.sparkmeasure:spark-measure_
 --conf spark.extraListeners=ch.cern.sparkmeasure.InfluxDBSink
 ```
 
-- Import the [example Grafana dashboard_with_annotations](Spark_Perf_Dashboard_v01_with_annotations.json)
-and setup the data source for annotations to point to the InfluxDB instance. The DB name used by sparkMeasure by default is "sparkmeasure"
+- Import the [example Grafana dashboard_with_annotations](Spark_Perf_Dashboard_v03_with_annotations.json)
+and setup the data source for annotations to point to the InfluxDB instance.
+  The DB name used by sparkMeasure by default is "sparkmeasure"
  
 - An example of the result is show below (see "Example Grafana dashboard with annotations")
 

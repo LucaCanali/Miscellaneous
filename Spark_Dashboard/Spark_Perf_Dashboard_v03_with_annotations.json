@@ -1,54 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUX-GRAPHITE",
-      "label": "influx-graphite",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_INFLUX-SPARKMEASURE",
-      "label": "influx-sparkmeasure",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "7.1.0"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -64,7 +14,7 @@
         "type": "dashboard"
       },
       {
-        "datasource": "${DS_INFLUX-SPARKMEASURE}",
+        "datasource": "influx-sparkmeasure",
         "enable": true,
         "hide": false,
         "iconColor": "rgba(255, 96, 96, 1)",
@@ -76,7 +26,7 @@
         "type": "tags"
       },
       {
-        "datasource": "${DS_INFLUX-SPARKMEASURE}",
+        "datasource": "influx-sparkmeasure",
         "enable": false,
         "hide": false,
         "iconColor": "rgba(255, 96, 96, 1)",
@@ -88,7 +38,7 @@
         "type": "tags"
       },
       {
-        "datasource": "${DS_INFLUX-SPARKMEASURE}",
+        "datasource": "influx-sparkmeasure",
         "enable": false,
         "hide": false,
         "iconColor": "rgba(255, 96, 96, 1)",
@@ -104,13 +54,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1595514706183,
+  "iteration": 1618582410425,
   "links": [],
   "panels": [
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -124,11 +73,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Latest sample of the value of number of active tasks, summed over all executors active in the selected time filter interval.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:863",
@@ -139,7 +87,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -173,9 +120,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -220,11 +168,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total executor CPU time computed from from executor metrics. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1637",
@@ -235,7 +182,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -269,9 +215,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -326,11 +273,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total task CPU usage from task metrics. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1839",
@@ -341,7 +287,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -375,9 +320,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -429,11 +375,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total time spent in GC operations during task execution. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1953",
@@ -444,7 +389,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -478,9 +422,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -532,11 +477,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1896",
@@ -547,7 +491,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -581,9 +524,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -629,11 +573,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of running stages from the DAG scheduler.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2032",
@@ -644,7 +587,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -678,9 +620,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -729,11 +672,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Latest value of the % of heap memory used, averaging over executors and driver. JVM metric from MemoryMXBean. Conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1558",
@@ -746,7 +688,6 @@
           ],
           "max": 100,
           "min": 0,
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -783,9 +724,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -846,11 +788,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Bytes read from HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1697",
@@ -861,7 +802,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -895,9 +835,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -949,11 +890,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Bytes written to HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1798",
@@ -964,7 +904,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -998,9 +937,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1052,11 +992,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of succeeded jobs, from the appStatus metric (introduced in Spark 3.0). Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2672",
@@ -1067,7 +1006,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1101,9 +1039,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1155,11 +1094,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Failed tasks for the appStatus metrics. Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2748",
@@ -1170,7 +1108,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1204,9 +1141,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1253,11 +1191,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of failed stages from the appStatus \n metrics.\nConditional to a configuration parameter:\nspark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2032",
@@ -1268,7 +1205,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1302,9 +1238,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1351,7 +1288,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1368,11 +1305,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of active tasks per executor.\n",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1403,9 +1339,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1434,7 +1373,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1477,6 +1416,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2038",
           "format": "short",
           "label": "N# Active Tasks",
           "logBase": 1,
@@ -1485,6 +1425,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2039",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -1503,11 +1444,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total executor CPU utilization computed from executors' JVM instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1536,9 +1476,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1561,7 +1504,7 @@
           "measurement": "jvmCpuTime",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000000000 FROM \"jvmCpuTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"jvmCpuTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1616,6 +1559,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2123",
           "format": "short",
           "label": "CPU Utilization (N# cores equivalent)",
           "logBase": 1,
@@ -1624,6 +1568,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2124",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1642,11 +1587,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1675,9 +1619,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1705,7 +1652,7 @@
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000 FROM  \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval),process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1758,6 +1705,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2299",
           "format": "none",
           "label": "GC Time (N# cores equivalent)",
           "logBase": 1,
@@ -1766,6 +1714,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2300",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1784,11 +1733,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1817,9 +1765,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1847,7 +1798,7 @@
           "measurement": "cpuTime.count",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000000000 FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1906,6 +1857,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2392",
           "format": "short",
           "label": "CPU Utilization (N# cores equivalent)",
           "logBase": 1,
@@ -1914,6 +1866,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2393",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1932,11 +1885,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1965,9 +1917,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2342,19 +2297,18 @@
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
+      "datasource": "influx-graphite",
+      "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
       },
-      "fill": 1,
+      "fill": 2,
       "fillGradient": 0,
       "gridPos": {
         "h": 11,
@@ -2363,7 +2317,7 @@
         "y": 34
       },
       "hiddenSeries": false,
-      "id": 78,
+      "id": 54,
       "interval": "15s",
       "legend": {
         "avg": false,
@@ -2374,49 +2328,44 @@
         "total": false,
         "values": false
       },
-      "lines": false,
+      "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:2351",
-          "alias": "runTime",
-          "bars": false,
-          "lines": true,
-          "linewidth": 2,
-          "stack": false
-        },
-        {
-          "$$hashKey": "object:2352",
-          "alias": "deserializeCpuTime",
-          "stack": false
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": true,
       "steppedLine": false,
       "targets": [
         {
-          "alias": "deserializeCpuTime",
+          "alias": "run time - Executor $tag_process",
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "15s"
               ],
               "type": "time"
+            },
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
             }
           ],
-          "measurement": "deserializeCpuTime.count",
+          "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"deserializeCpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
+          "policy": "autogen",
+          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2434,329 +2383,26 @@
               },
               {
                 "params": [
-                  "1s"
+                  "15s"
                 ],
                 "type": "non_negative_derivative"
               }
             ]
           ],
-          "tags": []
-        },
-        {
-          "alias": "deserializeTime",
-          "groupBy": [
+          "tags": [
             {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
             }
-          ],
-          "measurement": "deserializeTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"deserializeTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "cpuTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "cpuTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "shuffleWriteTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "shuffleWriteTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "resultSerializationTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "resultSerializationTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"resultSerializationTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "shuffleFetchWaitTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "shuffleFetchWaitTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"shuffleFetchWaitTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "F",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "jvmGCTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "G",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "runTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "PythonUDFRunAndReadTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"PandasUDFRunAndReadTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "I",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Executor run time and wait time components + Experimental Pandas UDF time metrics for SPARK-30306",
+      "title": "Executor Run Time - from task metrics",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2772,16 +2418,16 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:2377",
+          "$$hashKey": "object:2486",
           "format": "none",
-          "label": "Time component (N# cores equivalent)",
+          "label": "Task Run Time (N# cores equivalent)",
           "logBase": 1,
           "max": null,
           "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:2378",
+          "$$hashKey": "object:2487",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2800,11 +2446,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2833,9 +2478,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2952,11 +2600,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
+      "datasource": "influx-graphite",
+      "description": "Time the Executor has spent writing shuffle data. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on shuffle writing that would give an equivalent result.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2968,366 +2615,6 @@
         "w": 12,
         "x": 12,
         "y": 45
-      },
-      "hiddenSeries": false,
-      "id": 54,
-      "interval": "15s",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.1.0",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "run time - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "15s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "process"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "shuffleFetchWaitTime.count",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "15s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Run Time - from task metrics",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "none",
-          "label": "Task Run Time (N# cores equivalent)",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Storage memory and disk used by the block manager.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 0,
-        "y": 56
-      },
-      "hiddenSeries": false,
-      "id": 66,
-      "interval": "15s",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.1.0",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "heap Memory  Used - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "15s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "process"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "heap.used",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"memory.onHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            },
-            {
-              "condition": "AND",
-              "key": "process",
-              "operator": "!=",
-              "value": "driver"
-            }
-          ]
-        },
-        {
-          "alias": "non-heap Memory  Used - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM \"memory.offHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Disk used - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM \"disk.diskSpaceUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Block Manager: memory and disk used",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "decmbytes",
-          "label": "Block manager memory and disk used",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Time the Executor has spent writing shuffle data. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on shuffle writing that would give an equivalent result.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 12,
-        "y": 56
       },
       "hiddenSeries": false,
       "id": 67,
@@ -3345,9 +2632,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3375,7 +2665,7 @@
           "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000000000  FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s) / 1000000000  FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3428,6 +2718,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2571",
           "format": "none",
           "label": "Shuffle Write Time (N# cores equivalent)",
           "logBase": 1,
@@ -3436,6 +2727,229 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2572",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "influx-graphite",
+      "description": "Storage memory and disk used by the block manager.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "hiddenSeries": false,
+      "id": 66,
+      "interval": "15s",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "7.5.4",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Heap Memory  Used - Executor $tag_process",
+          "groupBy": [
+            {
+              "params": [
+                "15s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "heap.used",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT mean(value) FROM \"memory.onHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            },
+            {
+              "condition": "AND",
+              "key": "process",
+              "operator": "!=",
+              "value": "driver"
+            }
+          ]
+        },
+        {
+          "alias": "Non-heap Memory  Used - Executor $tag_process",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"memory.offHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Disk used - Executor $tag_process",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"disk.diskSpaceUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Block Manager: memory and disk used",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2679",
+          "format": "decmbytes",
+          "label": "Block manager memory and disk used",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2680",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -3451,7 +2965,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3468,11 +2982,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "JVM Heap Memory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3503,9 +3016,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3534,7 +3050,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"JVMHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"JVMHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3577,7 +3093,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:2772",
+          "format": "decbytes",
           "label": "JVM Heap Memory",
           "logBase": 1,
           "max": null,
@@ -3585,7 +3102,8 @@
           "show": true
         },
         {
-          "format": "short",
+          "$$hashKey": "object:2773",
+          "format": "decbytes",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -3603,11 +3121,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "JVM Off Heap Memory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3638,9 +3155,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3669,7 +3189,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"JVMOffHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"JVMOffHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3713,7 +3233,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:2981",
-          "format": "short",
+          "format": "decbytes",
           "label": "JVM Off Heap Memory",
           "logBase": 1,
           "max": null,
@@ -3740,11 +3260,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OnHeapUnifiedMemory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3775,9 +3294,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3806,7 +3328,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OnHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OnHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3849,7 +3371,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:3333",
+          "format": "decbytes",
           "label": "OnHeapUnifiedMemory",
           "logBase": 1,
           "max": null,
@@ -3857,6 +3380,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3334",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -3875,11 +3399,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OffHeapUnifiedMemory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3910,9 +3433,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3941,7 +3467,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OffHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OffHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3985,7 +3511,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:3079",
-          "format": "short",
+          "format": "decbytes",
           "label": "OffHeapUnifiedMemory",
           "logBase": 1,
           "max": null,
@@ -4012,11 +3538,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OnHeapExecutionMemory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4047,9 +3572,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4078,7 +3606,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OnHeapExecutionMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OnHeapExecutionMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4121,6 +3649,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3533",
           "format": "decbytes",
           "label": "OnHeap Execution Memory",
           "logBase": 1,
@@ -4129,6 +3658,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3534",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4147,11 +3677,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OnHeap Storage Memory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4182,9 +3711,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4213,7 +3745,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OnHeapStorageMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OnHeapStorageMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4256,6 +3788,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3618",
           "format": "decbytes",
           "label": "OnHeap Storage Memory",
           "logBase": 1,
@@ -4264,6 +3797,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3619",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4282,11 +3816,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "MinorGCTime",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4315,9 +3848,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4345,7 +3881,7 @@
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000 FROM  \"MinorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"MinorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4398,6 +3934,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3703",
           "format": "none",
           "label": "MinorGCTime (normalized in core equivalent)",
           "logBase": 1,
@@ -4406,6 +3943,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3704",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4424,11 +3962,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "MajorGCTime",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4457,9 +3994,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4487,7 +4027,7 @@
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000 FROM  \"MajorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"MajorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4540,6 +4080,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3788",
           "format": "none",
           "label": "MajorGCTime (normalized in core equivalent)",
           "logBase": 1,
@@ -4548,6 +4089,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3789",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4566,11 +4108,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "ProcessTreeJVMRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4601,9 +4142,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4632,7 +4176,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"ProcessTreeJVMRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"ProcessTreeJVMRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4675,7 +4219,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:3873",
+          "format": "decbytes",
           "label": "ProcessTreeJVMRSSMemory",
           "logBase": 1,
           "max": null,
@@ -4683,6 +4228,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3874",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4701,11 +4247,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "ProcessTreePythonRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4736,9 +4281,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4767,7 +4315,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"ProcessTreePythonRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"ProcessTreePythonRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4810,7 +4358,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:4373",
+          "format": "decbytes",
           "label": "ProcessTreeJVMRSSMemory",
           "logBase": 1,
           "max": null,
@@ -4818,6 +4367,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4374",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4833,7 +4383,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -4850,11 +4400,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4883,9 +4432,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4913,7 +4465,7 @@
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver'  GROUP BY process",
+          "query": "SELECT mean(value) FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver'  GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4966,6 +4518,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4541",
           "format": "bytes",
           "label": "JVM total memory used",
           "logBase": 1,
@@ -4974,6 +4527,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4542",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4992,11 +4546,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Heap memory used per executor.  From MemoryMXBean.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5025,9 +4578,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5055,7 +4611,7 @@
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"heap.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver' GROUP BY process",
+          "query": "SELECT mean(value) FROM \"heap.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver' GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5108,6 +4664,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4626",
           "format": "bytes",
           "label": "JVM heap memory used",
           "logBase": 1,
@@ -5116,6 +4673,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4627",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5134,11 +4692,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5167,9 +4724,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5197,7 +4757,7 @@
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process = 'driver' GROUP BY process",
+          "query": "SELECT mean(value) FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process = 'driver' GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5275,7 +4835,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5292,11 +4852,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "HDFS read throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5325,9 +4884,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5355,7 +4917,7 @@
           "measurement": "filesystem.hdfs.read_bytes",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5408,6 +4970,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4794",
           "format": "Bps",
           "label": "HDFS bytes read/sec",
           "logBase": 1,
@@ -5416,6 +4979,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4795",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5434,11 +4998,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "HDFS write throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5467,9 +5030,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5497,7 +5063,7 @@
           "measurement": "filesystem.hdfs.read_bytes",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"filesystem.hdfs.write_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"filesystem.hdfs.write_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5550,6 +5116,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4879",
           "format": "Bps",
           "label": "HDFS bytes written/sec",
           "logBase": 1,
@@ -5558,6 +5125,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4880",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5576,11 +5144,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Shuffle read throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5609,9 +5176,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5639,7 +5209,7 @@
           "measurement": "shuffleTotalBytesRead.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"shuffleTotalBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"shuffleTotalBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5692,6 +5262,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4964",
           "format": "Bps",
           "label": "Shuffle total bytes read/sec",
           "logBase": 1,
@@ -5700,6 +5271,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4965",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5718,11 +5290,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Shuffle write throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5751,9 +5322,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5781,7 +5355,7 @@
           "measurement": "shuffleBytesWritten.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5834,6 +5408,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:5049",
           "format": "Bps",
           "label": "Shuffle bytes written/sec",
           "logBase": 1,
@@ -5842,6 +5417,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:5050",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5860,11 +5436,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Details of shuffle I/O operations, local and remote.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5893,9 +5468,12 @@
       "linewidth": 3,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -6015,6 +5593,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:5140",
           "format": "Bps",
           "label": "Shuffle bytes read/sec",
           "logBase": 1,
@@ -6023,6 +5602,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:5141",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -6038,16 +5618,17 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUX-GRAPHITE}",
+        "datasource": "influx-graphite",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "User",
@@ -6067,9 +5648,10 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUX-GRAPHITE}",
+        "datasource": "influx-graphite",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Spark Application Id",
@@ -6095,6 +5677,7 @@
   },
   "timepicker": {
     "refresh_intervals": [
+      "5s",
       "10s",
       "30s",
       "1m",
@@ -6118,7 +5701,7 @@
     ]
   },
   "timezone": "",
-  "title": "Spark_Perf_Dashboard_Spark3.0_v02_with_annotations",
+  "title": "Spark_Perf_Dashboard_v03_with_annotations",
   "uid": "-H0ElOqmiz",
   "version": 1
 }

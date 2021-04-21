@@ -1,46 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUX-GRAPHITE",
-      "label": "influx-graphite",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "7.1.0"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -60,18 +18,2688 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1595514726429,
+  "id": 3,
+  "iteration": 1619028715331,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "collapsed": true,
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 94,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Total executor CPU utilization computed from executors'  container cgroup instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 96,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Container CPU - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "jvmCpuTime",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"ch.cern.CgroupMetrics.CPUTimeNanosec\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process\n",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "non_negative_derivative"
+                  },
+                  {
+                    "params": [
+                      " / 1000000000"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Executors Container CPU Utilization (N# cores-equivalent)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2066",
+              "format": "short",
+              "label": "CPU Utilization (N# cores equivalent)",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2067",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Network bytes in, throughput from ch.cern.CgroupMetrics.NetworkBytesIn",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 98,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Network bytes in - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.NetworkBytesIn\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Network bytes in/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "Network bytes in bytes/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Network bytes in, throughput from ch.cern.CgroupMetrics.NetworkBytesOut",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 100,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "network bytes out - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.NetworkBytesOut\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Network bytes out/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "Network bytes out bytes/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryRss",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 102,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "memory RSS - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.MemoryRss\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Memory RSS",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "decbytes",
+              "label": "Memory RSS bytes",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Memory RSS from ch.cern.CgroupMetrics.MemorySwap",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 21
+          },
+          "hiddenSeries": false,
+          "id": 104,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Memory swap - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.MemorySwap\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Memory Swap",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "decbytes",
+              "label": "Memory Swap bytes",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryCache",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 21
+          },
+          "hiddenSeries": false,
+          "id": 106,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Memory cache - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.MemoryCache\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Memory Cache",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "decbytes",
+              "label": "Memory cache bytes",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Spark Plugins: CGroup Metrics (use with Spark on K8S)",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 84,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Cloud storage read throughput from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 86,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "bytes read - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.bytesRead\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Cloud Storage bytes read/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "Cloud storage bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Cloud storage write throughput from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 88,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "bytes written- Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.bytesWritten\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Cloud Storage bytes written/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "Cloud storage bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Cloud storage read operations from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 90,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "read ops - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.readOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Cloud Storage read ops/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "ops",
+              "label": "Cloud storage read ops/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "Cloud storage read operations from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 92,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "write ops - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.writeOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Cloud Storage write ops/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "ops",
+              "label": "Cloud storage write ops/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Spark Plugins: Cloud Storage",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 108,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 110,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "HDFS bytes read - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesRead\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS bytes read/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "HDFS bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS write throughput from ch.cern.HDFSMetrics.bytesWritten",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 112,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "HDFS bytes written- Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesWritten\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS bytes written/sec",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1734",
+              "format": "Bps",
+              "label": "HDFS bytes written/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1735",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS read ops from ch.cern.HDFSMetrics.readOps",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 114,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "HDFS read ops - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.readOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS read ops/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "none",
+              "label": "HDFS read ops/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS large read ops from ch.cern.HDFSMetrics.largeReadOps",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 116,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "HDFS large read ops - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.largeReadOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS large read ops/sec ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "none",
+              "label": "HDFS large read ops/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesLocalHost",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 21
+          },
+          "hiddenSeries": false,
+          "id": 118,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "HDFS bytes read - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadLocalHost\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS bytes read localhost (bytes/sec) ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "HDFS bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfFiveOrLarger",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 21
+          },
+          "hiddenSeries": false,
+          "id": 120,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "HDFS bytes read - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadDistanceOfFiveOrLarger\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS bytes read distance 5 or larger (bytes/sec) ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "HDFS bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfOneOrTwo",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 31
+          },
+          "hiddenSeries": false,
+          "id": 122,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "hdfs bytes read - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadDistanceOfOneOrTwo\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS bytes read distance 1 or 2 (bytes/sec) ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "HDFS bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influx-graphite",
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfThreeOrFour",
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 31
+          },
+          "hiddenSeries": false,
+          "id": 124,
+          "interval": "15s",
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "7.5.4",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "hdfs bytes read - Executor $tag_process",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadDistanceOfThreeOrFour\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "HDFS bytes read distance 3 or 4 (bytes/sec) ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:739",
+              "format": "Bps",
+              "label": "HDFS bytes read/sec",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:740",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Spark Plugins: HDFS Global Statistics",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": "influx-graphite",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
       },
       "id": 56,
       "panels": [],
@@ -80,11 +2708,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Latest sample of the value of number of active tasks, summed over all executors active in the selected time filter interval.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:863",
@@ -95,7 +2722,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -113,7 +2739,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 4
       },
       "id": 41,
       "links": [],
@@ -129,9 +2755,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -176,11 +2803,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total executor CPU time computed from from executor metrics. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1637",
@@ -191,7 +2817,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -209,7 +2834,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 1
+        "y": 4
       },
       "id": 57,
       "links": [],
@@ -225,9 +2850,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -282,11 +2908,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total task CPU usage from task metrics. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1839",
@@ -297,7 +2922,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -315,7 +2939,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 1
+        "y": 4
       },
       "id": 9,
       "links": [],
@@ -331,9 +2955,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -385,11 +3010,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total time spent in GC operations during task execution. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1953",
@@ -400,7 +3024,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -418,7 +3041,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 1
+        "y": 4
       },
       "id": 46,
       "links": [],
@@ -434,9 +3057,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -488,11 +3112,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1896",
@@ -503,7 +3126,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -521,7 +3143,7 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 1
+        "y": 4
       },
       "id": 34,
       "links": [],
@@ -537,9 +3159,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -585,11 +3208,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of running stages from the DAG scheduler.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2032",
@@ -600,7 +3222,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -618,7 +3239,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 1
+        "y": 4
       },
       "id": 79,
       "links": [],
@@ -634,9 +3255,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -685,11 +3307,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Latest value of the % of heap memory used, averaging over executors and driver. JVM metric from MemoryMXBean. Conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1558",
@@ -702,7 +3323,6 @@
           ],
           "max": 100,
           "min": 0,
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -724,7 +3344,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 6
+        "y": 9
       },
       "hideTimeOverride": false,
       "id": 32,
@@ -739,9 +3359,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -802,11 +3423,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Bytes read from HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1697",
@@ -817,7 +3437,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -835,7 +3454,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 6
+        "y": 9
       },
       "id": 12,
       "links": [],
@@ -851,9 +3470,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -905,11 +3525,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Bytes written to HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:1798",
@@ -920,7 +3539,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -938,7 +3556,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 6
+        "y": 9
       },
       "id": 58,
       "links": [],
@@ -954,9 +3572,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1008,11 +3627,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of succeeded jobs, from the appStatus metric (introduced in Spark 3.0). Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2672",
@@ -1023,7 +3641,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1041,7 +3658,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 6
+        "y": 9
       },
       "id": 13,
       "links": [],
@@ -1057,9 +3674,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1111,11 +3729,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Failed tasks for the appStatus metrics. Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2748",
@@ -1126,7 +3743,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1144,7 +3760,7 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 6
+        "y": 9
       },
       "id": 44,
       "links": [],
@@ -1160,9 +3776,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1209,11 +3826,10 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of failed stages from the appStatus \n metrics.\nConditional to a configuration parameter:\nspark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
               "$$hashKey": "object:2032",
@@ -1224,7 +3840,6 @@
               "value": "null"
             }
           ],
-          "nullValueMode": "connected",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1242,7 +3857,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 6
+        "y": 9
       },
       "id": 42,
       "links": [],
@@ -1258,9 +3873,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "targets": [
         {
           "groupBy": [
@@ -1307,12 +3923,12 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 14
       },
       "id": 28,
       "panels": [],
@@ -1324,11 +3940,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Number of active tasks per executor.\n",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1339,7 +3954,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 15
       },
       "hiddenSeries": false,
       "id": 2,
@@ -1359,9 +3974,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1390,7 +4008,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1433,6 +4051,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2038",
           "format": "short",
           "label": "N# Active Tasks",
           "logBase": 1,
@@ -1441,6 +4060,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2039",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -1459,11 +4079,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total executor CPU utilization computed from executors' JVM instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1474,7 +4093,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 15
       },
       "hiddenSeries": false,
       "id": 33,
@@ -1492,9 +4111,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1517,7 +4139,7 @@
           "measurement": "jvmCpuTime",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000000000 FROM \"jvmCpuTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"jvmCpuTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1572,6 +4194,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2123",
           "format": "short",
           "label": "CPU Utilization (N# cores equivalent)",
           "logBase": 1,
@@ -1580,6 +4203,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2124",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1598,11 +4222,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1613,7 +4236,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 27
       },
       "hiddenSeries": false,
       "id": 7,
@@ -1631,9 +4254,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1661,7 +4287,7 @@
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000 FROM  \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval),process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1714,6 +4340,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2299",
           "format": "none",
           "label": "GC Time (N# cores equivalent)",
           "logBase": 1,
@@ -1722,6 +4349,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2300",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1740,11 +4368,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1755,7 +4382,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 27
       },
       "hiddenSeries": false,
       "id": 3,
@@ -1773,9 +4400,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1803,7 +4433,7 @@
           "measurement": "cpuTime.count",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000000000 FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1862,6 +4492,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2392",
           "format": "short",
           "label": "CPU Utilization (N# cores equivalent)",
           "logBase": 1,
@@ -1870,6 +4501,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2393",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1888,11 +4520,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1903,7 +4534,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 34
+        "y": 37
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1921,9 +4552,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2298,28 +4932,27 @@
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
+      "datasource": "influx-graphite",
+      "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
       },
-      "fill": 1,
+      "fill": 2,
       "fillGradient": 0,
       "gridPos": {
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 34
+        "y": 37
       },
       "hiddenSeries": false,
-      "id": 78,
+      "id": 54,
       "interval": "15s",
       "legend": {
         "avg": false,
@@ -2330,49 +4963,44 @@
         "total": false,
         "values": false
       },
-      "lines": false,
+      "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:2351",
-          "alias": "runTime",
-          "bars": false,
-          "lines": true,
-          "linewidth": 2,
-          "stack": false
-        },
-        {
-          "$$hashKey": "object:2352",
-          "alias": "deserializeCpuTime",
-          "stack": false
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": true,
       "steppedLine": false,
       "targets": [
         {
-          "alias": "deserializeCpuTime",
+          "alias": "run time - Executor $tag_process",
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "15s"
               ],
               "type": "time"
+            },
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
             }
           ],
-          "measurement": "deserializeCpuTime.count",
+          "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"deserializeCpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
+          "policy": "autogen",
+          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2390,329 +5018,26 @@
               },
               {
                 "params": [
-                  "1s"
+                  "15s"
                 ],
                 "type": "non_negative_derivative"
               }
             ]
           ],
-          "tags": []
-        },
-        {
-          "alias": "deserializeTime",
-          "groupBy": [
+          "tags": [
             {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
             }
-          ],
-          "measurement": "deserializeTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"deserializeTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "cpuTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "cpuTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "shuffleWriteTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "shuffleWriteTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "resultSerializationTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "resultSerializationTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"resultSerializationTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "E",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "shuffleFetchWaitTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "shuffleFetchWaitTime.count",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"shuffleFetchWaitTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "F",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "jvmGCTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "G",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "runTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "H",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "PythonUDFRunAndReadTime",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"PandasUDFRunAndReadTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process) GROUP BY time($__interval)",
-          "rawQuery": true,
-          "refId": "I",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Executor run time and wait time components + Experimental Pandas UDF time metrics for SPARK-30306",
+      "title": "Executor Run Time - from task metrics",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2728,16 +5053,16 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:2377",
+          "$$hashKey": "object:2486",
           "format": "none",
-          "label": "Time component (N# cores equivalent)",
+          "label": "Task Run Time (N# cores equivalent)",
           "logBase": 1,
           "max": null,
           "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:2378",
+          "$$hashKey": "object:2487",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2756,11 +5081,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2771,7 +5095,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 45
+        "y": 48
       },
       "hiddenSeries": false,
       "id": 21,
@@ -2789,9 +5113,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2908,371 +5235,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 12,
-        "y": 45
-      },
-      "hiddenSeries": false,
-      "id": 54,
-      "interval": "15s",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.1.0",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "run time - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "15s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "process"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "shuffleFetchWaitTime.count",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "15s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Run Time - from task metrics",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "none",
-          "label": "Task Run Time (N# cores equivalent)",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
-      "description": "Storage memory and disk used by the block manager.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 0,
-        "y": 56
-      },
-      "hiddenSeries": false,
-      "id": 66,
-      "interval": "15s",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pluginVersion": "7.1.0",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "heap Memory  Used - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "15s"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "process"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "heap.used",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"memory.onHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            },
-            {
-              "condition": "AND",
-              "key": "process",
-              "operator": "!=",
-              "value": "driver"
-            }
-          ]
-        },
-        {
-          "alias": "non-heap Memory  Used - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM \"memory.offHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Disk used - Executor $tag_process",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM \"disk.diskSpaceUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Block Manager: memory and disk used",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "decmbytes",
-          "label": "Block manager memory and disk used",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Time the Executor has spent writing shuffle data. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on shuffle writing that would give an equivalent result.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3283,7 +5249,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 56
+        "y": 48
       },
       "hiddenSeries": false,
       "id": 67,
@@ -3301,9 +5267,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3331,7 +5300,7 @@
           "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000000000  FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s) / 1000000000  FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3384,6 +5353,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2571",
           "format": "none",
           "label": "Shuffle Write Time (N# cores equivalent)",
           "logBase": 1,
@@ -3392,6 +5362,229 @@
           "show": true
         },
         {
+          "$$hashKey": "object:2572",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "influx-graphite",
+      "description": "Storage memory and disk used by the block manager.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 59
+      },
+      "hiddenSeries": false,
+      "id": 66,
+      "interval": "15s",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "7.5.4",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Heap Memory  Used - Executor $tag_process",
+          "groupBy": [
+            {
+              "params": [
+                "15s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "heap.used",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT mean(value) FROM \"memory.onHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            },
+            {
+              "condition": "AND",
+              "key": "process",
+              "operator": "!=",
+              "value": "driver"
+            }
+          ]
+        },
+        {
+          "alias": "Non-heap Memory  Used - Executor $tag_process",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"memory.offHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Disk used - Executor $tag_process",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(value) FROM \"disk.diskSpaceUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Block Manager: memory and disk used",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2679",
+          "format": "decmbytes",
+          "label": "Block manager memory and disk used",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2680",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -3407,12 +5600,12 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 70
       },
       "id": 69,
       "panels": [],
@@ -3424,11 +5617,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "JVM Heap Memory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3439,7 +5631,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 68
+        "y": 71
       },
       "hiddenSeries": false,
       "id": 70,
@@ -3459,9 +5651,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3490,7 +5685,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"JVMHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"JVMHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3533,7 +5728,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:2772",
+          "format": "decbytes",
           "label": "JVM Heap Memory",
           "logBase": 1,
           "max": null,
@@ -3541,7 +5737,8 @@
           "show": true
         },
         {
-          "format": "short",
+          "$$hashKey": "object:2773",
+          "format": "decbytes",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -3559,11 +5756,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "JVM Off Heap Memory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3574,7 +5770,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 68
+        "y": 71
       },
       "hiddenSeries": false,
       "id": 80,
@@ -3594,9 +5790,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3625,7 +5824,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"JVMOffHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"JVMOffHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3669,7 +5868,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:2981",
-          "format": "short",
+          "format": "decbytes",
           "label": "JVM Off Heap Memory",
           "logBase": 1,
           "max": null,
@@ -3696,11 +5895,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OnHeapUnifiedMemory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3711,7 +5909,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 80
+        "y": 83
       },
       "hiddenSeries": false,
       "id": 81,
@@ -3731,9 +5929,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3762,7 +5963,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OnHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OnHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3805,7 +6006,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:3333",
+          "format": "decbytes",
           "label": "OnHeapUnifiedMemory",
           "logBase": 1,
           "max": null,
@@ -3813,6 +6015,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3334",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -3831,11 +6034,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OffHeapUnifiedMemory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3846,7 +6048,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 80
+        "y": 83
       },
       "hiddenSeries": false,
       "id": 71,
@@ -3866,9 +6068,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3897,7 +6102,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OffHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OffHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3941,7 +6146,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:3079",
-          "format": "short",
+          "format": "decbytes",
           "label": "OffHeapUnifiedMemory",
           "logBase": 1,
           "max": null,
@@ -3968,11 +6173,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OnHeapExecutionMemory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -3983,7 +6187,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 92
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 76,
@@ -4003,9 +6207,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4034,7 +6241,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OnHeapExecutionMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OnHeapExecutionMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4077,6 +6284,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3533",
           "format": "decbytes",
           "label": "OnHeap Execution Memory",
           "logBase": 1,
@@ -4085,6 +6293,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3534",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4103,11 +6312,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "OnHeap Storage Memory",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4118,7 +6326,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 92
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 77,
@@ -4138,9 +6346,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4169,7 +6380,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"OnHeapStorageMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"OnHeapStorageMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4212,6 +6423,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3618",
           "format": "decbytes",
           "label": "OnHeap Storage Memory",
           "logBase": 1,
@@ -4220,6 +6432,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3619",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4238,11 +6451,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "MinorGCTime",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4253,7 +6465,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 104
+        "y": 107
       },
       "hiddenSeries": false,
       "id": 75,
@@ -4271,9 +6483,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4301,7 +6516,7 @@
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000 FROM  \"MinorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"MinorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4354,6 +6569,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3703",
           "format": "none",
           "label": "MinorGCTime (normalized in core equivalent)",
           "logBase": 1,
@@ -4362,6 +6578,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3704",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4380,11 +6597,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "MajorGCTime",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4395,7 +6611,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 104
+        "y": 107
       },
       "hiddenSeries": false,
       "id": 74,
@@ -4413,9 +6629,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4443,7 +6662,7 @@
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  / 1000 FROM  \"MajorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"MajorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4496,6 +6715,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:3788",
           "format": "none",
           "label": "MajorGCTime (normalized in core equivalent)",
           "logBase": 1,
@@ -4504,6 +6724,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3789",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4522,11 +6743,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "ProcessTreeJVMRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4537,7 +6757,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 114
+        "y": 117
       },
       "hiddenSeries": false,
       "id": 73,
@@ -4557,9 +6777,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4588,7 +6811,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"ProcessTreeJVMRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"ProcessTreeJVMRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4631,7 +6854,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:3873",
+          "format": "decbytes",
           "label": "ProcessTreeJVMRSSMemory",
           "logBase": 1,
           "max": null,
@@ -4639,6 +6863,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:3874",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4657,11 +6882,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "ProcessTreePythonRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4672,7 +6896,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 114
+        "y": 117
       },
       "hiddenSeries": false,
       "id": 82,
@@ -4692,9 +6916,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4723,7 +6950,7 @@
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"ProcessTreePythonRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT mean(value) FROM \"ProcessTreePythonRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4766,7 +6993,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:4373",
+          "format": "decbytes",
           "label": "ProcessTreeJVMRSSMemory",
           "logBase": 1,
           "max": null,
@@ -4774,6 +7002,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4374",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -4789,12 +7018,12 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 126
+        "y": 129
       },
       "id": 63,
       "panels": [],
@@ -4806,11 +7035,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4821,7 +7049,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 127
+        "y": 130
       },
       "hiddenSeries": false,
       "id": 50,
@@ -4839,9 +7067,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -4869,7 +7100,7 @@
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver'  GROUP BY process",
+          "query": "SELECT mean(value) FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver'  GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4922,6 +7153,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4541",
           "format": "bytes",
           "label": "JVM total memory used",
           "logBase": 1,
@@ -4930,6 +7162,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4542",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4948,11 +7181,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Heap memory used per executor.  From MemoryMXBean.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -4963,7 +7195,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 127
+        "y": 130
       },
       "hiddenSeries": false,
       "id": 65,
@@ -4981,9 +7213,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5011,7 +7246,7 @@
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"heap.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver' GROUP BY process",
+          "query": "SELECT mean(value) FROM \"heap.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver' GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5064,6 +7299,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4626",
           "format": "bytes",
           "label": "JVM heap memory used",
           "logBase": 1,
@@ -5072,6 +7308,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4627",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5090,11 +7327,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5105,7 +7341,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 139
+        "y": 142
       },
       "hiddenSeries": false,
       "id": 64,
@@ -5123,9 +7359,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5153,7 +7392,7 @@
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process = 'driver' GROUP BY process",
+          "query": "SELECT mean(value) FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process = 'driver' GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5231,12 +7470,12 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 149
+        "y": 152
       },
       "id": 60,
       "panels": [],
@@ -5248,11 +7487,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "HDFS read throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5263,7 +7501,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 150
+        "y": 153
       },
       "hiddenSeries": false,
       "id": 16,
@@ -5281,9 +7519,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5311,7 +7552,7 @@
           "measurement": "filesystem.hdfs.read_bytes",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5364,6 +7605,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4794",
           "format": "Bps",
           "label": "HDFS bytes read/sec",
           "logBase": 1,
@@ -5372,6 +7614,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4795",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5390,11 +7633,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "HDFS write throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5405,7 +7647,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 150
+        "y": 153
       },
       "hiddenSeries": false,
       "id": 61,
@@ -5423,9 +7665,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5453,7 +7698,7 @@
           "measurement": "filesystem.hdfs.read_bytes",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"filesystem.hdfs.write_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"filesystem.hdfs.write_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5506,6 +7751,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4879",
           "format": "Bps",
           "label": "HDFS bytes written/sec",
           "logBase": 1,
@@ -5514,6 +7760,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4880",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5532,11 +7779,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Shuffle read throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5547,7 +7793,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 160
+        "y": 163
       },
       "hiddenSeries": false,
       "id": 18,
@@ -5565,9 +7811,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5595,7 +7844,7 @@
           "measurement": "shuffleTotalBytesRead.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"shuffleTotalBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"shuffleTotalBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5648,6 +7897,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:4964",
           "format": "Bps",
           "label": "Shuffle total bytes read/sec",
           "logBase": 1,
@@ -5656,6 +7906,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:4965",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5674,11 +7925,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Shuffle write throughput.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5689,7 +7939,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 160
+        "y": 163
       },
       "hiddenSeries": false,
       "id": 17,
@@ -5707,9 +7957,12 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5737,7 +7990,7 @@
           "measurement": "shuffleBytesWritten.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s)  FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process",
+          "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5790,6 +8043,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:5049",
           "format": "Bps",
           "label": "Shuffle bytes written/sec",
           "logBase": 1,
@@ -5798,6 +8052,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:5050",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5816,11 +8071,10 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX-GRAPHITE}",
+      "datasource": "influx-graphite",
       "description": "Details of shuffle I/O operations, local and remote.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -5831,7 +8085,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 171
+        "y": 174
       },
       "hiddenSeries": false,
       "id": 22,
@@ -5849,9 +8103,12 @@
       "linewidth": 3,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "7.1.0",
+      "pluginVersion": "7.5.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -5971,6 +8228,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:5140",
           "format": "Bps",
           "label": "Shuffle bytes read/sec",
           "logBase": 1,
@@ -5979,6 +8237,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:5141",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -5994,16 +8253,22 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUX-GRAPHITE}",
+        "current": {
+          "selected": false,
+          "text": "luca",
+          "value": "luca"
+        },
+        "datasource": "influx-graphite",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "User",
@@ -6023,9 +8288,10 @@
       },
       {
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_INFLUX-GRAPHITE}",
+        "datasource": "influx-graphite",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Spark Application Id",
@@ -6075,7 +8341,7 @@
     ]
   },
   "timezone": "",
-  "title": "Spark_Perf_Dashboard_Spark3.0_v02",
-  "uid": "-H0ElOqmiv",
+  "title": "Spark_Perf_Dashboard_v03_with_SparkPlugins",
+  "uid": "-H0ElOqmit",
   "version": 1
 }
