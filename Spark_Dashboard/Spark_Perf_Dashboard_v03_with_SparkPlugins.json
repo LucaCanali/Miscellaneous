@@ -19,7 +19,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1619028715331,
+  "iteration": 1619541347161,
   "links": [],
   "panels": [
     {
@@ -182,7 +182,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "influx-graphite",
-          "description": "Network bytes in, throughput from ch.cern.CgroupMetrics.NetworkBytesIn",
+          "description": "Network bytes incoming, throughput from ch.cern.CgroupMetrics.NetworkBytesIn",
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -328,7 +328,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "influx-graphite",
-          "description": "Network bytes in, throughput from ch.cern.CgroupMetrics.NetworkBytesOut",
+          "description": "Network bytes outgoing, throughput metric from ch.cern.CgroupMetrics.NetworkBytesOut",
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -474,7 +474,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "influx-graphite",
-          "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryRss",
+          "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryRss.\nBytes of anonymous and swap cache memory.",
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -520,7 +520,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "memory RSS - Executor $tag_process",
+              "alias": "Container memory RSS - Executor $tag_process",
               "groupBy": [
                 {
                   "params": [
@@ -538,7 +538,7 @@
               "measurement": "filesystem.hdfs.read_bytes",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.MemoryRss\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "query": "SELECT mean(value)  FROM \"ch.cern.CgroupMetrics.MemoryRss\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -620,7 +620,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "influx-graphite",
-          "description": "Memory RSS from ch.cern.CgroupMetrics.MemorySwap",
+          "description": "Memory number of bytes of swap usage from ch.cern.CgroupMetrics.MemorySwap",
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -684,7 +684,7 @@
               "measurement": "filesystem.hdfs.read_bytes",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.MemorySwap\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "query": "SELECT mean(value)  FROM \"ch.cern.CgroupMetrics.MemorySwap\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -721,7 +721,7 @@
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Memory Swap",
+          "title": "Memory Swap Usage",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -766,7 +766,7 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "influx-graphite",
-          "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryCache",
+          "description": "Number of bytes of page cache memory from ch.cern.CgroupMetrics.MemoryCache",
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -812,7 +812,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "alias": "Memory cache - Executor $tag_process",
+              "alias": "Memory page cache - Executor $tag_process",
               "groupBy": [
                 {
                   "params": [
@@ -830,7 +830,7 @@
               "measurement": "filesystem.hdfs.read_bytes",
               "orderByTime": "ASC",
               "policy": "autogen",
-              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.MemoryCache\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "query": "SELECT mean(value)  FROM \"ch.cern.CgroupMetrics.MemoryCache\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
               "rawQuery": true,
               "refId": "A",
               "resultFormat": "time_series",
@@ -867,7 +867,7 @@
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Memory Cache",
+          "title": "Memory Page Cache",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -2773,7 +2773,7 @@
           "measurement": "stage.runningStages",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' and time > now() - 60s GROUP BY process) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2804,7 +2804,7 @@
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Total executor CPU time computed from from executor metrics. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
+      "description": "Executor CPU time computed from executor metrics for the selected time range. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2836,7 +2836,7 @@
         "x": 4,
         "y": 4
       },
-      "id": 57,
+      "id": 126,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -2874,7 +2874,7 @@
           "measurement": "jvmCpuTime",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(lastvalperprocess) from ( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n( SELECT process, first(value) as firstvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2903,13 +2903,13 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Total Executors CPU time",
+      "title": "Executors CPU time",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Total task CPU usage from task metrics. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
+      "description": "Total task CPU usage from task metrics in the selected time range. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2941,7 +2941,7 @@
         "x": 8,
         "y": 4
       },
-      "id": 9,
+      "id": 128,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -2978,7 +2978,7 @@
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(lastvalperprocess) from (SELECT process, last(value) as lastvalperprocess FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) \n",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3005,13 +3005,13 @@
           ]
         }
       ],
-      "title": "Total Task CPU Usage ",
+      "title": "Task CPU Usage ",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Total time spent in GC operations during task execution. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Total time spent in GC operations during task execution for the selected time range. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3043,7 +3043,7 @@
         "x": 12,
         "y": 4
       },
-      "id": 46,
+      "id": 130,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -3080,7 +3080,7 @@
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) \n",
+          "query": "select sum(lastperprocessval) - sum(firstperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(\"value\") as firstperprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) \n\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3107,13 +3107,13 @@
           ]
         }
       ],
-      "title": "Total Task GC Time ",
+      "title": "Task GC Time ",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Number of completed tasks, from JVM threadpool metrics. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Number of completed tasks, from JVM threadpool metrics in the selected time range. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3145,7 +3145,7 @@
         "x": 16,
         "y": 4
       },
-      "id": 34,
+      "id": 132,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -3176,7 +3176,7 @@
           "measurement": "threadpool.completeTasks",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "query": "select sum(lastperprocessval) - sum(firstperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(\"value\") as firstperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3424,7 +3424,7 @@
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Bytes read from HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Bytes read from HDFS in the selected time range. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3456,7 +3456,7 @@
         "x": 4,
         "y": 9
       },
-      "id": 12,
+      "id": 136,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -3493,7 +3493,7 @@
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(lastvalperprocess) from (SELECT process, last(value) as lastvalperprocess  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ,\n(SELECT process, first(value) as firstvalperprocess  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3520,7 +3520,7 @@
           ]
         }
       ],
-      "title": "Cumulative HDFS Bytes Read",
+      "title": "HDFS Bytes Read",
       "type": "stat"
     },
     {
@@ -3558,7 +3558,7 @@
         "x": 8,
         "y": 9
       },
-      "id": 58,
+      "id": 138,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -3622,7 +3622,7 @@
           ]
         }
       ],
-      "title": "Cumulative HDFS Bytes Written",
+      "title": "HDFS Bytes Written",
       "type": "stat"
     },
     {
@@ -3922,13 +3922,214 @@
       "type": "stat"
     },
     {
+      "cacheTimeout": null,
+      "datasource": "influx-graphite",
+      "description": "Total executor CPU time computed from executor metrics for the entire duration of the application. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "$$hashKey": "object:1637",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ns"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 14
+      },
+      "id": 140,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.4",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "jvmCpuTime",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select sum(lastvalperprocess) as JCMCPU from ( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' GROUP BY process) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CPU Application Total - Executors CPU time",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "influx-graphite",
+      "description": "Number of completed tasks, from JVM threadpool metrics for the entire aplication. Note, values from executors that are no more active in the selected time window are not counted.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "$$hashKey": "object:1896",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 14
+      },
+      "id": 142,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.4",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "threadpool.completeTasks",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select sum(lastperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' GROUP BY process)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "title": "N# Tasks Application Total - N# of Completed Tasks",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "datasource": "influx-graphite",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 19
       },
       "id": 28,
       "panels": [],
@@ -3954,7 +4155,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 20
       },
       "hiddenSeries": false,
       "id": 2,
@@ -4093,7 +4294,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 20
       },
       "hiddenSeries": false,
       "id": 33,
@@ -4236,7 +4437,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 32
       },
       "hiddenSeries": false,
       "id": 7,
@@ -4382,7 +4583,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 27
+        "y": 32
       },
       "hiddenSeries": false,
       "id": 3,
@@ -4534,7 +4735,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 37
+        "y": 42
       },
       "hiddenSeries": false,
       "id": 24,
@@ -4949,7 +5150,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 42
       },
       "hiddenSeries": false,
       "id": 54,
@@ -5000,7 +5201,7 @@
           "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT non_negative_derivative(\"value\", 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY process\n",
+          "query": "SELECT non_negative_derivative(mean(value), 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5095,7 +5296,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 48
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 21,
@@ -5249,7 +5450,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 48
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 67,
@@ -5395,7 +5596,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 64
       },
       "hiddenSeries": false,
       "id": 66,
@@ -5605,7 +5806,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 70
+        "y": 75
       },
       "id": 69,
       "panels": [],
@@ -5631,7 +5832,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 71
+        "y": 76
       },
       "hiddenSeries": false,
       "id": 70,
@@ -5770,7 +5971,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 71
+        "y": 76
       },
       "hiddenSeries": false,
       "id": 80,
@@ -5909,7 +6110,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 83
+        "y": 88
       },
       "hiddenSeries": false,
       "id": 81,
@@ -6048,7 +6249,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 83
+        "y": 88
       },
       "hiddenSeries": false,
       "id": 71,
@@ -6187,7 +6388,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 95
+        "y": 100
       },
       "hiddenSeries": false,
       "id": 76,
@@ -6326,7 +6527,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 95
+        "y": 100
       },
       "hiddenSeries": false,
       "id": 77,
@@ -6465,7 +6666,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 107
+        "y": 112
       },
       "hiddenSeries": false,
       "id": 75,
@@ -6611,7 +6812,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 107
+        "y": 112
       },
       "hiddenSeries": false,
       "id": 74,
@@ -6757,7 +6958,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 117
+        "y": 122
       },
       "hiddenSeries": false,
       "id": 73,
@@ -6896,7 +7097,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 117
+        "y": 122
       },
       "hiddenSeries": false,
       "id": 82,
@@ -7023,7 +7224,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 129
+        "y": 134
       },
       "id": 63,
       "panels": [],
@@ -7049,7 +7250,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 130
+        "y": 135
       },
       "hiddenSeries": false,
       "id": 50,
@@ -7195,7 +7396,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 130
+        "y": 135
       },
       "hiddenSeries": false,
       "id": 65,
@@ -7341,7 +7542,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 142
+        "y": 147
       },
       "hiddenSeries": false,
       "id": 64,
@@ -7475,7 +7676,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 152
+        "y": 157
       },
       "id": 60,
       "panels": [],
@@ -7501,7 +7702,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 153
+        "y": 158
       },
       "hiddenSeries": false,
       "id": 16,
@@ -7647,7 +7848,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 153
+        "y": 158
       },
       "hiddenSeries": false,
       "id": 61,
@@ -7793,7 +7994,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 163
+        "y": 168
       },
       "hiddenSeries": false,
       "id": 18,
@@ -7939,7 +8140,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 163
+        "y": 168
       },
       "hiddenSeries": false,
       "id": 17,
@@ -8085,7 +8286,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 174
+        "y": 179
       },
       "hiddenSeries": false,
       "id": 22,
