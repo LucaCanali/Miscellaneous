@@ -18,8 +18,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1619526221062,
+  "id": 3,
+  "iteration": 1619697954807,
   "links": [],
   "panels": [
     {
@@ -39,12 +39,12 @@
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Latest sample of the value of number of active tasks, summed over all executors active in the selected time filter interval.",
+      "description": "Total task Run Time from task metrics in the selected time range. \n",
       "fieldConfig": {
         "defaults": {
           "mappings": [
             {
-              "$$hashKey": "object:863",
+              "$$hashKey": "object:1839",
               "id": 0,
               "op": "=",
               "text": "N/A",
@@ -61,7 +61,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -71,7 +71,7 @@
         "x": 0,
         "y": 1
       },
-      "id": 41,
+      "id": 85,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -94,16 +94,21 @@
           "groupBy": [
             {
               "params": [
-                "process"
+                "$__interval"
               ],
-              "type": "tag"
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
             }
           ],
-          "hide": false,
-          "measurement": "stage.runningStages",
+          "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' and time > now() - 60s GROUP BY process) ",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -114,6 +119,10 @@
                   "value"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
               }
             ]
           ],
@@ -126,9 +135,7 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "N# of Active Tasks - latest value",
+      "title": "Task Run Time",
       "type": "stat"
     },
     {
@@ -754,12 +761,12 @@
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Bytes read from HDFS in the selected time range. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Total number of bytes read from task metrics in the selected time range. \n",
       "fieldConfig": {
         "defaults": {
           "mappings": [
             {
-              "$$hashKey": "object:1697",
+              "$$hashKey": "object:1839",
               "id": 0,
               "op": "=",
               "text": "N/A",
@@ -786,7 +793,7 @@
         "x": 4,
         "y": 6
       },
-      "id": 12,
+      "id": 86,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -823,7 +830,7 @@
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ,\n(SELECT process, first(value) as firstvalperprocess  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"bytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"bytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -850,18 +857,18 @@
           ]
         }
       ],
-      "title": "HDFS Bytes Read",
+      "title": "Bytes read",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Bytes written to HDFS. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Total number of bytes written from task metrics in the selected time range. \n",
       "fieldConfig": {
         "defaults": {
           "mappings": [
             {
-              "$$hashKey": "object:1798",
+              "$$hashKey": "object:1839",
               "id": 0,
               "op": "=",
               "text": "N/A",
@@ -888,7 +895,7 @@
         "x": 8,
         "y": 6
       },
-      "id": 58,
+      "id": 87,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -925,7 +932,7 @@
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(lastvalperprocess) from (SELECT process, last(value) as lastvalperprocess  FROM \"filesystem.hdfs.write_bytes\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"bytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"bytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -952,7 +959,7 @@
           ]
         }
       ],
-      "title": "HDFS Bytes Written",
+      "title": "Bytes written",
       "type": "stat"
     },
     {
@@ -1254,7 +1261,102 @@
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Total executor CPU time computed from executor metrics for the entire duration of the application. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
+      "description": "Latest sample of the value of number of active tasks, summed over all executors active in the latest 60 seconds.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "$$hashKey": "object:863",
+              "id": 0,
+              "op": "=",
+              "text": "N/A",
+              "type": 1,
+              "value": "null"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 11
+      },
+      "id": 41,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.4",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "stage.runningStages",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' and time > now() - 60s GROUP BY process) ",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "N# of Active Tasks - latest value",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "influx-graphite",
+      "description": "Total executor CPU time computed from executor metrics since the start of the Spark application. Displays CPU time used by all the executors' JVMs for the duration of the application. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1283,7 +1385,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 0,
+        "x": 4,
         "y": 11
       },
       "id": 57,
@@ -1359,7 +1461,7 @@
     {
       "cacheTimeout": null,
       "datasource": "influx-graphite",
-      "description": "Number of completed tasks, from JVM threadpool metrics for the entire aplication. Note, values from executors that are no more active in the selected time window are not counted.",
+      "description": "Number of completed tasks, from JVM threadpool metrics since the start of the Spark application.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1388,7 +1490,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 4,
+        "x": 8,
         "y": 11
       },
       "id": 84,
