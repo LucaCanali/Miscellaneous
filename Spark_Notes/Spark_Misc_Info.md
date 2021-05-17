@@ -1067,8 +1067,9 @@ scala> df.show
 ```
 ---
 - Spark TPCDS benchmark
-  - Download and build the Spark package from [https://github.com/databricks/spark-sql-perf]
-  - Download and build tpcds-kit for generating data from [https://github.com/databricks/tpcds-kit]
+  - Download and build the Spark package from https://github.com/databricks/spark-sql-perf
+      - Note for Spark 3 I am currently and temporarily using https://github.com/lucacanali/spark-sql-perf
+  - Download and build tpcds-kit for generating data from https://github.com/databricks/tpcds-kit
   - Testing
     1. Generate schema
     2. Run benchmark
@@ -1078,7 +1079,7 @@ See instructions at the [spark-sql-perf](https://github.com/databricks/spark-sql
 for additional info on how to generate data and tun the package. Here some pointers/examples:
 ```
 ///// 1. Generate schema
-bin/spark-shell --master yarn --num-executors 25 --driver-memory 12g --executor-memory 12g --executor-cores 4 --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar
+bin/spark-shell --master yarn --num-executors 25 --driver-memory 12g --executor-memory 12g --executor-cores 4 --jars <path_here>/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
 
 NOTES:
   - Each executor will spawn dsdgen to create data, using the parameters for size (e.g. 10000) and number of partitions (e.g. 1000)
@@ -1092,8 +1093,6 @@ tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, true, fals
 ///// 2. Run Benchmark 
 export SPARK_CONF_DIR=/usr/hdp/spark/conf
 export HADOOP_CONF_DIR=/etc/hadoop/conf
-export LD_LIBRARY_PATH=/usr/hdp/hadoop/lib/native/
-cd spark-2.4.3-bin-hadoop2.7
 
 bin/spark-shell --master yarn --num-executors 32 --executor-cores 8 --driver-memory 8g --executor-memory 16g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.shuffle.partitions=512 --conf spark.sql.crossJoin.enabled=true --conf spark.eventLog.enabled=false --conf spark.sql.autoBroadcastJoinThreshold=100000000
 // when using a large number of cores consider bumping up conf spark.sql.shuffle.partitions (defaiut is 200)
@@ -1155,6 +1154,84 @@ for (t <- list_tables) spark.table(t).persist(org.apache.spark.storage.StorageLe
 ```
 
 ---
+- TPCDS run queries from spark-shell
+
+```
+// create the TPCDS schema tables
+// this method uses temporary views
+val path="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/"
+val tables=List("catalog_returns","catalog_sales","inventory","store_returns","store_sales","web_returns","call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
+
+for (t <- tables) {
+println(s"Creating temporary view $t")
+spark.read.parquet(path + t).createOrReplaceTempView(t)
+}
+
+// defines query/queries you want to use, example
+// https://raw.githubusercontent.com/databricks/spark-sql-perf/master/src/main/resources/tpcds_2_4/q3.sql
+
+val q3 = """
+SELECT dt.d_year, item.i_brand_id brand_id, item.i_brand brand,SUM(ss_ext_sales_price) sum_agg
+FROM  date_dim dt, store_sales, item
+WHERE dt.d_date_sk = store_sales.ss_sold_date_sk
+  AND store_sales.ss_item_sk = item.i_item_sk
+  AND item.i_manufact_id = 128
+  AND dt.d_moy=11
+GROUP BY dt.d_year, item.i_brand, item.i_brand_id
+ORDER BY dt.d_year, sum_agg desc, brand_id
+LIMIT 100
+"""
+
+// run the query
+spark.time(sql(q3).limit(100).collect)
+```
+---
+- Copy TPCDS benchmark data to newer Parquet versions or change compression
+
+Spark 3.2 comes with Parquet 1.12.0, Spark 3.1 hage parquet 1.10.1.
+If you want to use the new parquet format without recreating the schema, use this:
+```
+val inpath="/project/spark/TPCDS/tpcds_1500_parquet_1.10.1/"
+val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/"
+//val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0_zstd/"
+//val compression_type="zstd"
+
+val tables_partition=List(("catalog_returns","cr_returned_date_sk"), ("catalog_sales","cs_sold_date_sk"), ("inventory","inv_date_sk"), ("store_returns","sr_returned_date_sk"), ("store_sales","ss_sold_date_sk"), ("web_returns","wr_returned_date_sk"), ("web_sales","ws_sold_date_sk"))
+for (t <- tables_partition) {
+  println(s"Copying partitioned table $t")
+  spark.read.parquet(inpath + t._1).repartition(col(t._2)).write.partitionBy(t._2).mode("overwrite").option("compression", compression_type).parquet(outpath + t._1)
+}
+
+val tables_nopartition=List("call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
+for (t <- tables_nopartition) {
+  println(s"Copying table $t")
+  spark.read.parquet(inpath + t).coalesce(1).write.mode("overwrite").option("compression", compression_type).parquet(outpath + t)
+}
+```
+
+---
+- Generate a simple I/O intensive benchmark load with Spark
+  - Setup or copy a large test table, using TPCDS schema
+  - query a large fact table, for example store_sales with a filter condition that forces a full scan
+  - use the noop data source to write data "to dev/null" as in: `df.write.format("noop").mode("overwrite").save`
+  - Previously (Spark 2x) I have used this workaround instead: 
+     - Use a filter condition that returns 0 (or very few rows) and use "select *" (all columns)
+     - Check the execution plan: you want to confirm that Spark is not using partition pruning nor is managing to push down filters successfully
+     - In the following example this is achieved adding a filter condition with a decimal value that has higher precision than the table values
+  - Use Spark dashboard and/or sparkMeasure and/or OS tools to make sure the query runs as intended, i.e. performing a full table scan.
+  - Example query:
+  ```
+  val df=spark.read.parquet("/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/store_sales")
+  df.write.format("noop").mode("overwrite").save
+  // workaround used for Spark 2.x -> df.where("ss_sales_price=37.8688").collect
+  
+  # SQL version
+  df.createOrReplaceTempView("store_sales")
+  spark.sql("select * from store_sales").write.format("noop").mode("overwrite").save
+  // workaround used for Spark 2.x -> spark.sql("select * from store_sales where ss_sales_price=37.8688").collect
+  ``` 
+
+---
 - Generate simple benchmark load, CPU-bound with Spark
   - Note: scale up the tests by using larger test tables, that is extending the (xx) value in "range(xx)"
 ```  
@@ -1171,27 +1248,6 @@ sql("select count(*) from t1").show()
 spark.time(sql("select a.bucket, sum(a.val2) tot from t1 a, t1 b where a.bucket=b.bucket and a.val1+b.val1<1000 group by a.bucket order by a.bucket").show())
 ```
 
----
-- Generate a simple I/O intensive benchmark load with Spark
-  - Setup or copy a large test table, using TPCDS schema
-  - query a large fact table, for example store_sales with a filter condition that forces a full scan
-  - use the noop data source to write data "to dev/null" as in: `df.write.format("noop").mode("overwrite").save`
-  - Previously (Spark 2x) I have used this workaround instead: 
-     - Use a filter condition that returns 0 (or very few rows) and use "select *" (all columns)
-     - Check the execution plan: you want to confirm that Spark is not using partition pruning nor is managing to push down filters successfully
-     - In the following example this is achieved adding a filter condition with a decimal value that has higher precision than the table values
-  - Use Spark dashboard and/or sparkMeasure and/or OS tools to make sure the query runs as intended, i.e. performing a full table scan.
-  - Example query:
-  ```
-  val df=spark.read.parquet("/TPCDS/tpcds_1500/store_sales")
-  df.write.format("noop").mode("overwrite").save
-  // workaround used for Spark 2.x -> df.where("ss_sales_price=37.8688").collect
-  
-  # SQL version
-  df.createOrReplaceTempView("store_sales")
-  spark.sql("select * from store_sales").write.format("noop").mode("overwrite").save
-  // workaround used for Spark 2.x -> spark.sql("select * from store_sales where ss_sales_price=37.8688").collect
-  ``` 
 ---
 - Monitor Spark workloads with Dropwizard metrics for Spark, Influxdb Grafana   
   - Three main steps: (A) configure [Dropwizard (codahale) Metrics library](https://metrics.dropwizard.io) for Spark
@@ -1216,7 +1272,7 @@ res5: Long = 0
 scala> acc1.add(1L)
 scala> acc1.value
 
-This will appear in the sink, for example as a record:
+This will appear in the sink, for example if you sink to grahite a record:
 my-accumulator-1,applicationid=application_1549330477085_0257,namespace=AccumulatorSource,process=driver,username=luca
 ```
 
@@ -1234,17 +1290,15 @@ my-accumulator-1,applicationid=application_1549330477085_0257,namespace=Accumula
     --conf spark.hadoop.fs.s3a.impl="org.apache.hadoop.fs.s3a.S3AFileSystem" \
     --conf spark.hadoop.fs.s3a.secret.key="XXX..." \
     --conf spark.hadoop.fs.s3a.access.key="YYY..." \
-    --packages org.apache.hadoop:hadoop-aws:2.7.7 # edit hadoop-aws version to match Spark's Hadoop
+    --packages org.apache.hadoop:hadoop-aws:3.2.0 # edit hadoop-aws version to match Spark's Hadoop
 
   # example of how to use
   val df=spark.read.parquet("s3a://datasets/tpcds-1g/web_sales")
   df.count
   ```
-  - Note, I have tested this on Spark compiled for Hadoop 3.2 and with Hadoop 2.7.  
-  I have noticed that Hadoop 3.2/hadoop-aws 3.2 reading from s3.cern.ch gets stuck when listing 
-  directories with a large number of files (as in the TPCDS benchmark). The workaround is:
+  - Note, I have noticed that Hadoop 3.2/hadoop-aws 3.2 reading from s3.cern.ch gets stuck when listing 
+  directories with a large number of files (as in the TPCDS benchmark). The workaround is to add:
   ```
-  --packages org.apache.hadoop:hadoop-aws:3.2.0
   --conf spark.hadoop.fs.s3a.list.version=1
   ```
   - hadoop-aws package will also cause the pull of dependencies from com.amazonaws:aws-java-sdk:version
