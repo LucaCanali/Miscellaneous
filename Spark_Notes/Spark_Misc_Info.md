@@ -600,15 +600,19 @@ df.coalesce(N_partitions).write   // optionally use coalesce if you want to redu
   .format("parquet")
   .save("filePathandName")             // you can use saveAsTable as an alternative
 
-//Options
-.option("parquet.block.size", <blockSize>) // defalut 128MB, see also c.hadoopConfiguration.setInt("parquet.block.size", <blocksize>
+// Options for the write action
+.option("parquet.block.size", <blockSize>) // defalut 128MB, see also sc.hadoopConfiguration.setInt("parquet.block.size", <blocksize>
 .option("compression", <compression_codec>) // default snappy, see also spark.sql.parquet.compression.codec
 
-// relevant configuration parameters:
+// relevant Hadoop configuration parameters:
 sc.hadoopConfiguration.setInt("parquet.block.size", .. ) // default to 128 MB parquet block size (size of the column groups)
+
+// relevant Spark configuration parameters:
 spark.conf.set("spark.sql.parquet.compression.codec","xxx") // xxx= none, gzip, lzo, snappy, {zstd, brotli, lz4} 
 spark.conf.set("spark.sql.files.maxRecordsPerFile", ...) // defaults to 0, use if you need to limit size of files being written  
 ```
+Note a list of options and parameters for the Parquet writer can be found at:  
+https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md
 
 // Example with use of savemode:
 df.coalesce(4).write.mode(org.apache.spark.sql.SaveMode.Overwrite).parquet("..PATH..")
@@ -1188,7 +1192,7 @@ spark.time(sql(q3).limit(100).collect)
 ---
 - Copy TPCDS benchmark data to newer Parquet versions or change compression
 
-Spark 3.2 comes with Parquet 1.12.0, Spark 3.1 hage parquet 1.10.1.
+Spark 3.2 comes with Parquet 1.12.0, Spark 3.1 with parquet 1.10.1.
 If you want to use the new parquet format without recreating the schema, use this:
 ```
 val inpath="/project/spark/TPCDS/tpcds_1500_parquet_1.10.1/"
