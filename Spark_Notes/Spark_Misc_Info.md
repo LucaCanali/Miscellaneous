@@ -1164,7 +1164,7 @@ for (t <- list_tables) spark.table(t).persist(org.apache.spark.storage.StorageLe
 // create the TPCDS schema tables
 // this method uses temporary views
 val path="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/"
-val tables=List("catalog_returns","catalog_sales","inventory","store_returns","store_sales","web_returns","call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
+val tables=List("catalog_returns","catalog_sales","inventory","store_returns","store_sales","web_sales",web_returns","call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
 
 for (t <- tables) {
 println(s"Creating temporary view $t")
