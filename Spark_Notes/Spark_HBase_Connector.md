@@ -40,7 +40,7 @@ Two connectors are available, which one should you use?
   import org.apache.spark.sql.execution.datasources.hbase.HBaseTableCatalog
 
   val catalog = s"""{
-    |"table":{"namespace":"default", "name":"testspark1"},
+    |"table":{"namespace":"default", "name":"testspark"},
     |"rowkey":"key",
     |"columns":{
     |"id":{"col":"key", "type":"int"},
@@ -68,11 +68,11 @@ Two connectors are available, which one should you use?
   ```
 
   ```
-  // Example of how to use the Hortonworks connector to read into a DataFrame
-  import org.apache.spark.sql.execution.datasources.hbase.HBaseTableCatalog
-
+  // Example of how to use the Apache Hbase-Spark connector to read into a DataFrame
+  import org.apache.hadoop.hbase.spark.datasources.HBaseTableCatalog
+  
   val catalog = s"""{
-    |"table":{"namespace":"default", "name":"testspark1"},
+    |"table":{"namespace":"default", "name":"testspark"},
     |"rowkey":"key",
     |"columns":{
     |"id":{"col":"key", "type":"int"},
@@ -81,6 +81,8 @@ Two connectors are available, which one should you use?
     |}""".stripMargin
 
   val df = spark.read.options(Map(HBaseTableCatalog.tableCatalog->catalog)).format("org.apache.hadoop.hbase.spark").option("hbase.spark.use.hbasecontext", false).load()
+  // alternative, more compact, syntax for HBase catalog
+  // val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).load()
 
   df.show()
  ```
@@ -121,8 +123,8 @@ Two connectors are available, which one should you use?
 
 - On HBase, create the test table and grant the related privileges to your user (use `hbase shell`):
   ```
-  create 'testspark1', 'cf'
-  grant '<your_username_here>', 'XRW', 'testspark1'
+  create 'testspark', 'cf'
+  grant '<your_username_here>', 'XRW', 'testspark'
   ```
   - Note this may be too needed: `grant '<your_username_here>', 'X', 'hbase:meta'`
  
@@ -131,18 +133,18 @@ Two connectors are available, which one should you use?
   - Write:
   ```  
   val df = sql("select id, 'myline_'||id  name from range(10)")
-  df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).save()
+  df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).save()
   ```
   
 - Read back from Spark
   ``` 
-  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).load()
+  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).load()
   df.show()
   ```
 
 - Read back from Spark using a filter, without server-side installation for SQL filter pushdown [HBASE-22769](https://issues.apache.org/jira/browse/HBASE-22769)
   ``` 
-  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", false).load()
+  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", false).load()
   df.show()
   ```
 
@@ -174,7 +176,7 @@ Two connectors are available, which one should you use?
     - See: [HBASE-22769](https://issues.apache.org/jira/browse/HBASE-22769)  
     - Example of how to use SQL filter pushdown
   ``` 
-  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", true).load()
+  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", true).load()
   df.filter("id==9").show()
   ```
   
@@ -194,7 +196,7 @@ Two connectors are available, which one should you use?
   import org.apache.hadoop.hbase.spark.datasources.HBaseTableCatalog
 
   val catalog = s"""{
-    |"table":{"namespace":"default", "name":"testspark1"},
+    |"table":{"namespace":"default", "name":"testspark"},
     |"rowkey":"key",
     |"columns":{
     |"id":{"col":"key", "type":"int"},
@@ -213,7 +215,7 @@ Two connectors are available, which one should you use?
   import org.apache.hadoop.hbase.spark.datasources.HBaseTableCatalog
 
   val catalog = s"""{
-    |"table":{"namespace":"default", "name":"testspark1"},
+    |"table":{"namespace":"default", "name":"testspark"},
     |"rowkey":"key",
     |"columns":{
     |"id":{"col":"key", "type":"int"},
@@ -248,15 +250,15 @@ with the important change of substituting spark-shell with pyspark
 - Write
   ```  
   df = spark.sql("select id, 'myline_'||id  name from range(10)")
-  df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", False).save()
+  df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", False).save()
   ```
 
 - Read HBase from Spark
 
   ```
-  df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark1").option("hbase.spark.use.hbasecontext", False).load()
+  df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", False).load()
   df.show()
-  df.filter("id==9").show() # see above note on SQL filter pushdown server-side configuration
+  df.filter("id<10").show() # see above note on SQL filter pushdown server-side configuration
   ```
   
 - Another option for reading: explicitly specify the catalog in JSON format:
@@ -265,7 +267,7 @@ with the important change of substituting spark-shell with pyspark
 
   catalog = json.dumps(
     {
-        "table":{"namespace":"default", "name":"testspark1"},
+        "table":{"namespace":"default", "name":"testspark"},
         "rowkey":"key",
         "columns":{
             "id":{"col":"key", "type":"int"},
@@ -273,7 +275,6 @@ with the important change of substituting spark-shell with pyspark
         }
     })
 
-  # Note: this throws errors, needs to be understood
   df = spark.read.options(catalog=catalog).format("org.apache.hadoop.hbase.spark").option("hbase.spark.use.hbasecontext", False).load()
   
   df.show()
