@@ -12,13 +12,30 @@ Two connectors are available, which one should you use?
 
 
 ### Configuration and setup
-  - Client-side (Spark) configuration
-    - You need the HBase client configuration file `hbase-site.xml` 
-    - This points to the HBase you want to connect to  
-    - Copy `hbase-site.xml` to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`)
-  - Serve-side (Hbase region servers) configuration 
-    - When using the Apache Hbase-Spark connector there is also a server-side configuration
-  - 
+**Client-side** (Spark) configuration:
+  - You need the HBase client configuration file `hbase-site.xml` 
+  - This points to the HBase you want to connect to  
+  - Copy `hbase-site.xml` to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`)
+  
+**Server-side** (HBase region servers) configuration:   
+  - When using the Apache Hbase-Spark connector there is also a server-side configuration
+  - This requires additional configuration on the HBase server side, in particular one needs to have
+    a few jars in the HBase region servers CLASSPATH: scala-library, hbase-spark and hbase-spark-protocol-shaded.
+  - For connector binaries compiled with Scala 2.12 and Spark 3.x:
+  - Build the connector from GitHub as explained below (see Spark 3.x section) or use the prebuilt jars:
+    ```
+    JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
+    JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
+    wget $JAR1 $JAR2
+    wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
+    ```
+  - Alternative, for server-side binaries compile with Scala 2.11 and Spark 2.x:
+      - download from maven central:
+    ```
+    scala-library-2.11.12.jar
+    hbase-spark-1.0.0.jar
+    hbase-spark-protocol-shaded-1.0.0.jar
+    ```
 
 ----
 ## Spark 2.x
@@ -116,10 +133,31 @@ Two connectors are available, which one should you use?
   - deploy from artifactory.cern.ch (only visible from CERN network):
   - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1`
 
----
-## How to run a test workload of Spark writing and reading from HBase using the Spark-Hbase connector:
 
-### Spark-HBase connector: write and read example 
+### SQL Filter pushdown and server-side library configuration
+
+- This allows to push down filter predicates to HBase
+  - It is configured with `.option("hbase.spark.pushdown.columnfilter", true)` which is the default. 
+  - This requires additional configuration on the HBase server side, in particular one needs to have
+    a few jars in the HBase region servers CLASSPATH: scala-library, hbase-spark and hbase-spark-protocol-shaded.
+  - See "Configuration and setup" section for details
+  - If filter pushdown jars are not configured you will get
+  an error: `java.lang.NoClassDefFoundError: org/apache/hadoop/hbase/spark/datasources/JavaBytesEncoder$`
+    - See: [HBASE-22769](https://issues.apache.org/jira/browse/HBASE-22769)  
+    - Example of how to use SQL filter pushdown
+  ``` 
+  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", true).load()
+  df.filter("id<10").show()
+  ```
+  
+### Apache HBase-Spark connector tunables
+- There are several tunable in the Apache Hbase-Spark connector, for example:
+  - `hbase.spark.query.batchsize` - Set the maximum number of values to return for each call to next() in scan.
+  - `hbase.spark.query.cachedrows` - The number of rows for caching that will be passed to scan.
+  - Details of the [available configuration at this link](https://github.com/apache/hbase-connectors/blob/master/spark/hbase-spark/src/main/scala/org/apache/hadoop/hbase/spark/datasources/HBaseSparkConf.scala)  
+
+---
+### Spark-HBase connector: write and read example
 
 - On HBase, create the test table and grant the related privileges to your user (use `hbase shell`):
   ```
@@ -127,7 +165,7 @@ Two connectors are available, which one should you use?
   grant '<your_username_here>', 'XRW', 'testspark'
   ```
   - Note this may be too needed: `grant '<your_username_here>', 'X', 'hbase:meta'`
- 
+
 - On Spark:
   - Start Spark 2.x or 3.x as detailed above
   - Write:
@@ -135,8 +173,8 @@ Two connectors are available, which one should you use?
   val df = sql("select id, 'myline_'||id  name from range(10)")
   df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).save()
   ```
-  
-- Read back from Spark
+
+- Read the HBase table from Spark
   ``` 
   val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).load()
   df.show()
@@ -146,38 +184,6 @@ Two connectors are available, which one should you use?
   ``` 
   val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", false).load()
   df.show()
-  ```
-
-### SQL Filter pushdown and server-side jar configuration
-
-- This allows to push down filter predicates to HBase
-  - It is configured with `.option("hbase.spark.pushdown.columnfilter", true)` which is the default. 
-  - This requires additional configuration on the HBase server side, in particular one needs to have
-    a few jars in the HBase region servers CLASSPATH: scala-library, hbase-spark and hbase-spark-protocol-shaded.
-   
-- Server-side binaries compile with Scala 2.12 and Spark 3.x:
-  - Build the connector from GitHub as explained above or use the prebuilt jars: 
-    ```
-    JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
-    JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
-    wget $JAR1 $JAR2
-    wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
-  - ```
-- Server-side binaries compile with Scala 2.11 and Spark 2.x:
-    - download from maven central:
-    ```
-    scala-library-2.11.12.jar
-    hbase-spark-1.0.0.jar
-    hbase-spark-protocol-shaded-1.0.0.jar
-    ```
-
-  - If this is not set you will get
-  an error: `java.lang.NoClassDefFoundError: org/apache/hadoop/hbase/spark/datasources/JavaBytesEncoder$`
-    - See: [HBASE-22769](https://issues.apache.org/jira/browse/HBASE-22769)  
-    - Example of how to use SQL filter pushdown
-  ``` 
-  val df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", false).option("hbase.spark.pushdown.columnfilter", true).load()
-  df.filter("id==9").show()
   ```
   
 ----
