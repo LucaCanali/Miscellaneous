@@ -116,7 +116,8 @@ Two connectors are available, which one should you use?
   Spark 3.x does not support Scala 2.11, see also [HBASE-25326 Allow hbase-connector to be used with Apache Spark 3.0 ](https://issues.apache.org/jira/browse/HBASE-25326)
   - As of November 2021, the release of hbase-connectors in maven central is compiled with scala 2.11   
   
-- Build as in this example (customize HBase, Spark and Hadoop versions, as needed):  
+- Build as in this example (customize HBase, Spark and Hadoop versions, as needed):
+  - See also [HBase-connectors PR for building with HBase 2.4](https://github.com/apache/hbase-connectors/pull/88) 
    ```
    mvn -Dspark.version=3.2.0 -Dscala.version=2.12.15 -Dscala.binary.version=2.12 -Dhbase.version=2.4.8 -Dhadoop.profile=3.0 -Dhadoop-three.version=3.3.1 -DskipTests clean package
    ```
