@@ -24,8 +24,11 @@ Two connectors are available, which one should you use?
   - For connector binaries compiled with Scala 2.12 and Spark 3.x:
   - Build the connector from GitHub as explained below (see Spark 3.x section) or use the prebuilt jars:
     ```
-    JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
-    JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
+    JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
+    JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
+    # Or use these for HBase 2.3.7
+    # JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
+    # JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
     wget $JAR1 $JAR2
     wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
     ```
@@ -115,23 +118,23 @@ Two connectors are available, which one should you use?
   
 - Build as in this example (customize HBase, Spark and Hadoop versions, as needed):  
    ```
-   mvn -Dspark.version=3.2.0 -Dscala.version=2.12.15 -Dscala.binary.version=2.12 -Dhbase.version=2.3.7 -Dhadoop.profile=3.0 -Dhadoop-three.version=3.3.1 -DskipTests clean package
+   mvn -Dspark.version=3.2.0 -Dscala.version=2.12.15 -Dscala.binary.version=2.12 -Dhbase.version=2.4.8 -Dhadoop.profile=3.0 -Dhadoop-three.version=3.3.1 -DskipTests clean package
    ```
    
 - Deploy using Spark 3.x, as in this example:
   ```
   # Customize the JARs path to your filesystem location
   # For convenience I have also uploaded the jars on a web server
-  JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
-  JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
+  JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
+  JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
 
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
-  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.3.7
+  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.8
   ```
 
 - Other option, for **CERN users only**: 
   - deploy from artifactory.cern.ch (only visible from CERN network):
-  - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1`
+  - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1`
 
 
 ### SQL Filter pushdown and server-side library configuration
@@ -236,30 +239,16 @@ Two connectors are available, which one should you use?
 ### PySpark
 
 - Note: this is almost the same as with Scala examples above,
-with the important change of substituting spark-shell with pyspark  
+with the important change when running Spark of substituting spark-shell with pyspark.
+See also above for "Configuration and setup" how to configure Hbase client and server.
   
-- See above for "Configuration and setup" how to configure Hbase client and server.
-
-- Spark 3.x (see details above in "Spark 3.x and the Apache Spark HBase connector")
-  ```
-  bin/pyspark --master yarn --num-executors 2 --executor-cores 2 \
-   --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.3.7
-  ```
-  
-- Spark 2.x
-  ```
-   bin/pyspark --master yarn --num-executors 1 --executor-cores 2 \
-  --repositories https://repository.cloudera.com/artifactory/libs-release-local \
-  --packages org.apache.hbase.connectors.spark:hbase-spark-protocol-shaded:1.0.0.7.2.2.2-1,org.apache.hbase.connectors.spark:hbase-spark:1.0.0.7.2.2.2-1,org.apache.hbase:hbase-shaded-mapreduce:2.2.4
-  ```
-  
-- Write
+- Write to HBase with Spark
   ```  
   df = spark.sql("select id, 'myline_'||id  name from range(10)")
   df.write.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.namespace", "default").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", False).save()
   ```
 
-- Read HBase from Spark
+- Read from HBase with Spark
 
   ```
   df = spark.read.format("org.apache.hadoop.hbase.spark").option("hbase.columns.mapping","id INT :key, name STRING cf:name").option("hbase.table", "testspark").option("hbase.spark.use.hbasecontext", False).load()
