@@ -20,26 +20,23 @@ Two connectors are available, which one should you use?
 **Server-side** (HBase region servers) configuration:   
   - When using the Apache Hbase-Spark connector there is also a server-side configuration
   - This requires additional configuration on the HBase server side, in particular one needs to have
-    a few jars in the HBase region servers CLASSPATH: scala-library, hbase-spark and hbase-spark-protocol-shaded.
-  - For connector binaries compiled with Scala 2.12 and Spark 3.x:
-  - Build the connector from GitHub as explained below (see Spark 3.x section) or use the prebuilt jars:
+    a few jars in the HBase region servers CLASSPATH: 
+    - scala-library
+    - hbase-spark
+    - hbase-spark-protocol-shaded.
+  - Build the connector from GitHub as explained below (see Spark 3.x section). In this example we use pre-built jars JAR1 and JAR2.
     ```
     JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
     JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
-    # Or use these for HBase 2.3.7
+    # Or use these instead for HBase 2.3
     # JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
     # JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
+    
+    # Connector jars
     wget $JAR1 $JAR2
+    # Scala library, match the Scala version used for building
     wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
     ```
-  - Alternative, for server-side binaries compile with Scala 2.11 and Spark 2.x:
-      - download from maven central:
-    ```
-    scala-library-2.11.12.jar
-    hbase-spark-1.0.0.jar
-    hbase-spark-protocol-shaded-1.0.0.jar
-    ```
-
 ----
 ## Spark 2.x
 ### Spark 2.4 and the Spark-HBase Hortonworks connector
