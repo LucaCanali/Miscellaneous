@@ -31,13 +31,13 @@ spark = SparkSession.builder \
 ---
 - How to use/choose Spark/PySpark home to use from python
   - simple way to make import pyspark work in python (`pip install pyspark`)
-  - more sofisticated: you want to choose the Spark version and/or (re)use an existing Spark home:
+  - more sophisticated: you want to choose the Spark version and/or (re)use an existing Spark home:
      ```
         pip install findspark
         
         python
         import findspark
-        findspark.init('/home/luca/Spark/spark-3.0.1-bin-hadoop3.2') #set path to SPARK_HOME
+        findspark.init('/home/luca/Spark/spark-3.2.0-bin-hadoop3.2') #set path to SPARK_HOME
      ```
   - note: when using bin/pyspark, this is not relevant,
     as pyspark from the current SPARK_HOME will be used in this case
@@ -93,13 +93,6 @@ cd spark
 # Compile for a specific Hadoop version, for example use this to compile for Hadoop 3.2
 ./dev/make-distribution.sh --name custom-spark --tgz --pip -Phadoop-3.2 -Pyarn -Pkubernetes
 
-# Compile Spark 3.0 with Hadoop 3.2.1, this currently requires a workaround for Guava vesion compatibility
-./dev/make-distribution.sh --name custom_spark --pip --tgz -Pyarn -Pkubernetes -Phadoop-3.2 -Dhadoop.version=3.2.1 -Dguava.version=27.0-jre
-
-# compile a version with cherry-picked changes
-# git checkout branch-2.3
-# git cherry-pick xxxx
-
 ```
 --- 
 - Spark executor plugins  
@@ -127,7 +120,7 @@ print(conf.toDebugString())
 
 ---
 - Read and set configuration variables of Hadoop environment from Spark.
-  Note this code works with the local JVM, i.e. the driver (will not read/write on executors's JVM)  
+  Note this code works with the local JVM, i.e. the driver (will not read/write on executors' JVM)  
 ```
 // Scala:
 sc.hadoopConfiguration.get("dfs.blocksize")
@@ -423,33 +416,8 @@ sql("select slowf(1)").show()
 sql("select avg(slowf(id)) from range(1000)").show()
 ```
 
-```python
-import pandas as pd
-import time
 
-from pyspark.sql.functions import col, pandas_udf
-from pyspark.sql.types import LongType
-
-def multiply_func(a, b):
-  time.sleep(10)
-  return a * b
-
-multiply = pandas_udf(multiply_func, returnType=LongType())
-
-spark.udf.register("multiply_func", multiply)
-
-time.time()
-sql("select multiply_func(1,1)").show()
-time.time()
-
-# By default pandas_udf batch 10000 rows (for each concurrently executing task)
-# You expect that the execution time for 10k rows is the same as for 1 row for this example
-time.time()
-sql("select avg(multiply_func(id,2)) from range(10000)").show()
-time.time()
-```
-
-Example without registering pandas_udf as SQL function 
+Example with pandas_ud 
 ```python
 from pyspark.sql.functions import pandas_udf
 
@@ -479,7 +447,7 @@ print(end - start)
 - Set log level in spark-shell and PySpark
 If you have a SparkContext, use `sc.setLogLevel(newLevel)`
 
-Otherwise edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
+Otherwise, edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
 /bin/vi conf/log4j.properties
   
 Example for the logging level of PySpark REPL  
@@ -508,6 +476,7 @@ DISK_ONLY_2   MEMORY_AND_DISK_2   MEMORY_AND_DISK_SER_2   MEMORY_ONLY_2   MEMORY
 
 ---
 - Spark-root, read high energy physics data in ROOT format into Spark dataframes
+  - this is now not maintained, see https://github.com/spark-root/laurelin  
 ```
 bin/spark-shell --packages org.diana-hep:spark-root_2.11:0.1.16
 
@@ -532,7 +501,8 @@ val df = spark.read.format("org.dianahep.sparkroot.experimental").load("<path>/m
 -A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35000 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35001 -j ACCEPT
 ```
-  - In addition clients may want to access the port for the WebUI (4040 by default)
+  - In addition clients, may want to access the port for the WebUI (4040 by default)
+    - configure with `spark.ui.port`  
  
 ---
 - Get username and security details via Apache Hadoop security API
@@ -650,9 +620,8 @@ df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
 ---
 - Configuration to switch back to use datasource V1 (as opposed to use datasource V2). 
-  - See also bug SPARK-29304 Input Bytes Metric for Datasource v2 is absent
-  - Example for parquet:  
-`bin/spark-shell --master local[*] --conf spark.sql.sources.useV1SourceList="parquet"`
+  - `spark.sql.sources.useV1SourceList` for Spark 3.2.0, this defaults to `"avro,csv,json,kafka,orc,parquet,text"`
+
 ---
 - Enable short-circuit reads for Spark on a Hadoop cluster
   - Spark executors need to have libhadoop.so in the library path
@@ -852,6 +821,62 @@ sql("select * from values 'a','b' lateral view explode(Array(1,2)) tab1").show()
 |   b|  1|
 |   b|  2|
 +----+---+
+```
+
+- Higher order functions and array processing examples
+```
+# Prepare test data with arrays
+# readings from a sensor measuring temperature in Celsius
+
+schema = "id INT, temp_celsius ARRAY<INT>"
+t_list = [1,[35, 36, 32, 30, 40, 42, 38]], [2,[31, 32, 34, 55, 56]]
+
+spark.createDataFrame(t_list, schema).createOrReplaceTempView("temp_data")
+spark.sql("select * from temp_data").show(10,False)
+
+# Example of array functions
+# Take first temperature reading and the max temperature reading
+
+spark.sql("select temp_celsius[0] first_temp_reading, array_max(temp_celsius) max_reading from temp_data").toPandas()
+
+# Array procesing with Spark using "higher order functions" in SQL
+# Compute conversion from Fahrenheit from Celsius for an array of temperatures
+
+spark.sql("""
+SELECT id, temp_celsius, 
+ transform(temp_celsius, t -> ((t * 9) / 5) + 32) as temp_fahrenheit 
+  FROM temp_data
+""").toPandas()
+
+# Array procesing using Spark higher order functions in SQL
+# Filter temperatures > 38C from an array of temperature values
+
+spark.sql("""
+SELECT id, temp_celsius, filter(temp_celsius, t -> t > 38) as high 
+FROM temp_data
+""").show(10,False)
+
+# This demonstrates using the "legacy" SQL functions explode and collect_list 
+# the performance is suboptimal, especially for large arrays
+# also quite hard to read
+
+spark.sql("""
+with exploded_data as (
+  select id, explode(temp_celsius) val from temp_data
+)
+select id, collect_list(val) from exploded_data where val > 38 group by id
+""").show(10,False)
+
+# Example of array functinos, aggregate (higher orger function) and cardinality
+
+# - aggregate(expr, start, merge, finish) - Applies a binary operator to an initial state and all elements in the array, 
+#   and reduces this to a single state. The final state is converted into the final result by applying a finish function.
+# - cardinality(expr) - Returns the size of an array or a map. 
+
+spark.sql("""
+          SELECT id, aggregate(temp_celsius, 0, (acc, x) -> acc + x,
+          acc -> round(acc / cardinality(temp_celsius),1)) as average_temperature
+          from temp_data""").show()
 
 ```
 ---
@@ -904,6 +929,40 @@ df_test = model.transform(df).select("features","labels")
 ---
  - Additional examples of dealing with nested structures in Spark SQL
 ```
+# Python
+# Example with structs and arrays
+# Inspired from physics datasets
+
+schema = "event LONG, HLT struct<flag1:boolean, flag2:boolean>, muons ARRAY<STRUCT<pt:FLOAT, eta:FLOAT, mass:FLOAT>>"
+t_list = [[1000, [True,True] , [[1.1,2.2,1.0], [1.2,2.2,1.0]]], [1001, [True,True], [[1.2,2.3, 1.0],[1.3,2.3, 1.0]]]]
+
+df = spark.createDataFrame(t_list, schema)
+df.printSchema()
+df.createOrReplaceTempView("particles")
+
+spark.sql("select * from particles").show(10,False)
+
+# display only flag1 and the first muon in the list
+
+spark.sql("select event, HLT.flag1, muons[0] from particles").show(10,False)
+
+# Examples with Maps
+
+schema = "id INT, myKeyValues MAP<INT, INT>"
+
+t_list = [[1000, {1:1, 2:2}], [1001, {1:10, 2:11, 3:12}]]
+df = spark.createDataFrame(t_list, schema)
+df.createOrReplaceTempView("t1_map")
+
+df.printSchema()
+df.show(10,False)
+
+# Higher order functions with maps
+spark.sql("SELECT id, transform_values(myKeyValues, (k, v) -> k + v) as mymap_transformed from t1_map").show(10, False)
+
+
+// Scala
+
 scala> dsMuons.printSchema
 root
  |-- muons: array (nullable = true)
@@ -1002,6 +1061,31 @@ from departments left outer join employees
 on employees.dep_id = departments.id
 order by departments.id""").show() 
 ```
+
+Window/analytic functions SQL example: 
+```
+# Window function
+spark.sql("""
+select id, name, dep_id,
+       max(id) over (partition by dep_id) as greatest_id_same_department,
+       lag(name) over (order by id) as previous_employee_name
+from employees
+order by id
+""").show()
+
+# Alternative syntax by explicitly naming windows
+
+spark.sql("""
+select id, name, dep_id,
+       max(id) over w1 as greatest_id_same_department,
+       lag(name) over (order by id) as previous_employee_name
+from employees
+window w1 as (partition by dep_id),
+       w2 as (order by id) 
+order by id
+""").show()
+```
+
 ---
 - Spark SQL aggregate functions, SQL vs. declarative API
 
