@@ -41,14 +41,55 @@ The Parquet version used to write a given file is stored in the metadata.
 How to extract metadata information:
 
 - **parquet-cli**
-  - example: hadoop jar parquet-cli/target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile`
+  - example: `hadoop jar parquet-cli/target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile`
   - see also [Tools for Parquet Diagnostics](../Tools_Parquet_Diagnostics.md)
 
 - **Hadoop API** ...
+  - example of using Hadoop API from the spark-shell CLI
+  ```
+  // customize with the file path and name
+  val fullPathUri = java.net.URI.create("<path>/myParquetFile")
+   
+  // crate a Hadoop input file and opens it with ParquetFileReader
+  val in = org.apache.parquet.hadoop.util.HadoopInputFile.fromPath(new org.apache.hadoop.fs.Path(fullPathUri), spark.sessionState.newHadoopConf())
+  val pf = org.apache.parquet.hadoop.ParquetFileReader.open(in)
 
+  // Get the Parquet file version
+  pf.getFooter.getFileMetaData.getCreatedBy
+  
+  // Info on file metadata
+  print(pf.getFileMetaData)
+  print(pf.getRowGroups)
+  ```
 
-## Convert Parquet files to a newer version using Spark
- - here how to convert to newer Parquet version with Spark
+## Convert Parquet files to a newer version by copying them using Spark
+ - Use a recent Spark to read the source Parquet files and save them with the Parquet version
+  used by Spark. For example with Spark 3.2.0 you can write files in Parquet version 1.12.1
+ - Example of how to copy Parquet files for the TPCDS benchmark
+```
+bin/spark-shell --master yarn --driver-memory 4g --executor-memory 50g --executor-cores 10 --num-executors 20 --conf spark.sql.shuffle.partitions=400
+
+val inpath="/project/spark/TPCDS/tpcds_1500_parquet_1.10.1/"
+val outpath="/user/canali/TPCDS/tpcds_1500_parquet_1.12.1/"
+val compression_type="snappy"
+// val compression_type="zstd"
+
+// copy partitioned tables of the TPCDS benchmark
+// compact each directory into 1 file with repartition
+val tables_partition=List(("catalog_returns","cr_returned_date_sk"), ("catalog_sales","cs_sold_date_sk"), ("inventory","inv_date_sk"), ("store_returns","sr_returned_date_sk"), ("store_sales","ss_sold_date_sk"), ("web_returns","wr_returned_date_sk"), ("web_sales","ws_sold_date_sk"))
+for (t <- tables_partition) {
+  println(s"Copying partitioned table $t")
+  spark.read.parquet(inpath + t._1).repartition(col(t._2)).write.partitionBy(t._2).mode("overwrite").option("compression", compression_type).parquet(outpath + t._1)
+}
+
+// copy non-partitioned tables of the TPCDS benchmark
+// compact each directory into 1 file with repartition
+val tables_nopartition=List("call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
+for (t <- tables_nopartition) {
+  println(s"Copying table $t")
+  spark.read.parquet(inpath + t).coalesce(1).write.mode("overwrite").option("compression", compression_type).parquet(outpath + t)
+}
+```
 
 ## Column indexes
 What are they good for

@@ -2,27 +2,127 @@
 
 This is extracted from the blog post [Diving into Spark and Parquet Workloads, by Example](http://externaltable.blogspot.com/2017/06/diving-into-spark-and-parquet-workloads.html)
 
-Here a some examples of usage of a few tools and utilities that I find useful to investigate Parquet files.
-relevant links on internals of Parquet  and their metadata are
- - the documentation at (https://parquet.apache.org/documentation/latest)
- - Also the Parquet source code has many additional details in the form of comments to the code. See for example: [ParquetOutputFormat.java](https://github.com/Parquet/parquet-mr/blob/master/parquet-hadoop/src/main/java/parquet/hadoop/ParquetOutputFormat.java)
+Here are some examples of a few tools and utilities that I find useful to investigate Parquet files.
+Relevant links on internals of Parquet  and their metadata are
+ - Documentation at (https://parquet.apache.org/documentation/latest)
+ - Link with a list of [Apache Parquet configuration options](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
+ - Parquet source code has many additional details in the form of comments to the code. 
+   See for example: [ParquetOutputFormat.java](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/src/main/java/org/apache/parquet/hadoop/ParquetOutputFormat.java)
 
-Some of the main points about Parquet internals that I want to highlight are:
+Some highlights of Parquet that make it a very useful data format for data analysis are:
 - Hierarchically, a Parquet file consists of one or more "row groups". A row group contains data grouped ion "column chunks", one per column. Column chunks are structured in pages. Each column chunk contains one or more pages.
 - Parquet files have several metadata structures, containing among others the schema, the list of columns and details about the data stored there, such as name and datatype of the columns, their size, number of records and basic statistics as minimum and maximum value (for datatypes where support for this is available, as discussed in the previous section).
 - Parquet can use compression and encoding. The user can choose the compression algorithm used, if any. By default Spark uses snappy. 
 - Parquet can store complex data types and support nested structures. This is quite a powerful feature and it goes beyond the simple examples presented in this post.
 
+## Parquet-cli
+Parquet-cli is part of the main Apache Parquet repository, you can download it from  https://github.com/apache/parquet-mr/releases
+The tests described here are based on Parquet version 1.12.2, released in 2021.
 
-## Parquet-tools
+Tip: you can build and package the jar for parquet-tools with:
+```
+cd parquet-mr-apache-parquet-1.12.2/parquet-cli
+mvn -DskipTests clean package 
+```
+
+Example:
+
+```
+hadoop jar parquet-cli/target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile
+
+Created by: parquet-mr version 1.12.1 (build 2a5c06c58fa987f85aa22170be14d927d5ff6e7d)
+Properties:
+                   org.apache.spark.version: 3.2.0
+  org.apache.spark.sql.parquet.row.metadata: {"type":"struct","fields":[{"name":"ws_sold_time_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_date_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_item_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_customer_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_cdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_hdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_addr_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_customer_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_cdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_hdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_addr_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_web_page_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_web_site_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_mode_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_warehouse_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_promo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_order_number","type":"long","nullable":true,"metadata":{}},{"name":"ws_quantity","type":"integer","nullable":true,"metadata":{}},{"name":"ws_wholesale_cost","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_list_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_sales_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_discount_amt","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_sales_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_wholesale_cost","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_list_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_tax","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_coupon_amt","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_ship_cost","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid_inc_tax","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid_inc_ship","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid_inc_ship_tax","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_profit","type":"decimal(7,2)","nullable":true,"metadata":{}}]}
+
+Schema:
+message spark_schema {
+  optional int32 ws_sold_time_sk;
+  optional int32 ws_ship_date_sk;
+  optional int32 ws_item_sk;
+  optional int32 ws_bill_customer_sk;
+  optional int32 ws_bill_cdemo_sk;
+  optional int32 ws_bill_hdemo_sk;
+  optional int32 ws_bill_addr_sk;
+  optional int32 ws_ship_customer_sk;
+  optional int32 ws_ship_cdemo_sk;
+  optional int32 ws_ship_hdemo_sk;
+  optional int32 ws_ship_addr_sk;
+  optional int32 ws_web_page_sk;
+  optional int32 ws_web_site_sk;
+  optional int32 ws_ship_mode_sk;
+  optional int32 ws_warehouse_sk;
+  optional int32 ws_promo_sk;
+  optional int64 ws_order_number;
+  optional int32 ws_quantity;
+  optional int32 ws_wholesale_cost (DECIMAL(7,2));
+  optional int32 ws_list_price (DECIMAL(7,2));
+  optional int32 ws_sales_price (DECIMAL(7,2));
+  optional int32 ws_ext_discount_amt (DECIMAL(7,2));
+  optional int32 ws_ext_sales_price (DECIMAL(7,2));
+  optional int32 ws_ext_wholesale_cost (DECIMAL(7,2));
+  optional int32 ws_ext_list_price (DECIMAL(7,2));
+  optional int32 ws_ext_tax (DECIMAL(7,2));
+  optional int32 ws_coupon_amt (DECIMAL(7,2));
+  optional int32 ws_ext_ship_cost (DECIMAL(7,2));
+  optional int32 ws_net_paid (DECIMAL(7,2));
+  optional int32 ws_net_paid_inc_tax (DECIMAL(7,2));
+  optional int32 ws_net_paid_inc_ship (DECIMAL(7,2));
+  optional int32 ws_net_paid_inc_ship_tax (DECIMAL(7,2));
+  optional int32 ws_net_profit (DECIMAL(7,2));
+}
+
+
+Row group 0:  count: 340689  67.76 B records  start: 4  total: 22.015 MB
+--------------------------------------------------------------------------------
+                          type      encodings count     avg size   nulls   min / max
+ws_sold_time_sk           INT32     S _ R     340689    0.53 B     45      "29" / "86399"
+ws_ship_date_sk           INT32     S _ R     340689    0.88 B     42      "2450819" / "2450938"
+ws_item_sk                INT32     S   _     340689    4.00 B     0       "1" / "32000"
+ws_bill_customer_sk       INT32     S _ R     340689    0.59 B     39      "93" / "4599972"
+ws_bill_cdemo_sk          INT32     S _ R     340689    0.58 B     41      "59" / "1920782"
+ws_bill_hdemo_sk          INT32     S _ R     340689    0.34 B     38      "1" / "7200"
+ws_bill_addr_sk           INT32     S _ R     340689    0.58 B     43      "82" / "2299974"
+ws_ship_customer_sk       INT32     S _ R     340689    0.59 B     53      "285" / "4599966"
+ws_ship_cdemo_sk          INT32     S _ R     340689    0.59 B     47      "40" / "1920782"
+ws_ship_hdemo_sk          INT32     S _ R     340689    0.34 B     44      "1" / "7200"
+ws_ship_addr_sk           INT32     S _ R     340689    0.58 B     43      "61" / "2299983"
+ws_web_page_sk            INT32     S _ R     340689    0.88 B     40      "1" / "208"
+ws_web_site_sk            INT32     S _ R     340689    0.63 B     38      "1" / "32"
+ws_ship_mode_sk           INT32     S _ R     340689    0.63 B     44      "1" / "20"
+ws_warehouse_sk           INT32     S _ R     340689    0.38 B     48      "1" / "5"
+ws_promo_sk               INT32     S _ R     340689    1.13 B     41      "1" / "375"
+ws_order_number           INT64     S _ R     340689    0.67 B     0       "4802" / "89998084"
+ws_quantity               INT32     S _ R     340689    0.88 B     42      "1" / "100"
+ws_wholesale_cost         INT32     S _ R     340689    1.87 B     45      "1.00" / "100.00"
+ws_list_price             INT32     S   _     340689    4.00 B     47      "1.03" / "299.49"
+ws_sales_price            INT32     S _ R     340689    2.12 B     40      "0.00" / "296.77"
+ws_ext_discount_amt       INT32     S   _     340689    4.00 B     43      "0.00" / "28573.00"
+ws_ext_sales_price        INT32     S   _     340689    4.00 B     42      "0.00" / "27868.00"
+ws_ext_wholesale_cost     INT32     S   _     340689    4.00 B     43      "1.00" / "10000.00"
+ws_ext_list_price         INT32     S   _     340689    4.00 B     41      "1.07" / "29219.00"
+ws_ext_tax                INT32     S   _     340689    3.41 B     36      "0.00" / "2249.13"
+ws_coupon_amt             INT32     S _ R     340689    1.52 B     36      "0.00" / "22567.27"
+ws_ext_ship_cost          INT32     S   _     340689    4.00 B     39      "0.00" / "14064.96"
+ws_net_paid               INT32     S   _     340689    4.00 B     48      "0.00" / "27868.00"
+ws_net_paid_inc_tax       INT32     S   _     340689    4.00 B     44      "0.00" / "29468.88"
+ws_net_paid_inc_ship      INT32     S   _     340689    4.00 B     0       "0.00" / "39811.00"
+ws_net_paid_inc_ship_tax  INT32     S   _     340689    4.00 B     0       "0.00" / "40827.99"
+ws_net_profit             INT32     S   _     340689    4.00 B     0       "-9894.06" / "18293.00"
+
+```
+
+## Parquet-tools (deprecated)
 
 Parquet-tools is part of the main Apache Parquet repository, you can download it from  https://github.com/apache/parquet-mr/releases
 The tests described here are based on Parquet version 1.8.2, released in January 2017. 
+In more recent versions of Parquet, parquet-tools has been renamed to parquet-tools-deprecated and
+parquet-cli (see above) should be used instead.
 
 Tip: you can build and package the jar for parquet-tools with:
 ```
 cd parquet-mr-apache-parquet-1.8.2/parquet-tools
-mvn package -DskipTests
+mvn -DskipTests clean package 
 ```
 
 You can use parquet tools to examine the metadata of a Parquet file on HDFS using: "hadoop jar <path_to_jar> meta <path_to_Parquet_file>".  Other commands available with parquet-tools, besides "meta" include: cat, head, schema, meta, dump, just run parquet-tools with -h option to see the syntax.
@@ -43,7 +143,7 @@ extra:                 org.apache.spark.sql.parquet.row.metadata = {"type":"stru
 ...omitted in the interest of space... 
 {"name":"ss_net_profit","type":"decimal(7,2)","nullable":true,"metadata":{}}]}
 ```
-Additionally metadata about the schema:
+Additionally, metadata about the schema:
 
 ```
 file schema:           spark_schema
