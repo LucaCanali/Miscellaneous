@@ -169,7 +169,7 @@ See a detailed [description of column and offset indexes in Parquet at this link
   - example: `hadoop jar target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main column-index -c ws_sold_time_sk <path>/parquet112file`
   - see also [Tools for Parquet Diagnostics](../Tools_Parquet_Diagnostics.md)
 
-- Example with **Hadoop API** from Spark-shell
+- Example with the **Java API** from Spark-shell
    ```
    // customize with the file path and name
    val fullPathUri = java.net.URI.create("<path>/myParquetFile")
@@ -243,6 +243,8 @@ They are particularly useful with high cardinality columns to overcome the limit
 of using Parquet dictionaries. 
 You can find the details [of bloom filters in Apache Parquet at this link](https://github.com/apache/parquet-format/blob/master/BloomFilter.md)
 
+**Configuration**
+
 Two important configurations for writing bloom filters in Parquet files are:
 ```
 .option("parquet.bloom.filter.enabled","true") // write bloomfilters, default is false
@@ -256,7 +258,9 @@ val df = spark.read.par
 df.coalesce(1).write.option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.expected.ndv#ws_sold_time_sk", 25000).parquet("<myfilepath")
 ```
 
-This how you can check the I/O performed when using bloom filters vs. not using them.
+**Bloom filter example**
+This how you can check the I/O performed when reading Parquet, it allows to compare
+the difference when using bloom filters vs. not using them.
 For demo purposes the example disables the use of dictionary and column index filters, which is an optimization that improves filter execution too`.option("parquet.filter.dictionary.enabled","false")`
 ```
 bin/spark-shell
@@ -272,4 +276,20 @@ org.apache.hadoop.fs.FileSystem.printStatistics()
 Results:
 without optimized filters (full row group scan): 23532456 bytes read,
 with bloom filter: 283560 bytes read,
+```
+
+**How to read Parquet bloom filter metadata**
+
+This is how you can read metadata about the bloom filter in Apache Parquet using 
+the Java API for spark-shell
+```
+val fullPathUri = java.net.URI.create("<my_file_path>")
+
+val in = org.apache.parquet.hadoop.util.HadoopInputFile.fromPath(new org.apache.hadoop.fs.Path(fullPathUri), spark.sessionState.newHadoopConf())
+val pf = org.apache.parquet.hadoop.ParquetFileReader.open(in)
+
+val blocks = pf.getFooter.getBlocks
+val columns = blocks.get(0).getColumns
+
+val bloomFilter=pf.readBloomFilter(columns.get(0))
 ```
