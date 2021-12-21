@@ -25,6 +25,9 @@ cd parquet-mr-apache-parquet-1.12.2/parquet-cli
 mvn -DskipTests clean package 
 ```
 
+Parquet-cli has multiple commands, including: meta to Print a Parquet file's metadata, schema,
+column-index to print the column and offset indexes of a Parquet file.
+
 Example:
 
 ```
