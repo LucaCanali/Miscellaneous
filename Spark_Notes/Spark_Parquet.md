@@ -247,8 +247,9 @@ You can find the details [of bloom filters in Apache Parquet at this link](https
 
 Two important configurations for writing bloom filters in Parquet files are:
 ```
-.option("parquet.bloom.filter.enabled","true") // write bloomfilters, default is false
-.option("parquet.bloom.filter.expected.ndv#column_name", num_values) // tuning for bloom filters
+.option("parquet.bloom.filter.enabled","true") // write bloom filters for all columns, default is false
+.option("parquet.bloom.filter.enabled#column_name") // write bloom filter for the given column
+.option("parquet.bloom.filter.expected.ndv#column_name", num_values) // tuning for bloom filters, ndv = number of distinct values
 ```
 
 This is an example of how to read a Parquet file without bloom filter (for example because created with 
@@ -261,7 +262,54 @@ df.coalesce(1).write.option("parquet.bloom.filter.enabled","true").option("parqu
 **Bloom filter example**
 This how you can check the I/O performed when reading Parquet, it allows to compare
 the difference when using bloom filters vs. not using them.
-For demo purposes the example disables the use of dictionary and column index filters, which is an optimization that improves filter execution too`.option("parquet.filter.dictionary.enabled","false")`
+
+Example:
+```
+// 1. prepare the test table
+
+bin/spark-shell
+val numDistinctVals=1e6.toInt
+val df=sql(s"select id, int(random()*100*$numDistinctVals) randomval from range($numDistinctVals)")
+
+df.coalesce(1).write.mode("overwrite").option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.enabled#randomval", "true").option("parquet.bloom.filter.expected.ndv#randomval", numDistinctVals).parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter")
+df.coalesce(1).write.mode("overwrite").option("parquet.bloom.filter.enabled","false").parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter_nofilter")
+
+// note compare the size of the files with bloom filter and without
+// in my test: it was 10107281 with bloom filter and 8010083 without
+
+:quit
+
+// 2. read tests:
+
+// 2a. with bloom filter
+bin/spark-shell
+
+val df =spark.read.option("parquet.filter.bloom.enabled","true").parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter")
+val q1 = df.filter("randomval=1000000") // filter for a value that is not in the file
+q1.collect
+
+// print I/O metrics
+org.apache.hadoop.fs.FileSystem.printStatistics()
+
+// Output
+FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 1095643 bytes read
+
+:quit
+
+// 2b. without bloom filter
+bin/spark-shell
+
+val df =spark.read.option("parquet.filter.bloom.enabled","false").parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter")
+val q1 = df.filter("randomval=1000000") // filter for a value that is not in the file
+q1.collect
+
+// print I/O metrics
+
+// Output
+FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 8303682 bytes read
+```
+
+For demo purposes this example disables the use of dictionary and column index filters, which is an optimization that improves filter execution too`.option("parquet.filter.dictionary.enabled","false")`
 ```
 bin/spark-shell
 
