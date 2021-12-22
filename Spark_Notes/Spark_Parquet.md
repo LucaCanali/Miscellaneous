@@ -250,6 +250,7 @@ Two important configurations for writing bloom filters in Parquet files are:
 .option("parquet.bloom.filter.enabled","true") // write bloom filters for all columns, default is false
 .option("parquet.bloom.filter.enabled#column_name") // write bloom filter for the given column
 .option("parquet.bloom.filter.expected.ndv#column_name", num_values) // tuning for bloom filters, ndv = number of distinct values
+.option("parquet.bloom.filter.max.bytes", 1024*1024) // The maximum number of bytes for a bloom filter bitset, default 1 MB
 ```
 
 This is an example of how to read a Parquet file without bloom filter (for example because created with 
