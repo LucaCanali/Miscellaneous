@@ -29,6 +29,10 @@ df.write.mode("overwrite").parquet("file path") // write
 There are several configurable parameters for the Parquet datasources, see:
 [link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
 
+Parquet configuration parameters can be used in Spark:
+- as an option to the DataFrame writer and reader, example:`.option("parquet.block.size", 128*1024*1024")`
+- as a Spark configuration parameter, example: `--conf spark.hadoop.parquet.block.size=128*1024*1024`
+
 A few notable options for Apache Spark Parquet DataFrame writer:
 ```
 .option("compression", compression_type)      // compression algorithm, default when using Spark is snappy, use none for no compression
