@@ -26,14 +26,10 @@ Two connectors are available, which one should you use?
     - hbase-spark-protocol-shaded.
   - Build the connector from GitHub as explained below (see Spark 3.x section). In this example we use pre-built jars JAR1 and JAR2.
     ```
-    JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
-    JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
-    # Or use these instead for HBase 2.3
-    # JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
-    # JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.3.7-cern1_1.jar
-    
     # Connector jars
-    wget $JAR1 $JAR2
+    wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+    wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+
     # Scala library, match the Scala version used for building
     wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
     ```
@@ -108,31 +104,30 @@ Two connectors are available, which one should you use?
 ## Spark 3.x
 
 ###  Use the Apache Spark HBase connector with Spark 3.x
-- Build the connector from the [github repo Apache HBase Connectors](https://github.com/apache/hbase-connectors)
-  - The connector has to be compiled from source for Spark 3.x, as 
-  Spark 3.x does not support Scala 2.11, see also [HBASE-25326 Allow hbase-connector to be used with Apache Spark 3.0 ](https://issues.apache.org/jira/browse/HBASE-25326)
-  - As of November 2021, the release of hbase-connectors in maven central is compiled with scala 2.11   
+- Build the connector from the Github repo [Apache HBase Connectors](https://github.com/apache/hbase-connectors)
+  - As of December 2021, the release of hbase-connectors in maven central is only available for Scala 2.11 and cannot be used with Spark 3
+  - The connector has to be compiled from source for Spark 3.x, see also [HBASE-25326 Allow hbase-connector to be used with Apache Spark 3.0 ](https://issues.apache.org/jira/browse/HBASE-25326)
   
 - Build as in this example (customize HBase, Spark and Hadoop versions, as needed):
-  - See also [HBase-connectors PR for building with HBase 2.4](https://github.com/apache/hbase-connectors/pull/88) 
    ```
-   mvn -Dspark.version=3.2.0 -Dscala.version=2.12.15 -Dscala.binary.version=2.12 -Dhbase.version=2.4.8 -Dhadoop.profile=3.0 -Dhadoop-three.version=3.3.1 -DskipTests clean package
+   mvn -Dspark.version=3.1.2 -Dscala.version=2.12.10 -Dscala.binary.version=2.12 -Dhbase.version=2.4.9 -Dhadoop-three.version=3.2.0 -DskipTests clean package
    ```
    
 - Deploy using Spark 3.x, as in this example:
   ```
   # Customize the JARs path to your filesystem location
   # For convenience I have also uploaded the jars on a web server
-  JAR1=https://cern.ch/canali/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
-  JAR2=https://cern.ch/canali/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1.jar
+
+  JAR1=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  JAR2=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
 
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
-  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.8
+  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.9
   ```
 
-- Other option, for **CERN users only**: 
-  - deploy from artifactory.cern.ch (only visible from CERN network):
-  - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.4.8-cern1_1`
+- Option for **CERN users only**: 
+  - deploy from artifactory.cern.ch (only visible from the CERN network):
+  - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1`
 
 
 ### SQL Filter pushdown and server-side library configuration
