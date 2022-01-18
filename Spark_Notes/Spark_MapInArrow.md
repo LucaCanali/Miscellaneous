@@ -17,7 +17,8 @@ for extended Spark Arrow UDF.
  - Spark 3.3.0-SNAPSHOT (compiled from Spark master at the time of these tests) 
  - `pyspark --master local[1]` -> we use only one core to reduce measurement noise and focus on the UDF execution
  - requires: `pip install pyarrow` and `pip install awkward`
-
+ - We use arrays in the test dataframes, as this is where we find the biggest difference between mapInPandas and mapInArrow
+    
  - Test reference 0:
    - just write a test DataFrame produced on-the-gly to the "noop" data sink (data is processed, but nothing is written)  
    - Run time: ~5 sec
@@ -27,6 +28,7 @@ import time
 
 start = time.time()
 
+df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
 df.write.format("noop").mode("overwrite").save()
 
 end= time.time()
