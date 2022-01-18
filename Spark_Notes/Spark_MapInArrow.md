@@ -18,9 +18,9 @@ for extended Spark Arrow UDF.
  - `pyspark --master local[1]` -> we use only one core to reduce measurement noise and focus on the UDF execution
  - requires: `pip install pyarrow` and `pip install awkward`
 
- - Test 0: no-operation
+ - Test reference 0:
    - just write a test DataFrame produced on-the-gly to the "noop" data sink (data is processed, but nothing is written)  
-   - Run time: ~ 5 sec
+   - Run time: ~5 sec
    - Code:
 ```
 import time
@@ -34,8 +34,6 @@ print(f"Run time: {round(end-start,1)}")
 ```
 
 ### Reference: testing MapInPandas
-
-- Test 
 
 - Test_Pandas 1: 
   - Just a dummy UDF that just serializes data, converts to Pandas and deserializes back using mapInPandas
@@ -84,8 +82,9 @@ print(f"Run time: {round(end-start,1)}")
 
 - Test_Arrow 1:
   - A dummy UDF as in Test_Pandas 1, but this time using mapInArrow, so skipping conversion to Pandas
-  - The code is the same as in Test_Pandas 1 with the change `mapInPandas` -> `mapInArrow` 
   - Run time: ~ 20 sec
+  - Code:
+    - The code is the same as in Test_Pandas 1 with the change `mapInPandas` -> `mapInArrow`
 
 - Test_Arrow 1b:
   - Again a dummy UDF, this time we add serialization and deserialization to awkward array
