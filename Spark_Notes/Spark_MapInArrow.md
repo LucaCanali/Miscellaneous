@@ -37,15 +37,16 @@ print(f"Run time: {round(end-start,1)}")
 
 ### Reference: testing MapInPandas
 
-- Test_Pandas 1: 
+- Test_Pandas 1 (dummy UDF): 
   - Just a dummy UDF that just serializes data, converts to Pandas and deserializes back using mapInPandas
   - Note we use a test DataFrame that contains an array 
   - Run time: ~47 sec
 ```
 sc.setLogLevel('WARN')
 
-from awkward import *
-import pyarrow
+import awkward as ak
+import pyarrow as pa
+import numpy as np
 import time
 
 df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
@@ -63,7 +64,7 @@ end= time.time()
 print(f"Run time: {round(end-start,1)}")
 
 ```
-- Test_Pandas 2:
+- Test_Pandas 2 (compute the square of arrays):
    - a UDF that squares the input data using Pandas serialization
    - run time: ~ 100 sec
 ```
@@ -82,23 +83,23 @@ print(f"Run time: {round(end-start,1)}")
 
 ### Target: testing with MapInArrow
 
-- Test_Arrow 1:
+- Test_Arrow 1 (dummy UDF):
   - A dummy UDF as in Test_Pandas 1, but this time using mapInArrow, so skipping conversion to Pandas
   - Run time: ~ 20 sec
   - Code:
     - The code is the same as in Test_Pandas 1 with the change `mapInPandas` -> `mapInArrow`
 
-- Test_Arrow 1b:
+- Test_Arrow 1b (dummy UDF with awkward array library):
   - Again a dummy UDF, this time we add serialization and deserialization to awkward array
-  - Run time: ~ 22 sec
+  - Run time: ~ 21 sec
   - Code:
 ```
 # a dummy UDF that convert back and forth to awkward arrays
 # it just returns the input data
 def UDF_test_func(iterator):
     for batch in iterator:
-        b = awkward.from_arrow(batch)
-        c = pyarrow.RecordBatch.from_struct_array(awkward.to_arrow(b))
+        b = ak.from_arrow(batch)
+        c = pa.RecordBatch.from_struct_array(ak.to_arrow(b))
         yield c
 
 start = time.time()
@@ -107,5 +108,36 @@ df.mapInArrow(UDF_test_func, df.schema).write.format("noop").mode("overwrite").s
 
 end= time.time()
 print(f"Run time: {round(end-start,1)}")
+
 ```
- 
+
+- Test_Arrow 2 (compute the square of arrays with awkward arrays library):
+  - This computes the square of arrays, as in Test_Pandas 2, but this time with arrow serialization + awkward array library
+  - Run time: ~ 23 sec
+  - Code:
+```
+sc.setLogLevel('WARN')
+
+import awkward as ak
+import pyarrow as pa
+import numpy as np
+import time
+
+df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
+
+# process using the awkward arrays library
+def UDF_test_func(iterator):
+    for batch in iterator:
+        b = ak.from_arrow(batch)
+        b2 = ak.zip({"col3": np.square(b["col3"])}, depth_limit=1)
+        c = pa.RecordBatch.from_struct_array(ak.to_arrow(b2))
+        yield c
+
+start = time.time()
+
+df.mapInArrow(UDF_test_func, df.schema).write.format("noop").mode("overwrite").save()
+
+end= time.time()
+print(f"Run time: {round(end-start,1)}")
+
+```
