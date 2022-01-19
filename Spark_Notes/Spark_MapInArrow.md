@@ -4,12 +4,18 @@ These are working notes about the mapInArrow functionality introduced in [SPARK-
 and the related PR [#34505](https://github.com/apache/spark/pull/34505)
 
 - The main idea about this is that bypassing the conversion to Pandas can improve the performance, in particular
-when dealing with arrays and complex datatypes where Pandas conversion introduces a performance penalty.
+when dealing with arrays and complex datatypes where Pandas conversion introduces a performance penalty
 
-- The [Awkward array library](https://awkward-array.readthedocs.io/en/latest/index.html) is used instead of Pandas to handle data processing.  
+- Libraries other than Pandas can be used for data processing in the (vectorized) UDF
+  - The [Awkward array library](https://awkward-array.readthedocs.io/en/latest/index.html) is used instead of Pandas to handle data processing for the tests reported here.  
 
-Other doc: See also discussion in PR [#26783](https://github.com/apache/spark/pull/26783) on a previous test proposal
-for extended Spark Arrow UDF.
+- The tests reported here, detail a 4x speedup on a particular use case: squaring numerical arrays
+
+Limitations and other discussions:
+- mapInArrow will serialize and deserialize all the columns of the DataFrame,
+which could add an overhead if you need to process just a few columns
+- See also discussion in PR [#26783](https://github.com/apache/spark/pull/26783) on a previous test proposal
+for extended Spark Arrow UDF
 
 ## Some basic performance tests comparing MapInArrow and MapInPandas
 
