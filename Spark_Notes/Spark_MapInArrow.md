@@ -30,11 +30,15 @@ for extended Spark Arrow UDF
    - Run time: ~5 sec
    - Code:
 ```
+bin/pyspark --master local[1]
+
+sc.setLogLevel('WARN')
 import time
+
+df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
 
 start = time.time()
 
-df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
 df.write.format("noop").mode("overwrite").save()
 
 end= time.time()
@@ -48,11 +52,6 @@ print(f"Run time: {round(end-start,1)}")
   - Note we use a test DataFrame that contains an array 
   - Run time: ~47 sec
 ```
-sc.setLogLevel('WARN')
-
-import awkward as ak
-import pyarrow as pa
-import numpy as np
 import time
 
 df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
@@ -74,6 +73,10 @@ print(f"Run time: {round(end-start,1)}")
    - a UDF that squares the input data using Pandas serialization
    - run time: ~ 100 sec
 ```
+import time
+
+df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
+
 # UDF function that squares the input
 def UDF_test_func(iterator):
     for batch in iterator:
@@ -100,13 +103,18 @@ print(f"Run time: {round(end-start,1)}")
   - Run time: ~ 21 sec
   - Code:
 ```
+import awkward as ak
+import time
+
+df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
+
 # a dummy UDF that convert back and forth to awkward arrays
 # it just returns the input data
 def UDF_test_func(iterator):
     for batch in iterator:
         b = ak.from_arrow(batch)
-        c = pa.RecordBatch.from_struct_array(ak.to_arrow(b))
-        yield c
+        yield from ak.to_arrow_table(b).to_batches()
+
 
 start = time.time()
 
@@ -125,7 +133,6 @@ print(f"Run time: {round(end-start,1)}")
 sc.setLogLevel('WARN')
 
 import awkward as ak
-import pyarrow as pa
 import numpy as np
 import time
 
@@ -136,8 +143,7 @@ def UDF_test_func(iterator):
     for batch in iterator:
         b = ak.from_arrow(batch)
         b2 = ak.zip({"col3": np.square(b["col3"])}, depth_limit=1)
-        c = pa.RecordBatch.from_struct_array(ak.to_arrow(b2))
-        yield c
+        yield from ak.to_arrow_table(b2).to_batches()
 
 start = time.time()
 
