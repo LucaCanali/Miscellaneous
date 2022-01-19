@@ -24,8 +24,10 @@ for extended Spark Arrow UDF
  - `pyspark --master local[1]` -> we use only one core to reduce measurement noise and focus on the UDF execution
  - requires: `pip install pyarrow` and `pip install awkward`
  - We use arrays in the test dataframes, as this is where we find the biggest difference between mapInPandas and mapInArrow
-    
- - Test reference 0:
+ 
+### Tests, reference operations without UDFs
+
+ - Test reference (dummy operation) 1:
    - just write a test DataFrame produced on-the-gly to the "noop" data sink (data is processed, but nothing is written)  
    - Run time: ~5 sec
    - Code:
@@ -45,7 +47,30 @@ end= time.time()
 print(f"Run time: {round(end-start,1)}")
 ```
 
-### Reference: testing MapInPandas
+- Test reference (squared arrays with higher order functions) 2:
+  - this performs the square of an array column using higher order function, therefore working in the JVM
+  - Run time: ~ 18 sec
+  - Code:
+```
+df = sql("select Array(rand(),rand(),rand()) col3 from range(1e8)")
+
+df2 = df.transform(lambda x: x * x)
+df2.show(2,False)
+
+# SQL version
+# df.createOrReplaceTempView("t1")
+# df2 = spark.sql("SELECT transform(col3, t -> t*t) as col3_squared FROM t1")
+
+start = time.time()
+
+df2.write.format("noop").mode("overwrite").save()
+
+end= time.time()
+print(f"Run time: {round(end-start,1)}")
+
+```
+
+### Tests using MapInPandas
 
 - Test_Pandas 1 (dummy UDF): 
   - Just a dummy UDF that just serializes data, converts to Pandas and deserializes back using mapInPandas
