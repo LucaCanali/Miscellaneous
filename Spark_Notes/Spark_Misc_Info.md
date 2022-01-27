@@ -1102,8 +1102,49 @@ order by id
 ---
 Columns count/Frequency histograms with Spark SQL
 
-As I write this, Spark SQL oes not yet implement the width_bucket and/or other histogram-related functions.
-An example of how to use Spark SQL to work around this. Spark shell:
+This uses the width_bucket function:
+
+Frequency histogram, SQL version:
+
+```
+min_val = 0.25
+max_val = 300
+num_bins = 30000
+
+df_with_dimuonmass.createOrReplaceTempView("t1")
+
+histogram_data_SQL = spark.sql(f"""
+select
+width_bucket(Dimuon_mass, {min_val}, {max_val}, {num_bins}) as bucket,
+avg(Dimuon_mass) value,
+count(*) as N_events
+from t1
+where Dimuon_mass between {min_val} and {max_val}
+group by bucket 
+order by bucket
+""")
+```
+
+Frequency histogram, declarative API version:
+
+```
+from pyspark.sql.functions import avg, count
+
+min_val = 0.25
+max_val = 300
+num_bins = 30000
+
+histogram_data = (
+df_with_dimuonmass.where(f"Dimuon_mass between {min_val} and {max_val}")
+.selectExpr("Dimuon_mass", f"width_bucket(Dimuon_mass, {min_val}, {max_val}, {num_bins}) as bucket")
+.groupBy("bucket")
+.agg(avg("Dimuon_mass").alias("value"), count("*").alias("N_events"))
+.selectExpr("*")
+.orderBy("bucket")
+)
+```
+
+Other solutions: this is an example developed when Spark SQL did not have width_bucket. Spark shell:
 ```
 sql("select id from range(10)").createOrReplaceTempView("t1")
 val df=spark.table("t1")
@@ -1133,8 +1174,6 @@ sql("select cast(id as double) from t1").rdd.map(x => x(0).asInstanceOf[Double])
 
 res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
 ```  
-See [link](http://www.silota.com/docs/recipes/sql-histogram-summary-frequency-distribution.html) for
-additional examples on creating histograms with SQL.
 
 ---
 Spark binaryfile format (Spark 3.0)
