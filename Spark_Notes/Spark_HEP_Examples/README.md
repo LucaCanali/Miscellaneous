@@ -2,6 +2,9 @@
 In this page you can find links and examples related to using Spark for reading and processing HEP data.
 
 --- 
+### Dimuon mass spectrum and histogram calculation using CERN opendata
+  * Jupyter notebook [Jupyter notebook Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+
 ### LHCb Open Data Analysis Using PySpark
  * **Jupyter notebook on GitHub at: [LHCb_OpenData_Spark.ipynb](LHCb_OpenData_Spark.ipynb)**  
  * [CERN SWAN service](https://swan.web.cern.ch) users, run from [this link to CERN Box](https://cernbox.cern.ch/index.php/s/98RK9xIU1s9Lf08)

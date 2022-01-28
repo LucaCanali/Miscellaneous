@@ -180,3 +180,8 @@ end= time.time()
 print(f"Run time: {round(end-start,1)}")
 
 ```
+
+---
+Other examples:
+
+ - Example in a notebook using [mapInArrow for dimuon mass spectrum histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)

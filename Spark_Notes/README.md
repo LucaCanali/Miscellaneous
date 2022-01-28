@@ -3,6 +3,7 @@
 | Note                          | Short description
 | ----------------------------- | -----------------------------------------------------------------------------------
 | [**Spark: Miscellaneous Commands and Tips**](Spark_Misc_Info.md) | Miscellaneous info, commands, configurations and tips for Spark.
+| [**Spark Memory Configuration**](Spark_Memory_Configuration.md) | Info on how to configure Spark executor memory
 | [**Spark For High Energy Physics**](Spark_HEP_Examples) | Examples of using Spark to read and process High Energy Physics data.
 | [**Spark: Performace Tool sparkMeasure**](Spark_Performace_Tool_sparkMeasure.md)|Examples of how to use a tool called sparkMeasure to collect and display Spark metrics.
 | [**Spark EventLog**](Spark_EventLog.md) | Example code of read and perform analytics on Spark EventLog data using Spark SQL.
@@ -16,5 +17,4 @@
 | [**Tools: Spark and Linux Flame Graph**](Tools_Spark_Linux_FlameGraph.md) | Notes and examples of tools for stack profiling and Flame Graph visualization relevant for Spark (Java/JVM) on Linux
 | [**Spark Task Metrics**](Spark_TaskMetrics.md) | Short description of Spark task Metrics
 | [**Scala Project and Spark SQL**](testScalaProject) | A basic example of a working Scala project using Spark SQL  
-| [**Spark Memory Configuration**](Spark_Memory_Configuration.md) | Info on how to configure Spark executor memory
 | [**Spark HBase_Connector**](Spark_HBase_Connector.md) | How to access Hbase from Spark
