@@ -1116,7 +1116,6 @@ df_with_dimuonmass.createOrReplaceTempView("t1")
 histogram_data_SQL = spark.sql(f"""
 select
 width_bucket(Dimuon_mass, {min_val}, {max_val}, {num_bins}) as bucket,
-avg(Dimuon_mass) value,
 count(*) as N_events
 from t1
 where Dimuon_mass between {min_val} and {max_val}
@@ -1128,23 +1127,29 @@ order by bucket
 Frequency histogram, declarative API version:
 
 ```
-from pyspark.sql.functions import avg, count
-
 min_val = 0.25
 max_val = 300
 num_bins = 30000
+step = (max_val - min_val) / num_bins
 
-histogram_data = (
-df_with_dimuonmass.where(f"Dimuon_mass between {min_val} and {max_val}")
-.selectExpr("Dimuon_mass", f"width_bucket(Dimuon_mass, {min_val}, {max_val}, {num_bins}) as bucket")
-.groupBy("bucket")
-.agg(avg("Dimuon_mass").alias("value"), count("*").alias("N_events"))
-.selectExpr("*")
-.orderBy("bucket")
-)
+histogram_data = ( 
+    df_with_dimuonmass
+        .where(f"Dimuon_mass between {min_val} and {max_val}")
+        .selectExpr(f"width_bucket(Dimuon_mass, {min_val}, {max_val}, {num_bins}) as bucket") 
+        .groupBy("bucket")
+        .count()
+        .orderBy("bucket")
+    )
+
+# convert bucket number to the corresponding dimoun mass value
+histogram_data = histogram_data.selectExpr(f"round({min_val} + (bucket - 1) * {step},2) as value", "count as N_events")
 ```
 
-Other solutions: this is an example developed when Spark SQL did not have width_bucket. Spark shell:
+Other solutions: 
+
+- See [link to article](http://www.silota.com/docs/recipes/sql-histogram-summary-frequency-distribution.html)
+
+- this is an example developed when Spark SQL did not have width_bucket. Spark shell:
 ```
 sql("select id from range(10)").createOrReplaceTempView("t1")
 val df=spark.table("t1")
@@ -1167,7 +1172,7 @@ spark.sql(s"select count(*) id_count, least(floor(round((id-$minID)/($maxID-$min
 +--------+--------+
 
 ```
-Note that Spark RDD API has a histogram function [see doc](https://spark.apache.org/docs/latest/api/python/pyspark.html)
+- Note that Spark RDD API has a histogram function [see doc](https://spark.apache.org/docs/latest/api/python/pyspark.html)
 It can be used with Spark Dataframes as a workaround as in:
 ```
 sql("select cast(id as double) from t1").rdd.map(x => x(0).asInstanceOf[Double]).histogram(3)
