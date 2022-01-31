@@ -14,7 +14,7 @@ when dealing with arrays and complex datatypes where Pandas conversion introduce
 **Limitations and other discussions:**
 - mapInArrow needs to serialize and deserialize all the columns of the DataFrame,
 which could add an overhead if you need to process just a few columns
-- mapInArrow data needs to folloe the DataFrame schema. You need to take care of adding the 
+- mapInArrow data needs to adhere to the DataFrame schema. You need to take care of adding the 
 input and output columns with their datatypes to the schema
 - See also discussion in PR [#26783](https://github.com/apache/spark/pull/26783) on a previous test proposal
 for extended Spark Arrow UDF
