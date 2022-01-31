@@ -3,7 +3,8 @@ In this page you can find links and examples related to using Spark for reading 
 
 --- 
 ### Dimuon mass spectrum and histogram calculation using CERN opendata
-  * Jupyter notebook [Jupyter notebook Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+  * Jupyter notebook [Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+  * Jupyter notebook [Dimuon mass spectrum and histogram using Array of Struct](Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
 
 ### LHCb Open Data Analysis Using PySpark
  * **Jupyter notebook on GitHub at: [LHCb_OpenData_Spark.ipynb](LHCb_OpenData_Spark.ipynb)**  

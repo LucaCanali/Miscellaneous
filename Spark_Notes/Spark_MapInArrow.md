@@ -21,6 +21,15 @@ for extended Spark Arrow UDF
 
 ## Some basic performance tests comparing MapInArrow and MapInPandas
 
+See code below, or see:
+  * Tests  in a notebook with [tests mapInArrow](Tests_mapInArrow.ipynb) 
+
+Other examples:
+  * Jupyter notebook [Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+  * Jupyter notebook [Dimuon mass spectrum and histogram using Array of Struct](Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+
+----
+
 ### Test setup:
  - Spark 3.3.0-SNAPSHOT (compiled from Spark master at the time of these tests) 
  - `pyspark --master local[1]` -> we use only one core to reduce measurement noise and focus on the UDF execution
@@ -182,6 +191,3 @@ print(f"Run time: {round(end-start,1)}")
 ```
 
 ---
-Other examples:
-
- - Example in a notebook using [mapInArrow for dimuon mass spectrum histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
