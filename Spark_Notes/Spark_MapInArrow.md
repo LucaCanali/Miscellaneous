@@ -25,8 +25,8 @@ See code below, or see:
   * Tests  in a notebook with [tests mapInArrow](Tests_mapInArrow.ipynb) 
 
 Other examples:
-  * Jupyter notebook [Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
-  * Jupyter notebook [Dimuon mass spectrum and histogram using Array of Struct](Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+  * Jupyter notebook [Dimuon mass spectrum and histogram](Spark_HEP_Examples/Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+  * Jupyter notebook [Dimuon mass spectrum and histogram using Array of Struct](Spark_HEP_Examples/Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
 
 ----
 
