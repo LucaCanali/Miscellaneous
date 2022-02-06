@@ -65,7 +65,9 @@ val df=spark.sql("select count(*) from range(10) join range(10)")
 df.collect()
 
 val statusStore = spark.sharedState.statusStore
-statusStore.execution(0).get.metrics
+val lastExecId = statusStore.executionsList.last.executionId
+val executionMetrics = statusStore.execution(lastExecId).get.metrics.mkString
+
 statusStore.planGraph(0).nodes(2).metrics
 statusStore.executionMetrics(0)
 ```
@@ -77,9 +79,10 @@ df.collect()
 
 statusStore=spark._jsparkSession.sharedState().statusStore()
 spark._jsparkSession.sharedState().statusStore().executionMetrics(0).toString()
-statusStore.execution(0).get().metrics()
-statusStore.execution(0).get().metrics().toString()
-statusStore.execution(0).get().metrics().mkString()
+
+statusStore = self.spark._jsparkSession.sharedState().statusStore()
+lastExecId = statusStore.executionsList().last().executionId()
+executionMetrics = statusStore.execution(lastExecId).get().metrics().mkString()
 ```
 
 ---
