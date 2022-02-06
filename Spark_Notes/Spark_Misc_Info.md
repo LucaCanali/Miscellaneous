@@ -221,6 +221,36 @@ scala> fs.getFileBlockLocations(new org.apache.hadoop.fs.Path("<file_path>"), 0L
 ...
 ```
 ---
+List directory and read files,  
+Example with root files and laurelin
+
+```
+spark-shell --master yarn --num-executors 4 --executor-memory 32g --executor-cores 8 --driver-memory 8g --packages edu.vanderbilt.accre:laurelin:1.1.1
+
+
+// val fs = org.apache.hadoop.fs.FileSystem.get(sc.hadoopConfiguration)
+
+val fullPathUri = java.net.URI.create("root://eospublic.cern.ch/")
+val fs = org.apache.hadoop.fs.FileSystem.get(fullPathUri,sc.hadoopConfiguration).asInstanceOf[ch.cern.eos.XRootDFileSystem]
+
+val dirListing = fs.listFiles(new org.apache.hadoop.fs.Path("root://eospublic.cern.ch/eos/root-eos/benchmark/CMSOpenDataDimuon"), false)
+
+import scala.collection.mutable.ListBuffer
+val rootFiles = new ListBuffer[String]()
+
+while (dirListing.hasNext) {
+  val filePath = dirListing.next.getPath.toString
+  if (filePath matches("^.+.root$")) {
+    rootFiles += filePath
+  }
+}
+
+
+val df=spark.read.format("root").option("tree", "Events").load(rootFiles:_*)
+
+df.printSchema()
+```
+---
 PySpark list files in a directory
 ```
 fs = sc._jvm.org.apache.hadoop.fs.FileSystem.get(sc._jsc.hadoopConfiguration())
