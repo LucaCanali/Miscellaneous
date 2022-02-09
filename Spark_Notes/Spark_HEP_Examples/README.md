@@ -3,8 +3,9 @@ In this page you can find links and examples related to using Spark for reading 
 
 --- 
 ### Dimuon mass spectrum and histogram calculation using CERN opendata
-  * Jupyter notebook [Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
-  * Jupyter notebook [Dimuon mass spectrum and histogram using Array of Struct](Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+  * [Dimuon mass spectrum and histogram](Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb) notebook (small scale)
+  * [Dimuon mass spectrum and histogram at SCALE](Dimuon_mass_spectrum_histogram_Spark_mapInArrow_SCALE.ipynb) notebook (200 cores and 200 GB of data)
+  * [Dimuon mass spectrum and histogram using Array of Struct](Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb) notebook. Minor variation, small scale.
 
 ### LHCb Open Data Analysis Using PySpark
  * **Jupyter notebook on GitHub at: [LHCb_OpenData_Spark.ipynb](LHCb_OpenData_Spark.ipynb)**  
@@ -14,7 +15,8 @@ In this page you can find links and examples related to using Spark for reading 
  * Example notebook using CMS opendata, spark-root and Hadoop-XRootD: [CMS_BigData_Opendata_Spark_Example1.ipynb](CMS_BigData_Opendata_Spark_Example1.ipynb)
 ---
 Relevant technology and links:
- * [spark-root](https://github.com/diana-hep/spark-root): a library to read HEP files in ROOT format into Spark DataFrames.
+ * [spark-root/laurelin](https://github.com/spark-root/laurelin) a library to read HEP files in ROOT format into Spark DataFrames.
+ * Now obsolete: [spark-root](https://github.com/diana-hep/spark-root): a library to read HEP files in ROOT format into Spark DataFrames.
  * [Spark SQL, DataFrames and Datasets Guide](https://spark.apache.org/docs/latest/sql-programming-guide.html)
  * [CERN Open Data portal](http://opendata.cern.ch/)
  * [LHCb Open Data project](https://github.com/lhcb/opendata-project)
