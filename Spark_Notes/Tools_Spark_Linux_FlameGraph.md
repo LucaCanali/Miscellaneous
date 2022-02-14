@@ -7,8 +7,8 @@ running in the JVM on Linux.
 
 ### JVM/Scala
 **Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**. Build async profiler as in the README:
- - `export JAVA_HOME=..` to a valid JDK and 
- - run `make`  
+ - downloaded latest version 
+ - or build from source with `make` (need to `export JAVA_HOME=..` to a valid JDK first) 
  
 **Example** of how to use async profiler for Spark
  
@@ -23,10 +23,11 @@ $ jps
 - Profile JVM and create the FlameGraph:
 ```
 # profile by time (regardless if process is on CPU or waiting)
-./profiler.sh -e wall -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+# with older versions of async profiler use .svg files rather than .html
+./profiler.sh -e wall -d 30 -f $PWD/flamegraph1.html <pid_of_JVM>
 
 # profile on-CPU threads, without using perf
-./profiler.sh -e itimer -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+./profiler.sh -e itimer -d 30 -f $PWD/flamegraph1.html <pid_of_JVM>
 ```
 
 - Visualize the JVM execution FlameGraph:
@@ -145,12 +146,12 @@ $ jps
 
 Profile JVM and create the flamegraph, example:
 ```
-./profiler.sh -d 30 -f $PWD/flamegraph1.svg <pid_of_JVM>
+./profiler.sh -d 30 -f $PWD/flamegraph1.html <pid_of_JVM>
 ```
 
 Visualize the on-CPU flamegraph:
 ```
-firefox flamegraph1.svg
+firefox flamegraph1.html
 ```
 
 Example of the output:   
