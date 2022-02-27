@@ -450,7 +450,7 @@ sql("select avg(slowf(id)) from range(1000)").show()
 ```
 
 
-Example with pandas_ud 
+Example with pandas_udf
 ```python
 from pyspark.sql.functions import pandas_udf
 
@@ -469,7 +469,41 @@ start = time.time()
 res = spark.sql("select test_pandas(id) from range(10000)").collect()
 end = time.time()
 print(end - start)
+
+# syntax with type hint
+@pandas_udf("float")
+def product(a: pd.Series, b) -> pd.Series:
+  val = a * b
+  return val
+
+spark.udf.register("product", product)
+
+
 ```
+---
+- How to use a Scala UDF in Python:
+- On the Python side:
+  ```
+  # Scala UDF
+  # Computes the dimuon invarian mass
+  
+  from pyspark.sql.types import FloatType
+  spark.udf.registerJavaFunction("product", "ch.cern.udf.product", FloatType())
+  
+  df.selectExpr("product(a,b)")
+  ```
+- Scala UDF
+  ```
+  package ch.cern.udf
+  import org.apache.spark.sql.api.java._
+  class DimuonMass extends UDF2[Float, Float, Float] {
+    def call(a: Float, b: Float): Float = {
+      val ret = a * b
+      E
+    }
+  }  
+  ```
+- Build the Scala UDF and add the jar as a Spark config `.config("spark.jars", "path_tojar")`
 
 ---
 - Change Garbage Collector algorithm
@@ -493,28 +527,41 @@ Example for the logging level of the Scala REPL:
 `log4j.logger.org.apache.spark.repl.Main=INFO`
 
 ---
-- Caching dataframes using off-heap memory
-```
-bin/spark-shell --master local[*] --driver-memory 64g --conf spark.memory.offHeap.enabled=true --conf spark.memory.offHeap.size=64g --jars ../spark-measure_2.11-0.11-SNAPSHOT.jar
-val df = sql("select * from range(1000) cross join range(10000)")
-df.persist(org.apache.spark.storage.StorageLevel.OFF_HEAP)
-```
+- Caching dataframes 
+- caching is lazy, so you need to trigger an action, as in `df.cache.count`
+- By default caching of Spark dataframes uses persist with level MEMORY_AND_DISK.
+- Note this is different for rdd, caching on rdd uses by default MEMORY_ONLY
+- Scala:
+  ```
+  df.persist(org.apache.spark.storage.StorageLevel.
+  DISK_ONLY     MEMORY_AND_DISK     MEMORY_AND_DISK_SER     MEMORY_ONLY     MEMORY_ONLY_SER     
+  DISK_ONLY_2   MEMORY_AND_DISK_2   MEMORY_AND_DISK_SER_2   MEMORY_ONLY_2   MEMORY_ONLY_SER_2   OFF_HEAP)
+    ```
+- Python:
+  ```
+  from pyspark import storagelevel
+  df_events.persist(storagelevel.StorageLevel.MEMORY_ONLY) # or any of the other available levels
+  ```
+- When using OFF_HEAP for caching, you need additional configuration paramters as in:
+  ```
+  bin/spark-shell --master local[*] --driver-memory 64g --conf spark.memory.offHeap.enabled=true --conf spark.memory.offHeap.size=64g --jars ../spark-measure_2.11-0.11-SNAPSHOT.jar
+  val df = sql("select * from range(1000) cross join range(10000)")
+  df.persist(org.apache.spark.storage.StorageLevel.OFF_HEAP)
+  ```
 ---
-- Other options for caching dataframes
-```
-df.persist(org.apache.spark.storage.StorageLevel.
-DISK_ONLY     MEMORY_AND_DISK     MEMORY_AND_DISK_SER     MEMORY_ONLY     MEMORY_ONLY_SER     
-DISK_ONLY_2   MEMORY_AND_DISK_2   MEMORY_AND_DISK_SER_2   MEMORY_ONLY_2   MEMORY_ONLY_SER_2   OFF_HEAP)
-```
-
 ---
 - Spark-root, read high energy physics data in ROOT format into Spark dataframes
   - this is now not maintained, see https://github.com/spark-root/laurelin  
 ```
-bin/spark-shell --packages org.diana-hep:spark-root_2.11:0.1.16
+in/spark-shell --master local[*] --packages edu.vanderbilt.accre:laurelin:1.1.1 --driver-memory 16g
 
-val df = spark.read.format("org.dianahep.sparkroot").load("<path>/myrootfile.root")
-val df = spark.read.format("org.dianahep.sparkroot.experimental").load("<path>/myrootfile.root")
+// input root file
+// download from https://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
+val df=spark.read.format("root").option("tree", "Events").load("/home/luca/DoubleMuParked/Run2012BC_DoubleMuParked_Muons.root")
+
+
+// compact to 1 file
+df.coalesce(1).write.mode("overwrite").parquet("/home/luca/DoubleMuParked/Run2012BC_DoubleMuParked_Muons.parquet")
 ```
 
 ---
