@@ -947,7 +947,7 @@ with exploded_data as (
 select id, collect_list(val) from exploded_data where val > 38 group by id
 """).show(10,False)
 
-# Example of array functinos, aggregate (higher orger function) and cardinality
+# Example of array functions, aggregate (higher orger function) and cardinality
 
 # - aggregate(expr, start, merge, finish) - Applies a binary operator to an initial state and all elements in the array, 
 #   and reduces this to a single state. The final state is converted into the final result by applying a finish function.
