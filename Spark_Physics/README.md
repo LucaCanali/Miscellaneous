@@ -30,9 +30,9 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
       
 ### Notebooks 
 Multiple notebook solutions are provided, to illustrate different approaches with Apache Spark.  
-Notes on the exeution environment:
+Notes on the execution environment:
  - The notebooks use the dataset with 61 million events (Except the SCALE test that uses 6.5 billion events)
- - Spark version: Spark 3.2.1 (except the mapInArrow example that uses 3.3.0-SNAPSHOT)
+ - Spark version: Spark 3.2.1 (except the mapInArrow examples that use Spark 3.3.0-SNAPSHOT)
  - The Apache ORC format is used to profit from vectorized read for complex types in Spark 3.2.1
  - The machine used for testing has 4 physical CPU cores
 
