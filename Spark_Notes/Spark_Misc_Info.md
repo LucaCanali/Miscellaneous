@@ -668,6 +668,13 @@ https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md
 df.coalesce(4).write.mode(org.apache.spark.sql.SaveMode.Overwrite).parquet("..PATH..")
 
 ---
+Spark 3.3.0 hidden metadata columns for Parquet reader
+```
+val df=spark.read.parquet("/tmp/testparquet1")
+
+df.select("_metadata.file_path", "_metadata.file_name","_metadata.file_size", "_metadata.file_modification_time").show(2,false)
+```
+---
 - Repartition / Compact Parquet tables
 
 Parquet table repartition is an operation that you may want to use in the case you ended up with
