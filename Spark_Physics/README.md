@@ -26,9 +26,9 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
     - **6.5 billion events** (200 GB)
       - original files, in ROOT format root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon
       - dataset converted to **Parquet**: [CMSOpenDataDimuon_large.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet)
-          - download with `!wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
+          - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
       - dataset converted to **ORC**: [CMSOpenDataDimuon_large.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc)
-        - download with `!wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/`
+        - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/`
   
       
 ### Notebooks 
@@ -71,9 +71,9 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
   - Datasets you can download and use for this analysis:
   - 53 million events (16 GB), original files in ROOT format: root://eospublic.cern.ch//eos/root-eos/benchmark/Run2012B_SingleMu.root
   - **53 million events** (16 GB), converted to Parquet: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
-    - download with `!wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet/` 
+    - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet/` 
   - **53 million events** (16 GB), converted to ORC: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.orc)
-    - download with `!wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc/` 
+    - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc/` 
   - **7 million events** (2 GB) ORC format [Run2012B_SingleMu_sample.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc)  
   
 ### Notebooks 
