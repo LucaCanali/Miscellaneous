@@ -23,7 +23,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
       - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
       - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet/)
       - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc/)
-    - **6.5 billion events** (200 GB)
+    - **6.5 billion events** (200 GB, this is the 2GB dataset repeast 105 times)
       - original files, in ROOT format root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon
       - dataset converted to **Parquet**: [CMSOpenDataDimuon_large.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet)
           - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
@@ -117,7 +117,7 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
 ## Notes on reading and converting data stored in ROOT format
   - If you need to convert data in ROOT format to Apache Parquet or ORC:
      - You can use Spark and the Laurelin library, as detailed in [this note on converting from ROOT format](Spark_Root_data_preparation.md)
-     - You can use Python toolkits, notably uproot and awkward arrays, as [in this example of using uproot] 
+     - You can use Python toolkits, notably uproot and awkward arrays, as [in this example of using uproot](Uproot_example.md)
   - If you need to access data shared via the XRootD protocol, as it is the 
   case when reading from URLs like `root://eospublic.cern.ch/..`
     - You can use Apache Spark with the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
