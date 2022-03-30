@@ -4,6 +4,13 @@ High Energy Physics (HEP, and also Particle Physics) experiments at the LHC are 
 This collects a few simple examples of how Apache Spark can be used in the domain of HEP data analysis.    
 See also the blog post [Can High Energy Physics Analysis Profit from Apache Spark APIs?](https://db-blog.web.cern.ch/node/186)  
 
+Contents:
+ 1. [Dimuon mass spectrum analysis](#1-dimuon-mass-spectrum-analysis)
+ 2. [HEP analysis benchmark](#2-hep-analysis-benchmark)
+ 3. [ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)
+ 4. [LHCb matter antimatter analysis](#4-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)
+ - [Notes on reading and converting from ROOT format to Parquet and ORC](#notes-on-reading-and-converting-from-root-format-to-parquet-and-orc)
+ - [Physics references](#physics-references)
 ---
 ## 1. Dimuon mass spectrum analysis
   
@@ -26,9 +33,9 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
     - **6.5 billion events** (200 GB, this is the 2GB dataset repeast 105 times)
       - original files, in ROOT format root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon
       - dataset converted to **Parquet**: [CMSOpenDataDimuon_large.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet)
-          - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
+          - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
       - dataset converted to **ORC**: [CMSOpenDataDimuon_large.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc)
-        - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/`
+        - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/`
   
       
 ### Notebooks 
@@ -71,9 +78,9 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
   - Datasets you can download and use for this analysis:
   - 53 million events (16 GB), original files in ROOT format: root://eospublic.cern.ch//eos/root-eos/benchmark/Run2012B_SingleMu.root
   - **53 million events** (16 GB), converted to Parquet: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
-    - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet/` 
+    - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet/` 
   - **53 million events** (16 GB), converted to ORC: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.orc)
-    - download with `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc/` 
+    - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc/` 
   - **7 million events** (2 GB) ORC format [Run2012B_SingleMu_sample.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc)  
   
 ### Notebooks 
@@ -90,8 +97,30 @@ The notebooks use the dataset with 53 million events in Apache ORC format (to pr
 | [**Benchmark task 8**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q8.ipynb)                                                                                                                                                                                                                                           | This combines Spark DataFarme API for filtering and Scala UDFs for processing. Link to [the Scala UDF code](HEP_benchmark/scalaUDF/src/main/scala/ch/cern/udf/HEPBenchmarkQ8.scala)                                                     |
 
 ---
-## 3. LHCb outreach-style analysis
-This notebook is an example of how to use Spark to perform a simple analysis using high energy physics data from a LHC experiment.
+## 3. ATLAS Higgs boson analysis - outreach-style
+This is an example analysis of the Higgs boson detection via the decay channel H &rarr; ZZ* &rarr; 4l
+From the decay products measured at the ATLAS experiment and provided as open data, you will be able to produce a histogram,
+and from there you can infer the invariant mass of the Higgs boson.
+It is based on the original work at [ATLAS outreach notebooks](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/tree/master/13-TeV-examples/uproot_python)  
+Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.sciencedirect.com/science/article/pii/S037026931200857X) (mostly Section 4 and 4.1) 
+
+### Data
+  - Data is from the [ATLAS Open Datasets](https://atlas.cern/resources/opendata) via the [CERN Open Data Portal](https://opendata.cern.ch/)  
+  - The original data in ROOT format can be downloaded from: 
+    - [ATLAS open data events selected with at least four leptons (electron or muon)](https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep.zip)
+  - The notebooks presented here use datasets in Apache Parquet format. 
+    - Download from: [ATLAS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata)
+    - download all files using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata/`
+    - Note: it is a small dataset (200 MB), this analysis is mostly to show the use of Spark API, rather than its performance and scalability.
+
+### Notebooks
+- **[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50">ATLAS opendata Higgs H-ZZ*-4l basic analysis notebook](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic.ipynb)**
+- **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50">Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic.ipynb)**
+- **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on CERN SWAN (requires CERN SSO credentials)](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic.ipynb)**
+
+---
+## 4. LHCb matter antimatter asymmetries analysis - outreach-style
+This notebook provides an example of how to use Spark to perform a simple analysis using high energy physics data from a LHC experiment.
 **Credits:**
 * The original text of this notebook, including all exercises, analysis, explanations and data have been developed by the 
 LHCb collaboration and are authored and shared by the LHCb collaboration in their opendata and outreach efforts. See links:
@@ -102,19 +131,20 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
 ### Data
   - The notebook presented here uses datasets in Apache Parquet format:
     - (1.2 GB) download from: [LHCb_opendata_notebook_data](https://sparkdltrigger.web.cern.ch/sparkdltrigger/LHCb_opendata) 
-- The original work uses LHCb opendata made available via the CERN opendata portal:
+    - download all files using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/LHCb_opendata/`
+  - The original work uses LHCb opendata made available via the CERN opendata portal:
   [PhaseSpaceSimulation.root](http://opendata.cern.ch/eos/opendata/lhcb/AntimatterMatters2017/data/PhaseSpaceSimulation.root),
   [B2HHH_MagnetDown.root](http://opendata.cern.ch/eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetDown.root)
   [B2HHH_MagnetUp.root](http://opendata.cern.ch/eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root)
   
 ### Notebooks
-   - **[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50">LHCb opendata analysis notebook](LHCb_opendata/LHCb_OpenData_Spark.ipynb)**
-   - **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50">Run LHCb opendata analysis notebook on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/LHCb_opendata/LHCb_OpenData_Spark.ipynb)**
-   - **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run LHCb opendata analysis notebook in CERN SWAN (requires CERN SSO credentials](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/LHCb_opendata/LHCb_OpenData_Spark_CERNSWAN_Version.ipynb)**
+- **[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50">LHCb opendata analysis notebook](LHCb_opendata/LHCb_OpenData_Spark.ipynb)**
+- **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50">Run LHCb opendata analysis notebook on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/LHCb_opendata/LHCb_OpenData_Spark.ipynb)**
+- **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run LHCb opendata analysis notebook on CERN SWAN (requires CERN SSO credentials)](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/LHCb_opendata/LHCb_OpenData_Spark_CERNSWAN_Version.ipynb)**
+
 ---
 
-
-## Notes on reading and converting data stored in ROOT format
+## Notes on reading and converting from ROOT format to Parquet and ORC
   - If you need to convert data in ROOT format to Apache Parquet or ORC:
      - You can use Spark and the Laurelin library, as detailed in [this note on converting from ROOT format](Spark_Root_data_preparation.md)
      - You can use Python toolkits, notably uproot and awkward arrays, as [in this example of using uproot](Uproot_example.md)
@@ -124,7 +154,7 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
     - You can use the toolset from [XRootD project](https://xrootd.slac.stanford.edu/)
       - CLI example: `xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .`
 
-## Physics
+## Physics references
 A few links with additional details on the terms and formulas used:  
   - https://github.com/iris-hep/adl-benchmarks-index/blob/master/reference.md
   - http://edu.itp.phys.ethz.ch/hs10/ppp1/2010_11_02.pdf
