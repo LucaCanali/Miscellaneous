@@ -4,13 +4,13 @@ High Energy Physics (HEP, and also Particle Physics) experiments at the LHC are 
 This collects a few simple examples of how Apache Spark can be used in the domain of HEP data analysis.    
 See also the blog post [Can High Energy Physics Analysis Profit from Apache Spark APIs?](https://db-blog.web.cern.ch/node/186)  
 
-Contents:
- 1. [Dimuon mass spectrum analysis](#1-dimuon-mass-spectrum-analysis)
- 2. [HEP analysis benchmark](#2-hep-analysis-benchmark)
- 3. [ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)
- 4. [LHCb matter antimatter analysis](#4-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)
- - [Notes on reading and converting from ROOT format to Parquet and ORC](#notes-on-reading-and-converting-from-root-format-to-parquet-and-orc)
- - [Physics references](#physics-references)
+### Contents:
+ 1. **[Dimuon mass spectrum analysis](#1-dimuon-mass-spectrum-analysis)**
+ 2. **[HEP analysis benchmark](#2-hep-analysis-benchmark)**
+ 3. **[ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)**
+ 4. **[LHCb matter antimatter analysis](#4-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)**
+ - **[How to convert from ROOT format to Apache Parquet and ORC](#notes-on-reading-and-converting-from-root-format-to-parquet-and-orc)**
+ - **[Physics references](#physics-references)**
 ---
 ## 1. Dimuon mass spectrum analysis
   
