@@ -1,0 +1,127 @@
+##
+## This details data preparation steps for the ATLAS analysis H-ZZ*-4lep analysis
+## See: https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Physics
+##
+
+1.
+
+The original data is in ROOT format and available at https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep.zip
+
+The analysis notebook here use the following files:
+
+samples = {
+    
+    'Data': [
+        tuple_path + 'Data/data_A.4lep.root',
+        tuple_path + 'Data/data_B.4lep.root',
+        tuple_path + 'Data/data_C.4lep.root',
+        tuple_path + 'Data/data_D.4lep.root'
+    ],
+    
+    r'Background $Z,t\bar{t}$': [
+        tuple_path + 'MC/mc_361106.Zee.4lep.root',
+        tuple_path + 'MC/mc_361107.Zmumu.4lep.root',
+        tuple_path + 'MC/mc_410000.ttbar_lep.4lep.root'
+    ],
+    
+    r'Background $ZZ^*$': [
+        tuple_path + 'MC/mc_363490.llll.4lep.root'
+    ],
+    
+    r'Signal ($m_H$ = 125 GeV)': [
+        tuple_path + 'MC/mc_345060.ggH125_ZZ4lep.4lep.root',
+        tuple_path + 'MC/mc_344235.VBFH125_ZZ4lep.4lep.root',
+        tuple_path + 'MC/mc_341964.WH125_ZZ4lep.4lep.root',
+        tuple_path + 'MC/mc_341947.ZH125_ZZ4lep.4lep.root'
+    ]
+    
+}
+
+
+2. ROOT data can be transformed into Apache Parquet format using uproot.
+
+dependencies: 
+pip install uproot
+pip install awkwrd
+
+From Python:
+
+import uproot
+import awkward as ak
+
+input_name = "Data/data_A.4lep.root"
+output_name = "Data/data_A.4lep.root.parquet"
+
+f = uproot.open(input_name)
+
+ttree = f[f.keys()[0].split(';')[0]]
+
+# use awkward arrays to load data and save in Apache Parquet format
+
+ak.to_parquet(ttree.arrays(), output_name)
+
+
+3. Additional data preparation for Monte Carlo files to add weight information
+
+// This adds the values of xsec, red_eff and sumw to the Monte Carlo files
+// Data from https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/blob/master/13-TeV-examples/uproot_python/infofile.py
+// See also: https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/blob/master/13-TeV-examples/uproot_python/CoffeaHZZAnalysis.ipynb
+//
+
+
+// Signal_4lep
+
+val df1 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/signal/mc_345060.ggH125_ZZ4lep.4lep.root.parquet")
+
+val df1_annotated = df1.withColumn("xsec", lit(0.0060239)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(27881776.6536))
+
+val df2 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/signal/mc_344235.VBFH125_ZZ4lep.4lep.root.parquet")
+
+val df2_annotated = df2.withColumn("xsec", lit(0.0004633012)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(3680490.83243))
+
+
+val df3 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/signal/mc_341964.WH125_ZZ4lep.4lep.root.parquet")
+
+val df3_annotated = df3.withColumn("xsec", lit(0.0003769)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(149400.0))
+
+
+val df4 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/signal/mc_341947.ZH125_ZZ4lep.4lep.root.parquet")
+
+val df4_annotated = df4.withColumn("xsec", lit(0.0000021424784)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(150000.0))
+
+
+val df_all = df1_annotated.unionAll(df2_annotated).unionAll(df3_annotated).unionAll(df4_annotated)
+
+df_all.coalesce(1).write.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/ATLAS_Higgs_opendata/MC_signal_4lep_annotated.parquet")
+
+//
+// background_zz
+//
+
+val df = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/background_zz/mc_363490.llll.4lep.root.parquet")
+
+val df_annotated = df.withColumn("xsec", lit(1.2578)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(7538705.8077))
+
+df_annotated.coalesce(1).write.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/ATLAS_Higgs_opendata/MC_background_zz_4lep_annotated.parquet")
+
+//
+// background_ztt
+//
+
+val df1 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/background_ztt/mc_361106.Zee.4lep.root.parquet")
+
+val df1_annotated = df1.withColumn("xsec", lit(1950.5295)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(150277594200L))
+
+val df2 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/background_ztt/mc_361107.Zmumu.4lep.root.parquet")
+
+val df2_annotated = df2.withColumn("xsec", lit(1950.6321)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(147334691090L))
+
+val df3 = spark.read.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/4lep/MC/background_ztt/mc_410000.ttbar_lep.4lep.root.parquet")
+
+val df3_annotated = df3.withColumn("xsec", lit(452.693559)).withColumn("red_eff",lit(1.0)).withColumn("sumw", lit(49386600))
+
+val df_all = df1_annotated.unionAll(df2_annotated).unionAll(df3_annotated)
+
+df_all.coalesce(1).write.parquet("/home/luca/Spark/Spark_Physics/H_ZZ_llll/ATLAS_Higgs_opendata/MC_background_ztt_4lep_annotated.parquet")
+
+
