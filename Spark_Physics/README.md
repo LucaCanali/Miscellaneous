@@ -1,7 +1,7 @@
 # Apache Spark for High Energy Physics
   
-High Energy Physics (HEP, and also Particle Physics) experiments at the LHC are very data-intensive operations.    
-This collects a few simple examples of how Apache Spark can be used in the domain of HEP data analysis.    
+This collects a few simple examples of how Apache Spark can be used in the domain of High Energy Physics data analysis.  
+Most of the examples are just for education purposes, use a small subset of data and can be run on laptop-sized computing resources.  
 See also the blog post [Can High Energy Physics Analysis Profit from Apache Spark APIs?](https://db-blog.web.cern.ch/node/186)  
 
 ### Contents:
@@ -102,9 +102,10 @@ The notebooks use the dataset with 53 million events in Apache ORC format (to pr
 This is an example analysis of the Higgs boson detection via the decay channel H &rarr; ZZ* &rarr; 4l
 From the decay products measured at the ATLAS experiment and provided as open data, you will be able to produce a few histograms,
 comparing experimental data and Monte Carlo (simulation) data. From there you can infer the invariant mass of the Higgs boson.  
+Disclaimer: this is for educational purposes only, it is not the code nor the data of the official Higgs boson discovery paper.  
 It is based on the original work on [ATLAS outreach notebooks](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/tree/master/13-TeV-examples/uproot_python)
-and the derived [work at this repo](https://github.com/gordonwatts/pyhep-2021-SX-OpenDataDemo)    
-Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.sciencedirect.com/science/article/pii/S037026931200857X) (mostly Section 4 and 4.1) 
+and the derived [work at this repo](https://github.com/gordonwatts/pyhep-2021-SX-OpenDataDemo)   
+Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.sciencedirect.com/science/article/pii/S037026931200857X) (mostly Section 4 and 4.1)   
 
 ### Data
   - The original data in ROOT format is from the [ATLAS Open Datasets](http://opendata.atlas.cern/release/2020/documentation/)
