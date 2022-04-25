@@ -1,20 +1,22 @@
-# An example of how to convert ROOT files into Apache Parquet using uproot
+## An example of how to convert ROOT files into Apache Parquet using uproot
 
-# download root files, for example
-# get xrootd tools:
-# https://xrootd.slac.stanford.edu/
-#
-# download/copy locally. example:
-xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .
+- Prerequisite: download root the files using a file copy system
+- For files shared via the XRootD protocol (i.e. URLs like `root://...`)
+  - get xrootd tools from https://xrootd.slac.stanford.edu/
+  - download/copy locally, for example:
+     `xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .`
 
-####
-use uproot and awkward array to convert it
+## Use uproot and awkward array to read and convert files in ROOT format
 
-# this requires
-# pip install uproot
-# pip install awkward
+- Install 
+```
+pip install uproot
+pip install awkward
+```
 
-------
+- From Python:
+
+```
 import uproot
 import awkward as ak
 
@@ -33,3 +35,4 @@ ttree = f[f.keys()[0].split(';')[0]]
 # use awkward arrays to load data and save in Apache Parquet format
 
 ak.to_parquet(ttree.arrays(), output_name)
+```

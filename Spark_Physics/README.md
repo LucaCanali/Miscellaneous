@@ -19,15 +19,16 @@ The implementations proposed here using Apache Spark APIs are a direct "Spark tr
 of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__NanoAODDimuonAnalysis_8py.html)
 
 ### Data
-  - The original data, converted to [nanoaod format](http://cds.cern.ch/record/2752849/files/Fulltext.pdf),
-    is shared in [ROOT format](https://root.cern/about/). See [Notes](#Notes) on how to access it.
   - These examples use CMS open data from 2012, made available via the CERN opendata portal:
       [DOI: 10.7483/OPENDATA.CMS.YLIC.86ZZ](http://opendata.cern.ch/record/6004)
       and [DOI: 10.7483/OPENDATA.CMS.M5AD.Y3V3)](http://opendata.cern.ch/record/6030) 
-  - Data is also provided (for this work) in Apache Parquet and Apache ORC format
+    - The original data, converted to [nanoaod format](http://cds.cern.ch/record/2752849/files/Fulltext.pdf),
+      is shared in [ROOT format](https://root.cern/about/). 
+  - Data is provided (converted for this work) in Apache Parquet and Apache ORC formats
   - You can download the following datasets:
     - **61 million events** (2GB)
       - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
+        - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
       - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet/)
       - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc/)
     - **6.5 billion events** (200 GB, this is the 2GB dataset repeast 105 times)
@@ -36,7 +37,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
           - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
       - dataset converted to **ORC**: [CMSOpenDataDimuon_large.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc)
         - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/`
-  
+
       
 ### Notebooks 
 Multiple notebook solutions are provided, to illustrate different approaches with Apache Spark.  
@@ -78,6 +79,7 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
   - Data is also provided in Apache Parquet and Apache ORC format
   - Datasets you can download and use for this analysis:
   - 53 million events (16 GB), original files in ROOT format: root://eospublic.cern.ch//eos/root-eos/benchmark/Run2012B_SingleMu.root
+    - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
   - **53 million events** (16 GB), converted to Parquet: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
     - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet/` 
   - **53 million events** (16 GB), converted to ORC: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.orc)
@@ -110,10 +112,10 @@ Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.science
 ### Data
   - The original data in ROOT format is from the [ATLAS Open Datasets](http://opendata.atlas.cern/release/2020/documentation/)
     - direct link: [ATLAS open data events selected with at least four leptons (electron or muon)](https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep.zip)
-    - Note: it is a small dataset (200 MB), this analysis is mostly to show the use of Spark API, rather than its performance and scalability.
-  - The notebooks presented here use datasets in Apache Parquet format. 
+  - The notebooks presented here use datasets from the original open data events converted to Apache Parquet format. 
     - Download from: [ATLAS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata)
       - download all files (200 MB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata/`
+      - note: it is a small dataset, this analysis is mostly to show the use of Spark API, rather than its performance and scalability.
 
 ### Notebooks
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                                  | Short description                                                                                                                                                                              |
@@ -129,7 +131,7 @@ Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.science
 This notebook provides an example of how to use Spark to perform a simple analysis using high energy physics data from a LHC experiment.
 **Credits:**
 * The original text of this notebook, including all exercises, analysis, explanations and data have been developed by the 
-LHCb collaboration and are authored and shared by the LHCb collaboration in their opendata and outreach efforts. See links:
+LHCb collaboration and are authored and shared by the LHCb collaboration in their open data and outreach efforts. See links:
     * https://github.com/lhcb/opendata-project/blob/master/LHCb_Open_Data_Project.ipynb
     * "Undergraduate Laboratory Experiment: Measuring Matter Antimatter Asymmetries at the Large Hadron Collide" https://cds.cern.ch/record/1994172?ln=en
     * http://www.hep.manchester.ac.uk/u/parkes/LHCbAntimatterProjectWeb/LHCb_Matter_Antimatter_Asymmetries/Homepage.html
@@ -138,7 +140,7 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
   - The notebook presented here uses datasets in Apache Parquet format:
     - (1.2 GB) download from: [LHCb_opendata_notebook_data](https://sparkdltrigger.web.cern.ch/sparkdltrigger/LHCb_opendata) 
     - download all files using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/LHCb_opendata/`
-  - The original work uses LHCb opendata made available via the CERN opendata portal:
+  - The original work uses LHCb open data made available via the CERN opendata portal:
   [PhaseSpaceSimulation.root](http://opendata.cern.ch/eos/opendata/lhcb/AntimatterMatters2017/data/PhaseSpaceSimulation.root),
   [B2HHH_MagnetDown.root](http://opendata.cern.ch/eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetDown.root)
   [B2HHH_MagnetUp.root](http://opendata.cern.ch/eos/opendata/lhcb/AntimatterMatters2017/data/B2HHH_MagnetUp.root)
@@ -152,12 +154,12 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
 
 ---
 
-## Notes on reading and converting from ROOT format to Parquet and ORC
-  - If you need to convert data in ROOT format to Apache Parquet or ORC:
+## Notes on reading and converting data from ROOT format
+  - **How to convert from ROOT format to Apache Parquet or ORC:**
      - You can use Spark and the Laurelin library, as detailed in [this note on converting from ROOT format](Spark_Root_data_preparation.md)
      - You can use Python toolkits, notably uproot and awkward arrays, as [in this example of using uproot](Uproot_example.md)
-  - If you need to access data shared via the XRootD protocol, as it is the 
-  case when reading from URLs like `root://eospublic.cern.ch/..`
+  - **How to read files via the XRootD protocol**
+    - This is relevant for CERN opendata, typically shared at URLs like `root://eospublic.cern.ch/..`
     - You can use Apache Spark with the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
     - You can use the toolset from [XRootD project](https://xrootd.slac.stanford.edu/)
       - CLI example: `xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .`
