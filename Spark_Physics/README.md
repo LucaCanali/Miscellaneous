@@ -29,7 +29,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
   - You can download the following datasets:
     - **61 million events** (2GB)
       - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
-        - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
+        - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
       - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet/)
       - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc/)
     - **6.5 billion events** (200 GB, this is the 2GB dataset repeast 105 times)
@@ -80,7 +80,7 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
   - Data has been converted and made available for this work in snappy-compressed Apache Parquet and Apache ORC formats
   - Datasets you can download and use for this analysis:
   - 53 million events (16 GB), original files in ROOT format: root://eospublic.cern.ch//eos/root-eos/benchmark/Run2012B_SingleMu.root
-    - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
+    - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
   - **53 million events** (16 GB), converted to Parquet: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
     - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet/` 
   - **53 million events** (16 GB), converted to ORC: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.orc)
@@ -137,7 +137,7 @@ Reference: link to the [original article with CMS Higgs boson discovery](https:/
 ### Data
 - The original data in ROOT format is from the CMS open data
    - download from [this folder](root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod)
-   - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
+   - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
   - The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format.
     - Download from: [CMS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata)
       - download all files (12 GB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata/`
