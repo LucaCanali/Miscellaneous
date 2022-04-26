@@ -1,6 +1,6 @@
-## An example of how to convert ROOT files into Apache Parquet using uproot
+## An example of how to convert ROOT files into Apache Parquet using the Pytho9n package uproot
 
-- Prerequisite: download root the files using a file copy system
+- Prerequisite: download/copy the root the files to be converted
 - For files shared via the XRootD protocol (i.e. URLs like `root://...`)
   - get xrootd tools from https://xrootd.slac.stanford.edu/
   - download/copy locally, for example:
@@ -29,10 +29,28 @@ f = uproot.open(input_name)
 #f.classnames()
 f.keys()
 
-#ttree = f["PhaseSpaceTree"]
+#ttree = f["Events"]
 ttree = f[f.keys()[0].split(';')[0]]
 
 # use awkward arrays to load data and save in Apache Parquet format
 
 ak.to_parquet(ttree.arrays(), output_name)
+```
+
+### How to convert multiple files in a directory
+
+# convert all root files in a directory
+
+```
+import uproot
+import awkward as ak
+import glob
+
+path = "./"
+root_files = glob.glob(path + "*.root")
+
+for name in root_files:
+f = uproot.open(name)
+ttree = f[f.keys()[0].split(';')[0]]
+ak.to_parquet(ttree.arrays(), path + name + ".parquet")
 ```

@@ -8,7 +8,8 @@ See also the blog post [Can High Energy Physics Analysis Profit from Apache Spar
  1. **[Dimuon mass spectrum analysis](#1-dimuon-mass-spectrum-analysis)**
  2. **[HEP analysis benchmark](#2-hep-analysis-benchmark)**
  3. **[ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)**
- 4. **[LHCb matter antimatter analysis](#4-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)**
+ 4. **[CMS Higgs analysis](#4-cms-higgs-boson-analysis---outreach-style)**
+ 5. **[LHCb matter antimatter analysis](#5-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)**
  - **[How to convert from ROOT format to Apache Parquet and ORC](#notes-on-reading-and-converting-from-root-format-to-parquet-and-orc)**
  - **[Physics references](#physics-references)**
 ---
@@ -24,7 +25,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
       and [DOI: 10.7483/OPENDATA.CMS.M5AD.Y3V3)](http://opendata.cern.ch/record/6030) 
     - The original data, converted to [nanoaod format](http://cds.cern.ch/record/2752849/files/Fulltext.pdf),
       is shared in [ROOT format](https://root.cern/about/). 
-  - Data is provided (converted for this work) in Apache Parquet and Apache ORC formats
+  - Data has been converted and made available for this work in snappy-compressed Apache Parquet and Apache ORC formats
   - You can download the following datasets:
     - **61 million events** (2GB)
       - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
@@ -76,7 +77,7 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
   - This uses CMS open data from 2012, made available via the CERN opendata portal:
     [ DOI:10.7483/OPENDATA.CMS.IYVQ.1J0W](http://opendata.cern.ch/record/6021)
   - The original data, converted to [nanoaod format](http://cds.cern.ch/record/2752849/files/Fulltext.pdf), is shared in [ROOT format](https://root.cern/about/)
-  - Data is also provided in Apache Parquet and Apache ORC format
+  - Data has been converted and made available for this work in snappy-compressed Apache Parquet and Apache ORC formats
   - Datasets you can download and use for this analysis:
   - 53 million events (16 GB), original files in ROOT format: root://eospublic.cern.ch//eos/root-eos/benchmark/Run2012B_SingleMu.root
     - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
@@ -106,13 +107,13 @@ From the decay products measured at the ATLAS experiment and provided as open da
 comparing experimental data and Monte Carlo (simulation) data. From there you can infer the invariant mass of the Higgs boson.  
 Disclaimer: this is for educational purposes only, it is not the code nor the data of the official Higgs boson discovery paper.  
 It is based on the original work on [ATLAS outreach notebooks](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/tree/master/13-TeV-examples/uproot_python)
-and the derived [work at this repo](https://github.com/gordonwatts/pyhep-2021-SX-OpenDataDemo)   
+and derived [work at this repo](https://github.com/gordonwatts/pyhep-2021-SX-OpenDataDemo) and [this work](https://root.cern/doc/master/df106__HiggsToFourLeptons_8py.html) 
 Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.sciencedirect.com/science/article/pii/S037026931200857X) (mostly Section 4 and 4.1)   
 
 ### Data
   - The original data in ROOT format is from the [ATLAS Open Datasets](http://opendata.atlas.cern/release/2020/documentation/)
     - direct link: [ATLAS open data events selected with at least four leptons (electron or muon)](https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep.zip)
-  - The notebooks presented here use datasets from the original open data events converted to Apache Parquet format. 
+  - The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format. 
     - Download from: [ATLAS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata)
       - download all files (200 MB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata/`
       - note: it is a small dataset, this analysis is mostly to show the use of Spark API, rather than its performance and scalability.
@@ -127,7 +128,25 @@ Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.science
 | **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on CERN SWAN](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic.ipynb)** | This notebook opens on CERN's SWAN notebook service (requires CERN SSO credentials)                                                                                                            |
 
 ---
-## 4. LHCb matter antimatter asymmetries analysis - outreach-style
+## 4. CMS Higgs boson analysis - outreach-style
+This is an example analysis of the Higgs boson detection via the decay channel H &rarr; ZZ* &rarr; 4l
+Disclaimer: this is for educational purposes only, it is not the code nor the data of the official Higgs boson discovery paper.  
+It is based on the original work on [cms opendata notebooks](https://github.com/cms-opendata-analyses/HiggsExample20112012) and this [derived work](https://root.cern/doc/master/df103__NanoAODHiggsAnalysis_8py.html)  
+Reference: link to the [original article with CMS Higgs boson discovery](https://inspirehep.net/record/1124338)
+
+### Data
+- The original data in ROOT format is from the CMS open data
+   - download from [this folder](root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod)
+   - see [Notes](#Notes) on how to access data using the XRootD protocol (`root://`) and how to read it.
+  - The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format.
+    - Download from: [CMS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata)
+      - download all files (12 GB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata/`
+
+### Notebooks
+TBC
+
+---
+## 5. LHCb matter antimatter asymmetries analysis - outreach-style
 This notebook provides an example of how to use Spark to perform a simple analysis using high energy physics data from a LHC experiment.
 **Credits:**
 * The original text of this notebook, including all exercises, analysis, explanations and data have been developed by the 
@@ -157,7 +176,7 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
 ## Notes on reading and converting data from ROOT format
   - **How to convert from ROOT format to Apache Parquet or ORC:**
      - You can use Spark and the Laurelin library, as detailed in [this note on converting from ROOT format](Spark_Root_data_preparation.md)
-     - You can use Python toolkits, notably uproot and awkward arrays, as [in this example of using uproot](Uproot_example.md)
+     - You can use Python toolkits, notably uproot and awkward arrays, as in this [example of how to use uproot](Uproot_example.md)
   - **How to read files via the XRootD protocol**
     - This is relevant for CERN opendata, typically shared at URLs like `root://eospublic.cern.ch/..`
     - You can use Apache Spark with the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
@@ -169,4 +188,4 @@ A few links with additional details on the terms and formulas used:
   - https://github.com/iris-hep/adl-benchmarks-index/blob/master/reference.md
   - http://edu.itp.phys.ethz.ch/hs10/ppp1/2010_11_02.pdf
   - https://en.wikipedia.org/wiki/Invariant_mass
-    
+  - "Facts And Mysteries In Elementary Particle Physics", by Martinus Veltman, WSPC, 2018.
