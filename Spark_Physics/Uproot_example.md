@@ -39,8 +39,6 @@ ak.to_parquet(ttree.arrays(), output_name)
 
 ### How to convert multiple files in a directory
 
-# convert all root files in a directory
-
 ```
 import uproot
 import awkward as ak
