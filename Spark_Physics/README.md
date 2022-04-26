@@ -143,10 +143,10 @@ Reference: link to the [original article with CMS Higgs boson discovery](https:/
       - download all files (12 GB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata/`
 
 ### Notebooks
-| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook | Short description                                          |
-|----------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| **[CMS opendata Higgs H-ZZ*-4l, basic with monte carlo signal](CMS_Higgs_opendata/H_ZZ_4l_analysis_basic_monte_carlo_signal.ipynb)**   | Basic analysis with Monte Carlo (simulation) data. |
-| TBC                                                                                                                                    |                                                            |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook | Short description                                                    |
+|----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| **[CMS opendata Higgs H-ZZ*-4l, basic with monte carlo signal](CMS_Higgs_opendata/H_ZZ_4l_analysis_basic_monte_carlo_signal.ipynb)**   | Basic analysis and visualization with Monte Carlo (simulation) data. |
+| TBC                                                                                                                                    |                                                                      |
 
 ---
 ## 5. LHCb matter antimatter asymmetries analysis - outreach-style
