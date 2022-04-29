@@ -478,7 +478,25 @@ def product(a: pd.Series, b) -> pd.Series:
 
 spark.udf.register("product", product)
 
+# Python pandas_udf returning a struct using pd.DataFrame
 
+from pyspark.sql.functions import pandas_udf
+import pandas as pd
+
+@pandas_udf("struct<p0x float, p1x float>")
+def z_candidates(p0x: pd.Series, p1x: pd.Series) -> pd.DataFrame:
+  ret_val = pd.concat([p0x, p1x], axis=1, join="inner").rename(columns={"_0": "p0x", "_1": "p1x"})
+  return ret_val
+
+spark.udf.register("z_candidates", z_candidates)
+
+df_4lep_test = df_4lep.selectExpr("z_candidates(P0x, P1X)")
+df_4lep_test.printSchema()
+
+root
+|-- z_candidates(P0x, P1X): struct (nullable = true)
+|    |-- p0x: float (nullable = true)
+|    |-- p1x: float (nullable = true)
 ```
 ---
 - How to use a Scala UDF in Python:
