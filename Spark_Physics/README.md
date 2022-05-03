@@ -27,12 +27,12 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
       is shared in [ROOT format](https://root.cern/about/). 
   - Data has been converted and made available for this work in snappy-compressed Apache Parquet and Apache ORC formats
   - You can download the following datasets:
-    - **61 million events** (2GB)
+    - **61 million events** (2 GB)
       - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
         - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
-      - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet/)
-      - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc/)
-    - **6.5 billion events** (200 GB, this is the 2GB dataset repeast 105 times)
+      - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet)
+      - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc)
+    - **6.5 billion events** (200 GB, this is the 2GB dataset repeated 105 times)
       - original files, in ROOT format root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon
       - dataset converted to **Parquet**: [CMSOpenDataDimuon_large.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet)
           - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
@@ -44,7 +44,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
 Multiple notebook solutions are provided, to illustrate different approaches with Apache Spark.  
 Notes on the execution environment:
  - The notebooks use the dataset with 61 million events (Except the SCALE test that uses 6.5 billion events)
- - Spark version: Spark 3.2.1 (except the mapInArrow and Parquet examples that use Spark 3.3.0-SNAPSHOT versions)
+ - Spark version: Spark 3.2.1 (except the mapInArrow and Parquet examples that use Spark 3.3 RC versions)
  - The Apache ORC format is used to profit from vectorized read for complex types in Spark 3.2.1
  - The machine used for testing has 4 physical CPU cores
 
