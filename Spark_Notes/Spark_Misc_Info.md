@@ -1247,7 +1247,7 @@ histogram_data = (
     )
 
 # convert bucket number to the corresponding dimoun mass value
-histogram_data = histogram_data.selectExpr(f"round({min_val} + (bucket - 1) * {step},2) as value", "count as N_events")
+histogram_data = histogram_data.selectExpr(f"{min_val} + (bucket - 1/2) * {step} as value", "count as N_events")
 ```
 
 Other solutions: 
@@ -1283,7 +1283,7 @@ It can be used with Spark Dataframes as a workaround as in:
 sql("select cast(id as double) from t1").rdd.map(x => x(0).asInstanceOf[Double]).histogram(3)
 
 res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
-```  
+```
 
 ---
 Spark binaryfile format (Spark 3.0)
