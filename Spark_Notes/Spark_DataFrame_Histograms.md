@@ -9,9 +9,9 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
     - [frequency histograms using the Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
     - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
   - How to generate frequency histograms with a Spark DataFrame function
-    - [Python version](#(Python-version)-Generate-histograms-with-a Spark-DataFrame-function) 
-    - [Scala version](#a)
-    - [SQL version](#b)
+    - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) 
+    - [Scala version](#scala-version-generate-histograms-with-a-spark-dataframe-function)
+    - [SQL version](#sql-version-generate-histograms-with-spark-sql)
   - [Other solutions](#Other-solutions)
     - Spark RDD histograms
     - Histogrammer
