@@ -20,16 +20,22 @@ Two connectors are available, which one should you use?
 **Server-side** (HBase region servers) configuration:   
   - When using the Apache Hbase-Spark connector there is also a server-side configuration
   - This requires additional configuration on the HBase server side, in particular one needs to have
-    a few jars in the HBase region servers CLASSPATH: 
+    a few jars in the HBase region servers CLASSPATH (for example copy it to /usr/hdp/hbase-2.3/lib: 
     - scala-library
     - hbase-spark
     - hbase-spark-protocol-shaded.
   - Build the connector from GitHub as explained below (see Spark 3.x section). In this example we use pre-built jars JAR1 and JAR2.
     ```
-    # Connector jars
-    wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-    wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+    # Download connector jars to HBase region servers $HBASE_HOME/lib
 
+    # From CERN network
+    # wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+    # wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+
+    # stopgap copy
+    wget http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+    wget http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+    
     # Scala library, match the Scala version used for building
     wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
     ```
@@ -118,14 +124,19 @@ Two connectors are available, which one should you use?
   # Customize the JARs path to your filesystem location
   # For convenience I have also uploaded the jars on a web server
 
-  JAR1=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-  JAR2=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  # From CERN network
+  #JAR1=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  #JAR2=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+
+  # stopgap copy
+  JAR1 = http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  JAR2 = http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
 
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
   --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.9
   ```
 
-- Option for **CERN users only**: 
+- Option for **CERN users**: 
   - deploy from artifactory.cern.ch (only visible from the CERN network):
   - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1`
 
