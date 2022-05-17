@@ -32,7 +32,7 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
 
 ```
 def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: int) -> "DataFrame":
-    """ This is a dataframe function to compute the count/frequecy histogram of a column
+    """ This is a dataframe function to compute the count/frequency histogram of a column
         
         Parameters
         ----------
@@ -167,7 +167,6 @@ sql("select cast(id as double) from t1").rdd.map(x => x(0).asInstanceOf[Double])
 res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
 ```
 
-- histogrammar package  
-  - Histogrammar is a package for creating histograms
+- Histogrammar is a package for creating histograms
   - See https://histogrammar.github.io
   - See example to use histogrammar with Spark at https://github.com/histogrammar/histogrammar-python#example-notebooks
