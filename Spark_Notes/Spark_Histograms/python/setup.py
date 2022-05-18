@@ -77,7 +77,7 @@ https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Spark_DataFr
 """
 
 setup(name='sparkhistogram',
-    version='0.1',
+    version='0.2',
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",
