@@ -1,6 +1,6 @@
 # How to generate histograms at scale with Apache Spark DataFrame API and with Spark SQL
 
-This details a few methods and tools to generate histograms using the Spark DataFrame API.  
+This details a few basic methods and tools to generate histograms using the Spark DataFrame API and with Spark SQL.
 Disambiguation: we refer here to computing histograms of the DataFrame data, rather than histograms of the columns statistics used by the cost based optimizer.   
 
 ## Contents
@@ -9,15 +9,17 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
     - [frequency histograms using the Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
     - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
   - How to generate frequency histograms with a Spark DataFrame function
-    - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) 
+    - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) and the sparkhistogram package 
     - [Scala version](#scala-version-generate-histograms-with-a-spark-dataframe-function)
     - [SQL version](#sql-version-generate-histograms-with-spark-sql)
   - [Other solutions](#Other-solutions)
     - Spark RDD histograms
     - Histogrammer
 
-## Techniques:
+## Notes on the techniques used:
   - The solutions discussed here are for 1-dimensional fixed-width histograms
+  - Use the package, sparkhistogram, together with PySpark for generating data histograms using the Spark DataFrame API.
+    Currently, the package contains only two functions covering some of the most common and low-complexity use cases.
   - The proposed techniques are wrappers around [width_bucket](https://spark.apache.org/docs/latest/api/sql/index.html#width_bucket)  
     - this makes them applicable to a large range of data and database systems, that implement the width_bucket function
   - The histograms are generated with DataFrame operations in Spark, this allows to run them at scale.  
@@ -30,40 +32,16 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
   
 ## (Python version) Generate histograms with a Spark DataFrame function
 
+This is an example of how to generate frequency histograms using PySpark and the helper
+funciton in the package [sparkhistogram](https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Spark_Histograms/python/sparkhistogram/histogram.py)
 ```
-def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: int) -> "DataFrame":
-    """ This is a dataframe function to compute the count/frequency histogram of a column
-        
-        Parameters
-        ----------
-        df: the dataframe with the data to compute
-        value_col: column name on which to compute the histogram
-        min: minimum value in the histogram
-        max: maximum value in the histogram
-        bins: number of histogram buckets to compute
-        
-        Output DataFrame
-        ----------------
-        bucket: the bucket number, range from 1 to bins (included)
-        value: midpoint value of the given bucket
-        count: number of values in the bucket        
-    """
-    step = (max - min) / bins
-    # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
-    df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
-    
-    histdf = (df
-              .selectExpr(f"width_bucket({value_col}, {min}, {max}, {bins}) as bucket")
-              .groupBy("bucket")
-              .count()
-              .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
-              .selectExpr("bucket", f"{min} + (bucket - 1/2) * {step} as value", # use center value of the buckets
-                          "nvl(count, 0) as count") # buckets with no values will have a count of 0
-              .orderBy("bucket")
-             )
-    return histdf
+# requires the package sparkhistogram
+! pip install sparkhistogram
 
-# Generate a DataFrame with some data for demo purposes
+# import the computeHistogram function 
+from sparkhistogram import computeHistogram
+
+# Generate a DataFrame with toy data for demo purposes
 num_events = 100
 scale = 100
 seed = 4242
@@ -78,6 +56,22 @@ hist = df.transform(computeHistogram, "random_value", -20, 90, 11)
 
 # this triggers the computation as show() is an action
 hist.show()
+
++------+-----+-----+
+|bucket|value|count|
++------+-----+-----+
+|     1|-15.0|    0|
+|     2| -5.0|    0|
+|     3|  5.0|    6|
+|     4| 15.0|   10|
+|     5| 25.0|   15|
+|     6| 35.0|   12|
+|     7| 45.0|    9|
+|     8| 55.0|    7|
+|     9| 65.0|   10|
+|    10| 75.0|   16|
+|    11| 85.0|    7|
++------+-----+-----+
 ```
 
 ## (Scala version) Generate histograms with a Spark DataFrame function
@@ -118,16 +112,27 @@ histogram.show()
 
 ## (SQL version) Generate histograms with Spark SQL
 
-Note this uses PySpark f-string to fill in parameters
+This is  an example of how to generate histograms at scale using Spark SQL.  
+Note this uses Python's formatted strings to fill in parameters into the query text.  
 
 ```
-table_name = "t1" # table or temporary view containing the data
+# Generate a DataFrame with some data for demo purposes and map it to a temporary view
+
+num_events = 100
+scale = 100
+seed = 4242
+
+df = spark.sql(f"select random({seed}) * {scale} as random_value from range({num_events})")
+
+# map the df DataFrame to the t1 temporary view so it can be used with Spark SQL
+df.createOrReplaceTempView("data")
+
+table_name = "data" # table or temporary view containing the data
 value_col = "random_value" # column name on which to compute the histogram
 min = -20  # min: minimum value in the histogram
 max = 90   # maximum value in the histogram
 bins = 11  # number of histogram buckets to compute
 step = (max - min) / bins
-        
 
 histogram = spark.sql(f"""
 with hist as (
