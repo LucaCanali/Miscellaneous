@@ -29,7 +29,6 @@ def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: 
     # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
     spark = SparkSession.getActiveSession()
     df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
-    
     histdf = (df
               .selectExpr(f"width_bucket({value_col}, {min}, {max}, {bins}) as bucket")
               .groupBy("bucket")
@@ -44,7 +43,7 @@ def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: 
 
 def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
                              min: int, max: int, bins: int) -> "DataFrame":
-    """ This is a function to compute the weighted histogram of a given DataFrame column.
+    """ This is a dataframe function to compute the weighted histogram of a DataFrame column.
         A weighted histogram is a generalization of a frequency histogram.
 
         Parameters
@@ -67,11 +66,9 @@ def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
     """
     step = (max - min) / bins
     # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
-    spark = SparkSession.getActiveSession()
     df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
-
     histdf = (df
-              .selectExpr(f"width_bucket({value_col}, {min}, {max}, {bins}) as bucket", "weight")
+              .selectExpr(f"width_bucket({value_col}, {min}, {max}, {bins}) as bucket", f"{weight_col}")
               .groupBy("bucket")
               .agg(sum(f"{weight_col}").alias("weighted_sum"))  # sum the weights on the weight_col
               .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
