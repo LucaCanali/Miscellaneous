@@ -1,14 +1,14 @@
 # How to generate histograms at scale with Apache Spark DataFrame API and with Spark SQL
 
 This details a few basic methods and tools to generate histograms using the Spark DataFrame API and with Spark SQL.
-Disambiguation: we refer here to computing histograms of the DataFrame data, rather than histograms of the columns statistics used by the cost based optimizer.   
+Disambiguation: we refer here to computing histograms of the DataFrame data, rather than histograms of the columns' statistics used by the cost based optimizer.   
 
 ## Contents
   - **Notebook examples:**
     - [frequency histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Frequency_Histograms.ipynb)
-    - [frequency histograms using the Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
     - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
-  - How to generate frequency histograms with a Spark DataFrame function
+    - [frequency histograms using Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
+  - How to generate frequency histograms using Spark DataFrame functions or Spark SQL:
     - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) and the sparkhistogram package 
     - [Scala version](#scala-version-generate-histograms-with-a-spark-dataframe-function)
     - [SQL version](#sql-version-generate-histograms-with-spark-sql)
@@ -76,11 +76,13 @@ hist.show()
 
 ## (Scala version) Generate histograms with a Spark DataFrame function
 
-- You can use the [sparkhistogram package](scala/README.md) as in this example:
-- Run from the Spark shell. Requires Spark 3.1.0 or higher.  
-`bin/spark-shell --jars <path>/target/scala-2.12/sparkhistogram_2.12-0.1.jar`
+1. You can use the [sparkhistogram package](scala/README.md) as in this example:
 
 ```
+Run from the Spark shell. Requires Spark 3.1.0 or higher.  
+bin/spark-shell --jars <path>/target/scala-2.12/sparkhistogram_2.12-0.1.jar
+
+
 // Example 1 frequency histogram
 import ch.cern.sparkhistogram.Histogram
 
@@ -118,10 +120,12 @@ histogram.show
 |    11| 85.0|    7|
 +------+-----+-----+
 ```
-
-- As an alternative you can define the computeHistogram funtion in your code 
-- Example from the Spark shell. Requires Spark 3.1.0 or higher.  
+2. As an alternative you can define the `computeHistogram` (or `computeWeightedHistogram`) function in your code,
+as in this example: 
 ```
+Run from the Spark shell. Requires Spark 3.1.0 or higher.  
+bin/spark-shell
+
 import org.apache.spark.sql.{DataFrame, Dataset}
 
 def computeHistogram(col: String, min: Long, max: Long, bins: Long)(df: DataFrame): DataFrame= {
@@ -155,7 +159,7 @@ val histogram = df.transform(computeHistogram("random_value", -20, 90, 11))
 histogram.show()
 ```
 
-## (SQL version) Generate histograms with Spark SQL
+## (SQL version) Generate histograms using Spark SQL
 
 This is  an example of how to generate histograms using Spark SQL.  
 Note this uses Python's formatted strings to fill in parameters into the query text.
