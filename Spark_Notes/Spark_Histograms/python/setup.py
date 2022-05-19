@@ -13,7 +13,7 @@ Use:
 - `from sparkhistogram import computeWeightedHistogram` -> computeWeightedHistogram is a function to compute the weighted histogram of a given DataFrame column  
 
 ```
-def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: int) -> "DataFrame"
+def computeHistogram(df: "DataFrame", value_col: str, min: float, max: float, bins: int) -> "DataFrame"
 
 Parameters
 ----------
@@ -77,7 +77,7 @@ https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Spark_DataFr
 """
 
 setup(name='sparkhistogram',
-    version='0.2',
+    version='0.3',
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",

@@ -74,6 +74,26 @@ hist.show()
 +------+-----+-----+
 ```
 
+This is ho computeHistogram is defined:
+```
+def computeHistogram(df: "DataFrame", value_col: str, min: float, max: float, bins: int) -> "DataFrame"
+
+Parameters
+----------
+df: the dataframe with the data to compute
+value_col: column name on which to compute the histogram
+min: minimum value in the histogram
+max: maximum value in the histogram
+bins: number of histogram buckets to compute
+
+Output DataFrame
+----------------
+bucket: the bucket number, range from 1 to bins (included)
+value: midpoint value of the given bucket
+count: number of values in the bucket
+```
+
+
 ## (Scala version) Generate histograms with a Spark DataFrame function
 
 1. You can use the [sparkhistogram package](scala/README.md) as in this example:

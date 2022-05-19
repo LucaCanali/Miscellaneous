@@ -8,7 +8,7 @@ from pyspark.sql.functions import sum
 from pyspark.sql import SparkSession
 
 
-def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: int) -> "DataFrame":
+def computeHistogram(df: "DataFrame", value_col: str, min: float, max: float, bins: int) -> "DataFrame":
     """ This is a function to compute the count/frequency histogram of a given DataFrame column
         
         Parameters
@@ -42,7 +42,7 @@ def computeHistogram(df: "DataFrame", value_col: str, min: int, max: int, bins: 
 
 
 def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
-                             min: int, max: int, bins: int) -> "DataFrame":
+                             min: float, max: float, bins: int) -> "DataFrame":
     """ This is a dataframe function to compute the weighted histogram of a DataFrame column.
         A weighted histogram is a generalization of a frequency histogram.
 

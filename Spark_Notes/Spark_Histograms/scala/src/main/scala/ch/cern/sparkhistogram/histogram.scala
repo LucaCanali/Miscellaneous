@@ -28,7 +28,7 @@ case class Histogram(sparkSession: SparkSession) {
    *  value: midpoint value of the given bucket
    *  count: number of values in the bucket
    */
-  def computeHistogram(col: String, min: Long, max: Long, bins: Long)(df: DataFrame): DataFrame= {
+  def computeHistogram(col: String, min: Double, max: Double, bins: Long)(df: DataFrame): DataFrame= {
     val step = (max - min) / bins
     // this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
     val df_buckets= sparkSession.sql(s"select id+1 as bucket from range($bins)")
@@ -64,7 +64,7 @@ case class Histogram(sparkSession: SparkSession) {
    *  count: weighted sum of the number of values in the bucket
    */
   def computeWeightedHistogram(value_col: String, weight_col: String,
-                               min: Long, max: Long, bins: Long)(df: DataFrame): DataFrame= {
+                               min: Double, max: Double, bins: Long)(df: DataFrame): DataFrame= {
     val step = (max - min) / bins
     // this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
     val df_buckets= sparkSession.sql(s"select id+1 as bucket from range($bins)")

@@ -23,7 +23,7 @@ val hist = Histogram(spark)
    *  value: midpoint value of the given bucket
    *  count: number of values in the bucket
    */
-  def computeHistogram(col: String, min: Long, max: Long, bins: Long)(df: DataFrame): DataFrame= {
+  def computeHistogram(col: String, min: Double, max: Double, bins: Long)(df: DataFrame): DataFrame= {
 ```
 ```
   /**
@@ -47,7 +47,7 @@ val hist = Histogram(spark)
    *  count: weighted sum of the number of values in the bucket
    */
   def computeWeightedHistogram(value_col: String, weight_col: String,
-                               min: Long, max: Long, bins: Long)(df: DataFrame): DataFrame= {
+                               min: Double, max: Double, bins: Long)(df: DataFrame): DataFrame= {
 
 ```
 
