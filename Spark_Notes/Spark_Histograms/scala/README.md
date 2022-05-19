@@ -30,15 +30,15 @@ val hist = Histogram(spark)
    * This is a function to compute the weighted histogram of a given DataFrame column.
    * A weighted histogram is a generalization of a frequency histogram.
    *
-   * @param value_col column name on which to compute the histogram
-   *                  the column needs to be of numeric type
-   * @param weight_col numeric-type column with the weights,
-   *                   the bucket value is computed as sum of weights.
-   *                   If all weight are set to 1, you get a frequency histogram
-   * @param min min: minimum value in the histogram
-   * @param max maximum value in the histogram
-   * @param bins number of histogram buckets to compute
-   * @param df the dataframe with the data to compute
+   * @param value_col: column name on which to compute the histogram
+   *                   the column needs to be of numeric type
+   * @param weight_col: numeric-type column with the weights,
+   *                    the bucket value is computed as sum of weights.
+   *                    If all weight are set to 1, you get a frequency histogram
+   * @param min: minimum value in the histogram
+   * @param max: maximum value in the histogram
+   * @param bins: number of histogram buckets to compute
+   * @param df: the dataframe with the data to compute
    * @return Output DataFrame
    * Output DataFrame
    * ----------------
