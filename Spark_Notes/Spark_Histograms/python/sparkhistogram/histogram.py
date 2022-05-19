@@ -34,7 +34,7 @@ def computeHistogram(df: "DataFrame", value_col: str, min: float, max: float, bi
               .groupBy("bucket")
               .count()
               .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
-              .selectExpr("bucket", f"{min} + (bucket - 1/2) * {step} as value", # use center value of the buckets
+              .selectExpr("bucket", f"{min} + (bucket - 0.5) * {step} as value", # use center value of the buckets
                           "nvl(count, 0) as count") # buckets with no values will have a count of 0
               .orderBy("bucket")
              )
@@ -72,7 +72,7 @@ def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
               .groupBy("bucket")
               .agg(sum(f"{weight_col}").alias("weighted_sum"))  # sum the weights on the weight_col
               .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
-              .selectExpr("bucket", f"{min} + (bucket - 1/2) * {step} as value", # use center value of the buckets
+              .selectExpr("bucket", f"{min} + (bucket - 0.5) * {step} as value", # use center value of the buckets
                           "nvl(weighted_sum, 0) as weighted_sum") # buckets with no values will have a sum of 0
               .orderBy("bucket")
               )
