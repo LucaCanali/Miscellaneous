@@ -33,7 +33,7 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
 ## (Python version) Generate histograms with a Spark DataFrame function
 
 This is an example of how to generate frequency histograms using PySpark and the helper
-funciton in the package [sparkhistogram](https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Spark_Histograms/python/sparkhistogram/histogram.py)
+function in the package [sparkhistogram](https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Spark_Histograms/python/sparkhistogram/histogram.py)
 ```
 # requires the package sparkhistogram
 ! pip install sparkhistogram
@@ -76,6 +76,51 @@ hist.show()
 
 ## (Scala version) Generate histograms with a Spark DataFrame function
 
+- You can use the [sparkhistogram package](scala/README.md) as in this example:
+- Run from the Spark shell. Requires Spark 3.1.0 or higher.  
+`bin/spark-shell --jars <path>/target/scala-2.12/sparkhistogram_2.12-0.1.jar`
+
+```
+// Example 1 frequency histogram
+import ch.cern.sparkhistogram.Histogram
+
+val hist = Histogram(spark)
+
+val num_events = 100
+val scale = 100
+val seed = 4242
+
+val df = spark.sql(s"select random($seed) * $scale as random_value from range($num_events)")
+
+df.show(5)
+
+// compute the histogram
+val histogram = df.transform(hist.computeHistogram("random_value", -20, 90, 11))
+
+// alternative syntax
+// val histogram = hist.computeHistogram("random_value", -20, 90, 11)(df)
+
+histogram.show
+
++------+-----+-----+
+|bucket|value|count|
++------+-----+-----+
+|     1|-15.0|    0|
+|     2| -5.0|    0|
+|     3|  5.0|    6|
+|     4| 15.0|   10|
+|     5| 25.0|   15|
+|     6| 35.0|   12|
+|     7| 45.0|    9|
+|     8| 55.0|    7|
+|     9| 65.0|   10|
+|    10| 75.0|   16|
+|    11| 85.0|    7|
++------+-----+-----+
+```
+
+- As an alternative you can define the computeHistogram funtion in your code 
+- Example from the Spark shell. Requires Spark 3.1.0 or higher.  
 ```
 import org.apache.spark.sql.{DataFrame, Dataset}
 
@@ -112,8 +157,9 @@ histogram.show()
 
 ## (SQL version) Generate histograms with Spark SQL
 
-This is  an example of how to generate histograms at scale using Spark SQL.  
-Note this uses Python's formatted strings to fill in parameters into the query text.  
+This is  an example of how to generate histograms using Spark SQL.  
+Note this uses Python's formatted strings to fill in parameters into the query text.
+Run with PySpark/Spark version 3.1.0 or higher.
 
 ```
 # Generate a DataFrame with some data for demo purposes and map it to a temporary view
