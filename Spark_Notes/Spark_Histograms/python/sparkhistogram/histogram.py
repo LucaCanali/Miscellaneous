@@ -66,6 +66,7 @@ def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
     """
     step = (max_val - min_val) / bins
     # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+    spark = SparkSession.getActiveSession()
     df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
     histdf = (df
               .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket", f"{weight_col}")
