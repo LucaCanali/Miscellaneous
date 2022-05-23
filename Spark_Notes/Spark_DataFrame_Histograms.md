@@ -74,7 +74,7 @@ hist.show()
 +------+-----+-----+
 ```
 
-This is ho computeHistogram is defined:
+This is the signature of computeHistogram:
 ```
 def computeHistogram(df: "DataFrame", value_col: str, min: float, max: float, bins: int) -> "DataFrame"
 

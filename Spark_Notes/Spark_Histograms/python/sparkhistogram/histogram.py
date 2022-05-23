@@ -62,7 +62,7 @@ def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
         ----------------
         bucket: the bucket number, range from 1 to bins (included)
         value: midpoint value of the given bucket
-        count: weighted sum of the number of values in the bucket
+        weighted_sum: weighted sum of the number of values in the bucket
     """
     step = (max_val - min_val) / bins
     # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
