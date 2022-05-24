@@ -1,14 +1,19 @@
 # Apache Spark and Parquet
-Notes on configuration, recent features and diagnostics 
+Notes on configuration, features, and diagnostics.  
+Links to content:    
 
-- Intro and basics
-- Configurations and options when using Parquet with Spark 
-- Parquet file version discovery and update
-- Diagnostic tools and tips
-- Parquet 1.12 and new features in Spark 3.2 and 3.3
-  - Column index
+- [Intro and basics](#basic-use-of-the-dataframe-reader-and-writer-with-parquet)
+- [Configurations and options when using Parquet with Spark](#parquet-configuration-options) 
+- Parquet files and their version
+  - [version discovery](#parquet-version-discovery)
+  - [version update with file write](#parquet-version-update)
+- Parquet new features in Spark 3.2 and 3.3
+  - [note on Parquet 1.12 new features](#parquet-112-new-features-and-spark-32)
+  - [Column index]()
   - Offset index
-  - bloom filters
+  - Bloom filters
+  - Vectorized Parquet reader for complex datatypes 
+- See also [Parquet Diagnostics Tools](https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Tools_Parquet_Diagnostics.md)
 
 ### Basic use of the DataFrame reader and writer with Parquet:
 
@@ -68,7 +73,7 @@ Support for large files:
 
 ### Parquet version discovery
 
-As Parquet format evolves, more metadata is made available which is used by new features.
+As Parquet format evolves, more metadata is made available which is used by the new features.
 The Parquet version used to write a given file is stored in the metadata.  
 If you use Parquet files written with old versions of Spark (say Spark 2.x) and therefore old Parquet libraries,
 you may not be able to use features introduced in recent versions, like column indexes available for Spark DataFrame Parquet writer as of version 3.2.0.  
@@ -142,7 +147,7 @@ Spark 3.1, 3.0 and 2.4 use Parquet Spark 1.10.
   - desc and link to doc
 
 
-## Spark Filter pushdown to Parquet improved with column indexes and bloom filters
+## Spark Filter pushdown to Parquet improved with column indexes
 
 When scanning Parquet files with Spark using a filter (e.g. a "where" condition in Spark SQL)
 Spark will try to optimize the physical by pushing down the filter
@@ -156,7 +161,7 @@ The techniques available with Parquet files are:
   push down at the page level (that is a much finer granularity than row group).
 - Parquet 1.12 introduces the option to generate and store bloom filters in Parquet metadata on the file footer.
 - Note: the use of column statistics, both at row group and page level (column index), 
-  is typically more effective when data that is stored in Parque file sorted,
+  is typically more effective when data that is stored in Parquet file sorted,
   as opposed to have large ranges of data for each page or rowgroup.
 
 Examples:
@@ -375,3 +380,13 @@ val columns = blocks.get(0).getColumns
 
 val bloomFilter=pf.readBloomFilter(columns.get(0))
 ```
+
+### Vectorized Parquet reader for complex datatypes 
+Spark 3.3.0 extends the vectorized Parquet reader for complex datatypes.
+Currently, this requires configuration and it is off by default.
+Configuration:
+`--conf spark.sql.parquet.enableNestedColumnVectorizedReader=true`
+
+The performance gain can be high, in the examples with 
+[Physics array data at this link](https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Physics#1-dimuon-mass-spectrum-analysis)
+the execution time goes from about 30 seconds to 10 seconds when using the vectorized reader.
