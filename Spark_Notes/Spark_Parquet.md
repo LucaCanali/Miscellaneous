@@ -9,11 +9,11 @@ Links to content:
   - [version update with file write](#parquet-version-update)
 - Parquet new features in Spark 3.2 and 3.3
   - [note on Parquet 1.12 new features](#parquet-112-new-features-and-spark-32)
-  - [Column index]()
-  - Offset index
-  - Bloom filters
-  - Vectorized Parquet reader for complex datatypes 
-- See also [Parquet Diagnostics Tools](https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Tools_Parquet_Diagnostics.md)
+  - [Filter pushdown improvement with column indexers](#spark-filter-pushdown-to-parquet-improved-with-column-indexes)
+  - [diagnostics: Column and offset indexes](#column-and-offset-indexes)
+  - [Bloom filters, configuration, use, and diagnostics](#bloom-filters-in-parquet)
+  - [Vectorized Parquet reader for complex datatypes](#vectorized-parquet-reader-for-complex-datatypes) 
+- See also [Parquet Diagnostics Tools](Tools_Parquet_Diagnostics.md)
 
 ### Basic use of the DataFrame reader and writer with Parquet:
 
@@ -388,5 +388,5 @@ Configuration:
 `--conf spark.sql.parquet.enableNestedColumnVectorizedReader=true`
 
 The performance gain can be high, in the examples with 
-[Physics array data at this link](https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Physics#1-dimuon-mass-spectrum-analysis)
+[Physics array data at this link](../Spark_Physics#1-dimuon-mass-spectrum-analysis)
 the execution time goes from about 30 seconds to 10 seconds when using the vectorized reader.
