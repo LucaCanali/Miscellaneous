@@ -6,14 +6,15 @@ Links to content:
 - [Configurations and options when using Parquet with Spark](#parquet-configuration-options) 
 - Parquet files and their version
   - [version discovery](#parquet-version-discovery)
-  - [version update with file write](#parquet-version-update)
+  - [version update with file overwrite](#parquet-version-update)
 - Parquet new features in Spark 3.2 and 3.3
-  - [note on Parquet 1.12 new features](#parquet-112-new-features-and-spark-32)
+  - [Note on Parquet 1.12 new features](#parquet-112-new-features-and-spark-32)
   - [Filter pushdown improvement with column indexers](#spark-filter-pushdown-to-parquet-improved-with-column-indexes)
-  - [diagnostics: Column and offset indexes](#column-and-offset-indexes)
+  - [Diagnostics: Column and offset indexes](#column-and-offset-indexes)
   - [Bloom filters, configuration, use, and diagnostics](#bloom-filters-in-parquet)
   - [Vectorized Parquet reader for complex datatypes](#vectorized-parquet-reader-for-complex-datatypes) 
 - See also [Parquet Diagnostics Tools](Tools_Parquet_Diagnostics.md)
+  - it covers parquet-cli, PyArrow Parquet metadata reader, parquet_tools, and parquet_reader 
 
 ### Basic use of the DataFrame reader and writer with Parquet:
 
@@ -28,7 +29,7 @@ Some key features of Parquet are:
     - support for filter pushdown 
     - support for partitioning and large files
       - Spark can create multiple partitions out large files to improve parallelism
-      - partition discovery allows to read partitioned tables from their schema layout into nested folders  
+      - partition discovery allows reading partitioned tables from their schema layout into nested folders  
     - schema evolution
 
 A quick recap of the basics of using Parquet with Spark.
@@ -159,7 +160,7 @@ The techniques available with Parquet files are:
 - Additional structures introduced in Parquet 1.11 are column and offset indexes
   - these store statistics (including min and max values) allowing predicate
   push down at the page level (that is a much finer granularity than row group).
-- Parquet 1.12 introduces the option to generate and store bloom filters in Parquet metadata on the file footer.
+- See also later in this doc how bloom filters can be used to improve the execution of filter predicates
 - Note: the use of column statistics, both at row group and page level (column index), 
   is typically more effective when data that is stored in Parquet file sorted,
   as opposed to have large ranges of data for each page or rowgroup.
@@ -192,7 +193,7 @@ metrics("numOutputRows").value
 The result is that all the rows in the row group (340689 rows) are read as Spark 
 cannot push the filter down to page level.
 
-### Column and offset indexes
+### Diagnostics and internals of Column and offset indexes
 
 Column indexes are structures that can improve the performance of filters on Parquet files.  
 Column indexes provide stats (min and max values) on the data at the page granularity, which can be used to evaluate filters. Similar statistics are available
@@ -201,7 +202,7 @@ at rowgroup level, however a rowgroup is typically 128MB in size, while pages ar
 Column indexes and their sibling, offset indexes, are stored in the footer of Parquet files version 1.11 and above.  
 See a detailed [description of column and offset indexes in Parquet at this link](https://github.com/apache/parquet-format/blob/master/PageIndex.md)
 
-**Tools to drill down on column indexe metadata in Parquet files**
+**Tools to drill down on column index metadata in Parquet files**
 
 - **parquet-cli**
   - example: `hadoop jar target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main column-index -c ws_sold_time_sk <path>/parquet112file`
@@ -275,7 +276,7 @@ page-17                   166981               200                340000
 ```
 
 ### Bloom filters in Parquet
-Parquet has introduced bloom filters in version 1.12.
+Parquet 1.12 introduces the option to generate and store bloom filters in Parquet metadata on the file footer.
 Bloom filters improve the performance of filter predicates.
 They are particularly useful with high cardinality columns to overcome the limitations
 of using Parquet dictionaries. 

@@ -115,6 +115,25 @@ ws_net_profit             INT32     S   _     340689    4.00 B     0       "-989
 
 ```
 
+## PyArrow
+
+Pyarrow has a Parquet reader and can be used to explore metadata.  
+From
+https://mungingdata.com/pyarrow/parquet-metadata-min-max-statistics/  
+see also
+https://arrow.apache.org/docs/python/parquet.html#inspecting-the-parquet-file-metadata  
+
+Example:
+```
+import pyarrow.parquet as pq
+parquet_file = pq.ParquetFile('/tmp/a.parquet')
+parquet_file.metadata
+
+parquet_file.metadata.row_group(0)
+parquet_file.metadata.row_group(0).column(0)
+parquet_file.metadata.row_group(0).column(0).statistics
+```
+
 ## Parquet-tools (deprecated)
 
 Parquet-tools is part of the main Apache Parquet repository, you can download it from  https://github.com/apache/parquet-mr/releases
@@ -180,7 +199,7 @@ Metadata about the row groups:
 
 Note: If you want to investigate further, you can also dump information down to the page level using the command: parquet-tools command "dump --disable-data" on the Parquet file of interest.
 
-## Parquet_reader
+## Parquet_reader (deprecated)
 
 Parquet_reader This is another utility that can help you navigate the internals and metadata of Parquet files. In particular parquet-cpp displays the statistics associated with Parquet columns and is useful to understand predicate push down.
 Parquet_reader is a utility distributed with the Parquet-cpp project.
