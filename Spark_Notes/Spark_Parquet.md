@@ -141,12 +141,13 @@ Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over prev
 Spark 3.1, 3.0 and 2.4 use Parquet Spark 1.10.
 
 - Column indexes
-  - desc and link to doc
+  - column indexes help optimizing the execution of filter predicates under certain circumstances (read further for details)
+  - column indexes are "on by default.
 - Bloom filters
-  - desc and link to doc
+  - bloom filters are also intended to improve execution for certain types of filters
+  - bloom filters are **off** by default 
 - Encryption
-  - desc and link to doc
-
+  - see https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#columnar-encryption 
 
 ## Spark Filter pushdown to Parquet improved with column indexes
 
@@ -160,7 +161,7 @@ The techniques available with Parquet files are:
 - Additional structures introduced in Parquet 1.11 are column and offset indexes
   - these store statistics (including min and max values) allowing predicate
   push down at the page level (that is a much finer granularity than row group).
-- See also later in this doc how bloom filters can be used to improve the execution of filter predicates
+- See also in this doc the paragraph on bloom filters and how they can be used to improve the execution of filter predicates
 - Note: the use of column statistics, both at row group and page level (column index), 
   is typically more effective when data that is stored in Parquet file sorted,
   as opposed to have large ranges of data for each page or rowgroup.
@@ -196,6 +197,7 @@ cannot push the filter down to page level.
 ### Diagnostics and internals of Column and offset indexes
 
 Column indexes are structures that can improve the performance of filters on Parquet files.  
+Column indexes are "on by default".
 Column indexes provide stats (min and max values) on the data at the page granularity, which can be used to evaluate filters. Similar statistics are available
 at rowgroup level, however a rowgroup is typically 128MB in size, while pages are typically 1MB
 (both are configurable).  
