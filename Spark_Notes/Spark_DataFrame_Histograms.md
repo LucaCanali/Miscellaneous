@@ -1,15 +1,17 @@
 # How to generate histograms at scale with Apache Spark DataFrame API and with Spark SQL
 
-This details a few basic methods and tools to generate histograms using the Spark DataFrame API and with Spark SQL.
+This details a few simple methods and tools to generate histograms using the Spark DataFrame API and with Spark SQL.
 Disambiguation: we refer here to computing histograms of the DataFrame data, rather than histograms of the columns' statistics used by the cost based optimizer.   
-
+See also the blog entry [Histograms with Apache Spark and other SQL engines](https://db-blog.web.cern.ch/node/187)  
+  
 ## Contents
   - **Notebook examples:**
     - [frequency histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Frequency_Histograms.ipynb)
     - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
     - [frequency histograms using Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
   - How to generate frequency histograms using Spark DataFrame functions or Spark SQL:
-    - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) and the sparkhistogram package 
+    - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) 
+      and the [SparkHistogram package](https://pypi.org/project/sparkhistogram/) 
     - [Scala version](#scala-version-generate-histograms-with-a-spark-dataframe-function)
     - [SQL version](#sql-version-generate-histograms-with-spark-sql)
   - [Other solutions](#Other-solutions)
@@ -18,7 +20,7 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
 
 ## Notes on the techniques used:
   - The solutions discussed here are for 1-dimensional fixed-width histograms
-  - Use the package, sparkhistogram, together with PySpark for generating data histograms using the Spark DataFrame API.
+  - Use the package, [SparkHistogram package](https://pypi.org/project/sparkhistogram/), together with PySpark for generating data histograms using the Spark DataFrame API.
     Currently, the package contains only two functions covering some of the most common and low-complexity use cases.
   - The proposed techniques are wrappers around [width_bucket](https://spark.apache.org/docs/latest/api/sql/index.html#width_bucket)  
     - this makes them applicable to a large range of data and database systems, that implement the width_bucket function
@@ -96,7 +98,7 @@ count: number of values in the bucket
 
 ## (Scala version) Generate histograms with a Spark DataFrame function
 
-1. You can use the [sparkhistogram package](scala/README.md) as in this example:
+1. You can use the [sparkhistogram package](Spark_Histograms/scala/README.md) as in this example:
 
 ```
 Run from the Spark shell. Requires Spark 3.1.0 or higher.  
