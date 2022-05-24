@@ -1,23 +1,31 @@
 # Apache Spark and Parquet
+Notes on configuration, recent features and diagnostics 
+
+- Intro and basics
+- Configurations and options when using Parquet with Spark 
+- Parquet file version discovery and update
+- Diagnostic tools and tips
+- Parquet 1.12 and new features in Spark 3.2 and 3.3
+  - Column index
+  - Offset index
+  - bloom filters
+
+### Basic use of the DataFrame reader and writer with Parquet:
 
 Data formats make an important part of data platforms.
 Apache Parquet is one of the preferred data formats when using Apache Spark for data analysis.
-This comes from several reasons, some of the most important are that Parquet is a columnar format
-that allows compression, encoding and several additional features to support filter pushdown and partitioning.
+Apache ORC is another data that shares many of the characteristics of Parquet, it is not covered in this doc.  
+Some key features of Parquet are:
+  - it is a columnar format
+  - allows compression and encoding 
+  - Spark has several optimizations that considerably improve performance when dealing with Parquet, inclusing
+    - a vectorized reader for Parquet, which
+    - support for filter pushdown 
+    - support for partitioning and large files
+      - Spark can create multiple partitions out large files to improve parallelism
+      - partition discovery allows to read partitioned tables from their schema layout into nested folders  
+    - schema evolution
 
-### Parquet 1.12 new features and Spark 3.2
-
-Spark 3.2 uses Parquet v1.12 (previous releases, Spark 3.1, 3.0 and 2.4 use Parquet Spark 1.10)
-Notable Parquet features newly available in Spark 3.2 are:
-
-- Column indexes
-  - desc and link to doc
-- Bloom filters
-    - desc and link to doc
-- Encryption
-   - desc and link to doc
-
-### Basic use of the DataFrame reader and writer with Parquet:
 A quick recap of the basics of using Parquet with Spark.
 For more details see [Spark datasource documentation](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html)
 ```
@@ -25,13 +33,14 @@ val df = spark.read.parquet("file path") // read
 df.write.mode("overwrite").parquet("file path") // write
 ```
 
-### Configuration options
+### Parquet configuration options
 There are several configurable parameters for the Parquet datasources, see:
 [link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
 
 Parquet configuration parameters can be used in Spark:
 - as an option to the DataFrame writer and reader, example:`.option("parquet.block.size", 128*1024*1024")`
 - as a Spark configuration parameter, example: `--conf spark.hadoop.parquet.block.size=128*1024*1024`
+  - note the prefix `spark.hadoop` when you want to pass an Hadoop configuration via Spark configuration
 
 A few notable options for Apache Spark Parquet DataFrame writer:
 ```
@@ -52,7 +61,12 @@ A few notable options for Apache Spark Parquet DataFrame reader:
 .option("parquet.filter.stats.enabled", "true")      // use row row group stats filtering (default: true)
 ```
 
-### Parquet version
+Support for large files:
+ - `spark.files.maxPartitionBytes` (default 128 MB) can be used to create multiple partitions out large files with multiple rowgroups 
+ - each Parquet rowgroup (default 128 MB, configurable) will be mapped one or more partitions
+
+
+### Parquet version discovery
 
 As Parquet format evolves, more metadata is made available which is used by new features.
 The Parquet version used to write a given file is stored in the metadata.  
@@ -84,6 +98,8 @@ When you upgrade Spark you may want to upgrade the metadata in your Parquet file
   print(pf.getRowGroups)
   ```
 
+### Parquet version update
+
 **How convert Parquet files to a newer version by copying them using Spark**
  - Use a recent Spark to read the source Parquet files and save them with the Parquet version
   used by Spark. For example with Spark 3.2.0 you can write files in Parquet version 1.12.1
@@ -112,6 +128,19 @@ for (t <- tables_nopartition) {
   spark.read.parquet(inpath + t).coalesce(1).write.mode("overwrite").option("compression", compression_type).parquet(outpath + t)
 }
 ```
+
+### Parquet 1.12 new features and Spark 3.2
+
+Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over previous releases:
+Spark 3.1, 3.0 and 2.4 use Parquet Spark 1.10.
+
+- Column indexes
+  - desc and link to doc
+- Bloom filters
+  - desc and link to doc
+- Encryption
+  - desc and link to doc
+
 
 ## Spark Filter pushdown to Parquet improved with column indexes and bloom filters
 
