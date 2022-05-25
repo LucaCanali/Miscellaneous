@@ -21,8 +21,8 @@ See also the blog entry [Histograms with Apache Spark and other SQL engines](htt
 
 ## Spark's histogram_numeric function
 [histogram_numeric](https://dist.apache.org/repos/dist/dev/spark/v3.3.0-rc3-docs/_site/api/sql/index.html#histogram_numeric)
-is a DataFrame aggregate function for generating approximate histograms (since Spark version 3.3.0).  
-Key points that differentiate histogram_numeric:
+is a DataFrame aggregate function for generating approximate histograms (since Spark version 3.3.0, see [SPARK-16280](https://issues.apache.org/jira/browse/SPARK-16280)).    
+Implementation details and limitations to keep in mind when using histogram_numeric:  
   - it produces as output an array of (x,y) pairs representing the center of the histogram bins and their corresponding value.
   - bins don't have a uniform size
   - the result is an approximate calculation
