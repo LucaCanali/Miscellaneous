@@ -168,6 +168,8 @@ The techniques available with Parquet files are:
 
 Examples:
 
+Note the Parquet test file used below `parquet112file_sorted` is extracted from the TPCDS benchmark, table `web_sales`
+
 1. Spark reading with a filter that makes use of column and offset indexes:
 ```
 val df =spark.read.parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
@@ -176,6 +178,8 @@ val plan = q1.queryExecution.executedPlan
 q1.collect
 val metrics = plan.collectLeaves().head.metrics
 metrics("numOutputRows").value
+
+res: Long = 20000
 ```
 The result is that only 20000 rows are read, this corresponds to a single page,
 see also column index details for column ws_sold_time_sk in the previous paragraph.
@@ -190,17 +194,19 @@ val plan = q1.queryExecution.executedPlan
 q1.collect
 val metrics = plan.collectLeaves().head.metrics
 metrics("numOutputRows").value
+
+res: Long = 340689
 ```
 The result is that all the rows in the row group (340689 rows) are read as Spark 
 cannot push the filter down to page level.
 
-### Diagnostics and internals of Column and offset indexes
+### Diagnostics and internals of Column and Offset Indexes
 
-Column indexes are structures that can improve the performance of filters on Parquet files.  
+Column indexes are structures that can improve filters performance when reading Parquet files.  
 Column indexes are "on by default".
 Column indexes provide stats (min and max values) on the data at the page granularity, which can be used to evaluate filters. Similar statistics are available
 at rowgroup level, however a rowgroup is typically 128MB in size, while pages are typically 1MB
-(both are configurable).  
+(both are configurable, see [Parquet configuration options]((#parquet-configuration-options)).  
 Column indexes and their sibling, offset indexes, are stored in the footer of Parquet files version 1.11 and above.  
 See a detailed [description of column and offset indexes in Parquet at this link](https://github.com/apache/parquet-format/blob/master/PageIndex.md)
 
