@@ -20,7 +20,7 @@ Links to content:
 
 Data formats make an important part of data platforms.
 Apache Parquet is one of the preferred data formats when using Apache Spark for data analysis.
-Apache ORC is another data that shares many of the characteristics of Parquet, it is not covered in this doc.  
+Apache ORC is another data that shares many of the characteristics of Parquet, see also [Parquet-ORC note](Spark_ORC_vs_Parquet.md).  
 Some key features of Parquet are:
   - it is a columnar format
   - allows compression and encoding 
