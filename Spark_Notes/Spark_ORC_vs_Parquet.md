@@ -20,13 +20,14 @@ Reference: Parquet version 1.12 and ORC version 1.7
 ----------
   
 Cheat sheet Parquet vs ORC when using Apache Spark  
-Reference: Spark 3.3.0, Parquet version 1.12, and ORC version 1.7
+Reference: Spark 3.3.x, Parquet version 1.12.x, and ORC version 1.7.x
 
 | Parquet                                                                                                                                                          | ORC                                                     | Comment                                                             |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|---------------------------------------------------------------------|
-| https://spark.apache.org/docs/latest/sql-data-sources-parquet.html| https://spark.apache.org/docs/latest/sql-data-sources-orc.html | Links |
+| https://spark.apache.org/docs/latest/sql-data-sources-parquet.html                                                                                               | https://spark.apache.org/docs/latest/sql-data-sources-orc.html | Links                                                               |
 | `.option("parquet.block.size", 128*1024*1024)`<br/> Parquet rowgroup (block) size, default = 128 MB                                                              | `orc.stripe.size`<br/>Default = 64 MB                   | Rowgroup/stripe size, this is the main unit of parallelism          |
 | `.option("parquet.page.size", 1024*1024)` default 1MB<br/>`.option("parquet.page.row.count.limit)`<br/> default 20000                                            | `orc.row.index.stride`<br/>Default 10000                | Lowest granularity for data statistics gathering and filtering      |
  | `.option("compression", "snappy")`<br/>snapppy is default, also support none, ZStandard, zlib and others                                                         | Same as Parquet                                         | Compression                                                         |
 | `.option("parquet.bloom.filter.enabled","true")` write bloomfilters, default is false<br/>`.option("parquet.bloom.filter.expected.ndv#column_name", num_values)` | `orc.bloom.filter.columns` and `orc.bloom.filter.fpp` (default 0.05) | Configure bloom filters when writing data with the DataFrame writer |
- | `parquet.encryption.column.keys`, `parquet.encryption.footer.key`                                                                                                | `orc.key.provider`, `orc.encrypt`, `orc.mask`           | Encryption- related parameters                                      | 
+ | `parquet.encryption.column.keys`, `parquet.encryption.footer.key`                                                                                                | `orc.key.provider`, `orc.encrypt`, `orc.mask`           | Encryption- related parameters                                      |
+| `--conf spark.sql.parquet.enableNestedColumnVectorizedReader=true`                                                                                               | `spark.sql.orc.enableNestedColumnVectorizedReader=true`| enable nested column vectorized reader                              |
