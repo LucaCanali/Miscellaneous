@@ -1,9 +1,10 @@
 # Jupyter/IPython notebooks for Oracle RDBMS
 
-Author: Luca.Canali@cern.ch, June 2016
+Author: Luca.Canali@cern.ch
 
-**Blog entry:http://externaltable.blogspot.com/2016/06/ipythonjupyter-notebooks-for-oracle.html**
-
+**Related blog entries:**
+ - [IPython/Jupyter Notebooks for Oracle](http://externaltable.blogspot.com/2016/06/ipythonjupyter-notebooks-for-oracle.html)
+ - [Making histograms with Apache Spark and other SQL engines](https://db-blog.web.cern.ch/node/187)
 ---
 This folder contains example notebooks on how to use Jupyter/IPython for querying Oracle databases and integrating with Python data analysis and visualization tools.
 
@@ -17,7 +18,7 @@ This folder contains example notebooks on how to use Jupyter/IPython for queryin
 | [**Oracle Histograms**](Oracle_histograms.ipynb) | Example notebook of how to generate frequency histograms using Oracle SQL |
 
 ---
-**Dependencies and pointers to build a test environment:**
+**Dependencies and pointers for the test environments:**
 - Install **Jupyter notebooks**. For example use [Anaconda](https://www.continuum.io/downloads) Python.
 - Install the **Oracle client**
     - Download from https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
@@ -25,5 +26,6 @@ This folder contains example notebooks on how to use Jupyter/IPython for queryin
 - Check that the Oracle client works and all dependencies are set by running sqlplus from the Oracle client home, example:
     - check client connectivity with: `sqlplus username/password@dbserver:port/service_name`
 - Install **cx_Oracle**, for example with `pip install cx_Oracle`
+- Install **oracledb**, `pip install oracledb`
 - Install **ipython-sql**, for example with `pip install ipython-sql`
 
