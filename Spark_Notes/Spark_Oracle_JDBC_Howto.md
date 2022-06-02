@@ -5,7 +5,11 @@ This can be used to transfer data from Oracle into Parquet or other formats.
 Find here also some notes on measuring performance, use of partitioning and also some thoughts on Apache Sqoop vs. Spark for data transfer.   
    
 #### An example of how to create a Spark DataFrame that reads from and Oracle table/view/query using JDBC.
-See also [Spark documentation](https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
+See also [Spark documentation](https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)  
+Test setup:
+  - run oracle xe on a container from gvenzl dockerhub repo https://github.com/gvenzl/oci-oracle-xe
+  - `docker run -d --name mydb1 -e ORACLE_PASSWORD=oracle -p 1521:1521 gvenzl/oracle-xe:latest # or use :slim`
+  - wait till the DB is started, check logs at: `docker logs -f mydb1`
 
 ```
 # You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
