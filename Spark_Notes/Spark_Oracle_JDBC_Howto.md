@@ -11,6 +11,7 @@ Test setup:
   - `docker run -d --name mydb1 -e ORACLE_PASSWORD=oracle -p 1521:1521 gvenzl/oracle-xe:latest # or use :slim`
   - wait till the DB is started, check logs at: `docker logs -f mydb1`
 
+Run a query in Oracle via JDBC and map the results into a Spark DataFrame
 ```
 # You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
 bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
@@ -23,20 +24,40 @@ val myquery = "select rownum as id from dual connect by level<=10"
 val df = spark.read.format("jdbc").
            option("url", s"jdbc:oracle:thin:@$db_connect_string").
            option("driver", "oracle.jdbc.driver.OracleDriver").
-           option("query", myquery).            
-           // option("table"), "myschema.mytable").
+           option("query", myquery).
+           // option("dbtable"), "myschema.mytable").
            option("user", db_user).
            option("password", db_pass).
            option("fetchsize", 10000).
            load()
 
-// test
 df.printSchema
 df.show(5)
-         
-// write Spark data frame as (snappy compressed) Parquet files  
+// write the Spark DataFrame as (snappy compressed) Parquet files  
 df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
+
+When dumping a single large table use this:
+
+```
+// optional optimization to bypass the use of Oracle buffer cache for large tables
+val preambleSQL="""
+begin 
+  execute immediate 'alter session set "_serial_direct_read"=always';
+end;
+
+val df = spark.read.format("jdbc").
+           option("url", s"jdbc:oracle:thin:@$db_connect_string").
+           option("driver", "oracle.jdbc.driver.OracleDriver").
+           option("dbtable"), "myschema.mytable").
+           option("user", db_user).
+           option("password", db_pass).
+           option("fetchsize", 10000).
+           option("sessionInitStatement", preambleSQL).
+           load()
+         
+```
+
 ```
 // Similar to above, alternative syntax
 val connectionProperties = new java.util.Properties()
@@ -47,9 +68,8 @@ val df = spark.read.option("driver","oracle.jdbc.driver.OracleDriver").option("f
          .jdbc("jdbc:oracle:thin:@dbserver:port/service_name", "MYSCHEMA.MYTABLE", connectionProperties )
 ```
 
-
+Alternative syntax to read from Oracle using Spark SQL
 ```
-# alternative syntax to read from Oracle using Spark SQL
 sql(s"""
   |CREATE OR REPLACE TEMPORARY VIEW mySparkTempView
   |USING org.apache.spark.sql.jdbc
@@ -63,7 +83,7 @@ sql(s"""
 sql("select * from mySparkTempView").show(5)
 ```
 
-### Examples on how to write to Oracle
+### Examples of how to write to Oracle
 ```
 import org.apache.spark.sql.SaveMode
 
@@ -261,23 +281,24 @@ Example of usage, relevant to Oracle JDBC:
 ```
 bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
 
+// customize with the wanted session parameters and initialization
 val preambleSQL="""
 begin 
   execute immediate 'alter session set tracefile_identifier=sparkora'; 
-  execute immediate 'alter session set "_serial_direct_read"=true';
+  execute immediate 'alter session set "_serial_direct_read"=always';
   execute immediate 'alter session set time_zone=''+02:00''';
 end;
 
-val df = spark.read
-           .format("jdbc")
-           .option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:port/service_name")
-           .option("driver", "oracle.jdbc.driver.OracleDriver")
-           .option("dbtable", "(select 1, sysdate, systimestamp, current_timestamp, localtimestamp from dual)")
-           .option("user", "MYUSER")
-           .option("password", "MYPASSWORK")
-           .option("fetchsize", 1000)
-           .option("sessionInitStatement", preambleSQL)
-           .load()
+val df = spark.read.
+           format("jdbc").
+           option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:port/service_name").
+           option("driver", "oracle.jdbc.driver.OracleDriver").
+           option("dbtable", "(select 1, sysdate, systimestamp, current_timestamp, localtimestamp from dual)").
+           option("user", "MYUSER").
+           option("password", "MYPASSWORK").
+           option("fetchsize", 1000).
+           option("sessionInitStatement", preambleSQL).
+           load()
 
 df.show(5,false)
 ```
