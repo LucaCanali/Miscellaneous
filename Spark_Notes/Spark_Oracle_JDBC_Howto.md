@@ -41,6 +41,8 @@ When dumping a single large table use this:
 
 ```
 // optional optimization to bypass the use of Oracle buffer cache for large tables
+// this may not be appropriate is the table is actively used for DML as direct read
+// causes segment checkpoints
 val preambleSQL="""
 begin 
   execute immediate 'alter session set "_serial_direct_read"=always';
