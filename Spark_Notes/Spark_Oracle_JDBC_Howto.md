@@ -18,7 +18,7 @@ bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
 val db_user = "system"
 val db_connect_string = "localhost:1521/XEPDB1" // dbserver:port/service_name
 val db_pass = "oracle"
-val myquery = "(select rownum as id from dual connect by level<=10)"  // qeury or table name
+val myquery = "select rownum as id from dual connect by level<=10"
 
 val df = spark.read.format("jdbc").
            option("url", s"jdbc:oracle:thin:@$db_connect_string").
