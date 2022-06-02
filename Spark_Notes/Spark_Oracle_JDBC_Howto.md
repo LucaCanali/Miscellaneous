@@ -1,26 +1,31 @@
 # Notes on querying Oracle from Apache Spark. 
 
-Relevant to reading Oracle tables using Spark SQl (Dataframes API), to transfer data from
-Oracle into Parquet or other formats.
+These notes are about reading Oracle tables using Apache Spark with the Dataframes API or Spark SQL.  
+This can be used to transfer data from Oracle into Parquet or other formats.  
 Find here also some notes on measuring performance, use of partitioning and also some thoughts on Apache Sqoop vs. Spark for data transfer.   
    
 #### An example of how to create a Spark DataFrame that reads from and Oracle table/view/query using JDBC.
-See also [Spark documentation]()https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
+See also [Spark documentation](https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)
 
 ```
-# You need an Oracle client JDBC jar, available for download from the Oracle website
-# This example uses ojdb8.jar from Oracle 19.10 client, older versions of this jar, such as ojdbc6.jar work OK too
-bin/spark-shell --jars oracle_client/instantclient_12_2/ojdbc8.jar
+# You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
 
-val df = spark.read.format("jdbc")
-         .option("url", "jdbc:oracle:thin:@dbserver:port/service_name")
-         .option("driver", "oracle.jdbc.driver.OracleDriver")
-         .option("dbtable", "MYSCHEMA.MYTABLE")
-         .option("user", "MYORAUSER")
-         .option("password", "XXX")
-         .option("fetchsize",10000)
-         .load()
-         
+val db_user = "system"
+val db_connect_string = "localhost:1521/XEPDB1" // dbserver:port/service_name
+val db_pass = "oracle"
+val myquery = "(select rownum as id from dual connect by level<=10)"  // qeury or table name
+
+val df = spark.read.format("jdbc").
+           option("url", s"jdbc:oracle:thin:@$db_connect_string").
+           option("driver", "oracle.jdbc.driver.OracleDriver").
+           option("query", myquery).            
+           // option("table"), "myschema.mytable").
+           option("user", db_user).
+           option("password", db_pass).
+           option("fetchsize", 10000).
+           load()
+
 // test
 df.printSchema
 df.show(5)
@@ -75,10 +80,10 @@ df.write.mode(SaveMode.Append)
 
 ```
 
-### Example with TPCS protocol
+### Example connecting to Oracle using the TPCS protocol
 Tested with Oracle 18c
 ```
-bin/spark-shell --jars <path>/ojdbc8.jar
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
 
 val connectionProperties = new java.util.Properties()
 connectionProperties.put("user", "MYUSER")
@@ -98,10 +103,11 @@ val df = spark.read.format("jdbc").option("driver","oracle.jdbc.driver.OracleDri
 - The instruction above will read from Oracle using a single Spark task, this can be slow. 
 - When using partitioning options Spark will use as many tasks as "numPartitions" 
 - Each task will issue a query to read the data with an additional "where condition" generated from the lower and upper bounds and the number of partitions.
-- If the Oracle table is partitioned by the column "partitionColumn" this could improve performance and use partition pruning
- for example.
- In other cases the query can generate multiple table scans or suboptimal index range scans of large parts of the table.
- See also below the discussion on Sqoop, that has additional optimizations for mappers/partitioners to use with Oracle.
+- This implementation is limited to range partitioned tables in Oracle and has other caveats:
+  - If the Oracle table is partitioned by the column "partitionColumn" this could improve performance and use partition pruning
+ for example.  
+  - In other cases the query can generate multiple table scans or suboptimal index range scans of large parts of the table.
+  - See also below the discussion on Sqoop, that has additional optimizations for mappers/partitioners to use with Oracle.
  This functionality has not yet been ported to Spark.
 - When loading large tables you may want to check with a DBA that the load is acceptable on the source DB
 Example:
@@ -146,7 +152,7 @@ Note: instead of a table name you can specify a query as in
   - you should expect "numPartitions" tasks (1 tasks if you did not specify a value for this option)
 - measure the workload with [sparkMeasure as described in this doc](Spark_Performace_Tool_sparkMeasure.md)
 ```
-bin/spark-shell --jars oracle_client/instantclient_12_2/ojdbc8.jar --packages ch.cern.sparkmeasure:spark-measure_2.11:0.11
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0 --packages ch.cern.sparkmeasure:spark-measure_2.12:0.18
 
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
@@ -205,7 +211,7 @@ Accid, Name => max(value) [group by accId, name]
 ---
 ## Notes on Apache Sqoop
 
-Apache Sqoop and in particular its Oracle connector orahoop have additional optimizations
+Apache Sqoop and in particular its Oracle connector, orahoop, has additional optimizations
 that can improve substantially the performance of data transfer from Oracle to Hadoop compared to the
 method described above using Spark.
 See [this link to Scoop documentation](http://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_data_connector_for_oracle_and_hadoop)
@@ -242,14 +248,14 @@ Issues and remarks:
  ```export TZ=CEST```
  
 ---
-## SPARK-21519: Add an option to the JDBC data source to initialize the environment of the remote database session 
+## SPARK-21519: Option to the JDBC data source to initialize the environment of the remote database session 
 
 [SPARK-21519](https://issues.apache.org/jira/browse/SPARK-21519) introduced an option to the JDBC datasource, "sessionInitStatement" to implement the functionality of session initialization present for example in the Sqoop connector for Oracle (see https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_oraoop_oracle_session_initialization_statements).   
 After each database session is opened to the remote DB, and before starting to read data, this option executes a custom SQL statement (or a PL/SQL block in the case of Oracle).
 Example of usage, relevant to Oracle JDBC:
 
 ```
-bin/spark-shell --jars ojdb6.jar
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
 
 val preambleSQL="""
 begin 
@@ -260,16 +266,14 @@ end;
 
 val df = spark.read
            .format("jdbc")
-           .option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:1521/service_name")
+           .option("url", "jdbc:oracle:thin:@ORACLEDBSERVER:port/service_name")
            .option("driver", "oracle.jdbc.driver.OracleDriver")
            .option("dbtable", "(select 1, sysdate, systimestamp, current_timestamp, localtimestamp from dual)")
            .option("user", "MYUSER")
            .option("password", "MYPASSWORK")
-           .option("fetchsize",1000)
+           .option("fetchsize", 1000)
            .option("sessionInitStatement", preambleSQL)
            .load()
 
 df.show(5,false)
 ```
-
-Comments: The proposal of this option comes from the need to use it for an Oracle database and enable serial direct read (this allows Oracle to perform read operations that bypass the buffer cache), however it can be used for other DBs too as it is quite generic. Note this mechanism allows to inject code into the database connection, this is not a security vulnerability as it requires password authentication, however beware of the possibilities for injecting SQL (and PL/SQL) that this opens.
