@@ -1638,3 +1638,34 @@ Scala example:
 scala> spark.sql("select id from range(10)").rdd.map(x => x(0)).collect()
 res1: Array[Any] = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
+
+---
+Use Scala Futures on the driver to run multiple DataFrame operations in concurrently
+This can be useful when each single operation does not manage to keep all available executor cores busy,
+as in the case of skew, long tails, operations that don't parallelize well, as querying RDDBs over JDBC.
+
+```
+import scala.concurrent._
+import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext.Implicits.global
+
+
+// get the SparkSession, this is intended to be allocated via SparkSubmit already
+// use schedule in FAIR mode
+val spark = SparkSession.
+    builder().
+    appName("AtlasDBImport").
+    config("spark.scheduler.mode", "FAIR").
+    getOrCreate()
+
+// lauch spark actions inside Future
+val res1 = Future {
+        val df = spark.read....
+        df.count
+        }
+
+// Run more actions with the same pattern using Future..
+
+// wait for results  to complete
+wait.result(res1, 1 hour)
+```
