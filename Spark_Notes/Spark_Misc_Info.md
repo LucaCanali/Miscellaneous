@@ -663,7 +663,7 @@ spark.conf.set("spark.sql.files.maxPartitionBytes", ..) // default 128MB, small 
 
 // Write
 df.coalesce(N_partitions).write   // optionally use coalesce if you want to reduce the number of output partitions (beware that it also affects num of concurrent write tasks) 
-  .partitionBy("colPartition1", "colOptionalSubPart") // partitioning column(s) 
+  .partitionBy(col("colPartition1"), col("colOptionalSubPart")) // partitioning column(s) 
   .bucketBy(numBuckets, "colBucket")   // This feature currently gives error with save, follow SPARK-19256 or use saveAsTable (Hive)
   .format("parquet")
   .save("filePathandName")             // you can use saveAsTable as an alternative
@@ -708,13 +708,15 @@ df.repartition('colPartition1,'colOptionalSubPartition)
 ---
 - Read from Oracle via JDBC, example from [Spark_Oracle_JDBC_Howto.md](Spark_Oracle_JDBC_Howto.md)
 ```
-val df = spark.read.format("jdbc")
-         .option("url", "jdbc:oracle:thin:@dbserver:port/service_name")
-         .option("driver", "oracle.jdbc.driver.OracleDriver")
-         .option("dbtable", "MYSCHEMA.MYTABLE")
-         .option("user", "MYORAUSER")
-         .option("password", "XXX")
-         .option("fetchsize",10000).load()
+val df = spark.read.format("jdbc").
+          option("url", "jdbc:oracle:thin:@dbserver:port/service_name").
+          option("driver", "oracle.jdbc.driver.OracleDriver").
+          option("dbtable", "MYSCHEMA.MYTABLE").
+          //option("query", myquery_string).
+          option("user", "MYORAUSER").
+          option("password", "XXX").
+          option("fetchsize",10000).
+          load()
          
 // test
 df.printSchema

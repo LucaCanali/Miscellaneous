@@ -7,14 +7,15 @@ Links to content:
 - Parquet files and their version
   - [version discovery](#parquet-version-discovery)
   - [version update with file overwrite](#parquet-version-update)
+- See also [Parquet Diagnostics Tools](Tools_Parquet_Diagnostics.md)
+  - it covers parquet-cli, PyArrow Parquet metadata reader, parquet_tools, and parquet_reader
 - Parquet new features in Spark 3.2 and 3.3
   - [Note on Parquet 1.12 new features](#parquet-112-new-features-and-spark-32)
   - [Filter pushdown improvement with column indexers](#spark-filter-pushdown-to-parquet-improved-with-column-indexes)
   - [Diagnostics: Column and offset indexes](#column-and-offset-indexes)
   - [Bloom filters, configuration, use, and diagnostics](#bloom-filters-in-parquet)
-  - [Vectorized Parquet reader for complex datatypes](#vectorized-parquet-reader-for-complex-datatypes) 
-- See also [Parquet Diagnostics Tools](Tools_Parquet_Diagnostics.md)
-  - it covers parquet-cli, PyArrow Parquet metadata reader, parquet_tools, and parquet_reader 
+  - [Vectorized Parquet reader for complex datatypes](#vectorized-parquet-reader-for-complex-datatypes)
+  - [Hidden metadata columns for Parquet reader](#)
 
 ### Basic use of the DataFrame reader and writer with Parquet:
 
@@ -32,6 +33,9 @@ Some key features of Parquet are:
       - partition discovery allows reading partitioned tables from their schema layout into nested folders  
     - schema evolution
 
+
+### Notes on the use of Parquet writer
+
 A quick recap of the basics of using Parquet with Spark.
 For more details see [Spark datasource documentation](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html)
 ```
@@ -39,6 +43,35 @@ val df = spark.read.parquet("file path") // read
 df.write.mode("overwrite").parquet("file path") // write
 ```
 
+- Limit output files:
+How to write a Spark DataFrame and compact the result to 1 file  
+Note this will limit performance (number of concurrent tasks), so use with caution, typically only for small files  
+`df.coalesce(1).write.mode("overwrite").parquet("mypath_path/myfile.parquet")`  
+
+- Example of how to write a DataFrame
+```
+df.coalesce(N_partitions). // use coalesce or repartition to reduce/increase the number of partitions in the df, 
+   sortWithinPartitions(col("optinalSortColumn")).
+   write.    
+   partitionBy(col("colPartition1"), col("colOptionalSubPart")). // optional partitioning column(s)
+   bucketBy(numBuckets, "colBucket").  // bucketBy can be used with partitionBy only with saveAsTable, see SPARK-19256
+   format("parquet").
+   mode("overwrite").                   //  Accepted save modes are 'overwrite', 'append', 'ignore', 'error', 'errorifexists', 'default'
+   save("filePathandName")             // you can use saveAsTable as an alternative
+```
+
+- Compact Parquet files: Parquet table repartition is an operation that you may want to use in the case you ended up with
+multiple small files into each partition folder and want to compact them in a smaller number of larger files.
+Example:
+```
+val df = spark.read.parquet("myPartitionedTableToComapct")
+
+df.repartition(col("colPartition1"),col("colOptionalSubPartition"))
+  .write.partitionBy("colPartition1","colOptionalSubPartition")
+  .parquet("filePathandName")
+```
+
+  
 ### Parquet configuration options
 There are several configurable parameters for the Parquet datasources, see:
 [link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
@@ -46,7 +79,11 @@ There are several configurable parameters for the Parquet datasources, see:
 Parquet configuration parameters can be used in Spark:
 - as an option to the DataFrame writer and reader, example:`.option("parquet.block.size", 128*1024*1024")`
 - as a Spark configuration parameter, example: `--conf spark.hadoop.parquet.block.size=128*1024*1024`
-  - note the prefix `spark.hadoop` when you want to pass an Hadoop configuration via Spark configuration
+  - note the prefix `spark.hadoop` when you want to pass a Hadoop configuration via Spark configuration
+
+Support for large files:
+- Read: `spark.conf.set("spark.sql.files.maxPartitionBytes", ..)` (default 128 MB) can be used to create multiple partitions out large files with multiple rowgroups
+- Write: `spark.conf.set("spark.sql.files.maxRecordsPerFile", ...)` defaults to 0, use if you need to limit size of files being written
 
 A few notable options for Apache Spark Parquet DataFrame writer:
 ```
@@ -59,18 +96,13 @@ A few notable options for Apache Spark Parquet DataFrame writer:
 .option("parquet.enable.dictionary","true")   // enable/disable dictionary encoding, default is true 
 ```
 
-A few notable options for Apache Spark Parquet DataFrame reader:
+A few additional options for Apache Spark Parquet DataFrame reader:
 ```
 .option("parquet.filter.bloom.enabled","true")       // use bloom filters (default: true)
 .option("parquet.filter.columnindex.enabled","true") // use column indexes (default: true)
 .option("parquet.filter.dictionary.enabled","true")  // use row group dictionary filtering (default: true)
 .option("parquet.filter.stats.enabled", "true")      // use row row group stats filtering (default: true)
 ```
-
-Support for large files:
- - `spark.files.maxPartitionBytes` (default 128 MB) can be used to create multiple partitions out large files with multiple rowgroups 
- - each Parquet rowgroup (default 128 MB, configurable) will be mapped one or more partitions
-
 
 ### Parquet version discovery
 
@@ -391,11 +423,33 @@ val bloomFilter=pf.readBloomFilter(columns.get(0))
 ```
 
 ### Vectorized Parquet reader for complex datatypes 
-Spark 3.3.0 extends the vectorized Parquet reader for complex datatypes.
-Currently, this requires configuration and it is off by default.
+Feature added in Spark 3.3.0
+Default is false, when true, Spark 3.3.0 extends the vectorized Parquet reader for complex datatypes.
+Currently, this requires configuration, and it is off (false) by default.
 Configuration:
 `--conf spark.sql.parquet.enableNestedColumnVectorizedReader=true`
 
 The performance gain can be high, in the examples with 
 [Physics array data at this link](../Spark_Physics#1-dimuon-mass-spectrum-analysis)
 the execution time goes from about 30 seconds to 10 seconds when using the vectorized reader.
+
+### Spark hidden metadata columns for Parquet reader
+
+Feature added in Spark 3.3.0
+```
+val df=spark.read.parquet("/tmp/testparquet1")
+
+df.select("_metadata.file_path", "_metadata.file_name","_metadata.file_size", "_metadata.file_modification_time").show(2,false)
+```
+
+### Push down aggregates
+Feature added in Spark 3.3.0
+Default is false, when true, aggregates will be pushed down to Parquet for optimization
+`--conf spark.sql.parquet.aggregatePushdown=true`
+
+### Enable matching schema columns by field id
+
+Feature added in Spark 3.3.0, see [SPARK-38094](https://issues.apache.org/jira/browse/SPARK-38094)
+Default is false, when true, Parquet readers will first use the field ID to determine which Parquet columns to read.
+It enables matching columns by field id for supported DWs like iceberg and Delta.
+`--conf spark.sql.parquet.fieldId.read.enabled=true`
