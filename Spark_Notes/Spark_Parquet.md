@@ -15,7 +15,10 @@ Links to content:
   - [Diagnostics: Column and offset indexes](#column-and-offset-indexes)
   - [Bloom filters, configuration, use, and diagnostics](#bloom-filters-in-parquet)
   - [Vectorized Parquet reader for complex datatypes](#vectorized-parquet-reader-for-complex-datatypes)
-  - [Hidden metadata columns for Parquet reader](#)
+  - [Hidden metadata columns for Parquet reader](#spark-hidden-metadata-columns-for-parquet-reader)
+  - [Push down aggregates](#push-down-aggregates)
+  - [Enable matching schema columns by field id](#enable-matching-schema-columns-by-field-id)
+  
 
 ### Basic use of the DataFrame reader and writer with Parquet:
 
