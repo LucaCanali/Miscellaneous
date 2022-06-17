@@ -1640,9 +1640,11 @@ res1: Array[Any] = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
 
 ---
-Use Scala Futures on the driver to run multiple DataFrame operations in concurrently
+Use Futures on the driver to run multiple DataFrame operations in concurrently
 This can be useful when each single operation does not manage to keep all available executor cores busy,
 as in the case of skew, long tails, operations that don't parallelize well, as querying RDDBs over JDBC.
+  
+Scala Futures example:  
 
 ```
 import scala.concurrent._
@@ -1668,4 +1670,24 @@ val res1 = Future {
 
 // wait for results  to complete
 wait.result(res1, 1 hour)
+```
+
+Python Futures example:  
+
+```
+# process tables extraction concurrently using futures
+    with futures.ThreadPoolExecutor(max_workers=10) as executor:
+        to_do: list[futures.Future] = []
+
+        # this code snippet is taken from a working example
+        # submit concurrent execution of table import Spark actions packaged in a procedure
+        for table in ImportDetails:
+            future = executor.submit(import_from_dbtable_into_parquet, spark, table, args) # run the Spark jobs
+            to_do.append(future)
+            print(f"Scheduled import of {table['table_name']}: {future}")
+
+        # wait for futures to finish
+        for future in futures.as_completed(to_do):
+            res: str = future.result()
+            print(f"{future} finished. Result: {res}")
 ```
