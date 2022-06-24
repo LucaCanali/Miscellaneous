@@ -19,19 +19,17 @@ input and output columns with their datatypes to the schema
 - See also discussion in PR [#26783](https://github.com/apache/spark/pull/26783) on a previous test proposal
 for extended Spark Arrow UDF
 
-## Some basic performance tests comparing MapInArrow and MapInPandas
+## Basic performance tests comparing MapInArrow and MapInPandas
 
-See code below, or see:
-  * Tests  in a notebook with [tests mapInArrow](Tests_mapInArrow.ipynb) 
-
-Other examples:
-  * Jupyter notebook [Dimuon mass spectrum and histogram](Spark_HEP_Examples/Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
-  * Jupyter notebook [Dimuon mass spectrum and histogram using Array of Struct](Spark_HEP_Examples/Use_ArrayOfStruct__Dimuon_mass_spectrum_histogram_Spark_mapInArrow.ipynb)
+Jupyter Notebook with the examples reported below:
+  * mapInArrow Jupyter notebook: [tests mapInArrow](Tests_mapInArrow.ipynb) 
+  * **open in Colab: [tests_mapInArrow notebook on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Tests_mapInArrow.ipynb)**
+  * additional example in the context of Physics analysis: [Dimuon mass spectrum and histogram](../Spark_Physics/Dimuon_mass_spectrum/6a.Dimuon_mass_spectrum_histogram_Spark_UDF_MapInArrow_flattened_data.ipynb)
 
 ----
 
-### Test setup:
- - Spark 3.3.0-SNAPSHOT (compiled from Spark master at the time of these tests) 
+### Test setup for PySpark/CLI
+ - This uses Spark 3.3.0 
  - `pyspark --master local[1]` -> we use only one core to reduce measurement noise and focus on the UDF execution
  - requires: `pip install pyarrow` and `pip install awkward`
  - We use arrays in the test dataframes, as this is where we find the biggest difference between mapInPandas and mapInArrow
