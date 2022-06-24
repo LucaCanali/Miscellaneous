@@ -1,4 +1,4 @@
-# MapInArrow, a Spark Python UDF new features in Spark 3.3.0
+# MapInArrow, a PySpark new feature for Python UDFs in Spark 3.3.0
 
 These are working notes about the mapInArrow functionality introduced in [SPARK-37227](https://issues.apache.org/jira/browse/SPARK-37227)
 and the related PR [#34505](https://github.com/apache/spark/pull/34505)
