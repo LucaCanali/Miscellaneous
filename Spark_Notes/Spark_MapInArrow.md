@@ -2,6 +2,7 @@
 
 These are working notes about the mapInArrow functionality introduced in [SPARK-37227](https://issues.apache.org/jira/browse/SPARK-37227)
 and the related PR [#34505](https://github.com/apache/spark/pull/34505)
+  - See also in the PySpark documentation [mapInArrow](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.mapInArrow.html#pyspark.sql.DataFrame.mapInArrow)
   - The main idea about this is that bypassing the conversion to Pandas can improve the performance, in particular
 when dealing with arrays and complex datatypes where Pandas conversion introduces a performance penalty
   - Libraries other than Pandas can be used for data processing in the (vectorized) UDF
