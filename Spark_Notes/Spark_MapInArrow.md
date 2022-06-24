@@ -1,17 +1,21 @@
-# MapInArrow
+# MapInArrow, a Spark Python UDF new features in Spark 3.3.0
 
 These are working notes about the mapInArrow functionality introduced in [SPARK-37227](https://issues.apache.org/jira/browse/SPARK-37227)
 and the related PR [#34505](https://github.com/apache/spark/pull/34505)
-
-- The main idea about this is that bypassing the conversion to Pandas can improve the performance, in particular
+  - The main idea about this is that bypassing the conversion to Pandas can improve the performance, in particular
 when dealing with arrays and complex datatypes where Pandas conversion introduces a performance penalty
-
-- Libraries other than Pandas can be used for data processing in the (vectorized) UDF
+  - Libraries other than Pandas can be used for data processing in the (vectorized) UDF
   - The [Awkward array library](https://awkward-array.readthedocs.io/en/latest/index.html) is used instead of Pandas to handle data processing for the tests reported here.  
+  - The tests reported here, detail a 4x speedup on a particular use case: squaring numerical arrays
 
-- The tests reported here, detail a 4x speedup on a particular use case: squaring numerical arrays
+## Basic performance tests comparing MapInArrow and MapInPandas
 
-**Limitations and other discussions:**
+Jupyter Notebook with the examples reported below:
+* mapInArrow Jupyter notebook: [tests mapInArrow](Tests_mapInArrow.ipynb)
+* **open in Colab: [tests_mapInArrow notebook on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Tests_mapInArrow.ipynb)**
+* additional example in the context of Physics analysis: [Dimuon mass spectrum and histogram](../Spark_Physics/Dimuon_mass_spectrum/6a.Dimuon_mass_spectrum_histogram_Spark_UDF_MapInArrow_flattened_data.ipynb)
+
+### Limitations and other discussions
 - mapInArrow needs to serialize and deserialize all the columns of the DataFrame,
 which could add an overhead if you need to process just a few columns
 - mapInArrow data needs to adhere to the DataFrame schema. You need to take care of adding the 
@@ -19,17 +23,9 @@ input and output columns with their datatypes to the schema
 - See also discussion in PR [#26783](https://github.com/apache/spark/pull/26783) on a previous test proposal
 for extended Spark Arrow UDF
 
-## Basic performance tests comparing MapInArrow and MapInPandas
-
-Jupyter Notebook with the examples reported below:
-  * mapInArrow Jupyter notebook: [tests mapInArrow](Tests_mapInArrow.ipynb) 
-  * **open in Colab: [tests_mapInArrow notebook on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Tests_mapInArrow.ipynb)**
-  * additional example in the context of Physics analysis: [Dimuon mass spectrum and histogram](../Spark_Physics/Dimuon_mass_spectrum/6a.Dimuon_mass_spectrum_histogram_Spark_UDF_MapInArrow_flattened_data.ipynb)
-
-----
-
 ### Test setup for PySpark/CLI
- - This uses Spark 3.3.0 
+ - The code here can be found in the notebook [tests mapInArrow](Tests_mapInArrow.ipynb)
+ - UsesSpark 3.3.0 or higher 
  - `pyspark --master local[1]` -> we use only one core to reduce measurement noise and focus on the UDF execution
  - requires: `pip install pyarrow` and `pip install awkward`
  - We use arrays in the test dataframes, as this is where we find the biggest difference between mapInPandas and mapInArrow
