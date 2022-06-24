@@ -338,7 +338,7 @@ Two important configurations for writing bloom filters in Parquet files are:
 This is an example of how to read a Parquet file without bloom filter (for example because created with 
 an older version of Spark/Parquet) and add the bloom filter, with additional tuning for one of the columns:
 ```
-val df = spark.read.par
+val df = spark.read.parquet("<path>/web_sales")
 df.coalesce(1).write.option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.expected.ndv#ws_sold_time_sk", 25000).parquet("<myfilepath")
 ```
 
