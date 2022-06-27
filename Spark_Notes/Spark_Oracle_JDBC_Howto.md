@@ -11,7 +11,7 @@ Test setup:
   - `docker run -d --name mydb1 -e ORACLE_PASSWORD=oracle -p 1521:1521 gvenzl/oracle-xe:latest # or use :slim`
   - wait till the DB is started, check logs at: `docker logs -f mydb1`
 
-Run a query in Oracle via JDBC and map the results into a Spark DataFrame
+**query mode:** run a query in Oracle via JDBC and map the results into a Spark DataFrame
 ```
 # You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
 bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
@@ -25,7 +25,8 @@ val df = spark.read.format("jdbc").
            option("url", s"jdbc:oracle:thin:@$db_connect_string").
            option("driver", "oracle.jdbc.driver.OracleDriver").
            option("query", myquery).
-           // option("dbtable"), "myschema.mytable").
+           // option("dbtable", "(select * ....)"). // enclosing the query in parenthesis it's like query mode
+           // option("dbtable", "myschema.mytable"). // use this to simply extract a given table 
            option("user", db_user).
            option("password", db_pass).
            option("fetchsize", 10000).
@@ -37,7 +38,7 @@ df.show(5)
 df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 ```
 
-When dumping a single large table use this:
+** table mode:** dump a single table:
 
 ```
 // optional optimization to bypass the use of Oracle buffer cache for large tables
@@ -51,13 +52,16 @@ end;
 val df = spark.read.format("jdbc").
            option("url", s"jdbc:oracle:thin:@$db_connect_string").
            option("driver", "oracle.jdbc.driver.OracleDriver").
-           option("dbtable"), "myschema.mytable").
+           option("dbtable", "myschema.mytable").
+           // option("partitionColumn", "choose relevant column name").
+           // option("lowerBound", 0). 
+           // option("upperBound", 5). 
+           // option("numPartitions", 5).
            option("user", db_user).
            option("password", db_pass).
            option("fetchsize", 10000).
            option("sessionInitStatement", preambleSQL).
            load()
-         
 ```
 
 ```
