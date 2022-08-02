@@ -1691,3 +1691,17 @@ Python Futures example:
             res: str = future.result()
             print(f"{future} finished. Result: {res}")
 ```
+---
+Run spark-shell using the official Spark docker image  
+Note currently does not work to pyspark  
+`docker run -it apache/spark /opt/spark/bin/spark-shell`
+
+----
+Use Python string formatter for PySpark in SQL 
+From Spark 3.3.0  [SPARK-37516](https://github.com/apache/spark/pull/34774)  
+Note this allows to use a dataframe in SQL without explicitly registering as temp view
+```
+mydf = spark.range(10)
+
+spark.sql("select id, {col} from {tbl}", tbl=mydf, col=mydf.id).show()
+```
