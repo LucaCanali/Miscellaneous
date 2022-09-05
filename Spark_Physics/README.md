@@ -44,9 +44,9 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
 Multiple notebook solutions are provided, to illustrate different approaches with Apache Spark.  
 Notes on the execution environment:
  - The notebooks use the dataset with 61 million events (Except the SCALE test that uses 6.5 billion events)
- - Spark version: These notebooks have been tested with Spark 3.2.1 and Spark 3.3.0
- - Notable features in Spark 3.3.0 used: Apache Spark vectorized reader for complex types in Parquet, mapInArrow UDF.
- - The server/VM used as Spark driver for testing and measuring the execution time has 4 physical CPU cores, an SSD disk, and 32 GB of RAM (which is more than the minimum requirements for running this workload)
+ - Compatibility and tests: these notebooks have been tested using Spark 3.3.0
+    - Notable features in Spark 3.3.0 used: Apache Spark vectorized reader for complex types in Parquet, mapInArrow UDF.
+    - The server used for testing and measuring the execution time has 4 physical CPU cores, SSD disk storage , and 32 GB of RAM (which is more than the minimum requirements for running this workload)
 
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                                                 | Run Time  | Short description                                                                                                                                                                                                                                     |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
