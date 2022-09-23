@@ -95,7 +95,7 @@ from pyspark.sql.functions import col
 ```
   
 ### Parquet configuration options
-There are several configurable parameters for the Parquet datasources, see:
+There are several configurable parameters for the Parquet data sources, see:
 [link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
 
 Parquet configuration parameters can be used in Spark:
@@ -190,9 +190,7 @@ for (t <- tables_nopartition) {
 ```
 
 ### Parquet 1.12 new features and Spark 3.2
-
-Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over previous releases:
-Spark 3.1, 3.0 and 2.4 use Parquet Spark 1.10.
+Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over previous releases.  
 
 - Column indexes
   - column indexes help optimizing the execution of filter predicates under certain circumstances (read further for details)
