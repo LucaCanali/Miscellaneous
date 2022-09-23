@@ -288,6 +288,9 @@ Example of usage, relevant to Oracle JDBC:
 bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
 
 // customize with the wanted session parameters and initialization
+val preambleSQL="alter session set time_zone='+02:00'"
+
+// use a PL/SQL block for more complex initialization
 val preambleSQL="""
 begin 
   execute immediate 'alter session set tracefile_identifier=sparkora'; 
