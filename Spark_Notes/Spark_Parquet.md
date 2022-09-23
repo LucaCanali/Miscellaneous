@@ -46,12 +46,13 @@ val df = spark.read.parquet("file path") // read
 df.write.mode("overwrite").parquet("file path") // write
 ```
 
-- Limit output files:
-How to write a Spark DataFrame and compact the result to 1 file  
+- Example: write using spark and compacting the output to only 1 output file
+This is how you can write a Spark DataFrame and compact the result to 1 file.  
 Note this will limit performance (number of concurrent tasks), so use with caution, typically only for small files  
 `df.coalesce(1).write.mode("overwrite").parquet("mypath_path/myfile.parquet")`  
+  
 
-- Example of how to write a DataFrame
+- Example of several options you can use when writing a DataFrame
 ```
 df.coalesce(N_partitions). // use coalesce or repartition to reduce/increase the number of partitions in the df, 
    sortWithinPartitions(col("optinalSortColumn")).
@@ -62,8 +63,9 @@ df.coalesce(N_partitions). // use coalesce or repartition to reduce/increase the
    mode("overwrite").                   //  Accepted save modes are 'overwrite', 'append', 'ignore', 'error', 'errorifexists', 'default'
    save("filePathandName")             // you can use saveAsTable as an alternative
 ```
-
-- Compact Parquet files: Parquet table repartition is an operation that you may want to use in the case you ended up with
+  
+- Example of how to write only 1 file per partition
+Parquet table repartition is an operation that you may want to use in the case you ended up with
 multiple small files into each partition folder and want to compact them in a smaller number of larger files.
 Example:
 ```
@@ -73,7 +75,24 @@ df.repartition(col("colPartition1"),col("colOptionalSubPartition"))
   .write.partitionBy("colPartition1","colOptionalSubPartition")
   .parquet("filePathandName")
 ```
-
+   
+- Example of how to write partitioned data sorted by partition  
+Data sorting can improve encoding and compression performance, it can also be useful for performance
+at query time
+```
+# write the dataframe to Parquet
+# apply repartitioning and sort before writing
+from pyspark.sql.functions import col
+(df.
+   repartition(num_partitions], col("repartition_column")).
+   sortWithinPartitions(col("repartition_column"), col("additional_orderby_column")).
+   write.
+   mode("overwrite").
+   format(data_format).
+   option("compression", compression_type).
+   save(f"{path}/table_name")
+)
+```
   
 ### Parquet configuration options
 There are several configurable parameters for the Parquet datasources, see:
