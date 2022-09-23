@@ -14,7 +14,7 @@ Test setup:
 **query mode:** run a query in Oracle via JDBC and map the results into a Spark DataFrame
 ```
 # You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
 
 val db_user = "system"
 val db_connect_string = "localhost:1521/XEPDB1" // dbserver:port/service_name
@@ -113,7 +113,7 @@ df.write.mode(SaveMode.Append)
 ### Example connecting to Oracle using the TPCS protocol
 Tested with Oracle 18c
 ```
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
 
 val connectionProperties = new java.util.Properties()
 connectionProperties.put("user", "MYUSER")
@@ -182,7 +182,7 @@ Note: instead of a table name you can specify a query as in
   - you should expect "numPartitions" tasks (1 tasks if you did not specify a value for this option)
 - measure the workload with [sparkMeasure as described in this doc](Spark_Performace_Tool_sparkMeasure.md)
 ```
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0 --packages ch.cern.sparkmeasure:spark-measure_2.12:0.18
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0 --packages ch.cern.sparkmeasure:spark-measure_2.12:0.18
 
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
@@ -285,7 +285,7 @@ After each database session is opened to the remote DB, and before starting to r
 Example of usage, relevant to Oracle JDBC:
 
 ```
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.5.0.0
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
 
 // customize with the wanted session parameters and initialization
 val preambleSQL="""
@@ -294,6 +294,7 @@ begin
   execute immediate 'alter session set "_serial_direct_read"=always';
   execute immediate 'alter session set time_zone=''+02:00''';
 end;
+"""
 
 val df = spark.read.
            format("jdbc").
