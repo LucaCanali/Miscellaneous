@@ -44,10 +44,7 @@ df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
 // optional optimization to bypass the use of Oracle buffer cache for large tables
 // this may not be appropriate is the table is actively used for DML as direct read
 // causes segment checkpoints
-val preambleSQL="""
-begin 
-  execute immediate 'alter session set "_serial_direct_read"=always';
-end;
+val preambleSQL="""alter session set "_serial_direct_read"=always"""
 
 val df = spark.read.format("jdbc").
            option("url", s"jdbc:oracle:thin:@$db_connect_string").
@@ -288,7 +285,9 @@ Example of usage, relevant to Oracle JDBC:
 bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
 
 // customize with the wanted session parameters and initialization
-val preambleSQL="alter session set time_zone='+02:00'"
+// note no semicolon at the end of the SQL statement
+// val preambleSQL="alter session set time_zone='+02:00'"
+val preambleSQL = "alter session set NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'"
 
 // use a PL/SQL block for more complex initialization
 val preambleSQL="""
