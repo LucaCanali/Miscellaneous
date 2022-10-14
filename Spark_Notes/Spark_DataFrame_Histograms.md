@@ -5,58 +5,19 @@ Disambiguation: we refer here to computing histograms of the DataFrame data, rat
 See also the blog entry [Histograms with Apache Spark and other SQL engines](https://db-blog.web.cern.ch/node/187)  
   
 ## Contents
-  - **SparkHistogram - notebook examples:**
-    - [frequency histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Frequency_Histograms.ipynb)
-    - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
-    - [frequency histograms using Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
-  - [histogram_numeric function](#sparks-histogram_numeric-function) for approximate histogram generation (Spark 3.3.0 and higher)
-  - SparkHistogram - How to generate frequency histograms using Spark DataFrame functions or Spark SQL:
+- **SparkHistogram** - How to generate frequency histograms using Spark DataFrame functions or Spark SQL:
     - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) 
       and the [SparkHistogram package](https://pypi.org/project/sparkhistogram/) 
     - [Scala version](#scala-version-generate-histograms-with-a-spark-dataframe-function)
     - [SQL version](#sql-version-generate-histograms-with-spark-sql)
+- **SparkHistogram** - notebook examples:
+    - [frequency histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Frequency_Histograms.ipynb)
+    - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
+    - [frequency histograms using Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
+  - [histogram_numeric function](#sparks-histogram_numeric-function) for approximate histogram generation (Spark 3.3.0 and higher)
   - [Other solutions](#Other-solutions)
     - Spark RDD histograms
     - Histogrammer
-
-## Spark's histogram_numeric function
-[histogram_numeric](https://dist.apache.org/repos/dist/dev/spark/v3.3.0-rc3-docs/_site/api/sql/index.html#histogram_numeric)
-is a DataFrame aggregate function for generating approximate histograms (since Spark version 3.3.0, see [SPARK-16280](https://issues.apache.org/jira/browse/SPARK-16280)).    
-Implementation details and limitations to keep in mind when using histogram_numeric:  
-  - it produces as output an array of (x,y) pairs representing the center of the histogram bins and their corresponding value.
-  - bins don't have a uniform size
-  - the result is an approximate calculation
-  - when using a large number of bins (e.g. more than a 1000) the histogram_numeric can become quite slow
-
-Example:
-```
-# Generate a DataFrame with toy data for demo purposes
-num_events = 100
-scale = 100
-seed = 4242
-df = spark.sql(f"select random({seed}) * {scale} as random_value from range({num_events})")
-
-# Compute the histogram using the computeHistogram function
-(df.selectExpr("explode(histogram_numeric(random_value, 10)) as hist_vals")
-   .selectExpr("round(hist_vals.x,2) as bin_val", "hist_vals.y as count")
-).show(10, False)
-
-+-------+-----+
-|bin_val|count|
-+-------+-----+
-|4.79   |6.0  |
-|13.89  |7.0  |
-|23.43  |16.0 |
-|34.58  |15.0 |
-|46.29  |8.0  |
-|59.12  |14.0 |
-|71.61  |13.0 |
-|78.96  |8.0  |
-|87.08  |5.0  |
-|94.81  |8.0  |
-+-------+-----+
-```
-
 
 ## Notes on the techniques used for SparkHistogram:
   - The solutions discussed here are for 1-dimensional fixed-width histograms
@@ -133,6 +94,43 @@ Output DataFrame
 bucket: the bucket number, range from 1 to bins (included)
 value: midpoint value of the given bucket
 count: number of values in the bucket
+```
+
+As an alternative you can define the `computeHistogram` (or `computeWeightedHistogram`) function in your code.
+The following is a copy/paste from [histogram.py](https://github.com/LucaCanali/Miscellaneous/blob/master/Spark_Notes/Spark_Histograms/python/sparkhistogram/histogram.py
+
+```
+def computeHistogram(df: "DataFrame", value_col: str, min_val: float, max_val: float, bins: int) -> "DataFrame":
+    """ This is a function to compute the count/frequency histogram of a given DataFrame column
+        
+        Parameters
+        ----------
+        df: the dataframe with the data to compute
+        value_col: column name on which to compute the histogram
+        min_val: minimum value in the histogram
+        max_val: maximum value in the histogram
+        bins: number of histogram buckets to compute
+        
+        Output DataFrame
+        ----------------
+        bucket: the bucket number, range from 1 to bins (included)
+        value: midpoint value of the given bucket
+        count: number of values in the bucket        
+    """
+    step = (max_val - min_val) / bins
+    # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+    spark = SparkSession.getActiveSession()
+    df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
+    histdf = (df
+              .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket")
+              .groupBy("bucket")
+              .count()
+              .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
+              .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
+                          "nvl(count, 0) as count") # buckets with no values will have a count of 0
+              .orderBy("bucket")
+             )
+    return histdf
 ```
 
 
@@ -272,6 +270,44 @@ order by bucket
 
 # this triggers the computation as show() is an action
 histogram.show()
+```
+
+## Spark's histogram_numeric function
+[histogram_numeric](https://dist.apache.org/repos/dist/dev/spark/v3.3.0-rc3-docs/_site/api/sql/index.html#histogram_numeric)
+is a DataFrame aggregate function for generating approximate histograms (since Spark version 3.3.0, see [SPARK-16280](https://issues.apache.org/jira/browse/SPARK-16280)).    
+Implementation details and limitations to keep in mind when using histogram_numeric:
+- it produces as output an array of (x,y) pairs representing the center of the histogram bins and their corresponding value.
+- bins don't have a uniform size
+- the result is an approximate calculation
+- when using a large number of bins (e.g. more than a 1000) the histogram_numeric can become quite slow
+
+Example:
+```
+# Generate a DataFrame with toy data for demo purposes
+num_events = 100
+scale = 100
+seed = 4242
+df = spark.sql(f"select random({seed}) * {scale} as random_value from range({num_events})")
+
+# Compute the histogram using the computeHistogram function
+(df.selectExpr("explode(histogram_numeric(random_value, 10)) as hist_vals")
+   .selectExpr("round(hist_vals.x,2) as bin_val", "hist_vals.y as count")
+).show(10, False)
+
++-------+-----+
+|bin_val|count|
++-------+-----+
+|4.79   |6.0  |
+|13.89  |7.0  |
+|23.43  |16.0 |
+|34.58  |15.0 |
+|46.29  |8.0  |
+|59.12  |14.0 |
+|71.61  |13.0 |
+|78.96  |8.0  |
+|87.08  |5.0  |
+|94.81  |8.0  |
++-------+-----+
 ```
 
 ## Other solutions
