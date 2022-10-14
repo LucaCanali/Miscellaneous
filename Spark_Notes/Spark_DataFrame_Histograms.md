@@ -9,7 +9,7 @@ See also the blog entry [Histograms with Apache Spark and other SQL engines](htt
     - [Python version](#python-version-generate-histograms-with-a-spark-dataframe-function) 
       and the [SparkHistogram package](https://pypi.org/project/sparkhistogram/) 
     - [Scala version](#scala-version-generate-histograms-with-a-spark-dataframe-function)
-    - [SQL version](#sql-version-generate-histograms-with-spark-sql)
+    - [SQL version](#sql-version-generate-histograms-using-spark-sql)
 - **SparkHistogram** - notebook examples:
     - [frequency histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Frequency_Histograms.ipynb)
     - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
