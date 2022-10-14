@@ -14,8 +14,8 @@ See also the blog entry [Histograms with Apache Spark and other SQL engines](htt
     - [frequency histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Frequency_Histograms.ipynb)
     - [weighted histograms using the DataFrame API](Spark_Histograms/Spark_DataFrame_Weighted_Histograms.ipynb)
     - [frequency histograms using Spark SQL](Spark_Histograms/Spark_SQL_Frequency_Histograms.ipynb)
-  - [histogram_numeric function](#sparks-histogram_numeric-function) for approximate histogram generation (Spark 3.3.0 and higher)
-  - [Other solutions](#Other-solutions)
+- [histogram_numeric function](#sparks-histogram_numeric-function) for approximate histogram generation (Spark 3.3.0 and higher)
+- [Other solutions](#Other-solutions)
     - Spark RDD histograms
     - Histogrammer
 
