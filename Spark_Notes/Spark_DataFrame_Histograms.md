@@ -18,6 +18,7 @@ See also the blog entry [Histograms with Apache Spark and other SQL engines](htt
 - [Other solutions](#Other-solutions)
     - Spark RDD histograms
     - Histogrammer
+- [Time series bucketing](#related-techniques-time-series-bucketing)
 
 ## Notes on the techniques used for SparkHistogram:
   - The solutions discussed here are for 1-dimensional fixed-width histograms
@@ -330,7 +331,6 @@ res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
   - this comes from windows for streaming, see also [time windows](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#types-of-time-windows)
   - however are useful for time series processing too, notably for bucketing by timestamp ranges
  
-https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#types-of-time-windows
 ```
 # Generate a DataFrame with toy data for demo purposes
 num_events = 100
@@ -346,7 +346,7 @@ from range({num_events})
 """).createOrReplaceTempView("t1")
 
 
-# process the timeseries data with group by window on 15-minute intervals
+# Process time series data with group by window on 15-minute intervals
 spark.sql("select window.start, window.end, avg(random_value) from t1 group by window(ts, '15 minutes')").show(10, False)
 
 +-------------------+-------------------+------------------+
