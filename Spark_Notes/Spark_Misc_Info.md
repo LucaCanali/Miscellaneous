@@ -1287,8 +1287,43 @@ sql("select cast(id as double) from t1").rdd.map(x => x(0).asInstanceOf[Double])
 res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
 ```
 
+- Time series data bucketing using the function window 
+  - it is based on the function [window](https://spark.apache.org/docs/latest/api/sql/index.html#window)
+  - this comes from windows for streaming, see also [time windows](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#types-of-time-windows)
+  - however are useful for time series processing too, notably for bucketing by timestamp ranges
+
+```
+# Generate a DataFrame with toy data for demo purposes
+num_events = 100
+scale = 100
+seed = 4242
+start_date = "2022-10-01"
+
+spark.sql(f"""
+select id, 
+       to_timestamp('{start_date}', 'yyyy-MM-dd') + cast(id as interval minute) as TS,
+       random({seed}) * {scale} as random_value
+from range({num_events})
+""").createOrReplaceTempView("t1")
+
+
+# Process time series data with group by window on 15-minute intervals
+spark.sql("select window.start, window.end, avg(random_value) from t1 group by window(ts, '15 minutes')").show(10, False)
+
++-------------------+-------------------+------------------+
+|start              |end                |avg(random_value) |
++-------------------+-------------------+------------------+
+|2022-10-01 00:00:00|2022-10-01 00:15:00|42.55364533764726 |
+|2022-10-01 00:15:00|2022-10-01 00:30:00|41.56932036620883 |
+|2022-10-01 00:30:00|2022-10-01 00:45:00|54.21355326316869 |
+|2022-10-01 00:45:00|2022-10-01 01:00:00|45.49226145897988 |
+|2022-10-01 01:00:00|2022-10-01 01:15:00|61.49623581612132 |
+|2022-10-01 01:15:00|2022-10-01 01:30:00|47.134134973422185|
+|2022-10-01 01:30:00|2022-10-01 01:45:00|58.70822290927983 |
++-------------------+-------------------+------------------+
+```
 ---
-Spark binaryfile format (Spark 3.0)
+Spark binary file format (Spark 3.0)
 Example:
 ```
 scala> val df = spark.read.format("binaryFile").load("README.md")

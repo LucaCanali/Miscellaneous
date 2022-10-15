@@ -326,8 +326,8 @@ res1: (Array[Double], Array[Long]) = (Array(0.0, 3.0, 6.0, 9.0),Array(3, 3, 4))
   - See example to use histogrammar with Spark at https://github.com/histogrammar/histogrammar-python#example-notebooks
 
 ## Related techniques: time series bucketing
-- This is how you can bucket time series data for analysis and visualization. It has some commonalities with building histograms.
-  - it is based on the function "window"
+- This is an example of how you can bucket time series data for analysis and visualization. It has some commonalities with building histograms.
+  - it is based on the function [window](https://spark.apache.org/docs/latest/api/sql/index.html#window)
   - this comes from windows for streaming, see also [time windows](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#types-of-time-windows)
   - however are useful for time series processing too, notably for bucketing by timestamp ranges
  
