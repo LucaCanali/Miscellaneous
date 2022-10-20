@@ -449,7 +449,7 @@ val bloomFilter=pf.readBloomFilter(columns.get(0))
 ### Vectorized Parquet reader for complex datatypes 
 Feature added in Spark 3.3.0
 Default is false, when true, Spark 3.3.0 extends the vectorized Parquet reader for complex datatypes.
-Currently, this requires configuration, and it is off (false) by default.
+Currently, this requires configuration, and it is off (false) by default in Spark 3.3.0, it is true in (future) Spark 3.4.0.
 Configuration:
 `--conf spark.sql.parquet.enableNestedColumnVectorizedReader=true`
 
