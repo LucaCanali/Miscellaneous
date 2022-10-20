@@ -194,29 +194,31 @@ Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over prev
 
 - Column indexes
   - column indexes help optimizing the execution of filter predicates under certain circumstances (read further for details)
-  - column indexes are "on by default.
+  - column indexes are **on** by default.
 - Bloom filters
   - bloom filters are also intended to improve execution for certain types of filters
   - bloom filters are **off** by default 
 - Encryption
   - see https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#columnar-encryption 
 
-## Spark Filter pushdown to Parquet improved with column indexes
+## Spark filter pushdown and Parquet column indexes
 
-When scanning Parquet files with Spark using a filter (e.g. a "where" condition in Spark SQL)
-Spark will try to optimize the physical by pushing down the filter
+When scanning Parquet files with Spark using a filter (for example a "where" condition in Spark SQL)
+Spark will try to optimize the physical plan by pushing down the filter to Parquet.
 The techniques available with Parquet files are:
 - Partition pruning if your (set of) files is partitioned, and your filter is on the partitioning column.
-- Predicate push down at the row group level. 
-  - This will use statistics (min and max value) stored for each column
+  - typically this means that your table is stored on a nested folder structure with folder names
+  like <partition_column_name=value>
+- Predicate push down at the Parquet row group level. 
+  - This will use statistics (min and max value) stored for each column with row group granularity (the default size is 128 MB)
   - Column chunk dictionaries may be available with dictionary encoding   
-- Additional structures introduced in Parquet 1.11 are column and offset indexes
+- Additional structures introduced in recent vesions of Parquet 1.11 and available since Spark 3.2.0 are column and offset indexes
   - these store statistics (including min and max values) allowing predicate
-  push down at the page level (that is a much finer granularity than row group).
+  push down at the page level (default size is 1 MB, that is a much finer granularity than the row group).
 - See also in this doc the paragraph on bloom filters and how they can be used to improve the execution of filter predicates
 - Note: the use of column statistics, both at row group and page level (column index), 
-  is typically more effective when data that is stored in Parquet file sorted,
-  as opposed to have large ranges of data for each page or rowgroup.
+  is typically much more effective when data is stored sorted in the Parquet files, this limits the range of values
+  in a given page or row group, as opposed to have to deal with a set of values that span across the full range in the table.
 
 Examples:
 
@@ -238,7 +240,7 @@ see also column index details for column ws_sold_time_sk in the previous paragra
 
 
 2. Same as above but this time we disable the use of column indexes
-(this is also what happens if you use Spark versions older than 3.2.0)
+(this is also what happens if you use Spark versions older than 3.2.0 to read the file)
 ```
 val df =spark.read.option("parquet.filter.columnindex.enabled","false").parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
 val q1 = df.filter("ws_sold_time_sk=28801")
@@ -336,11 +338,13 @@ page-17                   166981               200                340000
 ```
 
 ### Bloom filters in Parquet
-Parquet 1.12 introduces the option to generate and store bloom filters in Parquet metadata on the file footer.
-Bloom filters improve the performance of filter predicates.
-They are particularly useful with high cardinality columns to overcome the limitations
-of using Parquet dictionaries. 
-You can find the details [of bloom filters in Apache Parquet at this link](https://github.com/apache/parquet-format/blob/master/BloomFilter.md)
+Parquet 1.12 introduces the option of generating and storing bloom filters in Parquet metadata on the file footer.
+Bloom filters improve the performance of certain filter predicates.
+They are particularly useful with 
+ - high cardinality columns to overcome the limitations of using Parquet dictionaries.
+ - for filters that seek for values that are likely not in the table/DataFrame, this is because in Bloom filters
+   false positive matches are possible, but false negatives are not.
+You can find the details on [bloom filters in Apache Parquet at this link](https://github.com/apache/parquet-format/blob/master/BloomFilter.md)
 
 **Configuration**
 
