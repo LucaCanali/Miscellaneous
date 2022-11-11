@@ -12,16 +12,16 @@ val spark = SparkSession.
     getOrCreate() 
 
 # Python
-# Optionally choose which python to use 
-import os
-os. environ['PYSPARK_PYTHON']="PATH_EDIT_HERE/python3"
-
 from pyspark.sql import SparkSession
 spark = SparkSession.builder \
         .appName("my app")  \
         .master("local[*]") \
         .config("spark.driver.memory","2g") \
         .getOrCreate()
+
+# Note: optionally choose which Python to use
+# Run this before starting PySpark 
+export PYSPARK_PYTHON=...
 ```
 ---
 - How to use/choose Spark/PySpark home to use from python
