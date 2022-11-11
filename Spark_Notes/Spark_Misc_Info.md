@@ -1,4 +1,4 @@
-## Spark Miscellaneous - Info, commands and tips
+## Spark Miscellaneous - Info, commands, and tips
 
 - Explicitly allocate a Spark Session
 ```
@@ -19,13 +19,8 @@ os. environ['PYSPARK_PYTHON']="PATH_EDIT_HERE/python3"
 from pyspark.sql import SparkSession
 spark = SparkSession.builder \
         .appName("my app")  \
-        .master("yarn") \
+        .master("local[*]") \
         .config("spark.driver.memory","2g") \
-        .config("spark.executor.memory","12g") \
-        .config("spark.executor.cores","4") \
-        .config("spark.executor.instances","8") \
-        .config("spark.dynamicAllocation.enabled","false") \
-        .config("spark.pyspark.python", "PATH_EDIT_HERE/python3") \
         .getOrCreate()
 ```
 ---
@@ -33,18 +28,17 @@ spark = SparkSession.builder \
   - simple way to make import pyspark work in python (`pip install pyspark`)
   - more sophisticated: you want to choose the Spark version and/or (re)use an existing Spark home:
      ```
-        pip install findspark
-        
-        python
+        # pip install findspark
+
         import findspark
-        findspark.init('/home/luca/Spark/spark-3.2.0-bin-hadoop3.2') #set path to SPARK_HOME
+        findspark.init('/home/luca/Spark/spark-3.3.1-bin-hadoop3') #set path to SPARK_HOME
      ```
   - note: when using bin/pyspark, this is not relevant,
     as pyspark from the current SPARK_HOME will be used in this case
 ---
 - Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)
 ```
-bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.17
+bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.22
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
 ```
@@ -1739,4 +1733,27 @@ Note this allows to use a dataframe in SQL without explicitly registering as tem
 mydf = spark.range(10)
 
 spark.sql("select id, {col} from {tbl}", tbl=mydf, col=mydf.id).show()
+```
+---
+PySpark UDF profiler  
+See: https://issues.apache.org/jira/browse/SPARK-37443  
+```
+bin/pyspark --conf spark.python.profile=true
+
+from pyspark.sql.functions import udf
+df = spark.range(10)
+
+@udf("long")
+def add1(x):
+   return x + 1
+
+@udf("long")
+def add2(x):
+   return x + 2
+
+added = df.select(add1("id"), add2("id"), add1("id"))
+added.show()
+added.explain()
+
+sc.show_profiles()
 ```
