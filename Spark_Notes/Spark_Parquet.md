@@ -23,8 +23,8 @@ Links to content:
 ### Basic use of the DataFrame reader and writer with Parquet:
 
 Data formats make an important part of data platforms.
-Apache Parquet is one of the preferred data formats when using Apache Spark for data analysis.
-Apache ORC is another data format that shares many of the characteristics of Parquet,
+Apache Parquet is one of the preferred data file formats when using Apache Spark for data analysis.
+Apache ORC is another data file format that shares many of the characteristics of Parquet,
 see also [Parquet-ORC note](Spark_ORC_vs_Parquet.md)  
 Some key features of Parquet are:
   - it is a columnar format
