@@ -24,11 +24,12 @@ Links to content:
 
 Data formats make an important part of data platforms.
 Apache Parquet is one of the preferred data formats when using Apache Spark for data analysis.
-Apache ORC is another data that shares many of the characteristics of Parquet, see also [Parquet-ORC note](Spark_ORC_vs_Parquet.md).  
+Apache ORC is another data format that shares many of the characteristics of Parquet,
+see also [Parquet-ORC note](Spark_ORC_vs_Parquet.md)  
 Some key features of Parquet are:
   - it is a columnar format
   - allows compression and encoding 
-  - Spark has several optimizations that considerably improve performance when dealing with Parquet, inclusing
+  - Spark has several optimizations that considerably improve performance when dealing with Parquet, including
     - a vectorized reader for Parquet, which
     - support for filter pushdown 
     - support for partitioning and large files
@@ -212,7 +213,7 @@ The techniques available with Parquet files are:
 - Predicate push down at the Parquet row group level. 
   - This will use statistics (min and max value) stored for each column with row group granularity (the default size is 128 MB)
   - Column chunk dictionaries may be available with dictionary encoding   
-- Additional structures introduced in recent vesions of Parquet 1.11 and available since Spark 3.2.0 are column and offset indexes
+- Additional structures introduced in Parquet 1.11 and available since Spark 3.2.0 are column and offset indexes
   - these store statistics (including min and max values) allowing predicate
   push down at the page level (default size is 1 MB, that is a much finer granularity than the row group).
 - See also in this doc the paragraph on bloom filters and how they can be used to improve the execution of filter predicates
