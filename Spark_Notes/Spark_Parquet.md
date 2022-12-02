@@ -1,5 +1,5 @@
 # Apache Spark and Parquet
-Notes on configuration, features, and diagnostics.  
+Notes on configuration, features, and diagnostics when using the Parquet data format with Spark.  
 Links to content:    
 
 - [Intro and basics](#basic-use-of-the-dataframe-reader-and-writer-with-parquet)
@@ -20,7 +20,7 @@ Links to content:
   - [Enable matching schema columns by field id](#enable-matching-schema-columns-by-field-id)
   
 
-### Basic use of the DataFrame reader and writer with Parquet:
+### Basic use of the Apache Spark DataFrame reader and writer with Parquet:
 
 Data formats make an important part of data platforms.
 Apache Parquet is one of the preferred data file formats when using Apache Spark for data analysis.
@@ -40,20 +40,20 @@ Some key features of Parquet are:
 
 ### Notes on the use of Parquet writer
 
-A quick recap of the basics of using Parquet with Spark.
+A quick recap of the basics when using Parquet with Spark.  
 For more details see [Spark datasource documentation](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html)
 ```
 val df = spark.read.parquet("file path") // read
 df.write.mode("overwrite").parquet("file path") // write
 ```
 
-- Example: write using spark and compacting the output to only 1 output file
+- Example: write using Spark and compact the output to only 1 output file.  
 This is how you can write a Spark DataFrame and compact the result to 1 file.  
 Note this will limit performance (number of concurrent tasks), so use with caution, typically only for small files  
 `df.coalesce(1).write.mode("overwrite").parquet("mypath_path/myfile.parquet")`  
   
 
-- Example of several options you can use when writing a DataFrame
+- Example options you can use when writing a DataFrame
 ```
 df.coalesce(N_partitions). // use coalesce or repartition to reduce/increase the number of partitions in the df, 
    sortWithinPartitions(col("optinalSortColumn")).
@@ -96,19 +96,23 @@ from pyspark.sql.functions import col
 ```
   
 ### Parquet configuration options
-There are several configurable parameters for the Parquet data sources, see:
+There are many configurable parameters for the Parquet data sources, see an extensive list at:  
 [link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
 
 Parquet configuration parameters can be used in Spark:
 - as an option to the DataFrame writer and reader, example:`.option("parquet.block.size", 128*1024*1024")`
-- as a Spark configuration parameter, example: `--conf spark.hadoop.parquet.block.size=128*1024*1024`
+- as a Spark configuration parameter
+  - example: `--conf spark.hadoop.parquet.block.size=128*1024*1024`
   - note the prefix `spark.hadoop` when you want to pass a Hadoop configuration via Spark configuration
+  - Spark configuration options can also be set programmatically when creating the Spark Session
+  - Spark configuration can also be stored in the configuration file `spark-defaults.conf`
 
-Support for large files:
+Spark configurations, providing support for large files:  
 - Read: `spark.conf.set("spark.sql.files.maxPartitionBytes", ..)` (default 128 MB) can be used to create multiple partitions out large files with multiple rowgroups
 - Write: `spark.conf.set("spark.sql.files.maxRecordsPerFile", ...)` defaults to 0, use if you need to limit size of files being written
 
-A few notable options for Apache Spark Parquet DataFrame writer:
+A few notable options for Apache Spark Parquet DataFrame writer:  
+(note if you want to use them ad Spark configuration add the prefix `spark.hadoop` as discussed above  
 ```
 .option("compression", compression_type)      // compression algorithm, default when using Spark is snappy, use none for no compression
 .option("parquet.block.size", 128*1024*1024)  // Parquet rowgroup (block) size, default 128 MB
@@ -131,11 +135,12 @@ A few additional options for Apache Spark Parquet DataFrame reader:
 
 As Parquet format evolves, more metadata is made available which is used by the new features.
 The Parquet version used to write a given file is stored in the metadata.  
-If you use Parquet files written with old versions of Spark (say Spark 2.x) and therefore old Parquet libraries,
-you may not be able to use features introduced in recent versions, like column indexes available for Spark DataFrame Parquet writer as of version 3.2.0.  
+If you use Parquet files written with old versions of Spark (say Spark 2.x) and therefore old Parquet library versions,
+you may not be able to use features introduced in recent versions, like column indexes available in
+Spark DataFrame Parquet writer starting from version 3.2.0.    
 When you upgrade Spark you may want to upgrade the metadata in your Parquet files too.
 
-**How to check the Parquet version:**  
+### How to check the Parquet version:**  
 
 - **parquet-cli**
   - example: `hadoop jar parquet-cli/target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile`
@@ -163,13 +168,13 @@ When you upgrade Spark you may want to upgrade the metadata in your Parquet file
 
 **How convert Parquet files to a newer version by copying them using Spark**
  - Use a recent Spark to read the source Parquet files and save them with the Parquet version
-  used by Spark. For example with Spark 3.2.0 you can write files in Parquet version 1.12.1
+  used by Spark. For example with Spark 3.3.1 you can write files in Parquet version 1.12.2
  - Example of how to copy Parquet files for the TPCDS benchmark
 ```
 bin/spark-shell --master yarn --driver-memory 4g --executor-memory 50g --executor-cores 10 --num-executors 20 --conf spark.sql.shuffle.partitions=400
 
 val inpath="/project/spark/TPCDS/tpcds_1500_parquet_1.10.1/"
-val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.12.1/"
+val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.12.2/"
 val compression_type="snappy"
 // val compression_type="zstd"
 
@@ -191,7 +196,7 @@ for (t <- tables_nopartition) {
 ```
 
 ### Parquet 1.12 new features and Spark 3.2
-Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over previous releases.  
+Spark 3.2 and 3.3 deploy Parquet v1.12.x (it's Parquet 1.12.2 with Spark 3.3.1) with a few notable new features over previous releases.  
 
 - Column indexes
   - column indexes help optimizing the execution of filter predicates under certain circumstances (read further for details)
@@ -202,24 +207,27 @@ Spark 3.2 and 3.3 deploy Parquet v1.12 with a few notable new features over prev
 - Encryption
   - see https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#columnar-encryption 
 
-## Spark filter pushdown and Parquet column indexes
+## Spark filter push down and Parquet column indexes
 
 When scanning Parquet files with Spark using a filter (for example a "where" condition in Spark SQL)
 Spark will try to optimize the physical plan by pushing down the filter to Parquet.
 The techniques available with Parquet files are:
 - Partition pruning if your (set of) files is partitioned, and your filter is on the partitioning column.
-  - typically this means that your table is stored on a nested folder structure with folder names
-  like <partition_column_name=value>
+  - typically this means that your table is stored on the storage system (HDFS, S3, etc) on a nested folder 
+  structure with folder names like <partition_column_name=value>
 - Predicate push down at the Parquet row group level. 
-  - This will use statistics (min and max value) stored for each column with row group granularity (the default size is 128 MB)
+  - This will use statistics (min and max value) stored for each column with row group granularity 
+  (the default row group size is 128 MB)
   - Column chunk dictionaries may be available with dictionary encoding   
-- Additional structures introduced in Parquet 1.11 and available since Spark 3.2.0 are column and offset indexes
-  - these store statistics (including min and max values) allowing predicate
-  push down at the page level (default size is 1 MB, that is a much finer granularity than the row group).
-- See also in this doc the paragraph on bloom filters and how they can be used to improve the execution of filter predicates
+- Additional structures introduced in Parquet 1.11 and available when using Spark 3.2.0 and higher are column and offset indexes
+  - these structures store statistics (including min and max values) at the granularity of the Parquet page.
+  They make possible predicate push down at the page level, which has a default size is 1 MB,
+  that is a much finer granularity than the row group size.
 - Note: the use of column statistics, both at row group and page level (column index), 
   is typically much more effective when data is stored sorted in the Parquet files, this limits the range of values
   in a given page or row group, as opposed to have to deal with a set of values that span across the full range in the table.
+- Bloom filters are another structure instroduced recently in Parquet that can be used to improve the execution of filter predicates,
+  more on this later in this document
 
 Examples:
 
@@ -240,8 +248,8 @@ The result is that only 20000 rows are read, this corresponds to a single page,
 see also column index details for column ws_sold_time_sk in the previous paragraph.
 
 
-2. Same as above but this time we disable the use of column indexes
-(this is also what happens if you use Spark versions older than 3.2.0 to read the file)
+2. Same as above but this time we disable the use of column indexes.
+Note this is also what happens if you use Spark versions prior to Spark 3.2.0 (notably Spark 2.x) to read the file.
 ```
 val df =spark.read.option("parquet.filter.columnindex.enabled","false").parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
 val q1 = df.filter("ws_sold_time_sk=28801")
@@ -253,19 +261,20 @@ metrics("numOutputRows").value
 res: Long = 340689
 ```
 The result is that all the rows in the row group (340689 rows) are read as Spark 
-cannot push the filter down to page level.
+cannot push the filter down to the page level.
 
 ### Diagnostics and internals of Column and Offset Indexes
 
 Column indexes are structures that can improve filters performance when reading Parquet files.  
 Column indexes are "on by default".
 Column indexes provide stats (min and max values) on the data at the page granularity, which can be used to evaluate filters. Similar statistics are available
-at rowgroup level, however a rowgroup is typically 128MB in size, while pages are typically 1MB
-(both are configurable, see [Parquet configuration options]((#parquet-configuration-options)).  
+at rowgroup level, however a rowgroup is typically 128MB in size, while pages are typically 1MB.  
+Note: both row group and page sizes are configurable, see [Parquet configuration options]((#parquet-configuration-options)).    
 Column indexes and their sibling, offset indexes, are stored in the footer of Parquet files version 1.11 and above.  
+This has the additional advantage that when scannin Parquet files without applying filters, the footers with the column index data can simply be skipped.  
 See a detailed [description of column and offset indexes in Parquet at this link](https://github.com/apache/parquet-format/blob/master/PageIndex.md)
 
-**Tools to drill down on column index metadata in Parquet files**
+### Tools to drill down on column index metadata in Parquet files**
 
 - **parquet-cli**
   - example: `hadoop jar target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main column-index -c ws_sold_time_sk <path>/parquet112file`
@@ -349,7 +358,7 @@ You can find the details on [bloom filters in Apache Parquet at this link](https
 
 **Configuration**
 
-Two important configurations for writing bloom filters in Parquet files are:
+Important configurations for writing bloom filters in Parquet files are:
 ```
 .option("parquet.bloom.filter.enabled","true") // write bloom filters for all columns, default is false
 .option("parquet.bloom.filter.enabled#column_name", "true") // write bloom filter for the given column
@@ -358,7 +367,7 @@ Two important configurations for writing bloom filters in Parquet files are:
 ```
 
 This is an example of how to read a Parquet file without bloom filter (for example because created with 
-an older version of Spark/Parquet) and add the bloom filter, with additional tuning for one of the columns:
+an older version of Spark/Parquet) and add the bloom filter, with additional tuning of the bloom filter parameters for one of the columns:
 ```
 val df = spark.read.parquet("<path>/web_sales")
 df.coalesce(1).write.option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.expected.ndv#ws_sold_time_sk", 25000).parquet("<myfilepath")
@@ -414,7 +423,8 @@ q1.collect
 FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 8303682 bytes read
 ```
 
-For demo purposes this example disables the use of dictionary and column index filters, which is an optimization that improves filter execution too`.option("parquet.filter.dictionary.enabled","false")`
+For demo purposes this example disables the use of dictionary and column index filters,
+which is an optimization that improves filter execution too`.option("parquet.filter.dictionary.enabled","false")`
 ```
 bin/spark-shell
 
@@ -450,7 +460,8 @@ val bloomFilter=pf.readBloomFilter(columns.get(0))
 ### Vectorized Parquet reader for complex datatypes 
 Feature added in Spark 3.3.0
 Default is false, when true, Spark 3.3.0 extends the vectorized Parquet reader for complex datatypes.
-Currently, this requires configuration, and it is off (false) by default in Spark 3.3.0, it is true in (future) Spark 3.4.0.
+In Spark 3.3.x this requires configuration (see below), as it is off (false) by default 
+In (future) Spark 3.4.0 the configuration will be on by default.
 Configuration:
 `--conf spark.sql.parquet.enableNestedColumnVectorizedReader=true`
 
