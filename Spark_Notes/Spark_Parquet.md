@@ -140,7 +140,7 @@ you may not be able to use features introduced in recent versions, like column i
 Spark DataFrame Parquet writer starting from version 3.2.0.    
 When you upgrade Spark you may want to upgrade the metadata in your Parquet files too.
 
-### How to check the Parquet version:**  
+### How to check the Parquet version:
 
 - **parquet-cli**
   - example: `hadoop jar parquet-cli/target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile`
@@ -226,14 +226,16 @@ The techniques available with Parquet files are:
 - Note: the use of column statistics, both at row group and page level (column index), 
   is typically much more effective when data is stored sorted in the Parquet files, this limits the range of values
   in a given page or row group, as opposed to have to deal with a set of values that span across the full range in the table.
-- Bloom filters are another structure instroduced recently in Parquet that can be used to improve the execution of filter predicates,
+- Bloom filters are another structure introduced in recent versions of Parquet that can be used to improve the execution of filter predicates,
   more on this later in this document
 
-Examples:
+## Example: Spark using Parquet column indexes
 
-Note the Parquet test file used below `parquet112file_sorted` is extracted from the TPCDS benchmark, table `web_sales`
+Test dataset:  
+- The Parquet test file used below `parquet112file_sorted` is extracted from the TPCDS benchmark table `web_sales`
+- the table (parquet file) contains data sorted on the column ws_sold_time_sk
 
-1. Spark reading with a filter that makes use of column and offset indexes:
+1. Fast (reads only 20k rows): Spark reading with a filter that makes use of column and offset indexes:
 ```
 val df =spark.read.parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
 val q1 = df.filter("ws_sold_time_sk=28801")
@@ -248,7 +250,7 @@ The result is that only 20000 rows are read, this corresponds to a single page,
 see also column index details for column ws_sold_time_sk in the previous paragraph.
 
 
-2. Same as above but this time we disable the use of column indexes.
+2. Slow (reads 340k rows): Same as above but this time we disable the use of column indexes.
 Note this is also what happens if you use Spark versions prior to Spark 3.2.0 (notably Spark 2.x) to read the file.
 ```
 val df =spark.read.option("parquet.filter.columnindex.enabled","false").parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
