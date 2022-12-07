@@ -7983,7 +7983,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "hdfs bytes read - Executor $tag_process",
+          "alias": "hdfs bytes written - Executor $tag_process",
           "groupBy": [
             {
               "params": [
