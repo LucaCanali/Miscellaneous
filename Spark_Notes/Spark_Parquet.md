@@ -11,7 +11,7 @@ Links to content:
   - it covers parquet-cli, PyArrow Parquet metadata reader, parquet_tools, and parquet_reader
 - Parquet new features in Spark 3.2 and 3.3
   - [Note on Parquet 1.12 new features](#parquet-112-new-features-and-spark-32)
-  - [Filter pushdown improvement with column indexers](#spark-filter-pushdown-to-parquet-improved-with-column-indexes)
+  - [Filter pushdown improvement with column indexes](#spark-filter-push-down-and-parquet-column-indexes)
   - [Diagnostics: Column and offset indexes](#column-and-offset-indexes)
   - [Bloom filters, configuration, use, and diagnostics](#bloom-filters-in-parquet)
   - [Vectorized Parquet reader for complex datatypes](#vectorized-parquet-reader-for-complex-datatypes)
@@ -264,7 +264,7 @@ The result is that only 20000 rows were processed, this corresponds to processin
 and it is driven by the min-max value statistics in the column index for column ws_sold_time_sk.
 The column index is crated by default in Spark version 3.2.x and higher.
 
-2. **Slow** (reads 340k rows): Same as above but this time we disable the use of column indexes.
+2. **Slow** (reads 2M rows): Same as above but this time we disable the use of column indexes.
 Note this is also what happens if you use Spark versions prior to Spark 3.2.0 (notably Spark 2.x) to read the file.
 ```
 val path = "/home/luca/test/web_sales_sample_parquet1.12.2/"
