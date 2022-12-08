@@ -22,7 +22,7 @@ Links to content:
 
 ### Basic use of the Apache Spark DataFrame reader and writer with Parquet:
 
-Data formats make an important part of data platforms.
+Data formats make for an important part of data platforms.
 Apache Parquet is one of the preferred data file formats when using Apache Spark for data analysis.
 Apache ORC is another data file format that shares many of the characteristics of Parquet,
 see also [Parquet-ORC note](Spark_ORC_vs_Parquet.md)  
@@ -133,12 +133,12 @@ A few additional options for Apache Spark Parquet DataFrame reader:
 
 ### Parquet version discovery
 
-As Parquet format evolves, more metadata is made available which is used by the new features.
-The Parquet version used to write a given file is stored in the metadata.  
-If you use Parquet files written with old versions of Spark (say Spark 2.x) and therefore old Parquet library versions,
-you may not be able to use features introduced in recent versions, like column indexes available in
-Spark DataFrame Parquet writer starting from version 3.2.0.    
-When you upgrade Spark you may want to upgrade the metadata in your Parquet files too.
+As the Parquet format continues to evolve, more metadata is being added to support new features.
+The version of Parquet used to write a given file is stored in its metadata. 
+If you are using Parquet files written with older versions of Spark and the corresponding old Parquet library versions,
+you may not be able to use features introduced in recent versions, such as column indexes available in the Spark DataFrame
+Parquet writer starting from version 3.2.0. When you upgrade Spark, you should also consider upgrading the metadata in
+your Parquet files to take advantage of these new features (see an example of how to do that later in this note).
 
 ### How to check the Parquet version:
 
@@ -168,7 +168,8 @@ When you upgrade Spark you may want to upgrade the metadata in your Parquet file
 
 **How convert Parquet files to a newer version by copying them using Spark**
  - Use a recent Spark to read the source Parquet files and save them with the Parquet version
-  used by Spark. For example with Spark 3.3.1 you can write files in Parquet version 1.12.2
+   used by Spark. For example by using Spark 3.3.1 you can write files in Parquet version 1.12.2
+   This is a brute-force approach, however I am not aware of any other method to "upgrade" Parquet metadata.
  - Example of how to copy Parquet files for the TPCDS benchmark
 ```
 bin/spark-shell --master yarn --driver-memory 4g --executor-memory 50g --executor-cores 10 --num-executors 20 --conf spark.sql.shuffle.partitions=400
@@ -231,39 +232,56 @@ The techniques available with Parquet files are:
 
 ## Example: Spark using Parquet column indexes
 
-Test dataset:  
-- The Parquet test file used below `parquet112file_sorted` is extracted from the TPCDS benchmark table `web_sales`
+Test dataset and preparation:  
+- The Parquet test file used below `parquet112file_sorted` is extracted from the TPCDS benchmark table
+  [web_sales](https://github.com/apache/spark/blob/master/sql/core/src/test/scala/org/apache/spark/sql/TPCDSSchema.scala#L162)
 - the table (parquet file) contains data sorted on the column ws_sold_time_sk
+- it's important that the data is sorted, this groups together values in the filter column "ws_sold_time_sk", if the values
+  are scattered the column index min-max statistics will have a wide range and will not be able to help with skipping data 
+- the sorted dataset has been created using
+  `spark.read.parquet("path + "web_sales_piece.parquet").sort("ws_sold_time_sk").coalesce(1).write.parquet(path + "web_sales_piece_sorted_ws_sold_time_sk.parquet")`
+- Download the test data:
+  - [web_sales_piece.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Parquet_Tests/web_sales_piece.parquet)   
+  - [web_sales_piece_sorted_ws_sold_time_sk.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Parquet_Tests/web_sales_piece_sorted_ws_sold_time_sk.parquet)
 
-1. Fast (reads only 20k rows): Spark reading with a filter that makes use of column and offset indexes:
+Tests:
+1. **Fast** (reads only 20k rows): Spark reading with a filter that makes use of column and offset indexes:
 ```
-val df =spark.read.parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
+val path = "/home/luca/test/web_sales_sample_parquet1.12.2/"
+val df = spark.read.parquet(path + "web_sales_piece_sorted_ws_sold_time_sk.parquet")
+
 val q1 = df.filter("ws_sold_time_sk=28801")
 val plan = q1.queryExecution.executedPlan
 q1.collect
+// Use Spark metrics to see how many rows were processed
+// This is also avilable for the WebUI in graphical form
 val metrics = plan.collectLeaves().head.metrics
 metrics("numOutputRows").value
 
 res: Long = 20000
 ```
-The result is that only 20000 rows are read, this corresponds to a single page,
-see also column index details for column ws_sold_time_sk in the previous paragraph.
+The result is that only 20000 rows were processed, this corresponds to processing just a few pages,
+and it is driven by the min-max value statistics in the column index for column ws_sold_time_sk.
+The column index is crated by default in Spark version 3.2.x and higher.
 
-
-2. Slow (reads 340k rows): Same as above but this time we disable the use of column indexes.
+2. **Slow** (reads 340k rows): Same as above but this time we disable the use of column indexes.
 Note this is also what happens if you use Spark versions prior to Spark 3.2.0 (notably Spark 2.x) to read the file.
 ```
-val df =spark.read.option("parquet.filter.columnindex.enabled","false").parquet("/home/luca/test/testParquetFile/parquet112file_sorted")
+val path = "/home/luca/test/web_sales_sample_parquet1.12.2/"
+// disable the use of column indexes for testing purposes
+val df = spark.read.option("parquet.filter.columnindex.enabled","false").parquet(path + "web_sales_piece_sorted_ws_sold_time_sk.parquet")
+
 val q1 = df.filter("ws_sold_time_sk=28801")
 val plan = q1.queryExecution.executedPlan
 q1.collect
+// Use Spark metrics to see how many rows were processed
 val metrics = plan.collectLeaves().head.metrics
 metrics("numOutputRows").value
 
-res: Long = 340689
+res: Long = 2088626
 ```
-The result is that all the rows in the row group (340689 rows) are read as Spark 
-cannot push the filter down to the page level.
+The result is that all the rows in the row group (2088626 rows in the example) were read as Spark 
+could not push the filter down to the Parquet page level.
 
 ### Diagnostics and internals of Column and Offset Indexes
 
@@ -273,7 +291,7 @@ Column indexes provide stats (min and max values) on the data at the page granul
 at rowgroup level, however a rowgroup is typically 128MB in size, while pages are typically 1MB.  
 Note: both row group and page sizes are configurable, see [Parquet configuration options]((#parquet-configuration-options)).    
 Column indexes and their sibling, offset indexes, are stored in the footer of Parquet files version 1.11 and above.  
-This has the additional advantage that when scannin Parquet files without applying filters, the footers with the column index data can simply be skipped.  
+This has the additional advantage that when scanning Parquet files without applying filters, the footers with the column index data can simply be skipped.  
 See a detailed [description of column and offset indexes in Parquet at this link](https://github.com/apache/parquet-format/blob/master/PageIndex.md)
 
 ### Tools to drill down on column index metadata in Parquet files**
