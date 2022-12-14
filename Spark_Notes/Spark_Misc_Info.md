@@ -1726,9 +1726,9 @@ Note currently does not work to pyspark
 `docker run -it apache/spark /opt/spark/bin/spark-shell`
 
 ----
-Use Python string formatter for PySpark in SQL 
+How Use Python string formatter for PySpark in SQL 
 From Spark 3.3.0  [SPARK-37516](https://github.com/apache/spark/pull/34774)  
-Note this allows to use a dataframe in SQL without explicitly registering as temp view
+Note this allows to use a dataframe in SQL without explicitly registering it as temp view
 ```
 mydf = spark.range(10)
 
@@ -1756,4 +1756,20 @@ added.show()
 added.explain()
 
 sc.show_profiles()
+```
+----
+Helper code/query for splitting a large table in multiple disjoint table chunks of equal size.   
+By using approx_percentile, this works relatively fast with large table and high-cardinality columns.  
+
+```
+// test the idea with this toy code:
+val df = spark.range(100)
+df.selectExpr("approx_percentile(id, array(0.25, 0.5, 0.75))").show()
+
+// A more realistic example would be more something like this:
+
+val df = spark.read.parquet("<PATH>/myLargeTable.parquet")
+// compute the approximate percentile at multiple point, they will provide the "split points" for filtering the table
+// In this example the provided 3 percentile allow to split the table in 4 chunks having very similar number of rows
+df.selectExpr("approx_percentile(<col_to_use>, array(0.25, 0.5, 0.75), 10)").show()
 ```
