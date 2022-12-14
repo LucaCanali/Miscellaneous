@@ -690,17 +690,22 @@ df.select("_metadata.file_path", "_metadata.file_name","_metadata.file_size", "_
 - Repartition / Compact Parquet tables
 
 Parquet table repartition is an operation that you may want to use in the case you ended up with
-multiple small files into each partition folder and want to compact them in a smaller number of larger files.
+multiple small files into each partition folder and want to compact them with one file per partition
 Example:  
 ```
-val df = spark.read.parquet("myPartitionedTableToComapct")
-df.repartition('colPartition1,'colOptionalSubPartition)
-  .write.partitionBy("colPartition1","colOptionalSubPartition")
+val df = spark.read.parquet("myPartitionedTableToCompact")
+df.repartition(col("colPartition1"), col("colOptionalSubPartition"))
+  .write.partitionBy("colPartition1", "colOptionalSubPartition")
   .format("parquet")
   .save("filePathandName")
 ```
+
+Note with this you can also sort data withing the partitions, it can be useful for
+improving filter execution (for example with Parquet column indexes):  
+`.sortWithinPartitions(col("colName"))`
+
 ---
-- Read from Oracle via JDBC, example from [Spark_Oracle_JDBC_Howto.md](Spark_Oracle_JDBC_Howto.md)
+- Read from Oracle via JDBC, see more examples at [Spark_Oracle_JDBC_Howto.md](Spark_Oracle_JDBC_Howto.md)
 ```
 val df = spark.read.format("jdbc").
           option("url", "jdbc:oracle:thin:@dbserver:port/service_name").
