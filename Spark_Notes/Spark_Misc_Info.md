@@ -1731,13 +1731,26 @@ Note currently does not work to pyspark
 `docker run -it apache/spark /opt/spark/bin/spark-shell`
 
 ----
-How Use Python string formatter for PySpark in SQL 
+Parametrized SQL: use the integrated Python string formatter for SQL API in PySpark  
 From Spark 3.3.0  [SPARK-37516](https://github.com/apache/spark/pull/34774)  
-Note this allows to use a dataframe in SQL without explicitly registering it as temp view
+See also [PySpark doc](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html#pyspark.sql.SparkSession.sql)    
+Note this allows to use a dataframe in SQL without explicitly registering it as temporary view  
 ```
-mydf = spark.range(10)
+# parametrized SQL
+spark.sql("SELECT * FROM range(10) WHERE id > {bound1} AND id < {bound2}", bound1=2, bound2=4).show()
 
+# use DF in SQL without the need to register it as a temp table
+mydf = spark.range(10)
 spark.sql("select id, {col} from {tbl}", tbl=mydf, col=mydf.id).show()
+
+# more complex example, from the Spark doc
+spark.sql('''
+  SELECT m1.a, m2.b
+  FROM {table1} m1 INNER JOIN {table2} m2
+  ON m1.key = m2.key
+  ORDER BY m1.a, m2.b''',
+  table1=spark.createDataFrame([(1, "a"), (2, "b")], ["a", "key"]),
+  table2=spark.createDataFrame([(3, "a"), (4, "b"), (5, "b")], ["b", "key"])).show()
 ```
 ---
 PySpark UDF profiler  
