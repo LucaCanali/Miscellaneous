@@ -70,7 +70,7 @@ Parquet table repartition is an operation that you may want to use in the case y
 multiple small files into each partition folder and want to compact them in a smaller number of larger files.
 Example:
 ```
-val df = spark.read.parquet("myPartitionedTableToComapct")
+val df = spark.read.parquet("myPartitionedTableToCompact")
 
 df.repartition(col("colPartition1"),col("colOptionalSubPartition"))
   .write.partitionBy("colPartition1","colOptionalSubPartition")
@@ -85,10 +85,11 @@ at query time
 # apply repartitioning and sort before writing
 from pyspark.sql.functions import col
 (df.
-   repartition(num_partitions], col("repartition_column")).
+   repartition(num_partitions, col("repartition_column")).
    sortWithinPartitions(col("repartition_column"), col("additional_orderby_column")).
    write.
    mode("overwrite").
+   partitionBy("repartition_column")  // optional, if you use this, each partition will be in a deparate folder
    format(data_format).
    option("compression", compression_type).
    save(f"{path}/table_name")
