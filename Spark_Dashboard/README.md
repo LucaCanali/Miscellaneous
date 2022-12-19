@@ -4,7 +4,7 @@ This note outlines the main steps in building a performance dashboard for Apache
 using InfluxDB and Grafana. The dashboard is useful for performance troubleshooting and
 online monitoring. 
 
-### Step 1: Understand the architecture
+### Understand the architecture
 ![Spark metrics dashboard architecture](images/Spark_metrics_dashboard_arch.PNG "Spark metrics dashboard architecture")
 
 Spark is instrumented with the [Dropwizard/Codahale metrics library](https://metrics.dropwizard.io).
@@ -25,14 +25,14 @@ for further details).
 The number of metrics instrumenting Spark components is quite large. 
 You can find a [list of the available metrics at this link](Spark_dropwizard_metrics_info.md)
 
-### Simplified configuration
+### Simplified configuration and rollout
 - See the repository [Spark Dashboard](https://github.com/cerndb/spark-dashboard) for a simplified procedure to 
   configure and run the dashboard using InfluxDB and Grafana.
 - The steps 2-to-4 below detail how to do the configuration if you prefer to install it yourself.
 
-### Step 2: Install and configure InfluxDB
+### Manual config, step 1: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
-  - Note: tested with InfluxDB versions 1.7.3 up to 1.8.4
+  - Note: this requires InfluxDB v1.x as it has a Graphite endpoint which has been removed in InfluxDB 2.x
 - Edit the config file `/etc/influxdb/influxdb.conf` and enable the graphite endpoint
 - **Key step:** Setup the templates configuration
   - This instructs InfluxDB on how to map data received on the graphite endpoint to the measurements and tags in the DB
@@ -41,11 +41,10 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
 - Start/restart influxDB service: systemctl restart influxdb.service
 - If needed, open the firewall port (port 2003 by default)
 
-###  Step 3: Configure Grafana and prepare/import the dashboard
+###  Step 2: Configure Grafana and prepare/import the dashboard
 - Download and install Grafana 
   - download rpm from https://grafana.com/ and start Grafana service: `systemctl start grafana-server.service`
-  - Note: tested using Grafana versions up to 7.5.4 
-  - Note: For the older Spark_Perf_Dashboard_v01 do not use Grafana 7.4.0 or higher
+     - Note: For the older/legacy Spark_Perf_Dashboard_v01 do not use Grafana 7.4.0 or higher
 - Alternative: run Grafana on a Docker container: http://docs.grafana.org/installation/docker/
 - Connect to the Grafana web interface as admin and configure
   - By default: http://yourGrafanaMachine:3000
@@ -57,7 +56,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
     - To get started import the example Grafana dashboard [Spark_Perf_Dashboard_v03](Spark_Perf_Dashboard_v03.json)
     - You can also experiment with building your dashboard or augmenting the example.
 
-### Step 4: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
+### Step 3: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
 There are a few alternative ways on how to do this, depending on your environment and preferences.
 One way is to set a list of configuration parameters of the type `spark.metrics.conf.xx`
 another is editing the file `$SPARK_CONF_DIR/metrics.properties`
@@ -77,7 +76,7 @@ Example:
   --conf "spark.metrics.conf.*.source.jvm.class"="org.apache.spark.metrics.source.JvmSource"
   ```
 
-### Step 5: Start using the dashboard
+### Step 4: Start using the dashboard
 - Run Spark workload, for example run Spark shell (with the configuration parameters of Step 3)
   - An example of workload to see some values populated in the dashboard is to run a query as: 
 `spark.time(sql("select count(*) from range(10000) cross join range(1000) cross join range(100)").show)`
@@ -134,7 +133,7 @@ bin/spark-shell --master local[*] --packages ch.cern.sparkmeasure:spark-measure_
 ```
 
 - Import the [example Grafana dashboard_with_annotations](Spark_Perf_Dashboard_v03_with_annotations.json)
-and setup the data source for annotations to point to the InfluxDB instance.
+and set up the data source for annotations to point to the InfluxDB instance.
   The DB name used by sparkMeasure by default is "sparkmeasure"
  
 - An example of the result is show below (see "Example Grafana dashboard with annotations")
@@ -161,13 +160,13 @@ This query is used as a "trick to the Spark engine" to force a full read of the 
 - Infrastructure and resources allocated: the Spark Session ran on a test YARN cluster,
 using 24 executors, with 5 cores and 12 GB of RAM each.
 
-**Graph: Number of Active Tasks**
+**Graph: Number of Active Tasks**  
 ![Graph: Number of Active Tasks](images/Graph_number_active_tasks.PNG "NUMBER ACTIVE TASKS")  
 One key metric when troubleshooting distributed workloads is the graph of the number of active sessions as a
 function of time.
 This shows how Spark is able to make use of the available cores allocated by the executors.
 
-**Graph: JVM CPU Usage**
+**Graph: JVM CPU Usage**  
 ![Graph: JVM CPU Usage*](images/Graph_JVM_CPU.PNG "JVM CPU USAGE")    
 CPU used by the executors is another key metric to understand the workload.
 The dashboard also reports the [CPU consumed by tasks](images/Graph_task_CPU_time.PNG), the difference is that the
@@ -175,7 +174,7 @@ CPU consumed by the JVM includes for example of the CPU used by Garbage collecti
 Garbage collection can take an important amount of time, in particular when processing large amounts of data
  as in this case, see [Graph: JVM Garbage Collection Time](images/Graph_garbage_collection.PNG "JVM Garbage Collection Time")
 
-**Graph: Time components**
+**Graph: Time components**  
 ![Graph: Time components](images/Graph_Time_components.PNG "Graph: Time components")  
 Decomposing the run time in component run time and/or wait time can be of help to pinpoint the bottlenecks.
 In this graph you can see that CPU time and Garbage collection are important components of the workload.
@@ -183,15 +182,14 @@ A large component of time, between the "executor run time" and the sum of "cpu t
 From previous studies and by knowing the workload, we can take the educated guess that this is the read time.
 See also the discussion at [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example)
 
-**Graph: HDFS read throughput**
+**Graph: HDFS read throughput**  
 ![Graph: HDFS read throughput](images/Graph_HDFS_read_throughput.PNG "HDFS read thorughput")   
 Reading from HDFS is an important part of this workload.
 In this graph you can see the measured throughput using HDFS instrumentation exported via the Spark metrics system
 into the dashboard.
 
-**Example Grafana dashboard with annotations**
+**Example Grafana dashboard with annotations**  
 ![Graph: Grafana dashboard with query start time annotations](images/Spark_dashboard_with_annotations.PNG "Grafana dashboard with annotations")
 This picture shows an example of Grafana dashboard displaying Spark metrics and augmented with annotations
 of query start time. Each vertical line is a new query being run. Details on the query id can be found
 by drilling down on the graphs. Details on how this is run are describe above at "Spark metrics dashboard with query/job/stage annotations".
-
