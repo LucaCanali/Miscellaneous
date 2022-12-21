@@ -4,7 +4,7 @@ This note outlines the main steps in building a performance dashboard for Apache
 using InfluxDB and Grafana. The dashboard is useful for performance troubleshooting and
 online monitoring. 
 
-### Understand the architecture
+## Understand the architecture
 ![Spark metrics dashboard architecture](images/Spark_metrics_dashboard_arch.PNG "Spark metrics dashboard architecture")
 
 Spark is instrumented with the [Dropwizard/Codahale metrics library](https://metrics.dropwizard.io).
@@ -25,13 +25,14 @@ for further details).
 The number of metrics instrumenting Spark components is quite large. 
 You can find a [list of the available metrics at this link](Spark_dropwizard_metrics_info.md)
 
-### Simplified configuration and rollout
+## Simplified configuration and rollout
 - The repository [Spark Dashboard](https://github.com/cerndb/spark-dashboard) has code and instructions to streamline
   the deployment of the Spark dashboard using InfluxDB and Grafana using container technology (the repo
   has a docker implementation and an implementation with helm).
-- The steps detailed below show how to do the configuration if you prefer to install it yourself.
+- The steps below show how to do the configuration if you prefer to install it yourself.
 
-### Manual config, step 1: Install and configure InfluxDB
+## Manual config
+###  Step 1: Install and configure InfluxDB
 - Download and install InfluxDB from https://www.influxdata.com
   - Note: this requires InfluxDB v1.x as it has a Graphite endpoint which has been removed in InfluxDB 2.x
 - Edit the config file `/etc/influxdb/influxdb.conf` and enable the graphite endpoint
@@ -53,7 +54,7 @@ You can find a [list of the available metrics at this link](Spark_dropwizard_met
     - Set the http URL with the correct port number, default: http://yourInfluxdbMachine:8086
     - Set the InfluxDB database name: default is graphite (no password)
   - **Key step:** Prepare the dashboard. 
-    - Get started by importing the example Grafana dashboard [Spark_Perf_Dashboard_v03](Spark_Perf_Dashboard_v03.json)
+    - Get started by importing the example Grafana dashboard [Spark_Perf_Dashboard_v04](Spark_Perf_Dashboard_v04.json)
     - Consider experimenting with building your dashboard or augmenting the example.
 
 ### Step 3: Prepare Spark configuration to sink metrics to graphite endpoint in InfluxDB
