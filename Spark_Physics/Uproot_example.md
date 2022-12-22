@@ -48,7 +48,11 @@ path = "./"
 root_files = glob.glob(path + "*.root")
 
 for name in root_files:
-f = uproot.open(name)
-ttree = f[f.keys()[0].split(';')[0]]
-ak.to_parquet(ttree.arrays(), path + name + ".parquet")
+  f = uproot.open(name)
+  ttree = f[f.keys()[0].split(';')[0]]
+  ak.to_parquet(ttree.arrays(), path + name + ".parquet")
 ```
+
+### Parquet output tuning 
+There are several options available when writing Parquet files, follow the 
+[link to awkward arrays documentation](https://awkward-array.org/doc/main/reference/generated/ak.to_parquet.html)
