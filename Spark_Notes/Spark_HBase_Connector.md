@@ -28,11 +28,7 @@ Two connectors are available, which one should you use?
     ```
     # Download connector jars to HBase region servers $HBASE_HOME/lib
 
-    # From CERN network
-    # wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-    # wget http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-
-    # stopgap copy
+    # Stopgap, files served from my homepage
     wget http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
     wget http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
     
@@ -122,24 +118,14 @@ Two connectors are available, which one should you use?
 - Deploy using Spark 3.x, as in this example:
   ```
   # Customize the JARs path to your filesystem location
-  # For convenience I have also uploaded the jars on a web server
 
-  # From CERN network
-  #JAR1=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-  #JAR2=http://artifactory.cern.ch/beco-thirdparty-local/org/apache/hbase/connectors/spark/hbase-spark-protocol-shaded/1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-
-  # stopgap copy
+  # Stopgap, files served from my homepage
   JAR1 = http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
   JAR2 = http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
 
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
   --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.9
   ```
-
-- Option for **CERN users**: 
-  - deploy from artifactory.cern.ch (only visible from the CERN network):
-  - `bin/spark-shell --master yarn --num-executors 1 --executor-memory 8g --repositories https://artifactory.cern.ch/beco-thirdparty-local --packages org.apache.hbase.connectors.spark:hbase-spark:1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1`
-
 
 ### SQL Filter pushdown and server-side library configuration
 
