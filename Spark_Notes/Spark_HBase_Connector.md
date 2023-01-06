@@ -10,30 +10,32 @@ Two connectors Spark-HBase are available, which one should you use?
     - The Hortonworks connector has been quite popular over the years, with Spark 2.x.
       However, it appears to be no more supported nor updated?
 
-Apache Phoenix and its connector for Apache Spark provide another way to access HBase from Spark:    
+Note: Apache Phoenix and its connector for Apache Spark provide another (alternative) way to access HBase from Spark:    
   - [Apache Phoenix](https://phoenix.apache.org/) is an extra layer on top of HBase, which can simplify SQL-based access to HBase tables
-  - Phoenix needs server-side installation and configuration
+  - Phoenix needs server-side installation and configuration, see documentation
   - A Spark connector for Apache Phoenix is available, see [phoenix-connectors](https://github.com/apache/phoenix-connectors)
-    - the connector for Spark 2 is available on maven central, for Spark 3 I had to compile from source (as of December 2022)
+    - the connector for Spark 2.x is available on maven central, for Spark 3.x I had to compile from source (as of December 2022)
 
-### Configuration and setup
+---
+## Spark-HBase connector configuration and setup
 **Client-side** (Spark) configuration:
   - You need the HBase client configuration file `hbase-site.xml` 
   - This points to the HBase you want to connect to  
   - Copy `hbase-site.xml` to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`)
   
 **Server-side** (HBase region servers) configuration:   
-  - When using the Apache HBase-Spark connector there is also an additional server-side configuration
-  - This requires additional configuration on the HBase server side, in particular one needs to have
+  - This is only needed for the Apache HBase-Spark connector
+  - It requires additional configuration on the HBase server side, in particular one needs to have
     a few jars in the HBase region servers CLASSPATH (for example copy it to /usr/hdp/hbase-2.3/lib: 
     - scala-library
     - hbase-spark
     - hbase-spark-protocol-shaded.
-  - Build the connector from GitHub as explained below (see Spark 3.x section). In this example we use pre-built jars JAR1 and JAR2.
+  - Build the connector from GitHub as explained below (see Spark 3.x section). 
+    In this example we use pre-built jars JAR1 and JAR2.
     ```
     # Download connector jars to HBase region servers $HBASE_HOME/lib
-
     # Stopgap, files served from my homepage
+
     wget http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
     wget http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
     
@@ -111,8 +113,8 @@ Apache Phoenix and its connector for Apache Spark provide another way to access 
 ## Spark 3.x
 
 ###  Use the Apache Spark HBase connector with Spark 3.x
-- Build the connector from the Github repo [Apache HBase Connectors](https://github.com/apache/hbase-connectors)
-  - As of December 2021, the release of hbase-connectors in maven central is only available for Scala 2.11 and cannot be used with Spark 3
+- Build the connector from the GitHub repo [Apache HBase Connectors](https://github.com/apache/hbase-connectors)
+  - As of December 2022, the hbase-connectors releases in maven central are only available for Scala 2.11 and cannot be used with Spark 3.x
   - The connector has to be compiled from source for Spark 3.x, see also [HBASE-25326 Allow hbase-connector to be used with Apache Spark 3.0 ](https://issues.apache.org/jira/browse/HBASE-25326)
   
 - Build as in this example (customize HBase, Spark and Hadoop versions, as needed):
@@ -122,11 +124,10 @@ Apache Phoenix and its connector for Apache Spark provide another way to access 
    
 - Deploy using Spark 3.x, as in this example:
   ```
-  # Customize the JARs path to your filesystem location
-
+  # Build from source or use the pre-compiled JARs
   # Stopgap, files served from my homepage
-  JAR1 = http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-  JAR2 = http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  JAR1=http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  JAR2=http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
 
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
   --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.9
