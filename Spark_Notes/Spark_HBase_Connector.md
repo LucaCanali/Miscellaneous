@@ -2,14 +2,19 @@
 
 ## How to use Spark to access HBase
 
-Spark needs a connector library to access HBase.  
-Two connectors are available, which one should you use?
+Apache Spark needs a connector library to access HBase.  
+Two connectors Spark-HBase are available, which one should you use?
   - **[Apache HBase-Spark connector](https://github.com/apache/hbase-connectors)** 
     - This is  part of the Apache HBase-Spark
   - **[Hortonworks Spark-HBase connector](https://github.com/hortonworks-spark/shc)**
     - The Hortonworks connector has been quite popular over the years, with Spark 2.x.
       However, it appears to be no more supported nor updated?
 
+Apache Phoenix and its connector for Apache Spark provide another way to access HBase from Spark:    
+  - [Apache Phoenix](https://phoenix.apache.org/) is an extra layer on top of HBase, which can simplify SQL-based access to HBase tables
+  - Phoenix needs server-side installation and configuration
+  - A Spark connector for Apache Phoenix is available, see [phoenix-connectors](https://github.com/apache/phoenix-connectors)
+    - the connector for Spark 2 is available on maven central, for Spark 3 I had to compile from source (as of December 2022)
 
 ### Configuration and setup
 **Client-side** (Spark) configuration:
@@ -18,7 +23,7 @@ Two connectors are available, which one should you use?
   - Copy `hbase-site.xml` to `SPARK_CONF_DIR` (default is $SPARK_HOME/conf`)
   
 **Server-side** (HBase region servers) configuration:   
-  - When using the Apache Hbase-Spark connector there is also a server-side configuration
+  - When using the Apache HBase-Spark connector there is also an additional server-side configuration
   - This requires additional configuration on the HBase server side, in particular one needs to have
     a few jars in the HBase region servers CLASSPATH (for example copy it to /usr/hdp/hbase-2.3/lib: 
     - scala-library
