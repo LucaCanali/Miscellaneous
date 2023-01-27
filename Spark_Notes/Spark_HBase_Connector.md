@@ -46,8 +46,8 @@ Notes:
     # Download connector jars to HBase region servers $HBASE_HOME/lib
     # Stopgap, files served from my homepage
 
-    wget http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-    wget http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+    wget http://canali.web.cern.ch/res/hbase-spark-1.0.1-SNAPSHOT_spark331_hbase2415.jar
+    wget http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1-SNAPSHOT_spark331_hbase2415.jar
     
     # Scala library, match the Scala version used for building
     wget https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.15/scala-library-2.12.15.jar
@@ -129,18 +129,18 @@ Notes:
   
 - Build as in this example (customize HBase, Spark and Hadoop versions, as needed):
    ```
-   mvn -Dspark.version=3.1.2 -Dscala.version=2.12.10 -Dscala.binary.version=2.12 -Dhbase.version=2.4.9 -Dhadoop-three.version=3.2.0 -DskipTests clean package
+   mvn -Dspark.version=3.3.1 -Dscala.version=2.12.15 -Dscala.binary.version=2.12 -Dhbase.version=2.4.15 -Dhadoop-three.version=3.3.2 -DskipTests clean package
    ```
    
 - Deploy using Spark 3.x, as in this example:
   ```
   # Build from source or use the pre-compiled JARs
   # Stopgap, files served from my homepage
-  JAR1=http://canali.web.cern.ch/res/hbase-spark-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
-  JAR2=http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1_spark-3.2.0-hbase-2.4.9-cern1_1.jar
+  JAR1=http://canali.web.cern.ch/res/hbase-spark-1.0.1-SNAPSHOT_spark331_hbase2415.jar
+  JAR2=http://canali.web.cern.ch/res/hbase-spark-protocol-shaded-1.0.1-SNAPSHOT_spark331_hbase2415.jar
 
   bin/spark-shell --master yarn --num-executors 1 --executor-cores 2 \
-  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.9
+  --jars $JAR1,$JAR2 --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.15
   ```
 
 ### SQL Filter pushdown and server-side library configuration
