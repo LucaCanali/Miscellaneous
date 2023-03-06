@@ -1,4 +1,4 @@
-## An example of how to convert ROOT files into Apache Parquet using the Pytho9n package uproot
+## An example of how to convert ROOT files into Apache Parquet using the Python packages uproot and awkward arrays
 
 - Prerequisite: download/copy the root the files to be converted
 - For files shared via the XRootD protocol (i.e. URLs like `root://...`)

@@ -10,7 +10,7 @@ See also the blog post [Can High Energy Physics Analysis Profit from Apache Spar
  3. **[ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)**
  4. **[CMS Higgs analysis](#4-cms-higgs-boson-analysis---outreach-style)**
  5. **[LHCb matter antimatter analysis](#5-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)**
- - **[How to convert from ROOT format to Apache Parquet and ORC](#notes-on-reading-and-converting-from-root-format-to-parquet-and-orc)**
+ - **[How to convert from ROOT format to Apache Parquet](#notes-on-reading-and-converting-data-from-root-format)**
  - **[Physics references](#physics-references)**
 ---
 ## 1. Dimuon mass spectrum analysis
@@ -192,7 +192,9 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
      - You can use Spark and the Laurelin library, as detailed in [this note on converting from ROOT format](Spark_Root_data_preparation.md)
      - You can use Python toolkits, notably uproot and awkward arrays, as in this [example of how to use uproot](Uproot_example.md)
   - **How to read files via the XRootD protocol**
-    - This is relevant for CERN opendata, typically shared at URLs like `root://eospublic.cern.ch/..`
+    - This allows to read files from URLs like `root://eospublic.cern.ch/..`
+      - It is used extensively for HEP data and it is relevant for CERN opendata too
+      - CERN users can use this also to access [CERNBOx](https://cernbox.cern.ch)
     - You can use Apache Spark with the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
     - You can use the toolset from [XRootD project](https://xrootd.slac.stanford.edu/)
       - CLI example: `xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .`

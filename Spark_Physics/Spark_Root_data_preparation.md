@@ -1,7 +1,7 @@
 ## Notes on converting from ROOT format
 
 Apache Spark with the Laurelin library (https://github.com/spark-root/laurelin)
-can be used to ingest file in ROOT format and convert them Apache Parquet and Apache ORC.  
+can be used to ingest file in ROOT format and convert them Apache Parquet or Apache ORC, among others.  
 
 The following example uses spark-shell to run the conversion, it can be run, with minor changes, with PySpark too.  
 Laurelin 1.1.1 does not work with Spark 3.x, we use Spark 2.4.8 for this:  
