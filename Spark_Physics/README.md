@@ -10,6 +10,7 @@ See also the blog post [Can High Energy Physics Analysis Profit from Apache Spar
  3. **[ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)**
  4. **[CMS Higgs analysis](#4-cms-higgs-boson-analysis---outreach-style)**
  5. **[LHCb matter antimatter analysis](#5-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)**
+ 6. **[Spark ML on HEP data](#spark-ml-examples-with-physics-data)** 
  - **[How to convert from ROOT format to Apache Parquet](#notes-on-reading-and-converting-data-from-root-format)**
  - **[Physics references](#physics-references)**
 ---
@@ -198,6 +199,11 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
     - You can use Apache Spark with the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
     - You can use the toolset from [XRootD project](https://xrootd.slac.stanford.edu/)
       - CLI example: `xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .`
+
+## Spark ML examples with Physics data
+   - Machine learning is a key technique in HEP, here are a couple of basic examples on how to build classifiers for HEP events
+   - [Higgs boson classifier](https://github.com/cerndb/SparkTraining/blob/master/notebooks/ML_Demo1_Classifier.ipynb)
+   - [Particle classfier](https://github.com/cerndb/SparkDLTrigger/tree/master/Training_Spark_ML)
 
 ## Physics references
 A few links with additional details on the terms and formulas used:  
