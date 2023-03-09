@@ -8,8 +8,8 @@ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 export PATH=/usr/lib/jvm/java-1.8.0-openjdk/bin/:$PATH
 mvn clean package
 ```
---jars spark-tensorflow-connector_2.12-1.11.0.jar
 
+Use it with Spark: `--jars spark-tensorflow-connector_2.12-1.11.0.jar`
 For convenience, I have uploaded the jar to a website, you can use it as follows:
 
 ```
@@ -29,8 +29,13 @@ df.coalesce(numPartitions).write.format("tfrecords").save(outputPath+"myfile.tfr
 For Spark 2.x, the package is available on maven central:
 `bin/spark-shell --packages org.tensorflow:spark-tensorflow-connector_2.11:1.14.0`
 
+### Examples of dataset preparation with TFRecord
+
+- [Convert the full dataset to TFRecord format](https://github.com/cerndb/SparkDLTrigger/blob/master/Datasets_Final_Preparation/DataPrep_extract_and_convert_Full_Dataset_TFRecord.ipynb)
+- [Convert the High Level Features dataset to TFRecord](https://github.com/cerndb/SparkDLTrigger/blob/master/Datasets_Final_Preparation/DataPrep_convert_HLF_Dataset_TFRecord.ipynb)
+
 ### Tensorflow and tf.data
-This is an example of how you can read data in tfrecord format with TensorFlow using the 
+This is an example of how you can read data in TFRecord format with TensorFlow using the 
 tf.data API
 
 ```
