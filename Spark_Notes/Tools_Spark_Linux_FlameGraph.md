@@ -7,18 +7,22 @@ running in the JVM on Linux.
 
 ### JVM/Scala
 **Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**. Build async profiler as in the README:
- - downloaded latest version 
+ - downloaded the latest version 
  - or build from source with `make` (need to `export JAVA_HOME=..` to a valid JDK first) 
  
-**Example** of how to use async profiler for Spark
+**Example** of how to use async-profiler for Spark
  
-- Simple test in local mode (`bin/spark-shell --master local[*]`)
- 
-- First find the pid of the JVM running Spark driver and executor, example:
-```aidl
-$ jps
-171657 SparkSubmit
-```
+- A simple test is with Spark in local mode, as in this configuration driver and executors are all in
+  one JVM on your local machine (`bin/spark-shell --master local[*]`)
+   - First find the pid of the JVM running Spark driver and executor, for example run:
+     ```aidl
+     $ jps
+     171657 SparkSubmit
+     ```
+-  For Spark on clusters, this is more complex
+  - identify one executor to trace (use the Spark WebUI to find the address of the running executors)
+  - connect (via shell) to the executor: for example to a YARN node or k8s container
+  - you need to be able to run async-profiler on the shell
 
 - Profile JVM and create the FlameGraph:
 ```
