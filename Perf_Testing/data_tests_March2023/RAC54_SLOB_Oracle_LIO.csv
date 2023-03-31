@@ -1,0 +1,10 @@
+Num_concurrent_workers, Oracle_Logical_IOPS
+1, 0.81
+2, 1.5  
+4, 2.8  
+6, 4.3  
+8, 5.7  
+10, 6.3 
+12, 7.1
+14, 7.9 
+16, 8.6 
