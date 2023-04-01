@@ -4,7 +4,7 @@ Many workloads in the data management/analytics space are CPU-bound and in parti
 critically on memory access patterns, cache utilization, cache misses and throughput between CPU cores and memory.
 These notes are about tools for CPU/memory performance investigations and troubleshooting in Linux.
 
-- **Backgroud info:** Here some links about the general picture to understand CPU measurements and pitfalls on modern systems
+- **Background info:** Here some links about the general picture to understand CPU measurements and pitfalls on modern systems
   - Brendan Gregg's blog post [CPU Utilization is Wrong](http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html)
   - The presentation: [A Crash Course in Modern Hardware](https://www.youtube.com/watch?v=OFgxAFdxYAQ) by Cliff Click
   - For related topics in the Oracle context, see Tanel Poders's blog post ["RAM is the new disk"](https://blog.tanelpoder.com/2015/11/30/ram-is-the-new-disk-and-how-to-measure-its-performance-part-3-cpu-instructions-cycles/)
@@ -16,7 +16,7 @@ These notes are about tools for CPU/memory performance investigations and troubl
   - [Intel Processor Counter Monitor](https://github.com/opcm/pcm) 
     - Performance monitoring and benchmarking tools suite, originally by Intel.
     - Multiplatform. Default on Linux is to use perf events.
-    - Measures many hardware counter of interest, including memory throughput, IPC, power consumption, cache misses, etc (see examples)
+    - Measures many hardware counters of interest, including memory throughput, IPC, power consumption, cache misses, etc (see examples)
     - See also docs at  [https://software.intel.com/en-us/articles/intel-performance-counter-monitor]
   - [Likwid](https://github.com/RRZE-HPC/likwid) 
     - Performance monitoring and benchmarking tools suite.
@@ -44,13 +44,13 @@ These notes are about tools for CPU/memory performance investigations and troubl
   - [Intel Tuning Guides and Performance Analysis Papers](https://software.intel.com/en-us/articles/processor-specific-performance-analysis-papers)
 ---
 
-## Examples of [Intel Processor Counter Monitor](https://github.com/opcm/pcm)   
-a suite of tools to read from PCM   
+## Examples of using [Intel Processor Counter Monitor](https://github.com/opcm/pcm)   
+Intel Processor Counter Monitor are a suite of tools to read from Intel's PCM performance counters   
 
 `./pcm-memory.x` -> memory throughput measurements
 
-- examples for memory-intensive load generated with Spark reading Parquet 
-- specs of CPU used at: [http://ark.intel.com/products/92981/Intel-Xeon-Processor-E5-2630-v4-25M-Cache-2_20-GHz]
+- Examples taken from the blog entry on [measuring memory-intensive load generated with Spark reading Parquet](https://externaltable.blogspot.com/2017/06/diving-into-spark-and-parquet-workloads.html) 
+- Link to the [specs of CPU used](http://ark.intel.com/products/92981/Intel-Xeon-Processor-E5-2630-v4-25M-Cache-2_20-GHz)
 
 ```
 # ./pcm-memory.x 20
@@ -378,12 +378,11 @@ S1; Consumed DRAM energy units: 31974483; Consumed DRAM Joules: 489.21; DRAM Wat
 ```
 
 ---
-## Example of usage of [likwid](https://github.com/RRZE-HPC/likwid)   
+## Example of how to use [likwid](https://github.com/RRZE-HPC/likwid)   
 a tool to measure performance metrics 
 
 - likwid supports multiple architectures and comes with predefined metrics groups,
 see (https://github.com/RRZE-HPC/likwid/tree/master/groups)
-
 
 ```
 /usr/local/bin/likwid-perfctr -c 0-39 -g MEM -S 10s
@@ -519,10 +518,11 @@ Writer Socket        0       1
             1    103.3       -
 ```
 
-
 ---
 ## Example of stream memory test by John D. McCalpin
+John D. McCalpin's [Stream memory test](https://www.cs.virginia.edu/stream/)
 A tool for benchmarking memory.
+
 ```
 gcc -O3 -fopenmp stream.c -DSTREAM_ARRAY_SIZE=100000000 -o stream_om.100M.O3
 export OMP_NUM_THREADS=40
@@ -571,4 +571,3 @@ The "ocperf" wrapper to "perf" that provides a full core performance counter eve
 Example
 
 ./ocperf.py list
-
