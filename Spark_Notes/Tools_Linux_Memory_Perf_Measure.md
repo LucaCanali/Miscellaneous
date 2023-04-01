@@ -17,12 +17,12 @@ These notes are about tools for CPU/memory performance investigations and troubl
     - Performance monitoring and benchmarking tools suite, originally by Intel.
     - Multiplatform. Default on Linux is to use perf events.
     - Measures many hardware counters of interest, including memory throughput, IPC, power consumption, cache misses, etc (see examples)
-    - See also docs at  [https://software.intel.com/en-us/articles/intel-performance-counter-monitor]
+    - See also [PCM docs](https://software.intel.com/en-us/articles/intel-performance-counter-monitor)
   - [Likwid](https://github.com/RRZE-HPC/likwid) 
     - Performance monitoring and benchmarking tools suite.
     - Works of a variety of Intel and AMD processors.
     - Similarly to Intel's pcm it measures memory throughput, cache misses, IPC, power, etc (see examples)
-    - See doc at [https://github.com/RRZE-HPC/likwid/wiki]
+    - See doc at [likwid doc](https://github.com/RRZE-HPC/likwid/wiki)
   - Also of interest:
     - [pmu-tools by Andi Kleen](https://github.com/andikleen/pmu-tools)
     - [Intel pqos](https://github.com/01org/intel-cmt-cat)
