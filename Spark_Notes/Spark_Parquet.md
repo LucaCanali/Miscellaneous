@@ -98,7 +98,7 @@ from pyspark.sql.functions import col
   
 ### Parquet configuration options
 There are many configurable parameters for the Parquet data sources, see an extensive list at:  
-[link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
+[link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md)
 
 Parquet configuration parameters can be used in Spark:
 - as an option to the DataFrame writer and reader, example:`.option("parquet.block.size", 128*1024*1024")`
