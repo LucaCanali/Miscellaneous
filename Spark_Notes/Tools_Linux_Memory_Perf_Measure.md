@@ -18,6 +18,9 @@ These notes are about tools for CPU/memory performance investigations and troubl
     - Multiplatform. Default on Linux is to use perf events.
     - Measures many hardware counters of interest, including memory throughput, IPC, power consumption, cache misses, etc (see examples)
     - See also [PCM docs](https://software.intel.com/en-us/articles/intel-performance-counter-monitor)
+  - [AMD μProf](https://www.amd.com/en/developer/uprof.html#documentation)
+    - Performance monitoring and benchmarking tools suite by AMD for AMD processors
+    - Measures many hardware counters of interest, including memory throughput, IPC, power consumption, cache misses, etc (see examples)
   - [Likwid](https://github.com/RRZE-HPC/likwid) 
     - Performance monitoring and benchmarking tools suite.
     - Works of a variety of Intel and AMD processors.
@@ -44,16 +47,16 @@ These notes are about tools for CPU/memory performance investigations and troubl
   - [Intel Tuning Guides and Performance Analysis Papers](https://software.intel.com/en-us/articles/processor-specific-performance-analysis-papers)
 ---
 
-## Examples of using [Intel Processor Counter Monitor](https://github.com/opcm/pcm)   
+## Examples of how to use [Intel Processor Counter Monitor](https://github.com/opcm/pcm)   
 Intel Processor Counter Monitor are a suite of tools to read from Intel's PCM performance counters   
 
-`./pcm-memory.x` -> memory throughput measurements
+`pcm-memory` -> memory throughput measurements
 
 - Examples taken from the blog entry on [measuring memory-intensive load generated with Spark reading Parquet](https://externaltable.blogspot.com/2017/06/diving-into-spark-and-parquet-workloads.html) 
 - Link to the [specs of CPU used](http://ark.intel.com/products/92981/Intel-Xeon-Processor-E5-2630-v4-25M-Cache-2_20-GHz)
 
 ```
-# ./pcm-memory.x 20
+# bin/pcm-memory 20
 
  Processor Counter Monitor: Memory Bandwidth Monitoring Utility  ($Format:%ci ID=%h$)
 
@@ -103,10 +106,10 @@ Update every 20 seconds
 
 ```
 
-`pcm.x` ->  memory throughput, QPI utilization, instructions and cycles (IPC), L3 misses,..
+`pcm` ->  memory throughput, QPI utilization, instructions and cycles (IPC), L3 misses,..
 
 ```
-# ./pcm.x 20
+# bin/pcm 20
 
  Processor Counter Monitor  ($Format:%ci ID=%h$)
 
@@ -231,10 +234,10 @@ MEM (GB)->|  READ |  WRITE | CPU energy | DIMM energy
        *    897.87    1055.95     2685.92     952.45
 ```
 
-`pcm-core.x` -> info on instructions, cycles, 
+`pcm-core` -> info on instructions, cycles, 
 
 ```
-# ./pcm-core.x 20
+# bin/pcm-core 20
 Number of physical cores: 20
 Number of logical cores: 40
 Number of online logical cores: 40
@@ -312,10 +315,10 @@ Core | IPC | Instructions  |  Cycles  | Event0  | Event1  | Event2  | Event3
    *   0.63        1064 G     1692 G       0         0         0       426 G
 ```
 
-`./pcm-power.x` -> CPU power usage  info
+`pcm-power` -> CPU power usage  info
 
 ``` 
-# ./pcm-power.x 20
+# bin/pcm-power 20
 
  Processor Counter Monitor  ($Format:%ci ID=%h$)
 
@@ -519,15 +522,91 @@ Writer Socket        0       1
 ```
 
 ---
+
+## Example of how to use [AMD μProf](https://www.amd.com/en/developer/uprof.html#documentation)
+This is a tool to benchmark AMD CPUs and can be used to measure memory performance.  
+Metrics from a Zen3 dual-socket system:
+```
+# /opt/AMDuProf_4.0-341/bin/AMDuProfPcm -m memory -a -d 10 -C
+
+AMDuProfPcm Report
+
+System:,Family(0x19) Model(0x1) Stepping(0x1)
+Number of Sockets :,2
+Number of CCDs :,16
+Number of Cores :,16
+Number of Threads :,32
+SMT Enabled in HW:,True
+SMT Enabled by OS :,True
+Number of Threads sharing L3:,2
+
+CPU Topology:
+Socket, CCD, Core(s)
+0,0, 0 16
+0,1, 1 17
+0,2, 2 18
+0,3, 3 19
+0,4, 4 20
+0,5, 5 21
+0,6, 6 22
+0,7, 7 23
+1,8, 8 24
+1,9, 9 25
+1,10, 10 26
+1,11, 11 27
+1,12, 12 28
+1,13, 13 29
+1,14, 14 30
+1,15, 15 31
+
+Core P0 state frequency (MHz):,3700.000000
+Measured DF Frequency (MHz):,1509.012207
+Multiplex interval (ms):,250
+Version:,4.0.341
+
+Hypervisor Info:
+Hypervisor Enabled:,0
+
+Abbreviation :
+IPC    : Instructions Per CPU Cycle
+CPI    : CPU Cycles Per Instructions
+pti    : Per Thousand Instructions
+ptc    : Per Thousand CPU Cycles
+
+Profile Time: 2023/04/03 10:50:16:024
+DF METRICS
+Metric,Package-0,Package-1
+Total Mem Bw (GB/s),132.53,133.44
+Total Mem RdBw (GB/s),89.68,90.33
+Total Mem WrBw (GB/s),42.84,43.11
+Mem Ch-A RdBw (GB/s),11.18,11.27
+Mem Ch-A WrBw (GB/s),5.33,5.36
+Mem Ch-B RdBw (GB/s),11.18,11.27
+Mem Ch-B WrBw (GB/s),5.33,5.36
+Mem Ch-C RdBw (GB/s),11.24,11.31
+Mem Ch-C WrBw (GB/s),5.38,5.41
+Mem Ch-D RdBw (GB/s),11.24,11.31
+Mem Ch-D WrBw (GB/s),5.38,5.41
+Mem Ch-E RdBw (GB/s),11.16,11.25
+Mem Ch-E WrBw (GB/s),5.34,5.38
+Mem Ch-F RdBw (GB/s),11.16,11.25
+Mem Ch-F WrBw (GB/s),5.34,5.38
+Mem Ch-G RdBw (GB/s),11.26,11.34
+Mem Ch-G WrBw (GB/s),5.37,5.41
+Mem Ch-H RdBw (GB/s),11.26,11.34
+Mem Ch-H WrBw (GB/s),5.37,5.41
+```
+
+---
 ## Example of stream memory test by John D. McCalpin
 John D. McCalpin's [Stream memory test](https://www.cs.virginia.edu/stream/)
 A tool for benchmarking memory.
 
 ```
-gcc -O3 -fopenmp stream.c -DSTREAM_ARRAY_SIZE=100000000 -o stream_om.100M.O3
-export OMP_NUM_THREADS=40
+gcc -O3 -fopenmp stream.c -DSTREAM_ARRAY_SIZE=100000000 -DNTIMES=100 -o stream_om.100M.O3
+export OMP_NUM_THREADS=32
 
-$ ./stream_om.100M.O3
+# ./stream_om.100M.O3 -h
 -------------------------------------------------------------
 STREAM version $Revision: 5.10 $
 -------------------------------------------------------------
@@ -536,16 +615,16 @@ This system uses 8 bytes per array element.
 Array size = 100000000 (elements), Offset = 0 (elements)
 Memory per array = 762.9 MiB (= 0.7 GiB).
 Total memory required = 2288.8 MiB (= 2.2 GiB).
-Each kernel will be executed 10 times.
+Each kernel will be executed 100 times.
  The *best* time for each kernel (excluding the first iteration)
  will be used to compute the reported bandwidth.
 -------------------------------------------------------------
-Number of Threads requested = 40
-Number of Threads counted = 40
+Number of Threads requested = 32
+Number of Threads counted = 32
 -------------------------------------------------------------
 Your clock granularity/precision appears to be 1 microseconds.
-Each test below will take on the order of 25494 microseconds.
-   (= 25494 clock ticks)
+Each test below will take on the order of 5277 microseconds.
+   (= 5277 clock ticks)
 Increase the size of the arrays if this shows that
 you are not getting at least 20 clock ticks per test.
 -------------------------------------------------------------
@@ -554,10 +633,10 @@ For best results, please be sure you know the
 precision of your system timer.
 -------------------------------------------------------------
 Function    Best Rate MB/s  Avg time     Min time     Max time
-Copy:           58167.4     0.028278     0.027507     0.034045
-Scale:          57820.1     0.028069     0.027672     0.030978
-Add:            66598.3     0.036076     0.036037     0.036130
-Triad:          66869.0     0.036157     0.035891     0.038008
+Copy:          307232.8     0.006299     0.005208     0.008302
+Scale:         228798.4     0.007645     0.006993     0.010261
+Add:           254882.5     0.009879     0.009416     0.013862
+Triad:         262814.7     0.012160     0.009132     0.013853
 -------------------------------------------------------------
 Solution Validates: avg error less than 1.000000e-13 on all three arrays
 -------------------------------------------------------------
@@ -570,4 +649,7 @@ The "ocperf" wrapper to "perf" that provides a full core performance counter eve
 
 Example
 
-./ocperf.py list
+`./ocperf.py list`
+
+`./toplev.py -l2 sleep 2`
+
