@@ -53,20 +53,18 @@
 
 - Dynamic tracing and tool kits
 
-  - perf [http://www.brendangregg.com/perf.html]
-  - SystemTap [https://sourceware.org/systemtap/wiki]
-  - bcc/BPF [http://www.brendangregg.com/ebpf.html]
+  - perf http://www.brendangregg.com/perf.html
+  - SystemTap https://sourceware.org/systemtap/wiki
+  - BPF-based performance tools from iovisor
+    - bcc-tools: https://github.com/iovisor/bcc and https://github.com/iovisor/bcc/tree/master/tools
+    - bpftrace: https://github.com/iovisor/bpftrace
+    - see also https://github.com/goldshtn/linux-tracing-workshop
   - Ftrace
-
-- perf-tools [https://github.com/brendangregg/perf-tools]
-  - cachestat, iosnoop, ..., [https://github.com/brendangregg/perf-tools/tree/master/bin]
-  - funccount -d 5 'sys_read'
-  - bin/syscount -cp <pid>
-
-- bcc iovisor [https://github.com/iovisor/bcc]
-  - [https://github.com/iovisor/bcc/tree/master/tools]
-  - [https://github.com/goldshtn/linux-tracing-workshop]
+  - perf-tools [https://github.com/brendangregg/perf-tools]
+    - cachestat, iosnoop, ..., [https://github.com/brendangregg/perf-tools/tree/master/bin]
+    - funccount -d 5 'sys_read'
+    - bin/syscount -cp <pid>
   
 - Misc
-  - [https://github.com/LucaCanali/Linux_tracing_scripts]
+  - https://github.com/LucaCanali/Linux_tracing_scripts
 
