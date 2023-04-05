@@ -1,11 +1,11 @@
 # Flame Graphs for Spark - Tools and Notes
 
-In this note you can find a few links and basic examples relevant to using Flame Graphs for profiling Apache Spark workloads
-running in the JVM on Linux.
+In this note you can find a few links and basic examples relevant to using FlameGraphs for profiling Apache Spark workloads
+running in the JVM on Linux. This covers profiling the JVM and profiling Python (notably for Python UDFs in Spark). 
 
 ## TL;DR use async-profiler for profiling JVM and py-spy for Python
 
-### JVM/Scala
+### Flamegraphs for JVM: Java, Scala (Spark)
 **Link to [async-profiler on GitHub](https://github.com/jvm-profiling-tools/async-profiler)**. Build async profiler as in the README:
  - downloaded the latest version 
  - or build from source with `make` (need to `export JAVA_HOME=..` to a valid JDK first) 
@@ -15,7 +15,7 @@ running in the JVM on Linux.
 - A simple test is with Spark in local mode, as in this configuration driver and executors are all in
   one JVM on your local machine (`bin/spark-shell --master local[*]`)
    - First find the pid of the JVM running Spark driver and executor, for example run:
-     ```aidl
+     ```
      $ jps
      171657 SparkSubmit
      ```
@@ -48,96 +48,10 @@ to set the following and run profiling as root:
 # echo 1 > /proc/sys/kernel/perf_event_paranoid
 # echo 0 > /proc/sys/kernel/kptr_restrict
 ```
-
-### Python
-Profile Python code with flame graph for Spark when using PySpark and Python UDF, for example.
-A good tool to use (for test environments) is [py-spy](https://github.com/benfred/py-spy):  
-Install and example:
-```python
-pip install py-spy
-py-spy record -d 30 -p <pid> --nonblocking -o myFlamegraph.svg
-```
-
-Ideas on how to profile Python UDF: attach the profiler to the pyspark.daemon coordinator with `-s` option
-to profile also the subprocesses spawned by it (the pyspark.daemon workers). 
-Note: I found at least one case where `--nonblocking` was needed, see also [this](https://github.com/benfred/py-spy/issues/83)  
-
-----
-### FlameGraph and async JVM stack profiling for Spark on YARN
-Profile one executor, example:
- - First, find the executor hostname and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
- - With `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
-  on Spark 2.4 is instead `CoarseGrainedExecutorBackend`
- - Profile the executor pid as detailed above 
-
-### FlameGraph and Async JVM stack profiling for Spark on Kubernetes
-How to profile one executor, example:
- - Identify a Kubernetes pod to profile `kubectl get pods [-n namespace]`
- - copy async profiler from driver to executor:
- `kubectl cp async-profiler-1.6 <pod_name_here>:/opt/spark/work-dir`
- - run profiler as described above, in `-e wall` or `-e itimer` mode
- - using async profiler with perf in `-e cpu` mode, is also possible, ideally running from host system/VM, [details here](https://github.com/jvm-profiling-tools/async-profiler#profiling-java-in-a-container) 
-
-## Context
-
-Stack profiling and on-CPU Flame Graph visualization are very useful tools and techniques for investigating CPU workloads.   
-See [Brendan Gregg's page on Flame Graphs](http://www.brendangregg.com/flamegraphs.html)   
-Stack profiling is useful for understanding and drilling-down on "hot code": 
-you can use it to find parts of the code using considerable amount of time and provide insights for troubleshooting.
-FlameGraph visualization of the stack profiles brings additional value, including the fact of 
-being an appealing interface and providing context about the running the code, by showing for example the parent functions.
-
-
-The main challenge that several tools undertake for profiling the JVM is on how to collect stack frames
-precisely and with low overhead.
-For more details related to the challenges of profiling Java/JVM see 
-- [Nitsan Wakart](https://twitter.com/nitsanw): [Using FlameGraphs To Illuminate The JVM by](https://en.wikipedia.org/wiki/DTracehttps://www.youtube.com/watch?v=ugRrFdda_JQ), [Exploring Java Perf Flamegraphs](https://2017.javazone.no/program/56179b136b91458a843383e13fd2efa1)
-- [Brendan Gregg](https://twitter.com/brendangregg): [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166)
-
-## A list of profilers relevant for troubleshooting Spark workloads
-
-- [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) (see also an example of usage later in this note)
-  - based on AsyncGetCallTrace, also has perf events
-  - no need to install agents
-  - info from the tool's author: [Andrei Pangin](https://twitter.com/AndreiPangin): [Everything you wanted to know about Stack Traces and Heap Dumps](https://2017.javazone.no/program/c5577d90198b474cbf14c7867209d96c)
-  - more info at [http://psy-lob-saw.blogspot.ch/2017/02/flamegraphs-intro-fire-for-everyone.html]
-  - see also this [http://blogs.microsoft.co.il/sasha/2017/07/07/profiling-the-jvm-on-linux-a-hybrid-approach/]
-  - issues with sampling at safepoint: [http://psy-lob-saw.blogspot.ch/2016/02/why-most-sampling-java-profilers-are.html]
-- [honest-profiler](https://github.com/jvm-profiling-tools/honest-profiler)
-  - also based on AsyncGetCallTrace, deploy an agent on the JVM, which allows also remote control
-- methods based on Java Flight Recorder
-  - See [https://gist.github.com/kayousterhout/7008a8ebf2babeedc7ce6f8723fd1bf4]
-  - an example at [Apache Spark 2.0 Performance Improvements Investigated With Flame Graphs](https://externaltable.blogspot.com/2016/09/spark-20-performance-improvements.html): 
-  - only measures the JVM
-  - needs also [https://github.com/lhotari/jfr-report-tool]
-  - JFR requires license from Oracle if used in production up to Java version 1.8, for Java 9 and higher
-  I understand with is now in open source
-- Perf
-  - see Brendan's pages and the blog post [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166) 
-  - goes together with [perf-map-agent](https://github.com/jvm-profiling-tools/perf-map-agent)
-  - See also [Profiling JVM applications](https://developer.lightbend.com/blog/2018-04-09-profiling-JVM-applications/)
-  - perf is a great tool, but not my favourite method for Spark profiling, as many functions appear listed as "interpreter" and cannot be resolved by this method.
-  - see also the additional JVM options when running Spark (see examples below)
-- method with the statsd-jvm-profiler
-  - see [Spark in Flames](https://www.paypal-engineering.com/2016/09/08/spark-in-flames-profiling-spark-applications-using-flame-graphs/)
-  - note, I have not yet tested this
-- Methods based on jstack
-  - run [jstack](http://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html) on the executors at low frequency for profiling has high overhead. Typically you would do this manually to get an idea of a stuck process. Similarly one can dump executors stack traces "manually" from the WebUI 
-  - I understood that Facebook used a jstack-sampling method for their flamegraph, as reported at the Spark Summit
-   Europe 2016 talk [Apache Spark at Scale: A 60 TB+ Production Use Case by Sital Kedia](https://www.slideshare.net/SparkSummit/spark-summit-eu-talk-by-sital-kedia) Reported to hav
-- Many commercial tools exist that provide profiling 
-  - the talk [Using FlameGraphs To Illuminate The JVM by Nitsan Wakart](Using FlameGraphs To Illuminate The JVM by Nitsan Wakart)
-    lists some of the tools 
-  - most commercial profiling tool report prole data as trees
-  - most commercial profiling tools use SafePoints rather than AsyncGetCallTrace
-- Distributed Hadoop Profiler [HProfiler](https://github.com/cerndb/Hadoop-Profiler)
-  - based on perf, integrates with YARN and aggregates profiles
-- Python: [py-spy](https://github.com/benfred/py-spy)
----
-## Flame Graph repo:
+## FlameGraph repo:
 Download: ```git clone https://github.com/brendangregg/FlameGraph```
 
-## Example of usage of async-profiler  
+## Example of usage of async-profiler
 
 Download from [https://github.com/jvm-profiling-tools/async-profiler]   
 Build as in the README (export JAVA_HOME and make)  
@@ -201,6 +115,94 @@ Example output:
 [Click here to get the SVG version of the Heap Flamegraph](https://canali.web.cern.ch/canali/svg/Flamegraph_Spark_SQL_read_Parquet_annotated.svg)
 ![Example](https://2.bp.blogspot.com/-Bxaa4CCKfx8/Wc60YfC2A5I/AAAAAAAAFBA/aENnOyv-SjQZFkUUMWwJjahrssmdlpekACLcBGAs/s1600/Flamegraph_HEAP_Spark_SQL_read_Parquet.png)
 
+
+## Python
+Profile Python code with flame graph for Spark when using PySpark and Python UDF, for example.
+A good tool to use (for test environments) is [py-spy](https://github.com/benfred/py-spy):  
+Install and example:
+```python
+pip install py-spy
+py-spy record -d 30 -p <pid> --nonblocking -o myFlamegraph.svg
+```
+
+Ideas on how to profile Python UDF: attach the profiler to the pyspark.daemon coordinator with `-s` option
+to profile also the subprocesses spawned by it (the pyspark.daemon workers). 
+Note: I found at least one case where `--nonblocking` was needed, see also [this](https://github.com/benfred/py-spy/issues/83)  
+
+----
+### FlameGraph and async JVM stack profiling for Spark on YARN
+Profile one executor, example:
+ - First, find the executor hostname and pid, for example use Spark WebUI or run `sc.getExecutorMemoryStatus`  
+ - With `ps` or `jps -v` find pid of the executor process, on YARN Spark 3.0 uses the class`YarnCoarseGrainedExecutorBackend`,
+  on Spark 2.4 is instead `CoarseGrainedExecutorBackend`
+ - Profile the executor pid as detailed above 
+
+### FlameGraph and Async JVM stack profiling for Spark on Kubernetes
+How to profile one executor, example:
+ - Identify a Kubernetes pod to profile `kubectl get pods [-n namespace]`
+ - copy async profiler from driver to executor:
+ `kubectl cp async-profiler-1.6 <pod_name_here>:/opt/spark/work-dir`
+ - run profiler as described above, in `-e wall` or `-e itimer` mode
+ - using async profiler with perf in `-e cpu` mode, is also possible, ideally running from host system/VM, [details here](https://github.com/jvm-profiling-tools/async-profiler#profiling-java-in-a-container) 
+
+----
+
+## Context
+
+Stack profiling and on-CPU Flame Graph visualization are very useful tools and techniques for investigating CPU workloads.   
+See [Brendan Gregg's page on Flame Graphs](http://www.brendangregg.com/flamegraphs.html)   
+Stack profiling is useful for understanding and drilling-down on "hot code": 
+you can use it to find parts of the code using considerable amount of time and provide insights for troubleshooting.
+FlameGraph visualization of the stack profiles brings additional value, including the fact of 
+being an appealing interface and providing context about the running the code, by showing for example the parent functions.
+
+
+The main challenge that several tools undertake for profiling the JVM is on how to collect stack frames
+precisely and with low overhead.
+For more details related to the challenges of profiling Java/JVM see 
+- [Nitsan Wakart](https://twitter.com/nitsanw): [Using FlameGraphs To Illuminate The JVM by](https://en.wikipedia.org/wiki/DTracehttps://www.youtube.com/watch?v=ugRrFdda_JQ), [Exploring Java Perf Flamegraphs](https://2017.javazone.no/program/56179b136b91458a843383e13fd2efa1)
+- [Brendan Gregg](https://twitter.com/brendangregg): [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166)
+
+## A list of profilers relevant for troubleshooting Spark workloads
+
+- [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) (see also an example of usage later in this note)
+  - based on AsyncGetCallTrace, also has perf events
+  - no need to install agents
+  - info from the tool's author: [Andrei Pangin](https://twitter.com/AndreiPangin): [Everything you wanted to know about Stack Traces and Heap Dumps](https://2017.javazone.no/program/c5577d90198b474cbf14c7867209d96c)
+  - more info at [http://psy-lob-saw.blogspot.ch/2017/02/flamegraphs-intro-fire-for-everyone.html]
+  - see also this [http://blogs.microsoft.co.il/sasha/2017/07/07/profiling-the-jvm-on-linux-a-hybrid-approach/]
+  - issues with sampling at safepoint: [http://psy-lob-saw.blogspot.ch/2016/02/why-most-sampling-java-profilers-are.html]
+- [honest-profiler](https://github.com/jvm-profiling-tools/honest-profiler)
+  - also based on AsyncGetCallTrace, deploy an agent on the JVM, which allows also remote control
+- methods based on Java Flight Recorder
+  - See [https://gist.github.com/kayousterhout/7008a8ebf2babeedc7ce6f8723fd1bf4]
+  - an example at [Apache Spark 2.0 Performance Improvements Investigated With Flame Graphs](https://externaltable.blogspot.com/2016/09/spark-20-performance-improvements.html): 
+  - only measures the JVM
+  - needs also [https://github.com/lhotari/jfr-report-tool]
+  - JFR requires license from Oracle if used in production up to Java version 1.8, for Java 9 and higher
+  I understand with is now in open source
+- Perf
+  - see Brendan's pages and the blog post [Java in Flames](https://medium.com/netflix-techblog/java-in-flames-e763b3d32166) 
+  - goes together with [perf-map-agent](https://github.com/jvm-profiling-tools/perf-map-agent)
+  - See also [Profiling JVM applications](https://developer.lightbend.com/blog/2018-04-09-profiling-JVM-applications/)
+  - perf is a great tool, but not my favourite method for Spark profiling, as many functions appear listed as "interpreter" and cannot be resolved by this method.
+  - see also the additional JVM options when running Spark (see examples below)
+- method with the statsd-jvm-profiler
+  - see [Spark in Flames](https://www.paypal-engineering.com/2016/09/08/spark-in-flames-profiling-spark-applications-using-flame-graphs/)
+  - note, I have not yet tested this
+- Methods based on jstack
+  - run [jstack](http://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html) on the executors at low frequency for profiling has high overhead. Typically you would do this manually to get an idea of a stuck process. Similarly one can dump executors stack traces "manually" from the WebUI 
+  - I understood that Facebook used a jstack-sampling method for their flamegraph, as reported at the Spark Summit
+   Europe 2016 talk [Apache Spark at Scale: A 60 TB+ Production Use Case by Sital Kedia](https://www.slideshare.net/SparkSummit/spark-summit-eu-talk-by-sital-kedia) Reported to hav
+- Many commercial tools exist that provide profiling 
+  - the talk [Using FlameGraphs To Illuminate The JVM by Nitsan Wakart](Using FlameGraphs To Illuminate The JVM by Nitsan Wakart)
+    lists some of the tools 
+  - most commercial profiling tool report prole data as trees
+  - most commercial profiling tools use SafePoints rather than AsyncGetCallTrace
+- Distributed Hadoop Profiler [HProfiler](https://github.com/cerndb/Hadoop-Profiler)
+  - based on perf, integrates with YARN and aggregates profiles
+- Python: [py-spy](https://github.com/benfred/py-spy)
+---
 ---
 ## Example of usage of perf for java/Spark:
 
