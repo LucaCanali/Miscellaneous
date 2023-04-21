@@ -601,7 +601,9 @@ Mem Ch-H WrBw (GB/s),5.37,5.41
 ## Example of stream memory test by John D. McCalpin
 John D. McCalpin's [Stream memory test](https://www.cs.virginia.edu/stream/)
 A tool for benchmarking memory.  
-Build from source or download the [binary from this link](canali.web.cern.ch/res/stream_om.100M.O3.gz)
+Source: [stream.c](https://www.cs.virginia.edu/stream/FTP/Code/stream.c)
+Build from source or download the [binary executable from this link](https://canali.web.cern.ch/res/stream_om.100M.O3.gz)
+Note: requires OpenMP (libgomp) to be installed.
 
 ```
 # build options
