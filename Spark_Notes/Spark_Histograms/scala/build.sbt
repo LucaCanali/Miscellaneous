@@ -12,6 +12,6 @@ developers := List(Developer(
 homepage := Some(url("https://github.com/LucaCanali/Miscellaneous/tree/master/Spark_Notes/Spark_Histograms"))
 
 
-scalaVersion := "2.12.15"
+scalaVersion := "2.12.17"
 
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.1"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.4.0"
