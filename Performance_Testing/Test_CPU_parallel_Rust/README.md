@@ -1,9 +1,10 @@
 ## Load testing CPUs with parallel workers, Rust version
+
 This folder contains a Rust program to load test CPUs and measure job execution time as a function of the number of parallel workers.  
-The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
-When run in full mode, the program will run a range of tests and output a cvs file with the measured values.  
-This folder contains also example Data collected with the tool and Jupyter notebooks used to analyze the data.  
-See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
+- The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
+- When run in full mode, the program will run a range of tests and output a cvs file with the measured values.  
+- This folder contains also example data collected with the tool and Jupyter notebooks used to analyze the data.  
+- See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
 
 ### Contents
 - [**test_cpu_parallel**](test_cpu_parallel) a binary executable, compiled from Rust to run the load test.
@@ -17,7 +18,7 @@ See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test
   - Compare CPU load and scalability across systems
   - This is not a benchmark but rather a tool to generate CPU load and measure the scalability of the CPU on a system 
  
-### How to use [test_cpu_parallel](test_cpu_parallel)
+### How to collect CPU load-testing data using [test_cpu_parallel](test_cpu_parallel)
   - Download the [binary executable for Linux from this link](https://canali.web.cern.ch/res/test_cpu_parallel.gz) as in:
     ```
     wget https://canali.web.cern.ch/res/test_cpu_parallel.gz
@@ -66,3 +67,9 @@ OPTIONS:
         --worker_inner_loop_size <worker_inner_loop_size>
             Number of iterations in the inner loop of the worker thread [default: 200000]
 ```
+
+### How to analyze the collected data
+When using the tool in full mode, the output is a CSV file with the measured job execution time as a function of the number of parallel workers.  
+See the [Notebooks](Notebooks) folder for examples of Jupyter notebooks used to analyze the collected data.  
+See the blog entry [CPU Load Testing Exercises: Tools and Analysis for Oracle Database Servers](https://db-blog.web.cern.ch/node/189) for more details
+and examples of the analyses and plots that can be produced with the collected data. 
