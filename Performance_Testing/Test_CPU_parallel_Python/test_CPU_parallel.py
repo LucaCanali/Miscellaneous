@@ -10,8 +10,8 @@ usage = """
 test_CPU_parallel.py - A basic CPU workload generator.
 Luca.Canali@cern.ch - April 2023
 Use this to generate CPU-intensive load on a system, running multiple threads in parallel.
-The tool runs a CPU-burning loop concurrently on the system, with configurable parallelims.
-The tool outputs a measurement of the CPU-burning loop execution time as function of load.
+The tool runs a CPU-burning loop concurrently on the system, with configurable parallelism.
+The tool outputs a measurement of the CPU-burning loop execution time as a function of load.
 Example:
 ./test_CPU_parallel.py --num_workers 2
 

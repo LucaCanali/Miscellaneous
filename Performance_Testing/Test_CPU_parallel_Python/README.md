@@ -6,9 +6,9 @@ This folder contains a Python script to load test CPUs and measure job execution
 - See also the Rust version of the same tool: [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust)
 
 ### Contents
-- [**test_CPU_parallel.py**](test_CPU_parallel.py) the Python script to run the load test.
-- [**Data**](Data) contains example data collected with the tool.
-- [**Notebooks**](Notebooks) contains Jupyter notebooks used to analyze the collected data.
+- [**test_CPU_parallel.py**](test_CPU_parallel.py) - the Python script to run the load test.
+- [**Data**](Data) - example data collected with the tool.
+- [**Notebooks**](Notebooks) -  Jupyter notebooks used to analyze the collected data.
 
 ### Motivations and limitations
   - Use this to generate CPU-intensive load on a system by running multiple threads in parallel.
@@ -26,8 +26,8 @@ test_CPU_parallel.py - A basic CPU workload generator.
 Luca.Canali@cern.ch - April 2023
 
 Use this to generate CPU-intensive load on a system, running multiple threads in parallel.
-The tool runs a CPU-burning loop concurrently on the system, with configurable parallelims.
-The tool outputs a measurement of the CPU-burning loop execution time as function of load.
+The tool runs a CPU-burning loop concurrently on the system, with configurable parallelism.
+The tool outputs a measurement of the CPU-burning loop execution time as a function of load.
 
 Examples:
 # run one-off data collection with 2 concurrent workers

@@ -7,10 +7,10 @@ This folder contains a Rust program to load test CPUs and measure job execution 
 - See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
 
 ### Contents
-- [**test_cpu_parallel**](test_cpu_parallel) a binary executable, compiled from Rust to run the load test.
-- [**Code_test_CPU_Rust**](Code_test_CPU_Rust) contains the source code of the Rust program.
-- [**Data**](Data) contains example data collected with the tool.
-- [**Notebooks**](Notebooks) contains Jupyter notebooks used to analyze the collected data.
+- [**test_cpu_parallel**](test_cpu_parallel) - a binary executable, compiled from Rust to run the load test.
+- [**Code_test_CPU_Rust**](Code_test_CPU_Rust) - the source code of the Rust program.
+- [**Data**](Data) - example data collected with the tool.
+- [**Notebooks**](Notebooks) - Jupyter notebooks used to analyze the collected data.
 
 ### Motivations and limitations
   - Use this to generate CPU-intensive load on a system by running multiple threads in parallel.

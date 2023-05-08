@@ -1,4 +1,4 @@
-# Spark-based CPU and memory-intensive load testkit
+# Spark-based CPU and memory-intensive load test kit
 This folder contains a Spark-based tool to load test CPUs and memory and measure job execution time as a function of the number of parallel workers.
 The workload is implemented in Python using PySpark.
 The workload is CPU and memory intensive and consists of a Spark job reading a large Parquet table in parallel.
@@ -7,11 +7,11 @@ When run in full mode, the program will run a range of tests and output a cvs fi
 This folder contains also example Data collected with the tool and Jupyter notebooks used to analyze the data.
 
 ### Contents
-- [test_Spark_CPU_memory_instrumented.py](test_Spark_CPU_memory_instrumented.py) Python script to run the worklod with Spark and measure job runtime and additional instrumentation.
-- [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar) this is the instrumentation library compiled from [sparkMeasure](https://github.com/LucaCanali/sparkMeasure)
-- [Data](Data) contains example data collected with test_Spark_CPU_memory_instrumented.py
-- [Memory_throughput](Memory_throughput) measurements of CPU-to-memory throughput measured while running test_Spark_CPU_memory_instrumented.py
-- [Notebooks](Notebooks) contains Jupyter notebooks used to analyze the collected data.
+- [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py) - a Python script to run the workload with Spark and measure job runtime and additional instrumentation.
+- [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar) - the instrumentation library for Spark, from [sparkMeasure](https://github.com/LucaCanali/sparkMeasure)
+- [Data](Data) - example performance data measured using test_Spark_CPU_memory.py
+- [Memory speed measurements](Memory_throughput) - measurements of CPU-to-memory throughput measured while running test_Spark_CPU_memory_instrumented.py
+- [Notebooks](Notebooks) - Jupyter notebooks used to analyze the collected data.
 
 ### Motivations and limitations
 - Use this to generate CPU and memory-intensive load on a system by running multiple Spark tasks in parallel.
@@ -41,7 +41,7 @@ val df = spark.read.parquet("PATH/store_sales")
 df.repartition(128,col("ss_sold_date_sk")).sortWithinPartitions("ss_sold_date_sk","ss_sold_time_sk","ss_customer_sk").write.parquet("PATH/store_sales.parquet")
 ```
 
-### How to use [test_Spark_CPU_memory_sparkmeasure.py](test_Spark_CPU_memory_sparkmeasure.py):
+### How to use [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
 ```
 test_Spark_CPU_memory_sparkmeasure.py - A workload generator with Apache Spark, instrumented using sparkMeasure.
 Luca.Canali@cern.ch - April 2023
@@ -50,7 +50,7 @@ Use this to generate CPU-intensive and memory-intensive load on a system.
 The tool runs a PySpark job with concurrent activity by multiple tasks,
 with configurable load.
 Multiple runs are performed and the average execution time is reported.
-The tool outputs measurements of the job execution time as function of load,
+The tool outputs measurements of the job execution time as a function of load,
 as well as metrics from sparkMeasure, notably executor tasks run time, 
 CPU time and Garbage collection time.
 Use full mode to collect speedup measurements and create plots.

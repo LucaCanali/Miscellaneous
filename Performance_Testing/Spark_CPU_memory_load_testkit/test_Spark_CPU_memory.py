@@ -7,18 +7,18 @@ from sparkmeasure import StageMetrics
 import time
 
 usage = """
-test_Spark_CPU_memory_sparkmeasure.py - A workload generator with Apache Spark, instrumented using sparkMeasure.
+test_Spark_CPU_memory.py - A workload generator with Apache Spark, instrumented using sparkMeasure.
 Luca.Canali@cern.ch - April 2023
 Use this to generate CPU-intensive and memory-intensive load on a system.
 The tool runs a PySpark job with concurrent activity by multiple tasks,
 with configurable load.
 Multiple runs are performed and the average execution time is reported.
-The tool outputs measurements of the job execution time as function of load,
+The tool outputs measurements of the job execution time as a function of load,
 as well as metrics from sparkMeasure, notably executor tasks run time, 
 CPU time and Garbage collection time.
 Use full mode to collect speedup measurements and create plots.
 Example:
-./test_Spark_CPU_memory_sparkmeasure.py --num_workers 2
+./test_Spark_CPU_memory.py --num_workers 2
 
 Parameters:
 
@@ -33,7 +33,7 @@ Parameters:
 --sparkmeasure_path - path to the sparkmeasure package, default = ./spark-measure_2.12-0.23.jar
 """
 
-class test_Spark_CPU_memory_sparkmeasure:
+class test_Spark_CPU_memory:
     """test_Spark_CPU_memory_sparkmeasure is a load generator, using Apache Spark and mostly
     stressing CPU and memory access. It is further instrumented using sparkMeasure.
     """
@@ -136,8 +136,8 @@ if __name__ == '__main__':
     parser.add_argument("--sparkmeasure_path", action = 'store', required=False, help="path to the sparkmeasure jar", default="./spark-measure_2.12-0.23.jar")
 
     args = parser.parse_args()
-    test = test_Spark_CPU_memory_sparkmeasure(args.num_workers, args.num_job_execution_loops, args.spark_heap_size,
-                                              args.output_file, args.data_path, args.sparkmeasure_path)
+    test = test_Spark_CPU_memory(args.num_workers, args.num_job_execution_loops, args.spark_heap_size,
+                                 args.output_file, args.data_path, args.sparkmeasure_path)
     if args.full:
         test.test_full()
     else:    
