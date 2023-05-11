@@ -1731,15 +1731,34 @@ Note currently does not work to pyspark
 `docker run -it apache/spark /opt/spark/bin/spark-shell`
 
 ----
-Parametrized SQL: use the integrated Python string formatter for SQL API in PySpark  
-From Spark 3.3.0  [SPARK-37516](https://github.com/apache/spark/pull/34774)  
+Parametrized SQL: use the integrated Python string formatter for SQL API in PySpark and Spark Scala API  
+From Spark 3.3.0 and improved in Spark 3.4.0
 See also [PySpark doc](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html#pyspark.sql.SparkSession.sql)    
 Note this allows to use a dataframe in SQL without explicitly registering it as temporary view  
+
+Python example:
 ```
 # parametrized SQL
+>>> spark.sql("select 1, :aa", {"aa" : 7}).show()
++---+---+
+|  1|  7|
++---+---+
+|  1|  7|
++---+---+
+
+>>> spark.sql("select 1, {aa}", aa=7).show()
++---+---+
+|  1|  7|
++---+---+
+|  1|  7|
++---+---+
+
 spark.sql("SELECT * FROM range(10) WHERE id > {bound1} AND id < {bound2}", bound1=2, bound2=4).show()
 
 # use DF in SQL without the need to register it as a temp table
+df = spark.sql("select id from range(10)")
+spark.sql("select 1 from {aa}", aa=df).show()
+
 mydf = spark.range(10)
 spark.sql("select id, {col} from {tbl}", tbl=mydf, col=mydf.id).show()
 
@@ -1752,6 +1771,19 @@ spark.sql('''
   table1=spark.createDataFrame([(1, "a"), (2, "b")], ["a", "key"]),
   table2=spark.createDataFrame([(3, "a"), (4, "b"), (5, "b")], ["b", "key"])).show()
 ```
+
+Scala example:
+```
+spark.sql("select 1, :aa",Map("aa" -> 7)).show()
+
+scala> spark.sql("select 1, :aa",Map("aa" -> 7)).show()
++---+---+
+|  1|  7|
++---+---+
+|  1|  7|
++---+---+
+```
+
 ---
 PySpark UDF profiler  
 See: https://issues.apache.org/jira/browse/SPARK-37443  
