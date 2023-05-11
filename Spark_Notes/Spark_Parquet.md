@@ -97,23 +97,30 @@ from pyspark.sql.functions import col
 ```
   
 ### Parquet configuration options
-There are many configurable parameters for the Parquet data sources, see an extensive list at:  
+There are many configurable parameters for the Parquet library and Spark data source, see an extensive list at:  
 [link with a list of Apache Parquet parameters](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md)
 
-Parquet configuration parameters can be used in Spark:
-- as an option to the DataFrame writer and reader, example:`.option("parquet.block.size", 128*1024*1024")`
-- as a Spark configuration parameter
+Apache Parquet configuration parameters can be used withe in Spark in multiple ways:
+- 1. as an option to the Spark DataFrame writer and/or reader, example: `.option("parquet.block.size", 128*1024*1024")`
+- 2. as a Spark configuration parameter
   - example: `--conf spark.hadoop.parquet.block.size=128*1024*1024`
   - note the prefix `spark.hadoop` when you want to pass a Hadoop configuration via Spark configuration
   - Spark configuration options can also be set programmatically when creating the Spark Session
   - Spark configuration can also be stored in the configuration file `spark-defaults.conf`
 
-Spark configurations, providing support for large files:  
+In addition, the Spark DataFrame reader and writer have a limited number of options that can be used to configure the Parquet library,
+see [Spark documentation](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#data-source-option) for details.
+
+There are also specific configurations for the Spark DataFrame reader and Writer that apply to reading/writing Parquet too.  
+Some relevant Spark configurations for providing support for large files:  
 - Read: `spark.conf.set("spark.sql.files.maxPartitionBytes", ..)` (default 128 MB) can be used to create multiple partitions out large files with multiple rowgroups
 - Write: `spark.conf.set("spark.sql.files.maxRecordsPerFile", ...)` defaults to 0, use if you need to limit size of files being written
+- `spark.sql.parquet.filterPushdown` (default true) enables/disables filter pushdown
+- `spark.sql.parquet.enableNestedColumnVectorizedReader` (default true) enables/disables vectorized reader for nested Parquet columns
 
-A few notable options for Apache Spark Parquet DataFrame writer:  
-(note if you want to use them ad Spark configuration add the prefix `spark.hadoop` as discussed above  
+Example:  
+- A few notable examples and options applicable to Apache Spark Parquet DataFrame writer:  
+(note if you rather want to use these parameters at the SparkSession level, as Spark configuration (`--conf`) see the discussed above).  
 ```
 .option("compression", compression_type)      // compression algorithm, default when using Spark is snappy, use none for no compression
 .option("parquet.block.size", 128*1024*1024)  // Parquet rowgroup (block) size, default 128 MB
@@ -124,7 +131,7 @@ A few notable options for Apache Spark Parquet DataFrame writer:
 .option("parquet.enable.dictionary","true")   // enable/disable dictionary encoding, default is true 
 ```
 
-A few additional options for Apache Spark Parquet DataFrame reader:
+- A few additional options for Apache Spark Parquet DataFrame reader:
 ```
 .option("parquet.filter.bloom.enabled","true")       // use bloom filters (default: true)
 .option("parquet.filter.columnindex.enabled","true") // use column indexes (default: true)
