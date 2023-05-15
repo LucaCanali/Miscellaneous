@@ -8,10 +8,11 @@ This folder contains notes, scripts and resources related to systems performance
 | [**Oracle CPU load testing using SLOB**](Oracle_load_testing_with_SLOB)          | Example of load testing Oracle using the SLOB test kit.
 | [**Spark-based CPU and memory load testing kit**](Spark_CPU_memory_load_testkit) | Kit for load testing CPU and memory-intensive workloads in parallel using Apache Spark.
 
-Notes:
+  
   
 | Note                                                                                     | Short description
 |------------------------------------------------------------------------------------------| -------------------------------------------------------------------------------------
+| [**How to use the CPU load testing kit**](Tools_Linux_Memory_Perf_Measure.md)            | Blog entry "CPU Load Testing Exercises: Tools and Analysis for Oracle Database Servers"
 | [**Tools for Linux memory performance measurement**](Tools_Linux_Memory_Perf_Measure.md) | Notes on tools for Linux memory performance measurement.
 | [**Tools for Systems performance measurements**](Tools_Linux_OS_CPU_Disk_Network.md)     | Notes on tools for Linux OS, CPU, Disk and Network performance measurement.
 | [**Tools for Flame Graphs**](Tools_FlameGraphs.md)                                       | Notes on tools for Flame Graphs.

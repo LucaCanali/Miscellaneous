@@ -1,4 +1,4 @@
-# Spark-based CPU- and memory-intensive load testing kit
+# CPU and memory-intensive load testing kit using Apache Spark
 This folder contains code and examples of a tool designed for conducting CPU and CPU-to-memory bandwidth load testing.  
 The workload is implemented in Python using PySpark and is designed to be CPU- and memory-intensive.
 It involves executing a Spark job that reads a large Parquet table in parallel, utilizing a user-defined number of parallel workers.  
