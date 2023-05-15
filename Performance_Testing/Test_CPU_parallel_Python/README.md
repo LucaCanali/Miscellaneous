@@ -34,7 +34,7 @@ Examples:
 ./test_CPU_parallel.py --num_workers 2 
 
 # Measure job runtime over a range of concurrent workers and output the results to a CSV file
-./test_CPU_parallel.py --num_workers 8 --fulll --output myout.csv 
+./test_CPU_parallel.py --num_workers 8 --full --output myout.csv 
 
 Parameters:
 
