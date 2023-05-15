@@ -10,7 +10,7 @@ In addition to the code and examples, this folder also includes sample data coll
 - [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py) - a Python script to run the workload with Spark and measure job runtime and additional instrumentation.
 - [Data](Data) - example performance data measured using test_Spark_CPU_memory.py and measurements of CPU-to-memory throughput measured while running test_Spark_CPU_memory_instrumented.py
 - [Notebooks](Notebooks) - Jupyter notebooks used to analyze the collected data.
-- [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar) - the instrumentation library for Spark, from [sparkMeasure](https://github.com/LucaCanali/sparkMeasure)
+- [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar) - instrumentation library for Spark, from [sparkMeasure](https://github.com/LucaCanali/sparkMeasure)
 
 ### Motivations and limitations
 - This tool serves the purpose of generating CPU and memory-intensive load on a system by executing multiple Spark tasks in parallel.
@@ -24,7 +24,7 @@ In addition to the code and examples, this folder also includes sample data coll
   of CPU and memory on a given system.
 
 ### How to prepare the environment:
-Install the PySpark and [sparkMeasure's](https://github.com/LucaCanali/sparkMeasure) Python bindings
+Install [PySpark](https://pypi.org/project/pyspark/) and [sparkMeasure's](https://github.com/LucaCanali/sparkMeasure) Python bindings
 ```
 pip install pyspark
 pip install sparkmeasure
