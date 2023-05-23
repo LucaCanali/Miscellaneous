@@ -10,18 +10,18 @@ Two connectors Spark-HBase are available, which one should you use?
     - The Hortonworks connector has been quite popular over the years, with Spark 2.x.
       However, it appears to be no more supported nor updated?
 
-Notes:
+## Note on Apache Phoenix connector for Spark:
   - [Apache Phoenix](https://phoenix.apache.org/)
     - Apache Phoenix and its connector for Apache Spark provide another (alternative) way to access HBase from Spark    
     - Phoenix is an extra layer on top of HBase, which can simplify SQL-based access to HBase tables
     - Phoenix needs server-side installation and configuration, see documentation
     - A Spark connector for Apache Phoenix is available, see [phoenix-connectors](https://github.com/apache/phoenix-connectors)
       - The connector for Spark 2.x is available on maven central
-      - For Spark 3.x I had to compile from source (as of December 2022).
+      - For Spark 3.x, I used the connector compiled from source (as of May 2023).
       I have uploaded the JAR to a web page, this is an example of how to use it with Spark 3:
        ```
       JAR=http://canali.web.cern.ch/res/phoenix5-spark3-shaded-6.0.0-SNAPSHOT.jar 
-      spark-shell --jars $JAR --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.15
+      spark-shell --jars $JAR --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.17
       
       val df=spark.read.format("org.apache.phoenix.spark").option("table", "TABLE_NAME").option("zkUrl", "zookeeper_url:2181").load()
       ```
