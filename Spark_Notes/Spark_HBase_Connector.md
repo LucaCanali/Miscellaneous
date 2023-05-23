@@ -18,6 +18,7 @@ Two connectors Spark-HBase are available, which one should you use?
     - A Spark connector for Apache Phoenix is available, see [phoenix-connectors](https://github.com/apache/phoenix-connectors)
       - The connector for Spark 2.x is available on maven central
       - For Spark 3.x, I used the connector compiled from source (as of May 2023).
+        - Notes on the build: `mvn package -Dhbase-two.version=2.4.17 -Dhadoop-three-version=3.3.4 -DskipTests`
       I have uploaded the JAR to a web page, this is an example of how to use it with Spark 3:
        ```
       JAR=http://canali.web.cern.ch/res/phoenix5-spark3-shaded-6.0.0-SNAPSHOT.jar 
