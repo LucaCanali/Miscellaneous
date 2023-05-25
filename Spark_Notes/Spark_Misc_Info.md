@@ -988,6 +988,7 @@ spark.sql("""
 ---
 - Load numpy arrays into a Spark Dataframe
   - example load MNIST dataset from keras.datasets 
+  - Note, Spark 3.4 has a new feature to load numpy arrays directly into a Spark Dataframe (see note below)
 ```
 $ pyspark --master local[*] --driver-memory 4g 
 
@@ -1827,3 +1828,25 @@ df.selectExpr("approx_percentile(<col_to_use>, array(0.25, 0.5, 0.75), 10)").sho
 ---
 From spark-shell:  
 `spark.sessionState.conf. <tab>` ->  to see list configurations and query parameter
+
+---
+Spark 3.4 and numpy  
+New feature to create dataframes from numpy arrays
+
+```
+import tensorflow as tf
+import numpy as np
+
+mnist = np.load("/home/luca/.keras/datasets/mnist.npz")
+(x_train, y_train), (x_test, y_test) = (mnist['x_train'], mnist['y_train']), (mnist['x_test'], mnist['y_test'])
+
+>>> x_test.shape
+(10000, 28, 28)
+
+x_test2=x_test.reshape(10000,28*28)
+
+# this is slow and serially executed (1 core)
+df=spark.createDataFrame(x_test2)
+
+the result is a df with 784 columns
+```
