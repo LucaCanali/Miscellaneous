@@ -1823,3 +1823,6 @@ val df = spark.read.parquet("<PATH>/myLargeTable.parquet")
 // In this example the provided 3 percentile allow to split the table in 4 chunks having very similar number of rows
 df.selectExpr("approx_percentile(<col_to_use>, array(0.25, 0.5, 0.75), 10)").show()
 ```
+---
+From spark-shell:  
+`spark.sessionState.conf. <tab>` ->  to see list configurations and query parameter
