@@ -16,8 +16,10 @@ of [Elasticsearch and Kibana](https://www.elastic.co/).
     [elastic and Spark](https://www.elastic.co/guide/en/elasticsearch/hadoop/current/spark.html) 
 
 ## How to build the Spark libraries/jars for OpenSearch
-The is currently (as of January 2023) no official release of the OpenSearch Hadoop and Spark libraries,
-therefore I have built from the GitHub repo:
+See the official releases on GitHub, for example:
+  - https://github.com/opensearch-project/opensearch-hadoop/releases/tag/v1.0.0
+
+Example of how to build from the GitHub repo:
 ```
 git clone https://github.com/opensearch-project/opensearch-hadoop
 cd opensearch-hadoop
