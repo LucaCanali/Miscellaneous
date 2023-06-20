@@ -26,7 +26,7 @@ Download/clone from the repo: `test_Spark_CPU_memory.py` and `spark-measure_2.12
 - The tool uses a large the Parquet table, store_sales, taken from the open source TPCDS benchmark.
 - You can generate the table data from the benchmark scripts or download from the following location:  
 [store_sales](https://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/)    
-- You can download the full store_sales.parquet folder with the following command:  
+- You can download data from the store_sales.parquet folder with the following command (note you will need 190 GB to store the full dataset):  
 `wget -r -np -nH --cut-dirs=2 -R "index.html*" -e robots=off http://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/`
 
 ### 3. Run the testing tool: [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
