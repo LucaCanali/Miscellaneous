@@ -20,6 +20,7 @@ Install [PySpark](https://pypi.org/project/pyspark/) and [sparkMeasure's](https:
 pip install pyspark
 pip install sparkmeasure
 ```
+Download/clone from the repo: `test_Spark_CPU_memory.py` and `spark-measure_2.12-0.23.jar`  
 
 ### 2. Download the test data used for load generation:   
 - The tool uses a large the Parquet table, store_sales, taken from the open source TPCDS benchmark.
