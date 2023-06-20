@@ -30,12 +30,12 @@ Download/clone from the repo: `test_Spark_CPU_memory.py` and `spark-measure_2.12
 `wget -r -np -nH --cut-dirs=2 -R "index.html*" -e robots=off http://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/`
 
 - **Notes:** 
-  - testing is originally intended to run on CPU and "in memory", so you will need to have enough memory to store the data and the
+  - `test_Spark_CPU_memory.py` is originally intended to run on CPU and "in memory", so you will need to have enough memory to store the data and the
   Spark heap. This has been tested on a machine with 512 GB of RAM. If you have less memory, you can reduce the size of the dataset,
   by removing some of the files from the store_sales.parquet folder.
   - when starting tests with a large number of workers the tool can generate a significant load, use this tool rather on test systems.
 
-### 3. Run the testing tool: [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
+### 3. Run [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
 ```
 Examples:
 # run one-off data collection with 2 concurrent workers
