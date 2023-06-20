@@ -1,6 +1,6 @@
 # CPU and memory-intensive load testing kit using Apache Spark
 This folder contains code and examples of a tool designed for conducting CPU and CPU-to-memory bandwidth load testing.  
-The workload is implemented in Python using PySpark and is designed to be CPU- and memory-intensive.
+The workload is implemented using PySpark and is designed to be CPU- and memory-intensive.
 It involves executing a Spark job that reads a large Parquet table in parallel, utilizing a user-defined number of parallel workers.  
 The primary output of the tool is the measurement of the job execution time, which is recorded as a function of the number of parallel workers employed.  
 Running the program in full mode initiates a range of tests and generates a CSV file that contains the recorded values.  
@@ -28,6 +28,12 @@ Download/clone from the repo: `test_Spark_CPU_memory.py` and `spark-measure_2.12
 [store_sales](https://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/)    
 - You can download data from the store_sales.parquet folder with the following command (note you will need 190 GB to store the full dataset):  
 `wget -r -np -nH --cut-dirs=2 -R "index.html*" -e robots=off http://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/`
+
+- **Notes:** 
+  - testing is originally intended to run on CPU and "in memory", so you will need to have enough memory to store the data and the
+  Spark heap. This has been tested on a machine with 512 GB of RAM. If you have less memory, you can reduce the size of the dataset,
+  by removing some of the files from the store_sales.parquet folder.
+  - when starting tests with a large number of workers the tool can generate a significant load, use this tool rather on test systems.
 
 ### 3. Run the testing tool: [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
 ```
