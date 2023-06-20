@@ -35,7 +35,7 @@ Examples:
 # run one-off data collection with 2 concurrent workers
 ./test_Spark_CPU_memory.py --num_workers 2
 
-# Measure job runtime over a range of concurrent workers and output the results to a CSV file
+# Measure job runtime over a ramp of concurrent workers from 1 to 8, and output the results to a CSV file
 ./test_Spark_CPU_memory.py --num_workers 8 --full --output myout.csv 
 
 Usage:
