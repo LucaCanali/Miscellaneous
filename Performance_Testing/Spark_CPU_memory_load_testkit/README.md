@@ -6,44 +6,29 @@ The primary output of the tool is the measurement of the job execution time, whi
 Running the program in full mode initiates a range of tests and generates a CSV file that contains the recorded values.  
 In addition to the code and examples, this folder also includes sample data collected with the tool and Jupyter notebooks used for data analysis purposes.  
 
-### Contents
+## Contents
 - [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py) - a Python script to run the workload with Spark and measure job runtime and additional instrumentation.
 - [Data](Data) - example performance data measured using test_Spark_CPU_memory.py and measurements of CPU-to-memory throughput measured while running test_Spark_CPU_memory_instrumented.py
 - [Notebooks](Notebooks) - Jupyter notebooks used to analyze the collected data.
 - [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar) - instrumentation library for Spark, from [sparkMeasure](https://github.com/LucaCanali/sparkMeasure)
 
-### Motivations and limitations
-- This tool serves the purpose of generating CPU and memory-intensive load on a system by executing multiple Spark tasks in parallel.
-- It's primary objective is to measure the scalability of both CPU and memory bandwidth using the full mode and the accompanying analysis notebooks.
-- It allows for a comparison of CPU and memory throughput scalability across different systems. However, it's important to note that for accurate
-  comparisons, the same versions of Spark, Python, and glibc should be used, as these factors can influence the results.
-- It is important to acknowledge that the measurements obtained with this tool may exhibit some noise, particularly when Garbage Collection interferes.
-  To mitigate this, it is recommended to allocate substantial amounts of memory to the executors and carefully examine the tool's output for metrics
-  such as GC time and CPU time.
-- This tool is not designed as a benchmark. Instead, its primary function is to generate CPU and memory-intensive load and assess the scalability
-  of CPU and memory on a given system.
+## How to use the tool 
 
-### How to prepare the environment:
+### 1. Prepare the environment:
 Install [PySpark](https://pypi.org/project/pyspark/) and [sparkMeasure's](https://github.com/LucaCanali/sparkMeasure) Python bindings
 ```
 pip install pyspark
 pip install sparkmeasure
 ```
 
-**Download the test data used for load generation:**   
+### 2. Download the test data used for load generation:   
 - The tool uses a large the Parquet table, store_sales, taken from the open source TPCDS benchmark.
 - You can generate the table data from the benchmark scripts or download from the following location:  
 [store_sales](https://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/)    
 - You can download the full store_sales.parquet folder with the following command:  
 `wget -r -np -nH --cut-dirs=2 -R "index.html*" -e robots=off http://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/store_sales.parquet/`
 
-- Note the store_sales table has been post processed using Spark as follows:
-```
-val df = spark.read.parquet("PATH/store_sales")
-df.repartition(128,col("ss_sold_date_sk")).sortWithinPartitions("ss_sold_date_sk","ss_sold_time_sk","ss_customer_sk").write.parquet("PATH/store_sales.parquet")
-```
-
-### How to use [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
+### 3. Run the testing tool: [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py):
 ```
 Examples:
 # run one-off data collection with 2 concurrent workers
@@ -80,4 +65,23 @@ Parameters:
 --spark_heap_size - Spark heap size, default = 64g
 --data_path - path to the parquet files used for testing, default = ./store_sales.parquet
 --sparkmeasure_path - path to the sparkmeasure package, default = ./spark-measure_2.12-0.23.jar
-"""
+```
+
+### Motivations and limitations
+- This tool serves the purpose of generating CPU and memory-intensive load on a system by executing multiple Spark tasks in parallel.
+- It's primary objective is to measure the scalability of both CPU and memory bandwidth using the full mode and the accompanying analysis notebooks.
+- It allows for a comparison of CPU and memory throughput scalability across different systems. However, it's important to note that for accurate
+  comparisons, the same versions of Spark, Python, and glibc should be used, as these factors can influence the results.
+- It is important to acknowledge that the measurements obtained with this tool may exhibit some noise, particularly when Garbage Collection interferes.
+  To mitigate this, it is recommended to allocate substantial amounts of memory to the executors and carefully examine the tool's output for metrics
+  such as GC time and CPU time.
+- This tool is not designed as a benchmark. Instead, its primary function is to generate CPU and memory-intensive load and assess the scalability
+  of CPU and memory on a given system.
+- Note the store_sales table has been post processed using Spark as follows:
+   ```
+   val df = spark.read.parquet("PATH/store_sales")
+   df.repartition(128,col("ss_sold_date_sk")).sortWithinPartitions("ss_sold_date_sk","ss_sold_time_sk","ss_customer_sk").write.parquet("PATH/store_sales.parquet")
+   ```
+
+Contact: Luca.Canali@cern.ch
+
