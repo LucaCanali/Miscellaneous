@@ -88,9 +88,9 @@ class test_Spark_CPU_memory:
             executorCpuTime = round(metrics.get('executorCpuTime')/1000,2)
             jvmGCTime = round(metrics.get('jvmGCTime')/1000,2)
             print(f"Job finished, job_run_time (elapsed time) = {round(delta_time,2)} sec")
-            print(f"...executorRunTime = {executorRunTime} sec")
-            print(f"...executorCpuTime = {executorCpuTime} sec")
-            print(f"...sum(jvmGCTime) = {jvmGCTime} sec")
+            print(f"...executors Run Time = {executorRunTime} sec")
+            print(f"...executors Cpu Time = {executorCpuTime} sec")
+            print(f"...executors jvmGC Time = {jvmGCTime} sec")
             timing.append({'num_workers':load, 'job_run_time':delta_time, 'executorRunTime':executorRunTime,
                           'executorCpuTime':executorCpuTime, 'jvmGCTime':jvmGCTime})
         spark.stop()
