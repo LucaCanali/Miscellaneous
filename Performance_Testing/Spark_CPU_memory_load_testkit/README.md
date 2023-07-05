@@ -84,6 +84,10 @@ Parameters:
   such as GC time and CPU time.
 - This tool is not designed as a benchmark. Instead, its primary function is to generate CPU and memory-intensive load and assess the scalability
   of CPU and memory on a given system.
+- The key part of the tool is about scanning Parquet data, this works in Spark because:
+  - `spark.sql.parquet.filterPushdown=false` forces Spark to read all the data from the Parquet files
+  - [SPARK-42256](https://issues.apache.org/jira/browse/SPARK-42256) The current implementation of Spark requires the read values to materialize
+    (i.e. de-compress, de-code, etc...) onto memory first before applying the filters.
 - Note the store_sales table has been post processed using Spark as follows:
    ```
    val df = spark.read.parquet("PATH/store_sales")
