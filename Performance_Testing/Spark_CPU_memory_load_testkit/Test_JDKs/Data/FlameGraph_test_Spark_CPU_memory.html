@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<style>
+	body {margin: 0; padding: 10px; background-color: #ffffff}
+	h1 {margin: 5px 0 0 0; font-size: 18px; font-weight: normal; text-align: center}
+	header {margin: -24px 0 5px 0; line-height: 24px}
+	button {font: 12px sans-serif; cursor: pointer}
+	p {margin: 5px 0 5px 0}
+	a {color: #0366d6}
+	#hl {position: absolute; display: none; overflow: hidden; white-space: nowrap; pointer-events: none; background-color: #ffffe0; outline: 1px solid #ffc000; height: 15px}
+	#hl span {padding: 0 3px 0 3px}
+	#status {overflow: hidden; white-space: nowrap}
+	#match {overflow: hidden; white-space: nowrap; display: none; float: right; text-align: right}
+	#reset {cursor: pointer}
+	#canvas {width: 100%; height: 880px}
+</style>
+</head>
+<body style='font: 12px Verdana, sans-serif'>
+<h1>FlameGraph while running test_Spark_CPU_memory.py</h1>
+<header style='text-align: left'><button id='reverse' title='Reverse'>&#x1f53b;</button>&nbsp;&nbsp;<button id='search' title='Search'>&#x1f50d;</button></header>
+<header style='text-align: right'>Produced by <a href='https://github.com/jvm-profiling-tools/async-profiler'>async-profiler</a></header>
+<canvas id='canvas'></canvas>
+<div id='hl'><span></span></div>
+<p id='match'>Matched: <span id='matchval'></span> <span id='reset' title='Clear'>&#x274c;</span></p>
+<p id='status'>&nbsp;</p>
+<script>
+	// Copyright 2020 Andrei Pangin
+	// Licensed under the Apache License, Version 2.0.
+	'use strict';
+	var root, rootLevel, px, pattern;
+	var reverse = false;
+	const levels = Array(55);
+	for (let h = 0; h < levels.length; h++) {
+		levels[h] = [];
+	}
+
+	const canvas = document.getElementById('canvas');
+	const c = canvas.getContext('2d');
+	const hl = document.getElementById('hl');
+	const status = document.getElementById('status');
+
+	const canvasWidth = canvas.offsetWidth;
+	const canvasHeight = canvas.offsetHeight;
+	canvas.style.width = canvasWidth + 'px';
+	canvas.width = canvasWidth * (devicePixelRatio || 1);
+	canvas.height = canvasHeight * (devicePixelRatio || 1);
+	if (devicePixelRatio) c.scale(devicePixelRatio, devicePixelRatio);
+	c.font = document.body.style.font;
+
+	const palette = [
+		[0xb2e1b2, 20, 20, 20],
+		[0x50e150, 30, 30, 30],
+		[0x50cccc, 30, 30, 30],
+		[0xe15a5a, 30, 40, 40],
+		[0xc8c83c, 30, 30, 10],
+		[0xe17d00, 30, 30,  0],
+		[0xcce880, 20, 20, 20],
+	];
+
+	function getColor(p) {
+		const v = Math.random();
+		return '#' + (p[0] + ((p[1] * v) << 16 | (p[2] * v) << 8 | (p[3] * v))).toString(16);
+	}
+
+	function f(level, left, width, type, title, inln, c1, int) {
+		levels[level].push({left: left, width: width, color: getColor(palette[type]), title: title,
+			details: (int ? ', int=' + int : '') + (c1 ? ', c1=' + c1 : '') + (inln ? ', inln=' + inln : '')
+		});
+	}
+
+	function samples(n) {
+		return n === 1 ? '1 sample' : n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' samples';
+	}
+
+	function pct(a, b) {
+		return a >= b ? '100' : (100 * a / b).toFixed(2);
+	}
+
+	function findFrame(frames, x) {
+		let left = 0;
+		let right = frames.length - 1;
+
+		while (left <= right) {
+			const mid = (left + right) >>> 1;
+			const f = frames[mid];
+
+			if (f.left > x) {
+				right = mid - 1;
+			} else if (f.left + f.width <= x) {
+				left = mid + 1;
+			} else {
+				return f;
+			}
+		}
+
+		if (frames[left] && (frames[left].left - x) * px < 0.5) return frames[left];
+		if (frames[right] && (x - (frames[right].left + frames[right].width)) * px < 0.5) return frames[right];
+
+		return null;
+	}
+
+	function search(r) {
+		if (r === true && (r = prompt('Enter regexp to search:', '')) === null) {
+			return;
+		}
+
+		pattern = r ? RegExp(r) : undefined;
+		const matched = render(root, rootLevel);
+		document.getElementById('matchval').textContent = pct(matched, root.width) + '%';
+		document.getElementById('match').style.display = r ? 'inherit' : 'none';
+	}
+
+	function render(newRoot, newLevel) {
+		if (root) {
+			c.fillStyle = '#ffffff';
+			c.fillRect(0, 0, canvasWidth, canvasHeight);
+		}
+
+		root = newRoot || levels[0][0];
+		rootLevel = newLevel || 0;
+		px = canvasWidth / root.width;
+
+		const x0 = root.left;
+		const x1 = x0 + root.width;
+		const marked = [];
+
+		function mark(f) {
+			return marked[f.left] >= f.width || (marked[f.left] = f.width);
+		}
+
+		function totalMarked() {
+			let total = 0;
+			let left = 0;
+			Object.keys(marked).sort(function(a, b) { return a - b; }).forEach(function(x) {
+				if (+x >= left) {
+					total += marked[x];
+					left = +x + marked[x];
+				}
+			});
+			return total;
+		}
+
+		function drawFrame(f, y, alpha) {
+			if (f.left < x1 && f.left + f.width > x0) {
+				c.fillStyle = pattern && f.title.match(pattern) && mark(f) ? '#ee00ee' : f.color;
+				c.fillRect((f.left - x0) * px, y, f.width * px, 15);
+
+				if (f.width * px >= 21) {
+					const chars = Math.floor(f.width * px / 7);
+					const title = f.title.length <= chars ? f.title : f.title.substring(0, chars - 2) + '..';
+					c.fillStyle = '#000000';
+					c.fillText(title, Math.max(f.left - x0, 0) * px + 3, y + 12, f.width * px - 6);
+				}
+
+				if (alpha) {
+					c.fillStyle = 'rgba(255, 255, 255, 0.5)';
+					c.fillRect((f.left - x0) * px, y, f.width * px, 15);
+				}
+			}
+		}
+
+		for (let h = 0; h < levels.length; h++) {
+			const y = reverse ? h * 16 : canvasHeight - (h + 1) * 16;
+			const frames = levels[h];
+			for (let i = 0; i < frames.length; i++) {
+				drawFrame(frames[i], y, h < rootLevel);
+			}
+		}
+
+		return totalMarked();
+	}
+
+	canvas.onmousemove = function() {
+		const h = Math.floor((reverse ? event.offsetY : (canvasHeight - event.offsetY)) / 16);
+		if (h >= 0 && h < levels.length) {
+			const f = findFrame(levels[h], event.offsetX / px + root.left);
+			if (f) {
+				if (f != root) getSelection().removeAllRanges();
+				hl.style.left = (Math.max(f.left - root.left, 0) * px + canvas.offsetLeft) + 'px';
+				hl.style.width = (Math.min(f.width, root.width) * px) + 'px';
+				hl.style.top = ((reverse ? h * 16 : canvasHeight - (h + 1) * 16) + canvas.offsetTop) + 'px';
+				hl.firstChild.textContent = f.title;
+				hl.style.display = 'block';
+				canvas.title = f.title + '\n(' + samples(f.width) + f.details + ', ' + pct(f.width, levels[0][0].width) + '%)';
+				canvas.style.cursor = 'pointer';
+				canvas.onclick = function() {
+					if (f != root) {
+						render(f, h);
+						canvas.onmousemove();
+					}
+				};
+				status.textContent = 'Function: ' + canvas.title;
+				return;
+			}
+		}
+		canvas.onmouseout();
+	}
+
+	canvas.onmouseout = function() {
+		hl.style.display = 'none';
+		status.textContent = '\xa0';
+		canvas.title = '';
+		canvas.style.cursor = '';
+		canvas.onclick = '';
+	}
+
+	canvas.ondblclick = function() {
+		getSelection().selectAllChildren(hl);
+	}
+
+	document.getElementById('reverse').onclick = function() {
+		reverse = !reverse;
+		render();
+	}
+
+	document.getElementById('search').onclick = function() {
+		search(true);
+	}
+
+	document.getElementById('reset').onclick = function() {
+		search(false);
+	}
+
+	window.onkeydown = function() {
+		if (event.ctrlKey && event.keyCode === 70) {
+			event.preventDefault();
+			search(true);
+		} else if (event.keyCode === 27) {
+			search(false);
+		}
+	}
+
+f(0,0,58239,3,'all')
+f(1,53,53752,1,'java/lang/Thread.run')
+f(2,53,53752,1,'java/util/concurrent/ThreadPoolExecutor$Worker.run',0,0,1)
+f(3,54,53751,1,'java/util/concurrent/ThreadPoolExecutor.runWorker',0,0,3)
+f(4,65,53569,1,'org/apache/spark/executor/Executor$TaskRunner.run',0,0,5)
+f(5,230,53400,1,'org/apache/spark/util/Utils$.tryWithSafeFinally')
+f(6,230,53391,1,'org/apache/spark/executor/Executor$TaskRunner$$Lambda$1634/1672032552.apply')
+f(7,230,53391,1,'org/apache/spark/executor/Executor$TaskRunner.$anonfun$run$3',0,0,1)
+f(8,231,53390,1,'org/apache/spark/scheduler/Task.run',0,0,1)
+f(9,234,53362,1,'org/apache/spark/TaskContext.runTaskWithListeners')
+f(10,236,53360,1,'org/apache/spark/scheduler/ResultTask.runTask')
+f(11,241,53214,1,'org/apache/spark/rdd/RDD.iterator')
+f(12,241,53214,1,'org/apache/spark/rdd/RDD.computeOrReadCheckpoint')
+f(13,241,53214,1,'org/apache/spark/rdd/MapPartitionsRDD.compute')
+f(14,241,53206,1,'org/apache/spark/rdd/RDD$$Lambda$2854/315195349.apply')
+f(15,241,53206,1,'org/apache/spark/rdd/RDD.$anonfun$mapPartitionsInternal$2$adapted')
+f(16,241,53206,1,'org/apache/spark/rdd/RDD.$anonfun$mapPartitionsInternal$2')
+f(17,241,53206,1,'org/apache/spark/sql/execution/SparkPlan$$Lambda$2857/1637087391.apply')
+f(18,241,53206,1,'org/apache/spark/sql/execution/SparkPlan.$anonfun$getByteArrayRdd$1')
+f(19,275,53161,1,'org/apache/spark/sql/execution/WholeStageCodegenExec$$anon$1.hasNext')
+f(20,275,53161,1,'org/apache/spark/sql/execution/BufferedRowIterator.hasNext')
+f(21,275,53161,1,'org/apache/spark/sql/catalyst/expressions/GeneratedClass$GeneratedIteratorForCodegenStage1.processNext',0,21,13)
+f(22,1798,49891,1,'org/apache/spark/sql/catalyst/expressions/GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$',0,2,1)
+f(23,1838,49698,1,'org/apache/spark/sql/execution/FileSourceScanExec$$anon$1.hasNext')
+f(24,1838,49698,1,'org/apache/spark/sql/execution/datasources/FileScanRDD$$anon$1.hasNext',0,1,0)
+f(25,1839,6994,1,'org/apache/spark/sql/execution/datasources/FileScanRDD$$anon$1.nextIterator',0,1,0)
+f(26,1856,6538,1,'org/apache/spark/sql/execution/datasources/FileScanRDD$$anon$1.hasNext')
+f(27,1856,6538,1,'org/apache/spark/sql/execution/datasources/RecordReaderIterator.hasNext')
+f(28,1856,6538,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedParquetRecordReader.nextKeyValue')
+f(29,1856,6538,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedParquetRecordReader.nextBatch')
+f(30,2113,6281,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedParquetRecordReader.checkEndOfRowGroup')
+f(31,2113,4273,1,'org/apache/spark/sql/execution/datasources/parquet/SpecificParquetRecordReaderBase$ParquetRowGroupReaderImpl.readNextRowGroup',0,0,1)
+f(32,2114,4272,1,'org/apache/parquet/hadoop/ParquetFileReader.readNextFilteredRowGroup')
+f(33,2114,4272,1,'org/apache/parquet/hadoop/ParquetFileReader.readNextRowGroup')
+f(34,2114,4272,1,'org/apache/parquet/hadoop/ParquetFileReader.internalReadRowGroup',0,1,0)
+f(35,2662,2418,1,'org/apache/parquet/hadoop/ParquetFileReader$ConsecutivePartList.readAll',0,11,2)
+f(36,2667,1023,1,'java/util/ArrayList.add',1,0,0)
+f(37,2668,1022,4,'Runtime1::new_type_array(JavaThread*, Klass*, int)')
+f(38,2668,1022,4,'TypeArrayKlass::allocate_common(int, bool, Thread*)')
+f(39,2668,1022,4,'CollectedHeap::array_allocate(Klass*, int, int, bool, Thread*)')
+f(40,2668,1022,4,'MemAllocator::allocate() const')
+f(41,2673,1017,3,'__memset_sse2')
+f(36,3883,1197,1,'org/apache/parquet/io/DelegatingSeekableInputStream.readFully')
+f(37,3883,1197,1,'org/apache/parquet/io/DelegatingSeekableInputStream.readFullyHeapBuffer',1,0,0)
+f(38,3884,1196,1,'org/apache/parquet/io/DelegatingSeekableInputStream.readFully')
+f(39,3884,1196,1,'java/io/DataInputStream.read',0,1,0)
+f(40,3885,1195,1,'org/apache/hadoop/fs/FSInputChecker.read',0,1,0)
+f(41,3886,1194,1,'org/apache/hadoop/fs/FSInputChecker.read1')
+f(42,3886,1194,1,'org/apache/hadoop/fs/FSInputChecker.readChecksumChunk')
+f(43,3886,1194,1,'org/apache/hadoop/fs/ChecksumFileSystem$ChecksumFSInputChecker.readChunk')
+f(44,3886,1194,1,'org/apache/hadoop/fs/FSInputChecker.readFully')
+f(45,3886,1194,1,'java/io/DataInputStream.read')
+f(46,3886,1194,1,'java/io/BufferedInputStream.read')
+f(47,3886,1194,1,'java/io/BufferedInputStream.read1')
+f(48,3887,1193,1,'org/apache/hadoop/fs/RawLocalFileSystem$LocalFSFileInputStream.read',0,1,0)
+f(49,3888,1192,1,'java/io/FileInputStream.read')
+f(50,3888,1192,1,'java/io/FileInputStream.readBytes',0,0,8)
+f(51,3893,1187,3,'readBytes')
+f(52,3893,1185,3,'__memmove_ssse3')
+f(35,5080,1306,1,'org/apache/parquet/hadoop/ParquetFileReader.readChunkPages',0,0,1)
+f(36,5084,1302,1,'org/apache/parquet/hadoop/ParquetFileReader$Chunk.readAllPages')
+f(37,5084,1302,1,'org/apache/parquet/hadoop/ParquetFileReader$Chunk.readAllPages',0,190,29)
+f(38,5347,1011,1,'org/apache/parquet/hadoop/ParquetFileReader$Chunk.readPageHeader',27,3,0)
+f(39,5350,1008,1,'org/apache/parquet/format/Util.readPageHeader',113,0,0)
+f(31,6386,2008,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedParquetRecordReader.initColumnReader')
+f(32,6390,2003,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader.<init>')
+f(33,6390,1990,1,'org/apache/parquet/column/Encoding$5.initDictionary')
+f(34,6390,1990,1,'org/apache/parquet/column/Encoding$1.initDictionary')
+f(35,6390,1452,1,'org/apache/parquet/column/values/dictionary/PlainValuesDictionary$PlainIntegerDictionary.<init>',0,147,44)
+f(36,7010,831,2,'org/apache/parquet/column/values/plain/PlainValuesReader$IntegerPlainValuesReader.readInteger',712,1,0)
+f(37,7167,674,2,'org/apache/parquet/bytes/LittleEndianDataInputStream.readInt',641,12,0)
+f(38,7253,588,2,'org/apache/parquet/bytes/SingleBufferInputStream.read',569,15,4)
+f(25,8833,42703,1,'org/apache/spark/sql/execution/datasources/RecordReaderIterator.hasNext',0,1,0)
+f(26,8842,42694,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedParquetRecordReader.nextKeyValue')
+f(27,8842,42694,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedParquetRecordReader.nextBatch',0,35,1)
+f(28,9264,42269,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader.readBatch',0,66,8)
+f(29,9534,11715,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader.readPage',0,3,0)
+f(30,9539,6889,1,'org/apache/parquet/column/page/DataPageV1.accept',33,1,0)
+f(31,9540,6888,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader$1.visit',33,2,0)
+f(32,9540,6888,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader$1.visit',35,0,0)
+f(33,9542,6886,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader.access$000',33,0,0)
+f(34,9542,6886,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedColumnReader.readPageV1',33,1,0)
+f(35,9544,6816,1,'org/apache/parquet/bytes/BytesInput.toInputStream',30,1,0)
+f(36,9545,6815,1,'org/apache/parquet/bytes/BytesInput.toByteBuffer',33,0,0)
+f(37,9545,6815,1,'org/apache/parquet/bytes/BytesInput$StreamBytesInput.toByteArray',33,4,0)
+f(38,9575,6749,1,'java/io/DataInputStream.readFully',1,0,0)
+f(39,9575,6749,1,'java/io/DataInputStream.readFully',1,0,0)
+f(40,9576,6748,1,'org/apache/parquet/hadoop/codec/NonBlockedDecompressorStream.read',0,4,0)
+f(41,9818,4596,1,'org/apache/parquet/hadoop/codec/SnappyDecompressor.decompress',0,2,0)
+f(42,10815,3563,1,'org/xerial/snappy/Snappy.uncompress',1,1,0)
+f(43,10817,3561,1,'org/xerial/snappy/SnappyNative.rawUncompress')
+f(44,10822,2946,3,'/tmp/snappy-1.1.10-f4029a95-891a-47c9-9473-f22b8c683be2-libsnappyjava.so')
+f(41,14422,1902,2,'org/apache/parquet/hadoop/codec/SnappyDecompressor.setInput',1478,0,0)
+f(42,14894,1416,2,'org/apache/parquet/hadoop/codec/CleanUtil.cleanDirectBuffer',1416,0,0)
+f(43,14894,1416,2,'java/lang/reflect/Method.invoke',1416,0,0)
+f(44,14894,1416,2,'java/lang/reflect/AccessibleObject.checkAccess',1416,0,0)
+f(45,14894,1416,2,'java/lang/reflect/AccessibleObject.verifyAccess',1416,0,0)
+f(46,14894,1416,2,'java/lang/reflect/AccessibleObject.slowVerifyAccess',1416,0,0)
+f(47,14894,1416,2,'jdk/internal/reflect/Reflection.verifyMemberAccess',1416,0,0)
+f(48,14894,1416,2,'jdk/internal/reflect/Reflection.verifyModuleAccess',1416,0,0)
+f(49,14894,1416,2,'java/lang/Module.isExported',1416,0,0)
+f(50,14894,1416,2,'java/lang/Module.implIsExportedOrOpen',1416,0,0)
+f(51,14894,1416,2,'java/lang/Module.isStaticallyExportedOrOpen',1416,0,0)
+f(52,14894,1416,2,'java/lang/Module.allows',1416,0,0)
+f(53,14924,1381,2,'java/util/ImmutableCollections$Set12.contains',1381,0,0)
+f(54,14925,1380,3,'jbyte_disjoint_arraycopy')
+f(30,16428,4821,2,'org/apache/parquet/hadoop/ColumnChunkPageReadStore$ColumnChunkPageReader.readPage',2023,1,0)
+f(31,18189,3060,1,'org/apache/parquet/column/page/DataPageV1.accept',263,0,0)
+f(32,18189,3060,1,'org/apache/parquet/hadoop/ColumnChunkPageReadStore$ColumnChunkPageReader$1.visit',263,0,0)
+f(33,18189,3060,1,'org/apache/parquet/hadoop/ColumnChunkPageReadStore$ColumnChunkPageReader$1.visit',263,1,0)
+f(34,18191,3058,1,'org/apache/spark/sql/execution/datasources/parquet/ParquetCodecFactory$HeapBytesDecompressor.decompress',263,1,0)
+f(35,18349,2823,1,'org/apache/parquet/hadoop/codec/SnappyCodec.createInputStream',33,1,0)
+f(36,18484,2688,1,'org/apache/parquet/hadoop/codec/NonBlockedDecompressorStream.<init>',1,0,0)
+f(37,18484,2688,1,'org/apache/hadoop/io/compress/DecompressorStream.<init>',1,0,0)
+f(38,18485,2687,1,'org/apache/hadoop/io/compress/DecompressorStream.<init>',0,9,0)
+f(39,18554,2618,2,'org/apache/hadoop/io/compress/CompressionInputStream.<init>',2612,1,0)
+f(29,21249,9232,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readBatch',6,0,0)
+f(30,21255,9226,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readBatchInternal',0,148,0)
+f(31,23874,2794,1,'org/apache/spark/sql/execution/datasources/parquet/ParquetVectorUpdaterFactory$IntegerUpdater.readValue',0,9,1)
+f(32,24964,1704,2,'org/apache/spark/sql/execution/datasources/parquet/VectorizedPlainValuesReader.readInteger',1704,0,0)
+f(33,25113,1555,2,'org/apache/spark/sql/execution/datasources/parquet/VectorizedPlainValuesReader.getBuffer',1555,0,0)
+f(34,25345,1323,2,'org/apache/parquet/bytes/SingleBufferInputStream.slice',1323,0,0)
+f(31,26668,1739,2,'org/apache/spark/sql/execution/datasources/parquet/ParquetVectorUpdaterFactory$IntegerUpdater.readValues',1737,0,0)
+f(32,26688,1719,2,'org/apache/spark/sql/execution/datasources/parquet/VectorizedPlainValuesReader.readIntegers',1718,0,0)
+f(33,26824,1583,2,'org/apache/spark/sql/execution/vectorized/OnHeapColumnVector.putIntsLittleEndian',1583,0,0)
+f(34,27670,737,2,'org/apache/spark/unsafe/Platform.getInt',737,0,0)
+f(35,27670,737,2,'sun/misc/Unsafe.getInt',737,0,0)
+f(31,28609,1475,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readNextGroup',0,14,1)
+f(29,30481,21002,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readIntegers')
+f(30,30481,20999,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readBatchInternal',0,265,4)
+f(31,33819,2921,1,'org/apache/spark/sql/execution/datasources/parquet/ParquetVectorUpdaterFactory$IntegerUpdater.readValue',0,19,0)
+f(32,34358,2382,2,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readInteger',1240,5,0)
+f(33,35598,1142,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readNextGroup',5,0,0)
+f(31,36740,12582,1,'org/apache/spark/sql/execution/datasources/parquet/ParquetVectorUpdaterFactory$IntegerUpdater.readValues',3971,0,0)
+f(32,36824,12498,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readIntegers',3893,1,0)
+f(33,38239,8603,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readNextGroup',0,38,0)
+f(34,40848,961,2,'org/apache/parquet/bytes/SingleBufferInputStream.slice',944,0,0)
+f(34,43213,700,1,'org/apache/parquet/column/values/bitpacking/ByteBitPackingLE$Packer17.unpack8Values')
+f(34,43913,685,1,'org/apache/parquet/column/values/bitpacking/ByteBitPackingLE$Packer18.unpack8Values',0,20,0)
+f(34,45419,1172,2,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readUnsignedVarInt',1171,0,0)
+f(35,45640,951,2,'org/apache/parquet/bytes/SingleBufferInputStream.read',950,0,0)
+f(33,46842,2480,2,'org/apache/spark/sql/execution/vectorized/OnHeapColumnVector.putInts',2480,0,0)
+f(34,48544,778,3,'jint_disjoint_arraycopy')
+f(31,49322,1852,1,'org/apache/spark/sql/execution/datasources/parquet/VectorizedRleValuesReader.readNextGroup',0,12,0)
+f(22,52130,1124,2,'org/apache/spark/sql/execution/vectorized/WritableColumnVector.getDecimal',1095,6,0)
+f(23,52139,818,2,'org/apache/spark/sql/execution/vectorized/OnHeapColumnVector.getInt',802,5,0)
+f(1,53893,4345,3,'start_thread')
+f(2,53893,4345,3,'thread_native_entry(Thread*)')
+f(3,53893,4345,4,'Thread::call_run()')
+f(4,53899,2232,4,'GangWorker::loop()')
+f(5,54206,1115,4,'G1ParTask::work(unsigned int)')
+f(6,54206,801,4,'G1ParEvacuateFollowersClosure::do_void()')
+f(5,55321,638,4,'G1ParallelCleaningTask::work(unsigned int)')
+f(4,56131,2083,4,'JavaThread::thread_main_inner()')
+f(5,56131,2078,4,'CompileBroker::compiler_thread_loop()')
+f(6,56131,2069,4,'CompileBroker::invoke_compiler_on_method(CompileTask*)')
+f(7,56135,1834,4,'C2Compiler::compile_method(ciEnv*, ciMethod*, int, DirectiveSet*)')
+f(8,56135,1833,4,'Compile::Compile(ciEnv*, C2Compiler*, ciMethod*, int, bool, bool, bool, bool, DirectiveSet*)')
+f(9,56141,1052,4,'Compile::Code_Gen()')
+f(10,56462,731,4,'PhaseChaitin::Register_Allocate()')
+
+search();
+</script></body></html>

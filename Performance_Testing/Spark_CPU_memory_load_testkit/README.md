@@ -8,9 +8,9 @@ In addition to the code and examples, this folder also includes sample data coll
 
 ## Contents
 - [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py) - a Python script to run the workload with Spark and measure job runtime and additional instrumentation.
-- [Data](Data) - example performance data measured using test_Spark_CPU_memory.py and measurements of CPU-to-memory throughput measured while running test_Spark_CPU_memory_instrumented.py
-- [Notebooks](Notebooks) - Jupyter notebooks used to analyze the collected data.
 - [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar) - instrumentation library for Spark, from [sparkMeasure](https://github.com/LucaCanali/sparkMeasure)
+- [Test_CPUs](Test_CPUs) How to use test_Spark_CPU_memory to measure CPU scalability.
+- [Test_JDKs](Test_JDKs) Example of using test_Spark_CPU_memory to compare performance across different JDKs.
 
 ## How to use the tool 
 
