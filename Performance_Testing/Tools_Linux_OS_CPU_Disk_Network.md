@@ -1,14 +1,12 @@
 # Linux tools for OS metrics/performance measurements
 
-- A list of tools in Linux useful for OS-based investigations, for Spark and in general
-
-``` jps | grep SparkSubmit # use this to find pid_Spark_JVM```
-
-- Get the process metrics directly from one of the many files in `/proc/<pid>/*` or use tools
+- A list of Linux tools and diagnostic utilities for OS-based investigations
 
 - Measure CPU used by the JVM: 
   - ```$ ps -efo cputime -p <pid_Spark_JVM>```
   - Get the metrics directly from `/proc/<pid>/stat` or `/proc/<pid>/status`
+
+- Find process PID for JVM applications (e.g. Spark): ``` jps | grep SparkSubmit # use this to find pid_Spark_JVM```
 
 - Monitor system usage per process with `pidstat`
   - `pidstat 3 10`  # measure all processes
@@ -53,17 +51,16 @@
 
 - Dynamic tracing and tool kits
 
+  - perf-tools **https://github.com/brendangregg/perf-tools**
+    - cachestat, iosnoop, ..., **https://github.com/brendangregg/perf-tools/tree/master/bin**
+    - funccount -d 5 'sys_read'
+    - bin/syscount -cp <pid>
   - perf http://www.brendangregg.com/perf.html
-  - SystemTap https://sourceware.org/systemtap/wiki
-  - BPF-based performance tools from iovisor
+  - **BPF-based performance tools**
     - bcc-tools: https://github.com/iovisor/bcc and https://github.com/iovisor/bcc/tree/master/tools
     - bpftrace: https://github.com/iovisor/bpftrace
     - see also https://github.com/goldshtn/linux-tracing-workshop
   - Ftrace
-  - perf-tools [https://github.com/brendangregg/perf-tools]
-    - cachestat, iosnoop, ..., [https://github.com/brendangregg/perf-tools/tree/master/bin]
-    - funccount -d 5 'sys_read'
-    - bin/syscount -cp <pid>
   
 - Misc
   - https://github.com/LucaCanali/Linux_tracing_scripts
