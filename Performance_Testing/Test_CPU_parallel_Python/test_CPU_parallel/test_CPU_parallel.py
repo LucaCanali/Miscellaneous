@@ -7,13 +7,17 @@ import statistics
 import time
 
 usage = """
-test_CPU_parallel.py - A basic CPU workload generator.
-Luca.Canali@cern.ch - April 2023
-Use this to generate CPU-intensive load on a system, running multiple threads in parallel.
-The tool runs a CPU-burning loop concurrently on the system, with configurable parallelism.
-The tool outputs a measurement of the CPU-burning loop execution time as a function of load.
+test_CPU_parallel.py - A basic CPU workload generator, use for testing and comparing CPU performance.
+Contact: Luca.Canali@cern.ch - April 2023
+Use this to generate CPU-intensive load on a system by running single-threaded, or with multiple threads in parallel.
+The tool runs a CPU-burning loop concurrently on the system with configurable parallelism.
+The tool outputs a measurement of the CPU-burning loop execution time as a function of load, either printing to stdout
+or programmatically returning the results.
 Example:
-./test_CPU_parallel.py --num_workers 2
+# Install with pip or clone from GitHub
+pip install test-CPU-parallel
+
+test_CPU_parallel.py --num_workers 2
 
 Parameters:
 
@@ -27,13 +31,41 @@ Parameters:
 """
 
 class test_CPU_parallel:
-    """test_CPU_parallel is a basic CPU workload generator."""
+    """test_CPU_parallel is a basic CPU workload generator.
+    num_workers: number of parallel threads running concurrently
+    num_job_execution_loops: number of times the execution loop is run on each worker
+    worker_inner_loop_size: internal weight of the inner execution loop
+    output_csv_file: optional output file, applies only to the full mode
+    verbose: True/False, print (or no print) output to stdout
 
-    def __init__(self, num_workers, num_job_execution_loops, worker_inner_loop_size, output_csv_file):
+    From command line run as:
+    ./test_CPU_parallel.py -h
+
+    Programmatically, you can run the test and get the results as follows:
+    pip install test_CPU_parallel
+    from test_CPU_parallel import test_CPU_parallel
+    test = test_CPU_parallel()
+
+    # Run a test
+    test.test_one_load()
+
+    # Run a full run
+    test.test_full()
+    """
+
+    def __init__(self, num_workers = 2, num_job_execution_loops = 3,
+                 worker_inner_loop_size = 3000, output_csv_file = None, verbose = True):
         self.max_num_workers = num_workers
         self.num_job_execution_loops = num_job_execution_loops
         self.worker_inner_loop_size = worker_inner_loop_size
         self.output_csv_file = output_csv_file
+        self.verbose = verbose
+        if verbose:
+            print(f"max_num_workers = {self.max_num_workers}")
+            print(f"num_job_execution_loops = {self.num_job_execution_loops}")
+            print(f"worker_inner_loop_size = {self.worker_inner_loop_size}")
+            print(f"output_csv_file = {self.output_csv_file}")
+            print(f"verbose = {self.verbose}")
 
     def cpu_intensive_inner_loop(self, n):
         """Inner loop to run a CPU-intensive task and measure the elapsed time.
@@ -48,18 +80,20 @@ class test_CPU_parallel:
         return end_time - start_time
 
     def test_one_load(self, threads = None):
-        """Run the CPU-intensive workload concurrently using future. 
-           The number of concurrent worker threads is configurable.
-           The number of executions is configured with self.num_executions."""
+        """Run the CPU-intensive workload concurrently using future.
+           Use this when testing on a single load (use full mode for testing multiple loads).
+           The number of concurrent worker threads can be configured with self.max_num_workers
+           The number of executions run is configured with self.num_executions."""
         if threads is None:
             load = self.max_num_workers
         else:
             load = threads
+        verbose = self.verbose
         timing = [] # list to store the job timing measurements
         start_time_global  = time.time()
 
         for i in range(self.num_job_execution_loops):
-            print(f"Scheduling job batch number {i+1}")
+            print(f"Scheduling job batch number {i+1}") if verbose else None
             time.sleep(1) # short sleep before each batch
             with futures.ProcessPoolExecutor(max_workers=load + 2) as executor:
                 to_do: list[futures.Future] = []
@@ -67,21 +101,25 @@ class test_CPU_parallel:
                     # submit jobs as futures
                     future = executor.submit(self.cpu_intensive_inner_loop, self.worker_inner_loop_size)
                     to_do.append(future)
-                print(f"Scheduled running of {load} concurrent worker threads")
+                    print(f"Scheduled running of {load} concurrent worker threads") if verbose else None
                 # wait for futures to finish and collect the results
                 for future in futures.as_completed(to_do):
                     delta_time: int = future.result()
-                    print(f"{future} finished. Result, delta_time = {round(delta_time,2)} sec")
+                    print(f"{future} finished. Result, delta_time = {round(delta_time,2)} sec") if verbose else None
                     timing.append(delta_time)
 
         delta_time_global = time.time() - start_time_global
-        print(f"\nCPU-intensive jobs using num_workers={load} finished, delta_time global"
-              f" = {round(delta_time_global, 2)} sec")
-        print("Job runtime statistics:")
-        print(f"Mean job runtime = {round(statistics.mean(timing), 2)} sec")
-        print(f"Median job runtime = {round(statistics.median(timing), 2)} sec")
-        print(f"Standard deviation = {round(statistics.stdev(timing), 2)} sec")
-        print("")
+        # Print the test results for one load
+        if verbose:
+            print(f"\nCPU-intensive jobs using num_workers={load} finished, delta_time global"
+                  f" = {round(delta_time_global, 2)} sec")
+            print("Job runtime statistics:")
+            print(f"Mean job runtime = {round(statistics.mean(timing), 2)} sec")
+            print(f"Median job runtime = {round(statistics.median(timing), 2)} sec")
+            print(f"Standard deviation = {round(statistics.stdev(timing), 2)} sec")
+            print("")
+
+        # return the results for programmatic use
         return statistics.median(timing), statistics.mean(timing), statistics.stdev(timing)
 
     def print_test_results_full_mode(self, test_results, file=sys.stdout):
@@ -97,23 +135,32 @@ class test_CPU_parallel:
     def test_full(self):
         """Run the CPU-intensive workload with an increasing number of parallel threads
         from 1 to num_workers. Each run is executed num_job_execution_loops times."""
-        print(f"Starting a full test, scanning concurrent worker thread from num_workers = 1 to {self.max_num_workers}")
+        verbose = self.verbose
+        if verbose:
+            print(f"Starting a full test, scanning concurrent worker thread from num_workers = 1 to {self.max_num_workers}")
         test_results = []
         for load in range(1, self.max_num_workers + 1):
             job_median_timing, job_mean_timing, job_stdev_timing = self.test_one_load(load)
             test_results.append({'num_workers':load, 'job_median_timing':job_median_timing,
                                  'job_mean_timing':job_mean_timing, 'job_stdev_timing':job_stdev_timing})
 
-        print("\nTest results of the CPU-intensive workload generator using full mode")
-        self.print_test_results_full_mode(test_results)
+        # Print the test results for the full test
+        if verbose:
+            print("\nTest results of the CPU-intensive workload generator using full mode")
+            self.print_test_results_full_mode(test_results)
+        # Write the test results to a CSV file
         if self.output_csv_file is not None:
             with open(self.output_csv_file, 'w') as csvfile:
                 self.print_test_results_full_mode(test_results, csvfile)
+        # Return the results for programmatic use
+        return test_results
 
 # parse command line arguments and run the test
 if __name__ == '__main__':
+    print("test_CPU_parallel.py - A basic CPU workload generator\nUse for testing and comparing CPU performance [-h, --help] for help\n")
+
     parser = argparse.ArgumentParser(
-        description="Basic CPU workload generator",
+        description="test_CPU_parallel is a CPU workload generator",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=usage)
     parser.add_argument("--full", "-f", required=False, default=False, action='store_true',
@@ -129,6 +176,6 @@ if __name__ == '__main__':
                              args.worker_inner_loop_size,
                              args.output_file)
     if args.full:
-        test.test_full()
+        test_results = test.test_full()
     else:    
-        test.test_one_load()
+        load, delta_time_global, timing = test.test_one_load()
