@@ -94,5 +94,10 @@ Parameters:
    df.repartition(128,col("ss_sold_date_sk")).sortWithinPartitions("ss_sold_date_sk","ss_sold_time_sk","ss_customer_sk").write.parquet("PATH/store_sales.parquet")
    ```
 
-Contact: Luca.Canali@cern.ch
+## FlameGraph
+Follow this link to a [FlameGraph of the execution profile](http://canali.web.cern.ch/svg/FlameGraph_test_Spark_CPU_memory.html) taken
+during a run of [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py) (see [Test_JDKs](Test_JDKs) for details).  
+The FlameGraph shows that the workload is CPU-bound, and that the time is spent in the Spark SQL code, in particular in the Parquet reader.
+FlameGraphs are a visualization tool for profiling the performance of applications, see also [Tools_FlameGraphs.md](../Tools_FlameGraphs.md).  
 
+Contact: Luca.Canali@cern.ch
