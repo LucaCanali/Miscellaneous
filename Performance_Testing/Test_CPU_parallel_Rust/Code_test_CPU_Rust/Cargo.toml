@@ -1,8 +1,9 @@
 [package]
 name = "test_cpu_parallel"
-version = "0.1.0"
+version = "1.0.1"
 
 [dependencies]
 rayon = "1.7.0"
-clap = "3.2.23"
+clap = "3.2.25"
 statrs = "0.16.0"
+ctrlc = "3.4.0"
