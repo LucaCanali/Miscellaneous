@@ -9,10 +9,11 @@ import time
 usage = """
 test_CPU_parallel.py - A basic CPU workload generator, use for testing and comparing CPU performance.
 Contact: Luca.Canali@cern.ch - April 2023
-Use this to generate CPU-intensive load on a system by running single-threaded, or with multiple threads in parallel.
+Use test_cpu_parallel to generate CPU-intensive load on a system by running single-threaded, or with multiple threads in parallel.
 The tool runs a CPU-burning loop concurrently on the system with configurable parallelism.
-The tool outputs a measurement of the CPU-burning loop execution time as a function of load, either printing to stdout
-or programmatically returning the results.
+The output are measurements of the CPU-burning loop execution time as a function of load, printed to terminal, or to a csv file,
+or returned programmatically when used as a Python library.
+
 Example:
 # Install with pip or clone from GitHub
 pip install test-CPU-parallel
@@ -25,8 +26,8 @@ Parameters:
          set with --num_workers, use this to collect speedup test measurements and create plots, default = False
 --output - Optional output file, applies only to the full mode, default = None
 --num_workers - Number of parallel threads running concurrently, default = 2
---num_job_execution_loops - number of times the execution loop is run on each worker, default = 3
---worker_inner_loop_size - internal weight of the inner execution loop, default = 100000000
+--num_job_execution_loops - Number of times the execution loop is run on each worker, default = 3
+--worker_inner_loop_size - Number of iterations in the inner loop of the worker thread, default = 100000000
   
 """
 

@@ -8,9 +8,11 @@ long_description = """
 test_CPU_parallel.py - A basic CPU workload generator.  
 Luca.Canali@cern.ch - April 2023  
 
-Use test_CPU_parallel to generate CPU-intensive load on a system, running multiple threads in parallel.  
-The tool runs a CPU-burning loop concurrently on the system, with configurable parallelism.  
-The tool outputs a measurement of the CPU-burning loop execution time as a function of load.  
+Use test_cpu_parallel to generate CPU-intensive load on a system by running single-threaded, or with multiple threads in parallel.  
+The tool runs a CPU-burning loop concurrently on the system with configurable parallelism.  
+The output are measurements of the CPU-burning loop execution time as a function of load, printed to terminal, or to a csv file,
+or returned programmatically when used as a Python library.  
+Link to the [project homepage](https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Python)  
 
 ### How to use test_CPU_parallel.py from the command line
 ```
@@ -55,11 +57,14 @@ test.test_one_load()
 test.test_full()
 ```
 
-
+### How to run test_CPU_parallel.py using from a container image
+- `docker run lucacanali/test_cpu_parallel.py test_CPU_parallel.py`
+- See also [Container](https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Python/Container)
+for more details on how to build and run container images for this tool and on how to run it using Docker or Kubernetes
 """
 
 setup(name='Test_CPU_parallel',
-    version='1.0.4',
+    version='1.0.5',
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -78,6 +83,8 @@ setup(name='Test_CPU_parallel',
     'Operating System :: OS Independent',
     'License :: OSI Approved :: Apache Software License',
     'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'Intended Audience :: Education',
     'Development Status :: 4 - Beta',
     ]
     )
