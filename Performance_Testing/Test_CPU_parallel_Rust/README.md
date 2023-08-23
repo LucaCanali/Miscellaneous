@@ -8,7 +8,7 @@ This is the home of test_cpu_parallel, a Rust program to load test CPUs and meas
 - See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
 
 ### Contents
-- [**Container**](Container) - a docker image and instructions for running test_cpu_parallel using containers
+- [**Container**](Container) - a container image and instructions for running test_cpu_parallel using Docker and Kubernetes
 - [**Code_test_CPU_Rust**](Code_test_CPU_Rust) - the source code of the Rust program
 - [**Data**](Data) - example data collected with the tool
 - [**Notebooks**](Notebooks) - Jupyter notebooks used to analyze the collected data
@@ -20,7 +20,7 @@ This is the home of test_cpu_parallel, a Rust program to load test CPUs and meas
   - This is not a benchmark but rather a tool to generate CPU load and measure the scalability of the CPU on a system 
  
 ### How to run [test_cpu_parallel](test_cpu_parallel)
-  - Option 1, run from a docker image
+  - Option 1, run from a contained image using Docker or Kubernetes, see [Container](Container) for details
     ```
     docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2 
     ```

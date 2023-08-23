@@ -20,9 +20,30 @@ docker tag lucacanali/test_cpu_parallel:v1.0 lucacanali/test_cpu_parallel:latest
 docker push lucacanali/test_cpu_parallel:latest
 ```
 
+## Docker
+
 You can use the image to run test_cpu_parallel in a container as in:
 ```
 docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2
 ```
 
+## Kubernetes
+You can run test_cpu_parallel on a Kubernetes cluster as in:
+```
+# delete pod if it already exists and start a new one with the test_cpu_parallely workload
+kubectl get pod test-cpu-pod && kubectl delete pod test-cpu-pod
+kubectl run test-cpu-pod --image=lucacanali/test_cpu_parallel --restart=Never -- test_cpu_parallel -w 2
 
+# get the output
+kubectl logs -f test-cpu-pod
+```
+
+Or you can use the [yaml file](test_cpu_parallel.yaml) to create a pod and run the test as in:
+```
+# delete pod if it already exists and start a new one with the test_CPU_parallel.py workload
+kubectl get pod test-cpu-pod && kubectl delete pod test-cpu-pod
+kubectl apply -f test_cpu_parallel.yaml
+
+# get the output
+kubectl logs -f test-cpu-pod
+```
