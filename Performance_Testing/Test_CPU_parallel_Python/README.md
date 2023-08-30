@@ -86,15 +86,18 @@ The measured performance is affected by the **version of Python** and **version 
 as well as the CPU speed, number of available cores vs test load, and load on the system.  
 Beware of this when comparing results across systems, see also the Rust version of this tool: [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust)
 
-This is an example of results obtained running the tool with different Python versions, on the same system
-- Tests run using: `docker run $IMAGE test_CPU_parallel.py`
-- Note, results also depend on the OS (glibc) version and the CPU model
+This is an example of results obtained by running the tool with different Python versions, on the same system
+- The test measurements were collected by running: `docker run $IMAGE test_CPU_parallel.py`
+- Note, performance results also depend on the OS (glibc) version, the CPU model, and load on the system.
+  The measurements reported below were collected on a dedicated test system, deploying a 4-core CPU E5-1630 v3 @ 3.70GHz,
+  and installed with CentOS 7.9, while the container images are based on alpine3.18.
 
-| Python version | Median job runtime (s) | docker image name |
-|----------------|------------------------|-------------------|
-| 3.9  | 41.2                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.9|
-| 3.10 | 35.8                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.10|
-| 3.11 | 32.1                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.11|
+| Python version | Median job runtime (s) | docker image name                            |
+|----------------|------------------------|----------------------------------------------|
+| 3.8            | 42.0                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.8  |
+| 3.9            | 40.5                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.9  |
+| 3.10           | 36.8                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.10 |
+| 3.11           | 32.5                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.11 |
 
 ---   
 ### How to analyze data collected in full mode
