@@ -81,8 +81,8 @@ test.test_full()
 ```
 ---
 ### Python version and performance
-test_CPU_parallel.py is a Python script that be run with Python 3.6 or later.  
-The measured performance is affected by the **version of Python** and **version of glibc**, 
+test_CPU_parallel.py is a Python script and its measured performance is therefore affected by the
+**version of Python** and **version of glibc**, 
 as well as the CPU speed, number of available cores vs test load, and load on the system.  
 Beware of this when comparing results across systems, see also the Rust version of this tool: [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust)
 
