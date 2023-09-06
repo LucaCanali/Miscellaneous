@@ -680,12 +680,15 @@ https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md
 df.coalesce(4).write.mode(org.apache.spark.sql.SaveMode.Overwrite).parquet("..PATH..")
 
 ---
-Spark 3.3.0 hidden metadata columns for Parquet reader
+Hidden metadata columns for Parquet reader
+introduced in Spark 3.3.0
+extended to some other file sources
 ```
 val df=spark.read.parquet("/tmp/testparquet1")
 
 df.select("_metadata.file_path", "_metadata.file_name","_metadata.file_size", "_metadata.file_modification_time").show(2,false)
 ```
+Spark 3.5.0 introduces 2 more metadata columns: `_metadata.file_block_start` and `_metadata.file_block_length`
 ---
 - Repartition / Compact Parquet tables
 
