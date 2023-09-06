@@ -1732,9 +1732,10 @@ Note currently does not work to pyspark
 `docker run -it apache/spark /opt/spark/bin/spark-shell`
 
 ----
-Parametrized SQL and "bind variables" in Spark
+Parametrized SQL and 
+"bind variables" in Spark
 Use the integrated Python string formatter for SQL API in PySpark and Spark Scala API  
-From Spark 3.3.0 and improved in Spark 3.4.0
+From Spark 3.3.0 and improved in Spark 3.4.0. Spark 3.5.0 supports positional parameters in Python sql.
 See also [PySpark doc](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html#pyspark.sql.SparkSession.sql)    
 Note this allows to use a dataframe in SQL without explicitly registering it as temporary view  
 
@@ -1748,6 +1749,7 @@ Python example:
 |  1|  7|
 +---+---+
 
+# String formatter substitution
 >>> spark.sql("select 1, {aa}", aa=7).show()
 +---+---+
 |  1|  7|
@@ -1757,6 +1759,11 @@ Python example:
 
 spark.sql("SELECT * FROM range(10) WHERE id > {bound1} AND id < {bound2}", bound1=2, bound2=4).show()
 
+# Positional parameters example in Python SQL (from Spark 3.5.0)  
+mydf=spark.sql("select id a, id+1 b from range(10)")
+spark.sql("SELECT * FROM {df} WHERE {df[B]} > ? and ? < {df[A]}", args=[5, 2], df=mydf).show()
+
+---
 # use DF in SQL without the need to register it as a temp table
 df = spark.sql("select id from range(10)")
 spark.sql("select 1 from {aa}", aa=df).show()
@@ -1774,7 +1781,7 @@ spark.sql('''
   table2=spark.createDataFrame([(3, "a"), (4, "b"), (5, "b")], ["b", "key"])).show()
 ```
 
-Scala example:
+Scala example - parametrized SQL:
 ```
 spark.sql("select 1, :aa",Map("aa" -> 7)).show()
 
