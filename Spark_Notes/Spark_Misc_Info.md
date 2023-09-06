@@ -1735,10 +1735,9 @@ Note currently does not work to pyspark
 `docker run -it apache/spark /opt/spark/bin/spark-shell`
 
 ----
-Parametrized SQL and 
-"bind variables" in Spark
-Use the integrated Python string formatter for SQL API in PySpark and Spark Scala API  
-From Spark 3.3.0 and improved in Spark 3.4.0. Spark 3.5.0 supports positional parameters in Python sql.
+Parametrized SQL and "bind variables" in Spark  
+Use the integrated Python string formatter for SQL API in PySpark and Spark Scala API.  
+Introduced in Spark 3.3.0, this feature supports positional parameters in Python sql.
 See also [PySpark doc](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html#pyspark.sql.SparkSession.sql)    
 Note this allows to use a dataframe in SQL without explicitly registering it as temporary view  
 
