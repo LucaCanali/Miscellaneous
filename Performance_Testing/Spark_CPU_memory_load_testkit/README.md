@@ -15,12 +15,12 @@ In addition to the code and examples, this folder also includes sample data coll
 ## How to use the tool 
 
 ### 1. Prepare the environment:
-Install [PySpark](https://pypi.org/project/pyspark/) and [sparkMeasure's](https://github.com/LucaCanali/sparkMeasure) Python bindings
+Install [PySpark](https://pypi.org/project/pyspark/) and [sparkMeasure's](https://github.com/LucaCanali/sparkMeasure) Python bindings:
 ```
 pip install pyspark
 pip install sparkmeasure
 ```
-Download/clone from the repo: `test_Spark_CPU_memory.py` and `spark-measure_2.12-0.23.jar`  
+Download/clone from the repo: [test_Spark_CPU_memory.py](test_Spark_CPU_memory.py) and [spark-measure_2.12-0.23.jar](spark-measure_2.12-0.23.jar)
 
 ### 2. Download the test data used for load generation:   
 - The tool uses a large the Parquet table, store_sales, taken from the open source TPCDS benchmark.
