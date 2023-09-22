@@ -39,7 +39,7 @@ Example:
 ./test_cpu_parallel -w 2 
 
 # Measure job runtime over a ramp of concurrent workers from 1 to 8, and output the results to a CSV file
-./test_cpu_parallel --num_workers 8 --full --output myout.csv 
+./test_cpu_parallel --num_workers 8 --full -o myout.csv 
 
 # Get the help message
 ./test_cpu_parallel --help
