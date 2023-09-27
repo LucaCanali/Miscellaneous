@@ -9,6 +9,11 @@ Here a few examples of tools that can be used to collect stack traces:
 2. Java programs: use async-profiler
 3. Python programs: use py-spy
 
+See also:
+- [Spark and Pyroscope](../Spark_Notes/Tools_Spark_Pyroscope_FlameGraph.md)
+- the blog post
+  [Enhancing Apache Spark Performance with Flame Graphs: A Practical Example Using Grafana Pyroscope](https://db-blog.web.cern.ch/node/193)
+
 The following examples show how to use these tools to collect stack traces and generate flame graphs.
 1. bcc-tools
    - See also https://github.com/iovisor/bcc and

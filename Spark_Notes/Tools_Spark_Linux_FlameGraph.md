@@ -6,7 +6,7 @@ running in the JVM on Linux. This covers profiling the JVM and profiling Python 
 ## TL;DR use async-profiler for profiling JVM and py-spy for Python
 
 See also
-- [Tools_Spark_Pyroscope_FlameGraph.md](Tools_Spark_Pyroscope_FlameGraph.md)
+- [Spark and Pyroscope](Tools_Spark_Pyroscope_FlameGraph.md)
 - the blog post
   [Enhancing Apache Spark Performance with Flame Graphs: A Practical Example Using Grafana Pyroscope](https://db-blog.web.cern.ch/node/193)
 
