@@ -5,6 +5,9 @@ This note describes how to use [Grafana Pyroscope](https://grafana.com/oss/pyros
 job executions. By the end, you'll have a deeper understanding of profiling Spark executor, Flame Graph visualizations,
 and how they can provide an advanced toolset to troubleshoot and optimize Spark workload performance.
 
+See also the blog post 
+[Enhancing Apache Spark Performance with Flame Graphs: A Practical Example Using Grafana Pyroscope](https://db-blog.web.cern.ch/node/193)
+
 ## Why Should You Profile Using Flame Graphs?
 
 - **Visual Insight**: The [Flame Graph](https://www.brendangregg.com/flamegraphs.html) provides a graphical 
