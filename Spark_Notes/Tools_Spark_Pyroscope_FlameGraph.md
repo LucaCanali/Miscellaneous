@@ -41,21 +41,21 @@ See also the blog post
 
 ---
 ## Pyroscope for Spark in 3 easy steps
-- Start Pyroscope 
+### 1. Start Pyroscope 
   - Download from https://github.com/grafana/pyroscope/releases 
   - CLI start: `./pyroscope -server.http-listen-port 5040`
   - Or use docker: `docker run -it -p 5040:4040 grafana/pyroscope`  
   - Note: customize the port number, I used port 5040 to avoid confusion with the Spark WebUI which defaults to port 4040 too
   - [Pyroscope doc](https://grafana.com/docs/pyroscope/latest/get-started/) has more details including how to use Pyroscope with Helm
-- Configure the Spark executors to send metrics to Pyroscope
+### 2. Configure the Spark executors to send metrics to Pyroscope
   - 3 different alternative methods are described in later in note
-- Open the browser to the Pyroscope WebUI and analyze data from there
+### 3. Open the browser to the Pyroscope WebUI and analyze data from there
   - data can also be exported to a Grafana dashboard, see the [doc](https://grafana.com/docs/pyroscope/latest/)
     
-## Spark configuration
+## Spark configuration for the Pyroscope Java agent
 This describes 3 different and alternative methods to configure Spark to use Pyroscope
 
-### 1. Spark in local mode
+### A. Spark in local mode
 When using Spark in local mode, typically for develompment, you just need to configure the java agent:
 - Build or download the latest version of the pyroscope java agent, for example:
   - `wget https://repo1.maven.org/maven2/io/pyroscope/agent/0.12.0/agent-0.12.0.jar`
@@ -69,7 +69,7 @@ When using Spark in local mode, typically for develompment, you just need to con
   - `bin/spark-shell --master local[*] --driver-java-options "-javaagent:./agent-0.12.0.jar"`
     - note, match to the downloaded agent jar name and path 
 
-### 2. Spark on a cluster (YARN, Kubernetes, Standalone) with java agent
+### B. Spark on a cluster (YARN, Kubernetes, Standalone) with java agent
 When using Spark on cluster resources, most of the interesting processing happens of the executors,
 which are JVMs launched on the cluster resources.
 This example shows how to do this with a java agent (see also below a different method using Spark plugins).  
@@ -92,7 +92,7 @@ bin/spark-shell --master yarn \ # edit master type when usingr k8s or a standalo
 --conf spark.executorEnv.PYROSCOPE_SERVER_ADDRESS=$PYROSCOPE_SERVER_ADDRESS 
 ```
 
-### 3. Spark on a cluster with Spark executor plugins
+### C. Spark on a cluster with Spark executor plugins
 
 This method uses Spark plugins to configure Spark executors to send metrics to the Pyroscope server.  
 Spark plugins provide an interface, and related configuration, for injecting custom code on executors 
@@ -165,6 +165,13 @@ The main profiling modes of interest are (see [doc](https://github.com/async-pro
   should be collected to fully validate these conclusions.
 
 ----
+### Prerequisite: start Pyroscope
+- Download from https://github.com/grafana/pyroscope/releases
+- CLI start: `./pyroscope -server.http-listen-port 5040`
+- Or use docker: `docker run -it -p 5040:4040 grafana/pyroscope`
+- Note: customize the port number, I used port 5040 to avoid confusion with the Spark WebUI which defaults to port 4040 too
+- [Pyroscope doc](https://grafana.com/docs/pyroscope/latest/get-started/) has more details including how to use Pyroscope with Helm
+- 
 ## Profiling Python UDFs
 Example of how to instrument Python UDFs with Pyroscope (and py-spy under the hood):
 ```
