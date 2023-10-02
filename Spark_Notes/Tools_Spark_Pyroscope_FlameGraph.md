@@ -171,7 +171,7 @@ The main profiling modes of interest are (see [doc](https://github.com/async-pro
 - Or use docker: `docker run -it -p 5040:4040 grafana/pyroscope`
 - Note: customize the port number, I used port 5040 to avoid confusion with the Spark WebUI which defaults to port 4040 too
 - [Pyroscope doc](https://grafana.com/docs/pyroscope/latest/get-started/) has more details including how to use Pyroscope with Helm
-- 
+
 ## Profiling Python UDFs
 Example of how to instrument Python UDFs with Pyroscope (and py-spy under the hood):
 ```
