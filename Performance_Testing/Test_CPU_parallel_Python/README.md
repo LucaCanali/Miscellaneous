@@ -80,17 +80,35 @@ test.test_one_load()
 test.test_full()
 ```
 ---
-### Python version and performance
-test_CPU_parallel.py is a Python script and its measured performance is therefore affected by the
-**version of Python** and **version of glibc**, 
-as well as the CPU speed, number of available cores vs test load, and load on the system.  
-Beware of this when comparing results across systems, see also the Rust version of this tool: [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust)
+## Python Version and Performance Considerations
 
-This is an example of results obtained by running the tool with different Python versions, on the same system
-- The test measurements were collected by running: `docker run $IMAGE test_CPU_parallel.py`
-- Note, performance results also depend on the OS (glibc) version, the CPU model, and load on the system.
-  The measurements reported below were collected on a dedicated test system, deploying a 4-core CPU E5-1630 v3 @ 3.70GHz,
-  and installed with CentOS 7.9, while the container images are based on alpine3.18.
+The script `test_CPU_parallel.py` is written in Python, and multiple factors can impact its performance.
+
+### Key Factors Affecting Performance:
+
+1. **Python Version**: Different versions can lead to variations in performance.
+2. **glibc Version**: The version of glibc in use can also influence performance.
+3. **Hardware and System Load**:
+    - **CPU Speed**
+    - **Number of CPU Cores vs. Test Load**: The ratio of available cores to the test load.
+    - **System Load**: The overall load on the system can affect the test.
+
+⚠️ **Caution**: When comparing results across different systems, keep these factors in mind. 
+You may also consider comparing with the Rust version of this tool, [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust).
+
+### Example Results:
+
+The following table displays the performance of `test_CPU_parallel.py` using various Python versions on a specific test system:
+
+> **Test System Configuration**:
+> - **CPU**: 4-core CPU E5-1630 v3 @ 3.70GHz
+> - **OS**: CentOS 7.9
+> - **Docker Images**: Based on alpine3.18
+
+Tests were initiated with the command:
+```
+docker run $IMAGE test_CPU_parallel.py
+```
 
 | Python version | Median job runtime (s) | docker image name                            |
 |----------------|------------------------|----------------------------------------------|
@@ -98,6 +116,12 @@ This is an example of results obtained by running the tool with different Python
 | 3.9            | 40.5                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.9  |
 | 3.10           | 36.8                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.10 |
 | 3.11           | 32.5                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.11 |
+| 3.12           | 38.8                   | IMAGE=lucacanali/test_cpu_parallel.py:py3.12 |
+
+Note: While there seems to be a general trend of improved runtime performance with newer Python versions,
+the results for Python 3.12 buck this trend. It's important to recognize that multiple variables might 
+influence these results. In this specific test, Python 3.12.0 on alpine3.18 displayed an unexpected 
+increase in runtime.
 
 ---   
 ### How to analyze data collected in full mode
