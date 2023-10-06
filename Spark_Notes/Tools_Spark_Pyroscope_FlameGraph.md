@@ -103,15 +103,15 @@ The jars are available via [maven central](https://mvnrepository.com/artifact/ch
 Spark configuration parameters:
 - Set up the use of the plugin jars
   ``` 
-  --packages ch.cern.sparkmeasure:spark-plugins_2.12:0.3` (also available for scala 2.13)
-  --conf spark.plugins=ch.cern.PyroscopePlugin`
+  --packages ch.cern.sparkmeasure:spark-plugins_2.12:0.3 (also available for scala 2.13)
+  --conf spark.plugins=ch.cern.PyroscopePlugin
   ```
 
 Additional fine-tuning configuration parameters:
 ``` 
---conf spark.pyroscope.server=..` - > default "http://localhost:4040", update to match the server name and port used by Pyroscope
+--conf spark.pyroscope.server=.. - > default "http://localhost:4040", update to match the server name and port used by Pyroscope
 --conf spark.pyroscope.applicationName -> default spark.conf.get("spark.app.id")`
---conf spark.pyroscope.eventType -> default ITIMER, possible values ITIMER, CPU, WALL, ALLOC, LOCK`
+--conf spark.pyroscope.eventType -> default ITIMER, possible values ITIMER, CPU, WALL, ALLOC, LOCK
 ```
 
 **Example:**  
