@@ -3,12 +3,14 @@
 ## How to use Spark to access HBase
 
 Apache Spark needs a connector library to access HBase.  
-Two connectors Spark-HBase are available, which one should you use?
+Two connectors for Spark-HBase are available, which one should you use?
   - **[Apache HBase-Spark connector](https://github.com/apache/hbase-connectors)** 
     - This is  part of the Apache HBase-Spark
   - **[Hortonworks Spark-HBase connector](https://github.com/hortonworks-spark/shc)**
     - The Hortonworks connector has been quite popular over the years, with Spark 2.x.
       However, it appears to be no more supported nor updated?
+  - **[Apache Phoenix connector](https://github.com/apache/phoenix-connectors)
+    - Provides a way to operate with structured data on HBase  
 
 ## Note on Apache Phoenix connector for Spark:
   - [Apache Phoenix](https://phoenix.apache.org/)
@@ -17,15 +19,13 @@ Two connectors Spark-HBase are available, which one should you use?
     - Phoenix needs server-side installation and configuration, see documentation
     - A Spark connector for Apache Phoenix is available, see [phoenix-connectors](https://github.com/apache/phoenix-connectors)
       - The connector for Spark 2.x is available on maven central
-      - For Spark 3.x, I used the connector compiled from source (as of May 2023).
-        - Notes on the build: `mvn package -Dhbase-two.version=2.4.17 -Dhadoop-three-version=3.3.4 -DskipTests`
-      I have uploaded the JAR to a web page, this is an example of how to use it with Spark 3:
-       ```
-      JAR=http://canali.web.cern.ch/res/phoenix5-spark3-shaded-6.0.0-SNAPSHOT.jar 
-      spark-shell --jars $JAR --packages org.apache.hbase:hbase-shaded-mapreduce:2.4.17
-      
-      val df=spark.read.format("org.apache.phoenix.spark").option("table", "TABLE_NAME").option("zkUrl", "zookeeper_url:2181").load()
-      ```
+      - Notes you can also build the connector from source: `mvn package -Dhbase-two.version=2.4.17 -Dhadoop-three-version=3.3.4 -DskipTests`
+      - For Spark 3.x, the connector is available on Cloudera's repo:
+        ```
+        spark-shell --repositories https://repository.cloudera.com/artifactory/cloudera-repos/ --packages org.apache.phoenix:phoenix5-spark3-shaded:6.0.0.7.2.17.0-334,org.apache.hbase:hbase-shaded-mapreduce:2.4.17
+       
+        val df=spark.read.format("org.apache.phoenix.spark").option("table", "TABLE_NAME").option("zkUrl", "zookeeper_url:2181").load()
+        ```
 
 ---
 ## Spark-HBase connector configuration and setup
