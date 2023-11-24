@@ -62,22 +62,22 @@ $ ./test_Spark_CPU_memory.py --num_workers 20 # Run the 3 tests using 20 concurr
 
 Allocating a Spark session in local mode with 20 concurrent tasks
 Heap memory size = 64g, data_path = ./store_sales.parquet
-sparkmeasure_path = ./spark-measure_2.12-0.23.jar
+sparkmeasure_path = spark-measure_2.12-0.23.jar
 Scheduling job number 1
-Job finished, job_run_time (elapsed time) = 38.01 sec
-...executors Run Time = 725.99 sec
-...executors Cpu Time = 691.41 sec
-...executors jvmGC Time = 22.33 sec
+Job finished, job_run_time (elapsed time) = 43.93 sec
+...executors Run Time = 843.76 sec
+...executors CPU Time = 800.18 sec
+...executors jvmGC Time = 27.43 sec
 Scheduling job number 2
-Job finished, job_run_time (elapsed time) = 34.08 sec
-...executors Run Time = 671.8 sec
-...executors Cpu Time = 660.15 sec
-...executors jvmGC Time = 11.13 sec
+Job finished, job_run_time (elapsed time) = 39.13 sec
+...executors Run Time = 770.83 sec
+...executors CPU Time = 755.55 sec
+...executors jvmGC Time = 14.93 sec
 Scheduling job number 3
-Job finished, job_run_time (elapsed time) = 34.02 sec
-...executors Run Time = 671.19 sec
-...executors Cpu Time = 659.66 sec
-...executors jvmGC Time = 11.39 sec
+Job finished, job_run_time (elapsed time) = 38.82 sec
+...executors Run Time = 765.22 sec
+...executors CPU Time = 751.68 sec
+...executors jvmGC Time = 13.32 sec
 ```
 
 **Notes:**  
@@ -113,13 +113,13 @@ the tests a couple of times in a row (as internal structures and caches are warm
 available test results (3 test runs) and reported for each category. 
 
 
-| JDK and Metric name                           | **OpenJDK Java 8**            | **OpenJDK Java 11**         | **OpenJDK Java 17**        | **Oracle Java 17**    | **GraalVM Java 17**             | 
-|-----------------------------------------------|-------------------------------|-----------------------------|----------------------------|-----------------------|---------------------------------|
-| JDK                                           | openlogic-openjdk-8u372-b07   | openlogic-openjdk-11.0.19+7 | openlogic-openjdk-17.0.7+7 | Oracle's jdk-17.0.8   | Oracle's graalvm-jdk-17.0.8+9.1 |
-| **Elapsed time (sec)**                        | **45.4**	                     | **39.3**	                   | **42.0**	                | **41.9**	             | **34.1**                       |
-| Executors' cumulative <br> ... run time (sec) | 896.1	                     | 775.9	                   | 829.7                      | 	828.6                | 	672.3                         |
-| ... CPU time (sec)                            | 851.9	                     | 763.4	                   | 800.6                      | 	796.4                | 	649.5                         |
-| ... Garbage Collection time (sec)             | 42.6	                         | 12.3	                       | 29.4                       | 	32.5                 | 	23.0                          |
+| JDK and Metric name                           | **OpenJDK Java 8**          | **OpenJDK Java 11**      | **OpenJDK Java 17**      | **Oracle Java 17**   | **GraalVM Java 17**            | 
+|-----------------------------------------------|-----------------------------|--------------------------|--------------------------|----------------------|--------------------------------|
+| JDK                                           | Adoptium jdk8u392-b08       | Adoptium jdk-11.0.21+9   | Adoptium jdk-11.0.21+9   | Oracle jdk-17.0.9    | Oracle graalvm-jdk-17.0.9+11.1 |
+| **Elapsed time (sec)**                        | **45.4**	                   | **39.3**	              | **42.0**	             | **41.9**	            | **34.1**                       |
+| Executors' cumulative <br> ... run time (sec) | 896.1	                   | 775.9	                  | 829.7                    | 	828.6               | 	672.3                         |
+| ... CPU time (sec)                            | 851.9	                   | 763.4	                  | 800.6                    | 	796.4               | 	649.5                         |
+| ... Garbage Collection time (sec)             | 42.6	                       | 12.3	                  | 29.4                     | 	32.5                | 	23.0                          |
 
 
 ## Performance data analysis
@@ -139,8 +139,7 @@ The instrumentation metrics provide additional clues on understanding the worklo
   at play here, including that Native Image feature in an optional early adopter technology, see Oracle documentation for details).
 - Java 8 shows the worst performance in terms of run time and CPU time, and it also has the longest Garbage Collection time. This is not surprising as Java 8 is the oldest
   of the JDKs tested here, and it is known to have worse performance than newer JDKs.
-- Java 11 and Java 17 have similar performance, with Java 11 being a bit faster than Java 17 (of the order of 5% for this workload), at this stage it is not clear if there
-  is a fundamental reason for this or the difference comes from measurement noise (see also the section on "sanity checks" and the comments there on errors in the metrics measurements).
+- Java 11 and Java 17 have similar performance, with Java 11 being a bit faster than Java 17 (of the order of 5% for this workload), the origin of this difference is not investigated here.
 
 ## Active benchmarking and sanity checks
 The key idea of active benchmarking is that while the load testing tool is running, we also take several measurements and metrics using a variety of
