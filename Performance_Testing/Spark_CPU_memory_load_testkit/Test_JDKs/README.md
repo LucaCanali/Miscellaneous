@@ -91,34 +91,35 @@ available test results for each category (6 test runs).
 ## JDK comparison tests
 The following tests compare the performance of 5 different JDKs, running on Linux (CentOS 7.9),
 on a server with dual Zen 2 CPUs, 16 physical cores each, 512 GB RAM, 300 GB of storage space for the test data.
-The Apache Spark version is 3.4.1 the test kit is [test_Spark_CPU_memory.py](../test_Spark_CPU_memory.py).
+The Apache Spark version is 3.5.0 the test kit is [test_Spark_CPU_memory.py](../test_Spark_CPU_memory.py).
 The JDK tested are:
-- openlogic-openjdk-8u372-b07-linux-x64
-- openlogic-openjdk-11.0.19+7-linux-x64
-- openlogic-openjdk-17.0.7+7-linux-x64
-- Oracle's jdk-17.0.8
-- Oracle's graalvm-jdk-17.0.8+9.1
+- Adoptium jdk8u392-b08
+- Adoptium jdk-11.0.21+9
+- Adoptium jdk-17.0.9+9
+- Oracle jdk-17.0.9
+- Oracle graalvm-jdk-17.0.9+11.1
 
-The openJDKs were downloaded from [OpenLogic JDK](https://www.openlogic.com/openjdk-downloads), 
+The openJDKs were downloaded from [Adoptium Temurin JDK](https://adoptium.net/temurin/releases/), 
 the Oracle JDKs were downloaded from [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).    
-The OpenLogic OpenJDK are free to use (see website).  
-Notably, the Oracle download page also reports that the JDK binaries are free to use in production and free to redistribute, at no cost,
-under the Oracle No-Fee Terms and Conditions, and the GraalVM Free Terms and Conditions, respectively, see Oracle's webpage for details.
+The Adoptium Temurin OpenJDK are free to use (see website).  
+Notably, the Oracle download page also reports that the JDK binaries are available at no cost
+under the Oracle No-Fee Terms and Conditions, and the GraalVM Free Terms and Conditions, respectively, 
+see Oracle's webpage for details.
 
 ## Test results and measurements
 Test results summarized in this table are from the test output files, see [Data](Data).
 The values reported here are taken from the test reports, measured at the 3rd run of each test, as the run time improves when running 
 the tests a couple of times in a row (as internal structures and caches are warming up, for example), The results are further averaged over the
-available test results (6 test runs) and reported for each category. 
+available test results (3 test runs) and reported for each category. 
 
 
-| JDK and Metric name                           | **OpenJDK Java 8**          | **OpenJDK Java 11**         | **OpenJDK Java 17**        | **Oracle Java 17**  | **GraalVM Java 17**             | 
-|-----------------------------------------------|-----------------------------|-----------------------------|----------------------------|---------------------|---------------------------------|
-| JDK                                           | openlogic-openjdk-8u372-b07 | openlogic-openjdk-11.0.19+7 | openlogic-openjdk-17.0.7+7 | Oracle's jdk-17.0.8 | Oracle's graalvm-jdk-17.0.8+9.1 |
-| **Elapsed time (sec)**                        | **39.0**                    | **34.0**                    | **35.2**                   | **34.8**            | **28.9**                        |
-| Executors' cumulative <br> ... run time (sec) | 770.4                       | 670.6                       | 695.0                      | 688.3               | 571.0                           |
-| ... CPU time (sec)                            | 733.0                       | 659.1                       | 669.7                      | 663.3               | 548.9                           |
-| ... Garbage Collection time (sec)             | 35.3                        | 11.3                        | 25.6                       | 25.3                | 22.4                            |
+| JDK and Metric name                           | **OpenJDK Java 8**            | **OpenJDK Java 11**         | **OpenJDK Java 17**        | **Oracle Java 17**    | **GraalVM Java 17**             | 
+|-----------------------------------------------|-------------------------------|-----------------------------|----------------------------|-----------------------|---------------------------------|
+| JDK                                           | openlogic-openjdk-8u372-b07   | openlogic-openjdk-11.0.19+7 | openlogic-openjdk-17.0.7+7 | Oracle's jdk-17.0.8   | Oracle's graalvm-jdk-17.0.8+9.1 |
+| **Elapsed time (sec)**                        | **45.4**	                     | **39.3**	                   | **42.0**	                | **41.9**	             | **34.1**                       |
+| Executors' cumulative <br> ... run time (sec) | 896.1	                     | 775.9	                   | 829.7                      | 	828.6                | 	672.3                         |
+| ... CPU time (sec)                            | 851.9	                     | 763.4	                   | 800.6                      | 	796.4                | 	649.5                         |
+| ... Garbage Collection time (sec)             | 42.6	                         | 12.3	                       | 29.4                       | 	32.5                 | 	23.0                          |
 
 
 ## Performance data analysis
@@ -138,7 +139,7 @@ The instrumentation metrics provide additional clues on understanding the worklo
   at play here, including that Native Image feature in an optional early adopter technology, see Oracle documentation for details).
 - Java 8 shows the worst performance in terms of run time and CPU time, and it also has the longest Garbage Collection time. This is not surprising as Java 8 is the oldest
   of the JDKs tested here, and it is known to have worse performance than newer JDKs.
-- Java 11 and Java 17 have similar performance, with Java 11 being a bit faster than Java 17 (of the order of 3% for this workload), at this stage it is not clear if there
+- Java 11 and Java 17 have similar performance, with Java 11 being a bit faster than Java 17 (of the order of 5% for this workload), at this stage it is not clear if there
   is a fundamental reason for this or the difference comes from measurement noise (see also the section on "sanity checks" and the comments there on errors in the metrics measurements).
 
 ## Active benchmarking and sanity checks

@@ -1,0 +1,95 @@
+Testing with: JDK/jdk8u392-b08
+Allocating a Spark session in local mode with 20 concurrent tasks
+Heap memory size = 64g, data_path = ./store_sales.parquet
+sparkmeasure_path = spark-measure_2.12-0.23.jar
+Scheduling job number 1
+Job finished, job_run_time (elapsed time) = 48.05 sec
+...executors Run Time = 922.17 sec
+...executors CPU Time = 861.14 sec
+...executors jvmGC Time = 41.24 sec
+Scheduling job number 2
+Job finished, job_run_time (elapsed time) = 46.24 sec
+...executors Run Time = 912.72 sec
+...executors CPU Time = 836.58 sec
+...executors jvmGC Time = 72.73 sec
+Scheduling job number 3
+Job finished, job_run_time (elapsed time) = 44.99 sec
+...executors Run Time = 888.77 sec
+...executors CPU Time = 836.41 sec
+...executors jvmGC Time = 51.05 sec
+Testing with: JDK/jdk-11.0.21+9
+Allocating a Spark session in local mode with 20 concurrent tasks
+Heap memory size = 64g, data_path = ./store_sales.parquet
+sparkmeasure_path = spark-measure_2.12-0.23.jar
+Scheduling job number 1
+Job finished, job_run_time (elapsed time) = 44.28 sec
+...executors Run Time = 849.52 sec
+...executors CPU Time = 811.34 sec
+...executors jvmGC Time = 23.48 sec
+Scheduling job number 2
+Job finished, job_run_time (elapsed time) = 39.44 sec
+...executors Run Time = 777.55 sec
+...executors CPU Time = 763.4 sec
+...executors jvmGC Time = 13.87 sec
+Scheduling job number 3
+Job finished, job_run_time (elapsed time) = 39.18 sec
+...executors Run Time = 772.7 sec
+...executors CPU Time = 761.52 sec
+...executors jvmGC Time = 11.05 sec
+Testing with: JDK/jdk-17.0.9+9
+Allocating a Spark session in local mode with 20 concurrent tasks
+Heap memory size = 64g, data_path = ./store_sales.parquet
+sparkmeasure_path = spark-measure_2.12-0.23.jar
+Scheduling job number 1
+Job finished, job_run_time (elapsed time) = 47.15 sec
+...executors Run Time = 911.73 sec
+...executors CPU Time = 849.43 sec
+...executors jvmGC Time = 57.25 sec
+Scheduling job number 2
+Job finished, job_run_time (elapsed time) = 41.95 sec
+...executors Run Time = 827.95 sec
+...executors CPU Time = 798.95 sec
+...executors jvmGC Time = 29.12 sec
+Scheduling job number 3
+Job finished, job_run_time (elapsed time) = 41.89 sec
+...executors Run Time = 827.7 sec
+...executors CPU Time = 796.89 sec
+...executors jvmGC Time = 31.13 sec
+Testing with: JDK/jdk-17.0.9
+Allocating a Spark session in local mode with 20 concurrent tasks
+Heap memory size = 64g, data_path = ./store_sales.parquet
+sparkmeasure_path = spark-measure_2.12-0.23.jar
+Scheduling job number 1
+Job finished, job_run_time (elapsed time) = 47.18 sec
+...executors Run Time = 912.91 sec
+...executors CPU Time = 849.81 sec
+...executors jvmGC Time = 57.11 sec
+Scheduling job number 2
+Job finished, job_run_time (elapsed time) = 42.56 sec
+...executors Run Time = 840.47 sec
+...executors CPU Time = 807.88 sec
+...executors jvmGC Time = 32.76 sec
+Scheduling job number 3
+Job finished, job_run_time (elapsed time) = 42.18 sec
+...executors Run Time = 833.67 sec
+...executors CPU Time = 800.26 sec
+...executors jvmGC Time = 33.59 sec
+Testing with: JDK/graalvm-jdk-17.0.9+11.1
+Allocating a Spark session in local mode with 20 concurrent tasks
+Heap memory size = 64g, data_path = ./store_sales.parquet
+sparkmeasure_path = spark-measure_2.12-0.23.jar
+Scheduling job number 1
+Job finished, job_run_time (elapsed time) = 47.48 sec
+...executors Run Time = 918.27 sec
+...executors CPU Time = 848.03 sec
+...executors jvmGC Time = 64.06 sec
+Scheduling job number 2
+Job finished, job_run_time (elapsed time) = 34.39 sec
+...executors Run Time = 677.77 sec
+...executors CPU Time = 653.39 sec
+...executors jvmGC Time = 24.55 sec
+Scheduling job number 3
+Job finished, job_run_time (elapsed time) = 34.11 sec
+...executors Run Time = 672.68 sec
+...executors CPU Time = 650.05 sec
+...executors jvmGC Time = 22.76 sec
