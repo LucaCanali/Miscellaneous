@@ -1,13 +1,13 @@
 # Parquet Diagnostics Tools
 
-This is extracted from the blog post [Diving into Spark and Parquet Workloads, by Example](http://externaltable.blogspot.com/2017/06/diving-into-spark-and-parquet-workloads.html)
-
 Here are some examples of a few tools and utilities that I find useful to investigate Parquet files.
-Relevant links on internals of Parquet  and their metadata are
+Relevant links on internals of Parquet and their metadata are
  - Documentation at (https://parquet.apache.org/documentation/latest)
  - Link with a list of [Apache Parquet configuration options](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
- - Parquet source code has many additional details in the form of comments to the code. 
+ - Parquet source code has many additional details in the form of comments to the code.  
    See for example: [ParquetOutputFormat.java](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/src/main/java/org/apache/parquet/hadoop/ParquetOutputFormat.java)
+ - [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example) (CERN Blog)
+ - [Inspecting Parquet files with Spark](https://www.gresearch.com/blog/article/parquet-files-know-your-scaling-limits/) (G-Research blog) 
 
 Some highlights of Parquet that make it a very useful data format for data analysis are:
 - Hierarchically, a Parquet file consists of one or more "row groups". A row group contains data grouped ion "column chunks", one per column. Column chunks are structured in pages. Each column chunk contains one or more pages.
@@ -16,12 +16,13 @@ Some highlights of Parquet that make it a very useful data format for data analy
 - Parquet can store complex data types and support nested structures. This is quite a powerful feature and it goes beyond the simple examples presented in this post.
 
 ## Parquet-cli
-Parquet-cli is part of the main Apache Parquet repository, you can download it from  https://github.com/apache/parquet-mr/releases
-The tests described here are based on Parquet version 1.12.2, released in 2021.
+Parquet-cli is part of the main Apache Parquet repository, you can download it from
+https://github.com/apache/parquet-mr/
+The tests described here are based on Parquet version 1.13.1, released in May 2023.
 
 Tip: you can build and package the jar for parquet-tools with:
 ```
-cd parquet-mr-apache-parquet-1.12.2/parquet-cli
+cd parquet-mr-apache-parquet-1.13.1/parquet-cli
 mvn -DskipTests clean package 
 ```
 
@@ -31,11 +32,11 @@ column-index to print the column and offset indexes of a Parquet file.
 Example:
 
 ```
-hadoop jar parquet-cli/target/parquet-cli-1.12.2-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile
+hadoop jar parquet-cli/target/parquet-cli-1.13.1-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile
 
-Created by: parquet-mr version 1.12.1 (build 2a5c06c58fa987f85aa22170be14d927d5ff6e7d)
+Created by: parquet-mr version 1.13.1 (build db4183109d5b734ec5930d870cdae161e408ddba)
 Properties:
-                   org.apache.spark.version: 3.2.0
+                   org.apache.spark.version: 3.5.0
   org.apache.spark.sql.parquet.row.metadata: {"type":"struct","fields":[{"name":"ws_sold_time_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_date_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_item_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_customer_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_cdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_hdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_bill_addr_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_customer_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_cdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_hdemo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_addr_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_web_page_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_web_site_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_ship_mode_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_warehouse_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_promo_sk","type":"integer","nullable":true,"metadata":{}},{"name":"ws_order_number","type":"long","nullable":true,"metadata":{}},{"name":"ws_quantity","type":"integer","nullable":true,"metadata":{}},{"name":"ws_wholesale_cost","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_list_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_sales_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_discount_amt","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_sales_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_wholesale_cost","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_list_price","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_tax","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_coupon_amt","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_ext_ship_cost","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid_inc_tax","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid_inc_ship","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_paid_inc_ship_tax","type":"decimal(7,2)","nullable":true,"metadata":{}},{"name":"ws_net_profit","type":"decimal(7,2)","nullable":true,"metadata":{}}]}
 
 Schema:
@@ -133,6 +134,34 @@ parquet_file.metadata.row_group(0)
 parquet_file.metadata.row_group(0).column(0)
 parquet_file.metadata.row_group(0).column(0).statistics
 ```
+
+## Querying Parquet metadata with Spark
+
+The spark-extension library allows to query Parquet metadata using Apache Spark.
+See https://github.com/G-Research/spark-extension/blob/master/PARQUET.md
+
+Example:
+```
+bin/spark-shell --packages uk.co.gresearch.spark:spark-extension_2.12:2.11.0-3.5
+
+import uk.co.gresearch.spark.parquet._
+spark.read.parquetMetadata("...path..").show()
+spark.read.parquetBlockColumns(...path..").show()
+```
+
+## Querying Parquet metadata with Spark
+
+The spark-extension library allows to query Parquet metadata using Apache Spark.
+See https://github.com/G-Research/spark-extension/blob/master/PARQUET.md
+
+Example:
+```
+bin/spark-shell --packages uk.co.gresearch.spark:spark-extension_2.12:2.11.0-3.5
+
+import uk.co.gresearch.spark.parquet._
+spark.read.parquetMetadata("...path..").show()
+spark.read.parquetBlockColumns(...path..").show()
+
 
 ## Parquet-tools (deprecated)
 
