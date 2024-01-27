@@ -1,19 +1,24 @@
 # Parquet Diagnostics Tools
 
-Here are some examples of a few tools and utilities that I find useful to investigate Parquet files.
+In this doc you can find some examples of tools and utilities that I find useful to investigate Parquet files.  
 Relevant links on internals of Parquet and their metadata are
- - Documentation at (https://parquet.apache.org/documentation/latest)
- - Link with a list of [Apache Parquet configuration options](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md`)
- - Parquet source code has many additional details in the form of comments to the code.  
-   See for example: [ParquetOutputFormat.java](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/src/main/java/org/apache/parquet/hadoop/ParquetOutputFormat.java)
+ - Documentation at https://parquet.apache.org/docs/
+ - Link with a list of [Apache Parquet configuration options](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/README.md)
+ - Comment in Parquet source code. See for example: [ParquetOutputFormat.java](https://github.com/apache/parquet-mr/blob/master/parquet-hadoop/src/main/java/org/apache/parquet/hadoop/ParquetOutputFormat.java)
+
+Blogs and notes on Spark and Parquet: 
+ - [Utilizing Apache Spark with Parquet Format](Spark_Parquet.md)
  - [Diving into Spark and Parquet Workloads, by Example](https://db-blog.web.cern.ch/blog/luca-canali/2017-06-diving-spark-and-parquet-workloads-example) (CERN Blog)
  - [Inspecting Parquet files with Spark](https://www.gresearch.com/blog/article/parquet-files-know-your-scaling-limits/) (G-Research blog) 
 
-Some highlights of Parquet that make it a very useful data format for data analysis are:
-- Hierarchically, a Parquet file consists of one or more "row groups". A row group contains data grouped ion "column chunks", one per column. Column chunks are structured in pages. Each column chunk contains one or more pages.
+Some highlights of Parquet structure that make it a very useful data format for data analysis are:
+- Parquet is a columnar data format. 
+- Parquet files consist of one or more "row groups", which allow for splitting and parallelizinig the file access. A row group contains data grouped ion "column chunks", one per column. Column chunks are structured in pages. Each column chunk contains one or more pages.
 - Parquet files have several metadata structures, containing among others the schema, the list of columns and details about the data stored there, such as name and datatype of the columns, their size, number of records and basic statistics as minimum and maximum value (for datatypes where support for this is available, as discussed in the previous section).
-- Parquet can use compression and encoding. The user can choose the compression algorithm used, if any. By default Spark uses snappy. 
+- Parquet can use compression and encoding. The user can choose the compression algorithm used, if any. By default, Spark uses snappy. 
 - Parquet can store complex data types and support nested structures. This is quite a powerful feature and it goes beyond the simple examples presented in this post.
+
+---
 
 ## Parquet-cli
 Parquet-cli is part of the main Apache Parquet repository, you can download it from
@@ -148,20 +153,6 @@ import uk.co.gresearch.spark.parquet._
 spark.read.parquetMetadata("...path..").show()
 spark.read.parquetBlockColumns(...path..").show()
 ```
-
-## Querying Parquet metadata with Spark
-
-The spark-extension library allows to query Parquet metadata using Apache Spark.
-See https://github.com/G-Research/spark-extension/blob/master/PARQUET.md
-
-Example:
-```
-bin/spark-shell --packages uk.co.gresearch.spark:spark-extension_2.12:2.11.0-3.5
-
-import uk.co.gresearch.spark.parquet._
-spark.read.parquetMetadata("...path..").show()
-spark.read.parquetBlockColumns(...path..").show()
-
 
 ## Parquet-tools (deprecated)
 
