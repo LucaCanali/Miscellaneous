@@ -1,4 +1,4 @@
-# Utilizing Apache Spark with Parquet Format
+# Get the best out of Apache Parquet using Apache Spark
 This guide offers comprehensive insights into the configuration, features, and diagnostic tools 
 relevant to using the Apache Parquet data format within Apache Spark.    
 
@@ -38,7 +38,7 @@ like Apache Spark. It offers efficient data compression and encoding schemes.
   - Filter push down capabilities
   - Enhanced support for partitioning and handling large files
 
-**ORC:** For a comparison of Apache Spark with Apache ORC, refer to [Parquet-ORC Comparison](Spark_ORC_vs_Parquet.md).
+**ORC:** For a comparison of Apache Parquet with another popular data format, Apache ORC, refer to [Parquet-ORC Comparison](Spark_ORC_vs_Parquet.md).
 
 ### Basic Use of Apache Spark DataFrame with Parquet:
 
@@ -177,9 +177,10 @@ you can effectively manage and upgrade your Parquet datasets.
 This format provides a structured and detailed approach to understanding and managing Parquet file versions,
 emphasizing the importance of version compatibility and the process of upgrading.
 
+- Details at [**Tools for Parquet Diagnostics**](Tools_Parquet_Diagnostics.md)
+
 - **parquet-cli**
   - example: `hadoop jar parquet-cli/target/parquet-cli-1.13.1-runtime.jar org.apache.parquet.cli.Main meta <path>/myParquetFile`
-  - see also [Tools for Parquet Diagnostics](../Tools_Parquet_Diagnostics.md)
 
 - **Hadoop API** ...
   - example of using Hadoop API from the spark-shell CLI
@@ -198,6 +199,16 @@ emphasizing the importance of version compatibility and the process of upgrading
   print(pf.getFileMetaData)
   print(pf.getRowGroups)
   ```
+- **Spark extension library**  
+  The [spark-extension library](https://github.com/G-Research/spark-extension/blob/master/PARQUET.md) allows to query Parquet metadata using Apache Spark.  
+  Example:
+  ```
+  bin/spark-shell --packages uk.co.gresearch.spark:spark-extension_2.12:2.11.0-3.5
+
+  import uk.co.gresearch.spark.parquet._
+  spark.read.parquetMetadata("...path..").show()
+  spark.read.parquetBlockColumns(...path..").show()
+  ```
 
 ### Updating Parquet File Versions
 
@@ -205,23 +216,26 @@ Upgrading your Parquet files to a newer version can be achieved by copying them 
 This section covers the steps to convert your Parquet files to an updated version.
 
 Conversion Method:  
+
 **Using Recent Spark Versions:** To update Parquet files, read them with a newer version of Spark and then save 
 them again. This process effectively updates the files to the Parquet version used by that Spark release.  
 For instance, using Spark 3.5.0 will allow you to write files in Parquet version 1.13.1.   
+
 **Approach Note:** This method is somewhat brute-force as there isn't a direct mechanism solely for upgrading
 Parquet metadata.
 
 **Practical Example:**
-Copying Parquet Files for Benchmarking:
+Copying and converting Parquet version by reading and re-writing, applied to the TPCDS benchmark:  
 ```
 bin/spark-shell --master yarn --driver-memory 4g --executor-memory 50g --executor-cores 10 --num-executors 20 --conf spark.sql.shuffle.partitions=400
 
 val inpath="/project/spark/TPCDS/tpcds_1500_parquet_1.10.1/"
 val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.13.1/"
-val compression_type="snappy"
-// val compression_type="zstd"
+val compression_type="snappy" // may experiment with "zstd"
 
-// copy partitioned tables of the TPCDS benchmark
+// we need to do this in two separate groups: partitioned and non-partitioned tables
+
+// copy the **partitioned tables** of the TPCDS benchmark
 // compact each directory into 1 file with repartition
 val tables_partition=List(("catalog_returns","cr_returned_date_sk"), ("catalog_sales","cs_sold_date_sk"), ("inventory","inv_date_sk"), ("store_returns","sr_returned_date_sk"), ("store_sales","ss_sold_date_sk"), ("web_returns","wr_returned_date_sk"), ("web_sales","ws_sold_date_sk"))
 for (t <- tables_partition) {
@@ -282,7 +296,8 @@ The techniques available with Parquet files are:
 
 ## Example: Spark using Parquet column indexes
 
-Test dataset and preparation:  
+**Test dataset and preparation**  
+
 - The Parquet test file used below `parquet112file_sorted` is extracted from the TPCDS benchmark table
   [web_sales](https://github.com/apache/spark/blob/master/sql/core/src/test/scala/org/apache/spark/sql/TPCDSSchema.scala#L162)
 - the table (parquet file) contains data sorted on the column ws_sold_time_sk
@@ -291,39 +306,51 @@ Test dataset and preparation:
 - the sorted dataset has been created using
   `spark.read.parquet("path + "web_sales_piece.parquet").sort("ws_sold_time_sk").coalesce(1).write.parquet(path + "web_sales_piece_sorted_ws_sold_time_sk.parquet")`
 - **Download the test data:**
+  - Retrieve the test data using `wget`, a web browser, or any method of your choosing
   - [web_sales_piece.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Parquet_Tests/web_sales_piece.parquet)   
   - [web_sales_piece_sorted_ws_sold_time_sk.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Parquet_Tests/web_sales_piece_sorted_ws_sold_time_sk.parquet)
 
-Tests:
-1. **Fast** (reads only 20k rows): Spark reading with a filter that makes use of column and offset indexes:
+**Run the tests**  
+
+1. **Fast** (reads only 20k rows):  
+   Spark will read the Parquet using a filter and makes use of **column and offset indexes**:
 ```
-val path = "/home/luca/test/web_sales_sample_parquet1.12.2/"
+bin/spark-shell
+
+val path = "./" 
 val df = spark.read.parquet(path + "web_sales_piece_sorted_ws_sold_time_sk.parquet")
 
+// Read the file using a filter, this will use column and offset indexes
 val q1 = df.filter("ws_sold_time_sk=28801")
 val plan = q1.queryExecution.executedPlan
 q1.collect
+
 // Use Spark metrics to see how many rows were processed
-// This is also avilable for the WebUI in graphical form
+// This is also available for the WebUI in graphical form
 val metrics = plan.collectLeaves().head.metrics
 metrics("numOutputRows").value
 
 res: Long = 20000
 ```
-The result is that only 20000 rows were processed, this corresponds to processing just a few pages,
-and it is driven by the min-max value statistics in the column index for column ws_sold_time_sk.
-The column index is crated by default in Spark version 3.2.x and higher.
+The result shows that only 20000 rows were processed, this corresponds to processing just a few pages, as opposed to 
+reading and processing the entire file.
+This is made possible by the use of the min-max value statistics in the column index for column ws_sold_time_sk.  
+Column indexes are created by default in Spark version 3.2.x and higher.
 
-2. **Slow** (reads 2M rows): Same as above but this time we disable the use of column indexes.
-Note this is also what happens if you use Spark versions prior to Spark 3.2.0 (notably Spark 2.x) to read the file.
+2. **Slow** (reads 2M rows):  
+   Same as above but this time we disable the use of column indexes.  
+   Note this is also what happens if you use Spark versions prior to Spark 3.2.0 (notably Spark 2.x) to read the file.  
 ```
-val path = "/home/luca/test/web_sales_sample_parquet1.12.2/"
+bin/spark-shell
+
+val path = "./"
 // disable the use of column indexes for testing purposes
 val df = spark.read.option("parquet.filter.columnindex.enabled","false").parquet(path + "web_sales_piece_sorted_ws_sold_time_sk.parquet")
 
 val q1 = df.filter("ws_sold_time_sk=28801")
 val plan = q1.queryExecution.executedPlan
 q1.collect
+
 // Use Spark metrics to see how many rows were processed
 val metrics = plan.collectLeaves().head.metrics
 metrics("numOutputRows").value
@@ -332,6 +359,8 @@ res: Long = 2088626
 ```
 The result is that all the rows in the row group (2088626 rows in the example) were read as Spark 
 could not push the filter down to the Parquet page level.
+This example runs more slowly than the example below and in general performs more work (uses more CPU cycles and
+reads more data from the filesystem).
 
 
 ### Diagnostics and Internals of Column and Offset Indexes
@@ -344,7 +373,7 @@ They are particularly effective for managing and querying large datasets.
   at the page level, facilitating efficient filter evaluation and optimization.
 - **Default Activation:** By default, column indexes are enabled to ensure optimal query performance.
 - **Granularity Insights:** While column indexes provide page-level statistics, similar statistics are also
-  available at the rowgroup level. Typically, a rowgroup is approximately 128MB, contrasting with pages usually
+  available at the row group level. Typically, a row group is approximately 128MB, contrasting with pages usually
   around 1MB.
 - **Customization Options:** Both rowgroup and page sizes are configurable, offering flexibility to tailor data
   organization. For further details, see [Parquet Configuration Options](#parquet-configuration-options).
@@ -369,7 +398,7 @@ in data processing workflows.
 
 - **parquet-cli**
   - example: `hadoop jar target/parquet-cli-1.13.1-runtime.jar org.apache.parquet.cli.Main column-index -c ws_sold_time_sk <path>/my_parquetfile`
-  - see also [Tools for Parquet Diagnostics](../Tools_Parquet_Diagnostics.md)
+  - More details on how to use parquet-cli at [Tools for Parquet Diagnostics](Tools_Parquet_Diagnostics.md)
 
 - Example with the **Java API** from Spark-shell
    ```
@@ -441,13 +470,20 @@ page-17                   166981               200                340000
 ---
 
 ## Bloom filters in Parquet
-Parquet 1.12 introduces the option of generating and storing bloom filters in Parquet metadata on the file footer.
-Bloom filters improve the performance of certain filter predicates.
-They are particularly useful with 
- - high cardinality columns to overcome the limitations of using Parquet dictionaries.
- - for filters that seek for values that are likely not in the table/DataFrame, this is because in Bloom filters
-   false positive matches are possible, but false negatives are not.
-You can find the details on [bloom filters in Apache Parquet at this link](https://github.com/apache/parquet-format/blob/master/BloomFilter.md)
+
+With the release of Parquet 1.12, there's now the capability to generate and store Bloom filters within the file footer's metadata.
+This addition significantly enhances query performance for specific filtering operations. 
+Bloom filters are especially advantageous in the following scenarios:  
+
+**High Cardinality Columns:** They effectively address the limitations inherent in using Parquet dictionaries for columns with a vast range of unique values.
+
+**Absent Value Filtering:** Bloom filters are highly efficient for queries that filter based on values likely to be missing from
+the table or DataFrame. This efficiency stems from the characteristic of Bloom filters where false positives 
+(erroneously concluding that a non-existent value is present) are possible, but false negatives 
+(failing to identify an existing value) do not occur.
+
+For a comprehensive understanding and technical details of implementing Bloom filters in Apache Parquet, 
+refer to the [official documentation on bloom filters in Apache Parquet](https://github.com/apache/parquet-format/blob/master/BloomFilter.md)
 
 ### Configuration
 
@@ -459,8 +495,11 @@ Important configurations for writing bloom filters in Parquet files are:
 .option("parquet.bloom.filter.max.bytes", 1024*1024) // The maximum number of bytes for a bloom filter bitset, default 1 MB
 ```
 
-This is an example of how to read a Parquet file without bloom filter (for example because created with 
-an older version of Spark/Parquet) and add the bloom filter, with additional tuning of the bloom filter parameters for one of the columns:
+### Write Parquet files with Bloom filters
+
+This is an example of how to read a Parquet file without bloom filter (for example because it had been created with 
+an older version of Spark/Parquet) and add the bloom filter, with additional tuning of the bloom filter parameters
+for one of the columns:
 ```
 val df = spark.read.parquet("<path>/web_sales")
 df.coalesce(1).write.option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.expected.ndv#ws_sold_time_sk", 25000).parquet("<myfilepath")
@@ -471,28 +510,35 @@ Understanding the impact of using bloom filters on I/O performance during Parque
 for optimizing data processing. This example outlines the steps to compare I/O performance when reading Parquet
 files, both with and without the utilization of bloom filters.
 
-**This example uses bloom filters to improve performance**  
+**This example uses Parquet bloom filters to improve Spark read performance**  
+
+**1. Prepare the test table**
 ```
-// 1. prepare the test table
 
 bin/spark-shell
 val numDistinctVals=1e6.toInt
 val df=sql(s"select id, int(random()*100*$numDistinctVals) randomval from range($numDistinctVals)")
+val path = "./"
 
-df.coalesce(1).write.mode("overwrite").option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.enabled#randomval", "true").option("parquet.bloom.filter.expected.ndv#randomval", numDistinctVals).parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter")
-df.coalesce(1).write.mode("overwrite").option("parquet.bloom.filter.enabled","false").parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter_nofilter")
+// Write the test DataFrame into a Parquet file with a Bloom filter
+df.coalesce(1).write.mode("overwrite").option("parquet.bloom.filter.enabled","true").option("parquet.bloom.filter.enabled#randomval", "true").option("parquet.bloom.filter.expected.ndv#randomval", numDistinctVals).parquet(path + "spark320_test_bloomfilter")
 
-// note compare the size of the files with bloom filter and without
-// in my test: it was 10107281 with bloom filter and 8010083 without
+// Write the same DataFrame in Parquet, but this time without Bloom filters 
+df.coalesce(1).write.mode("overwrite").option("parquet.bloom.filter.enabled","false").parquet(path + "spark320_test_bloomfilter_nofilter")
+
+// use the OS (ls -l) to compare the size of the files with bloom filter and without
+// in my test (Spark 3.5.0, Parquet 1.13.1) it was 10107275 with bloom filter and 8010077 without
 
 :quit
+```
 
-// 2. read tests:
+**2. Read data using the Bloom filter, for improved performance**
 
-// 2a. with bloom filter
+```
 bin/spark-shell
 
-val df =spark.read.option("parquet.filter.bloom.enabled","true").parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter")
+val path = "./"
+val df =spark.read.option("parquet.filter.bloom.enabled","true").parquet(path + "spark320_test_bloomfilter")
 val q1 = df.filter("randomval=1000000") // filter for a value that is not in the file
 q1.collect
 
@@ -500,41 +546,25 @@ q1.collect
 org.apache.hadoop.fs.FileSystem.printStatistics()
 
 // Output
-FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 1095643 bytes read
+FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 1091611 bytes read, ...
 
 :quit
+```
 
-// 2b. without bloom filter
+**3. Read disabling the Bloom filter (this will read more data from the filesystem and have worse performance)**  
+```
 bin/spark-shell
 
-val df =spark.read.option("parquet.filter.bloom.enabled","false").parquet("/home/luca/test/testParquetFile/spark320_test_bloomfilter")
+val path = "./"
+val df =spark.read.option("parquet.filter.bloom.enabled","false").parquet(path + "spark320_test_bloomfilter")
 val q1 = df.filter("randomval=1000000") // filter for a value that is not in the file
 q1.collect
 
 // print I/O metrics
-
-// Output
-FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 8303682 bytes read
-```
-
-**Bloom filters off, this has worse performance** 
-
-For demo purposes this example disables the use of dictionary and column index filters,
-which is an optimization that improves filter execution too`.option("parquet.filter.dictionary.enabled","false")`
-```
-bin/spark-shell
-
-// val df =spark.read.option("parquet.filter.bloom.enabled","false").option("parquet.filter.dictionary.enabled","true").option("parquet.filter.columnindex.enabled","false").option("parquet.filter.dictionary.enabled","false").option("parquet.filter.columnindex.enabled","false").parquet("<myParquetfile_withbloomfilter>")
-val df =spark.read.option("parquet.filter.bloom.enabled","true").option("parquet.filter.dictionary.enabled","true").option("parquet.filter.columnindex.enabled","false").option("parquet.filter.dictionary.enabled","false").option("parquet.filter.columnindex.enabled","false").parquet("<myParquetfile_withbloomfilter>")
-val q1 = df.filter("ws_sold_time_sk=50000")
-q1.collect
-
-// measure I/O with and without bloom filter
 org.apache.hadoop.fs.FileSystem.printStatistics()
 
-Results:
-without optimized filters (full row group scan): 23532456 bytes read,
-with bloom filter: 283560 bytes read,
+// Output
+FileSystem org.apache.hadoop.fs.RawLocalFileSystem: 8299656 bytes read, ...
 ```
 
 ### Reading Parquet Bloom Filter Metadata with Apache Parquet Java API
@@ -567,7 +597,8 @@ follow these steps:
 Finally, read the bloom filter from the first column.
 `val bloomFilter = pf.readBloomFilter(columns.get(0))`
 
-By following these steps, you can successfully read the bloom filter metadata from a Parquet file using the Java API in the spark-shell environment.
+By following these steps, you can successfully read the bloom filter metadata from a Parquet file using the Java API
+in the spark-shell environment.
 
 ---
 ### Vectorized Parquet reader for complex datatypes 
