@@ -7,15 +7,13 @@ SparkMeasure is a tool for performance investigations of Apache Spark workloads.
   * It helps with the collection and analysis of Spark workload **metrics**.
   * It can be used from the command line (**spark-shell, PySpark, or Notebooks**)
   * It can be used for instrumenting **applications**, see "flight recorder mode"
-  * For Spark 2.1.x and higher
+  * For Spark 3.x and 2.x, Scala and Python
 
-   
 Try sparkMeasure out on your local installation with a simple example   
 Or see this [example Notebook on Databricks](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/2729765977711377/442806354506758/latest.html)
 
-
 ```
-bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.11:0.13
+bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.23
 
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000) cross join range(1000)").show)
@@ -121,4 +119,3 @@ Accid, Name => max(value) [group by accId, name]
 260, duration total => 3522020 (59 min)
 
 ```
-
