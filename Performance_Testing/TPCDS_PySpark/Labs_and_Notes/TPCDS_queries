@@ -1,0 +1,73 @@
+# Notes on TPCDS queries
+
+The TPC-DS benchmark is composed of 99 queries that are designed to simulate real-world business intelligence.
+The queries are complex and are designed to test the performance of a system under complex SQL workloads.
+
+Analyzing the queries, their execution plan, and performance profile can be a good exercise on complex SQL and learning
+Spark and data processing in general.
+
+See also schema at [TPCDS schema](TPCDS_schema.md)
+
+## Example Query
+
+TPC-DS Q1:
+```
+WITH customer_total_return AS
+( SELECT
+    sr_customer_sk AS ctr_customer_sk,
+    sr_store_sk AS ctr_store_sk,
+    sum(sr_return_amt) AS ctr_total_return
+  FROM store_returns, date_dim
+  WHERE sr_returned_date_sk = d_date_sk AND d_year = 2000
+  GROUP BY sr_customer_sk, sr_store_sk)
+SELECT c_customer_id
+FROM customer_total_return ctr1, store, customer
+WHERE ctr1.ctr_total_return >
+  (SELECT avg(ctr_total_return) * 1.2
+  FROM customer_total_return ctr2
+  WHERE ctr1.ctr_store_sk = ctr2.ctr_store_sk)
+  AND s_store_sk = ctr1.ctr_store_sk
+  AND s_state = 'TN'
+  AND ctr1.ctr_customer_sk = c_customer_sk
+ORDER BY c_customer_id
+LIMIT 100
+```
+
+The Query description was obtained automatically using a LLM by feeding the query text and the schema description:
+"""
+Query Q1 of the TPC-DS benchmark is designed to analyze customer returns in a retail context.
+The query operates over a simulated retail database schema, focusing on identifying customers
+whose total return amounts are significantly higher (in this context, more than 20% higher)
+than the average return amount for the store in which the returns were made, during the year 2000.
+It specifically targets returns in stores located in the state of Tennessee (TN).
+"""
+
+---
+TPC-DS Q3:
+```
+SELECT
+  dt.d_year,
+  item.i_brand_id brand_id,
+  item.i_brand brand,
+  SUM(ss_ext_sales_price) sum_agg
+FROM date_dim dt, store_sales, item
+WHERE dt.d_date_sk = store_sales.ss_sold_date_sk
+  AND store_sales.ss_item_sk = item.i_item_sk
+  AND item.i_manufact_id = 128
+  AND dt.d_moy = 11
+GROUP BY dt.d_year, item.i_brand, item.i_brand_id
+ORDER BY dt.d_year, sum_agg DESC, brand_id
+LIMIT 100
+```
+
+The Query description was obtained automatically using a LLM:
+"""
+Query Q3 of the TPC-DS benchmark focuses on analyzing sales performance for products from a
+specific manufacturer (identified by i_manufact_id = 128) during the month of November across
+different years. The aim is to aggregate sales data to understand yearly trends for this
+manufacturer's brands, highlighting which brands perform best in terms of sales within the
+specified month.
+"""
+
+You can continue to explore the queries and their execution plans to understand the complexity of the queries.
+The Query text can be found in the [Queries](../tpcds_pyspark/Queries) directory.

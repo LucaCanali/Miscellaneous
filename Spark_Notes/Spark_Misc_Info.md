@@ -1370,15 +1370,13 @@ spark.sql("select * from web_sales limit 10").show
 ---
 - Spark TPCDS benchmark
   - Download and build the Spark package from https://github.com/databricks/spark-sql-perf
-      - Note for Spark 3 I am currently and temporarily using https://github.com/lucacanali/spark-sql-perf
   - Download and build tpcds-kit for generating data from https://github.com/databricks/tpcds-kit
   - Testing
     1. Generate schema
     2. Run benchmark
     3. Extract results
 
-See instructions at the [spark-sql-perf](https://github.com/databricks/spark-sql-perf) git repo
-for additional info on how to generate data and tun the package. Here some pointers/examples:
+See instructions at the [spark-sql-perf](https://github.com/databricks/spark-sql-perf) for additional info here some pointers/examples:
 ```
 ///// 1. Generate schema
 bin/spark-shell --master yarn --num-executors 25 --driver-memory 12g --executor-memory 12g --executor-cores 4 --jars <path_here>/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar
@@ -1389,15 +1387,20 @@ NOTES:
   - Each "core" in the executor spawns one dsdgen
   - This workloads is memory hungry, to avoid excessive GC activity, allocate abundant memory per executor core
 
+// Scale 10000 partitioned
 val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10000")
 tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, true, false, "", 100)
+
+// Optionally, generate a smaller dataset for testing and development (scale 10 non-partitioned)
+val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10")
+tables.genData("/user/luca/TPCDS/tpcds_10_non_partiitoned", "parquet", true, false, false, false, "", 10)
 
 ///// 2. Run Benchmark 
 export SPARK_CONF_DIR=/usr/hdp/spark/conf
 export HADOOP_CONF_DIR=/etc/hadoop/conf
 
-bin/spark-shell --master yarn --num-executors 32 --executor-cores 8 --driver-memory 8g --executor-memory 16g --jars /home/luca/spark-sql-perf-new/target/scala-2.11/spark-sql-perf_2.11-0.5.1-SNAPSHOT.jar --conf spark.sql.shuffle.partitions=512 --conf spark.sql.crossJoin.enabled=true --conf spark.eventLog.enabled=false --conf spark.sql.autoBroadcastJoinThreshold=100000000
-// when using a large number of cores consider bumping up conf spark.sql.shuffle.partitions (defaiut is 200)
+bin/spark-shell --master yarn --num-executors 32 --executor-cores 8 --driver-memory 8g --executor-memory 16g --jars /home/luca/spark-sql-perf-new/target/scala-2.12/spark-sql-perf_2.12-0.5.1-SNAPSHOT.jar --conf spark.sql.shuffle.partitions=512 --conf spark.sql.crossJoin.enabled=true --conf spark.eventLog.enabled=false --conf spark.sql.autoBroadcastJoinThreshold=100000000
+// when using a large number of cores consider bumping up conf spark.sql.shuffle.partitions (default is 200)
 // if running on k8s client mode, add: --conf spark.task.maxDirectResultSize=100000000000 to work around SPARK-26087
 
 sql("SET spark.sql.perf.results=/user/luca/TPCDS/perftest_results")
@@ -1433,6 +1436,7 @@ spark.sql("select name, min(executiontime) as MIN_Exec, max(executiontime) as MA
 // one-off: setup tables using catalog (do not use temporary tables as in example above
 tables.createExternalTables("/user/luca/TPCDS/tpcds_1500", "parquet", "tpcds1500", overwrite = true, discoverPartitions = true)
 // compute statistics
+spark.conf.set("spark.sql.statistics.histogram.enabled,true)
 tables.analyzeTables("tpcds1500", analyzeColumns = true) 
 
 tables.createExternalTables("/user/luca/TPCDS/tpcds_1500", "parquet", "tpcds10000", overwrite = true, discoverPartitions = true)
@@ -1444,10 +1448,7 @@ spark.conf.set("spark.sql.statistics.histogram.enabled,true)
 sql("use tpcds10000")
 sql("show tables").show
 
-spark.conf.set("spark.sql.cbo.enabled",true)
-// --conf spark.sql.cbo.enabled=true
-
-////// Eperiment with caching large tables prior to running the benchmak (you need to have enough memory allocated to the executors)
+////// Experiment with caching large tables prior to running the benchmak (you need to have enough memory allocated to the executors)
 
 //Tables/views to cache
 //val list_tables=List("catalog_returns","inventory","store_sales","store_returns","web_sales","web_returns","call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
