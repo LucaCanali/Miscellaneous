@@ -1343,6 +1343,31 @@ scala> df.show
 +--------------------+-------------------+------+--------------------+
 ```
 ---
+- Create metastore table from Parquet files
+  - This is about mapping Parquet (or other format) files into Spark tables
+  - using temporary views is an option with `df.createOrReplaceTempView("mytable")`
+  - but if you want to persist the table in a Hive metastore, you can use the following
+  
+```
+spark.sql(f"DROP TABLE IF EXISTS web_sales")
+
+spark.sql("""
+CREATE EXTERNAL TABLE IF NOT EXISTS web_sales
+USING parquet
+OPTIONS (path '/user/canali/TPCDS/tpcds_10/web_sales')""")
+
+# If the table is partitioned, run this also:
+spark.sql("MSCK REPAIR TABLE web_sales")
+
+spark.sql("select * from web_sales limit 10").show
+```
+
+- Note on configurations: start spark with metastore configurations
+  - `--conf spark.sql.catalogImplementation=hive`
+  - optionally configure the external Hive metastore or the Spark-created warehouse dir path: `--conf spark.sql.warehouse.dir=...` 
+  - optionally configure the default database name with `--conf spark.sql.catalog.spark_catalog.defaultDatabase=..` 
+
+---
 - Spark TPCDS benchmark
   - Download and build the Spark package from https://github.com/databricks/spark-sql-perf
       - Note for Spark 3 I am currently and temporarily using https://github.com/lucacanali/spark-sql-perf
@@ -1414,6 +1439,7 @@ tables.createExternalTables("/user/luca/TPCDS/tpcds_1500", "parquet", "tpcds1000
 tables.analyzeTables("tpcds10000", analyzeColumns = true) 
 
 spark.conf.set("spark.sql.cbo.enabled",true)
+spark.conf.set("spark.sql.statistics.histogram.enabled,true)
 // --conf spark.sql.cbo.enabled=true
 sql("use tpcds10000")
 sql("show tables").show
@@ -1436,7 +1462,7 @@ for (t <- list_tables) spark.table(t).persist(org.apache.spark.storage.StorageLe
 ```
 // create the TPCDS schema tables
 // this method uses temporary views
-val path="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/"
+val path="/project/spark/TPCDS/tpcds_1500_parquet_1.13.1/"
 val tables=List("catalog_returns","catalog_sales","inventory","store_returns","store_sales","web_sales",web_returns","call_center","catalog_page","customer","customer_address","customer_demographics","date_dim","household_demographics","income_band","item","promotion","reason","ship_mode","store","time_dim","warehouse","web_page","web_site")
 
 for (t <- tables) {
@@ -1469,8 +1495,8 @@ Spark 3.2 comes with Parquet 1.12.0, Spark 3.1 with parquet 1.10.1.
 If you want to use the new parquet format without recreating the schema, use this:
 ```
 val inpath="/project/spark/TPCDS/tpcds_1500_parquet_1.10.1/"
-val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/"
-//val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.12.0_zstd/"
+val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.13.1/"
+//val outpath="/project/spark/TPCDS/tpcds_1500_parquet_1.13.1_zstd/"
 //val compression_type="zstd"
 
 val tables_partition=List(("catalog_returns","cr_returned_date_sk"), ("catalog_sales","cs_sold_date_sk"), ("inventory","inv_date_sk"), ("store_returns","sr_returned_date_sk"), ("store_sales","ss_sold_date_sk"), ("web_returns","wr_returned_date_sk"), ("web_sales","ws_sold_date_sk"))
@@ -1498,7 +1524,7 @@ for (t <- tables_nopartition) {
   - Use Spark dashboard and/or sparkMeasure and/or OS tools to make sure the query runs as intended, i.e. performing a full table scan.
   - Example query:
   ```
-  val df=spark.read.parquet("/project/spark/TPCDS/tpcds_1500_parquet_1.12.0/store_sales")
+  val df=spark.read.parquet("/project/spark/TPCDS/tpcds_1500_parquet_1.13.1/store_sales")
   df.write.format("noop").mode("overwrite").save
   // workaround used for Spark 2.x -> df.where("ss_sales_price=37.8688").collect
   
