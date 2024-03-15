@@ -27,7 +27,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -59,8 +59,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total task Run Time from task metrics in the selected time range. \n",
       "fieldConfig": {
@@ -96,6 +96,7 @@
         "y": 1
       },
       "id": 85,
+      "interval": "5",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -120,6 +121,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(runTime_count_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(runTime_count_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)",
           "groupBy": [
             {
               "params": [
@@ -134,10 +137,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -169,8 +174,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Executor CPU time computed from executor metrics for the selected time range. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
       "fieldConfig": {
@@ -206,6 +211,7 @@
         "y": 1
       },
       "id": 83,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -230,6 +236,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)",
           "groupBy": [
             {
               "params": [
@@ -245,10 +253,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "jvmCpuTime",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n( SELECT process, first(value) as firstvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -280,8 +290,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total task CPU usage from task metrics in the selected time range. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
       "fieldConfig": {
@@ -317,6 +327,7 @@
         "y": 1
       },
       "id": 9,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -341,6 +352,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(cpuTime_count_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(cpuTime_count_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)",
           "groupBy": [
             {
               "params": [
@@ -355,10 +368,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -389,10 +404,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
-      },
+      "datasource": {},
       "description": "Total time spent in GC operations during task execution for the selected time range. Displays values for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
         "defaults": {
@@ -451,6 +463,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(jvmGCTime_count_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(jvmGCTime_count_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)\r\n",
           "groupBy": [
             {
               "params": [
@@ -465,10 +479,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastperprocessval) - sum(firstperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(\"value\") as firstperprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) \n\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -500,8 +516,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Number of completed tasks, from JVM threadpool metrics in the selected time range. Note, values from executors that are no more active in the selected time window are not counted.",
       "fieldConfig": {
@@ -537,6 +553,7 @@
         "y": 1
       },
       "id": 34,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -561,6 +578,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(threadpool_completeTasks_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(threadpool_completeTasks_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)",
           "groupBy": [
             {
               "params": [
@@ -569,10 +588,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "threadpool.completeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastperprocessval) - sum(firstperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(\"value\") as firstperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -604,8 +625,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Number of running stages from the DAG scheduler.",
       "fieldConfig": {
@@ -641,6 +662,7 @@
         "y": 1
       },
       "id": 79,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -665,6 +687,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "stage_runningStages_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -674,10 +698,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "stage.failedStages",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"value\" FROM \"stage.runningStages\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -709,8 +735,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Latest value of the % of heap memory used, averaging over executors and driver. JVM metric from MemoryMXBean. Conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource",
       "fieldConfig": {
@@ -753,6 +779,7 @@
       },
       "hideTimeOverride": false,
       "id": 32,
+      "interval": "5s",
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
@@ -776,6 +803,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "avg(last_over_time(heap_usage_value{applicationid=\"$ApplicationId\"}[$__range]) * 100)",
           "groupBy": [
             {
               "params": [
@@ -791,10 +820,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "heap.usage",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select mean(lastvalperprocess)*100 from  (SELECT process, last(value) as lastvalperprocess FROM \"heap.usage\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -832,8 +863,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total number of bytes read from task metrics in the selected time range. \n",
       "fieldConfig": {
@@ -869,6 +900,7 @@
         "y": 6
       },
       "id": 86,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -893,6 +925,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(bytesRead_count_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(bytesRead_count_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)\r\n",
           "groupBy": [
             {
               "params": [
@@ -907,10 +941,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"bytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"bytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -942,8 +978,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total number of bytes written from task metrics in the selected time range. \n",
       "fieldConfig": {
@@ -979,6 +1015,7 @@
         "y": 6
       },
       "id": 87,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1003,6 +1040,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(bytesWritten_count_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(bytesWritten_count_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)\r\n",
           "groupBy": [
             {
               "params": [
@@ -1017,10 +1056,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"bytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"bytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1052,8 +1093,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total number of shuffle bytes written from task metrics in the selected time range. \n",
       "fieldConfig": {
@@ -1089,6 +1130,7 @@
         "y": 6
       },
       "id": 89,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1113,6 +1155,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(shuffleBytesWritten_count_value{applicationid=\"$ApplicationId\"}[$__range]) \r\n  - \r\n  min_over_time(shuffleBytesWritten_count_value{applicationid=\"$ApplicationId\"}[$__range])\r\n)\r\n",
           "groupBy": [
             {
               "params": [
@@ -1127,10 +1171,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "job.activeJobs",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n(SELECT process, last(value) as lastvalperprocess FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n(SELECT process, first(value) as firstvalperprocess FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1162,8 +1208,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Failed tasks for the appStatus metrics. Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
@@ -1199,6 +1245,7 @@
         "y": 6
       },
       "id": 44,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -1223,6 +1270,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "tasks_failedTasks_count_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -1232,10 +1281,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "tasks.completedTasks.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"value\" FROM \"tasks.failedTasks.count\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1266,10 +1317,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
-      },
+      "datasource": {},
       "description": "Number of failed stages from the appStatus \n metrics.\nConditional to a configuration parameter:\nspark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
         "defaults": {
@@ -1328,6 +1376,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "stages_failedStages_count_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -1337,10 +1387,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "stage.failedStages",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"value\" FROM \"stages.failedStages.count\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1372,10 +1424,10 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
-      "description": "Latest sample of the value of number of active tasks, summed over all executors active in the latest 60 seconds.",
+      "description": "Latest sample of the value of number of active tasks, summed over all executors",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1409,6 +1461,7 @@
         "y": 11
       },
       "id": 41,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1433,6 +1486,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(last_over_time(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"}[$__range]))",
           "groupBy": [
             {
               "params": [
@@ -1442,10 +1497,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "stage.runningStages",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT process, last(\"value\") as perprocessval FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' and time > now() - 60s GROUP BY process) ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1473,8 +1530,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Average value of number of active tasks",
       "fieldConfig": {
@@ -1510,6 +1567,7 @@
         "y": 11
       },
       "id": 90,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1534,6 +1592,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(avg_over_time(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"}[$__range]))\r\n",
           "groupBy": [
             {
               "params": [
@@ -1543,10 +1603,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "stage.runningStages",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT mean(\"value\") as perprocessval FROM \"threadpool.activeTasks\" WHERE $timeFilter and \"applicationid\" = '$ApplicationId' GROUP BY process) ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1574,8 +1636,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total executor CPU time computed from executor metrics since the start of the Spark application. Displays CPU time used by all the executors' JVMs for the duration of the application. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection.",
       "fieldConfig": {
@@ -1611,6 +1673,7 @@
         "y": 11
       },
       "id": 57,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1635,6 +1698,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(last_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\"}))",
           "groupBy": [
             {
               "params": [
@@ -1650,10 +1715,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "jvmCpuTime",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastvalperprocess) as JCMCPU from ( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' GROUP BY process) ",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1680,13 +1747,13 @@
           ]
         }
       ],
-      "title": "CPU Application Total - Executors CPU time",
+      "title": "Total - Executors CPU time",
       "type": "stat"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Number of completed tasks, from JVM threadpool metrics since the start of the Spark application.",
       "fieldConfig": {
@@ -1746,6 +1813,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(max_over_time(threadpool_completeTasks_value{applicationid=\"$ApplicationId\"}))",
           "groupBy": [
             {
               "params": [
@@ -1754,10 +1823,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "threadpool.completeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(lastperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' GROUP BY process)",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1789,8 +1860,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Number of succeeded jobs, from the appStatus metric (introduced in Spark 3.0). Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
       "fieldConfig": {
@@ -1850,6 +1921,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "jobs_succeededJobs_count_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -1864,10 +1937,12 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "jobs.succeededJobs.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT value FROM \"jobs.succeededJobs.count\" WHERE \"applicationid\" = '$ApplicationId' and $timeFilter",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1925,8 +2000,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Number of active tasks per executor.\n",
       "fieldConfig": {
@@ -1992,7 +2067,7 @@
         "y": 17
       },
       "id": 2,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2013,6 +2088,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "avg_over_time(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -2028,10 +2105,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"threadpool.activeTasks\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2059,8 +2138,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total executor CPU utilization computed from executors' JVM instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
       "fieldConfig": {
@@ -2126,7 +2205,7 @@
         "y": 17
       },
       "id": 33,
-      "interval": "15s",
+      "interval": "5",
       "options": {
         "legend": {
           "calcs": [],
@@ -2147,6 +2226,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(jvmCpuTime_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000000000",
           "groupBy": [
             {
               "params": [
@@ -2156,10 +2237,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "jvmCpuTime",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"jvmCpuTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2199,8 +2282,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
       "fieldConfig": {
@@ -2266,7 +2349,7 @@
         "y": 29
       },
       "id": 7,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2287,6 +2370,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(jvmGCTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2301,10 +2386,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval),process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2342,8 +2429,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
       "fieldConfig": {
@@ -2409,7 +2496,7 @@
         "y": 29
       },
       "id": 3,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2430,6 +2517,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(cpuTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000000000",
           "groupBy": [
             {
               "params": [
@@ -2444,10 +2533,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "cpuTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2491,8 +2582,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between tun time measuremets and wait time measuremts can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
       "fieldConfig": {
@@ -2538,7 +2629,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2552,42 +2644,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "runTime"
+              "options": "sum(rate(runTime_count_value{applicationid=\"application_1710156516635_5882\"}[10s])) / 1000"
             },
             "properties": [
               {
                 "id": "custom.drawStyle",
                 "value": "line"
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
-              },
-              {
-                "id": "custom.stacking",
-                "value": {
-                  "group": "A",
-                  "mode": "none"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "deserializeCpuTime"
-            },
-            "properties": [
-              {
-                "id": "custom.stacking",
-                "value": {
-                  "group": "A",
-                  "mode": "none"
-                }
               }
             ]
           }
@@ -2600,7 +2662,7 @@
         "y": 39
       },
       "id": 24,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -2621,6 +2683,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(deserializeTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2629,10 +2693,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "deserializeCpuTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"deserializeCpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2664,6 +2730,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(cpuTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000000000",
           "groupBy": [
             {
               "params": [
@@ -2672,10 +2740,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "deserializeTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"deserializeTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2707,6 +2777,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(shuffleWriteTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000000000",
           "groupBy": [
             {
               "params": [
@@ -2715,10 +2787,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "cpuTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"cpuTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -2750,6 +2824,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(resultSerializationTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2758,10 +2834,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleWriteTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000000000 as perprocessval FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
@@ -2793,6 +2871,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(shuffleFetchWaitTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2801,10 +2881,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "resultSerializationTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"resultSerializationTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "E",
           "resultFormat": "time_series",
@@ -2836,6 +2918,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(shuffleFetchWaitTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2844,10 +2928,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"shuffleFetchWaitTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "F",
           "resultFormat": "time_series",
@@ -2879,6 +2965,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(jvmGCTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2893,9 +2981,11 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"jvmGCTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "G",
           "resultFormat": "time_series",
@@ -2921,6 +3011,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(runTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])) / 1000",
           "groupBy": [
             {
               "params": [
@@ -2935,9 +3027,11 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) / 1000 as perprocessval FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "H",
           "resultFormat": "time_series",
@@ -2963,8 +3057,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
       "fieldConfig": {
@@ -3010,7 +3104,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3029,7 +3124,7 @@
         "y": 39
       },
       "id": 54,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -3050,6 +3145,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(runTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000",
           "groupBy": [
             {
               "params": [
@@ -3064,10 +3161,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s) / 1000  FROM \"runTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3105,8 +3204,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Storage memory and disk used by the block manager.",
       "fieldConfig": {
@@ -3152,7 +3251,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3192,6 +3292,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "memory_onHeapMemUsed_MB_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -3206,10 +3308,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT mean(value) FROM \"memory.onHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3247,6 +3351,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "memory_offHeapMemUsed_MB_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -3261,9 +3367,11 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"memory.offHeapMemUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -3289,6 +3397,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "disk_diskSpaceUsed_MB_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -3303,9 +3413,11 @@
               "type": "fill"
             }
           ],
+          "legendFormat": "__auto",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"disk.diskSpaceUsed_MB\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -3331,8 +3443,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Time the Executor has spent writing shuffle data. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on shuffle writing that would give an equivalent result.",
       "fieldConfig": {
@@ -3378,7 +3490,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3397,7 +3510,7 @@
         "y": 50
       },
       "id": 67,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -3418,6 +3531,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(shuffleWriteTime_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000\r\n",
           "groupBy": [
             {
               "params": [
@@ -3432,10 +3547,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleFetchWaitTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s) / 1000000000  FROM \"shuffleWriteTime.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3499,8 +3616,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "JVM Heap Memory",
       "fieldConfig": {
@@ -3546,7 +3663,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3565,7 +3683,7 @@
         "y": 62
       },
       "id": 70,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -3586,6 +3704,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "JVMHeapMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -3601,10 +3721,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"JVMHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3632,8 +3754,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "JVM Off Heap Memory",
       "fieldConfig": {
@@ -3679,7 +3801,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3698,7 +3821,7 @@
         "y": 62
       },
       "id": 80,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -3719,6 +3842,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "JVMOffHeapMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -3734,10 +3859,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"JVMOffHeapMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3765,8 +3892,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "OnHeapUnifiedMemory",
       "fieldConfig": {
@@ -3812,7 +3939,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3831,7 +3959,7 @@
         "y": 74
       },
       "id": 81,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -3852,6 +3980,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "OnHeapUnifiedMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -3867,10 +3997,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"OnHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3898,8 +4030,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "OffHeapUnifiedMemory",
       "fieldConfig": {
@@ -3945,7 +4077,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3964,7 +4097,7 @@
         "y": 74
       },
       "id": 71,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -3985,6 +4118,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "OffHeapUnifiedMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -4000,10 +4135,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"OffHeapUnifiedMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4031,8 +4168,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "OnHeapExecutionMemory",
       "fieldConfig": {
@@ -4078,7 +4215,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4097,7 +4235,7 @@
         "y": 86
       },
       "id": 76,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4118,6 +4256,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "OnHeapExecutionMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -4133,10 +4273,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"OnHeapExecutionMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4164,8 +4306,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "OnHeap Storage Memory",
       "fieldConfig": {
@@ -4211,7 +4353,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4230,7 +4373,7 @@
         "y": 86
       },
       "id": 77,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4251,6 +4394,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "OnHeapStorageMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -4266,10 +4411,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"OnHeapStorageMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4297,8 +4444,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "MinorGCTime",
       "fieldConfig": {
@@ -4344,7 +4491,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4363,7 +4511,7 @@
         "y": 98
       },
       "id": 75,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4384,6 +4532,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(MinorGCTime_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000",
           "groupBy": [
             {
               "params": [
@@ -4398,10 +4548,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"MinorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4439,8 +4591,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "MajorGCTime",
       "fieldConfig": {
@@ -4486,7 +4638,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4505,7 +4658,7 @@
         "y": 98
       },
       "id": 74,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4526,6 +4679,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(MajorGCTime_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000",
           "groupBy": [
             {
               "params": [
@@ -4540,10 +4695,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "jvmGCTime.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000 FROM  \"MajorGCTime\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process\n",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4581,8 +4738,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "ProcessTreeJVMRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fieldConfig": {
@@ -4628,7 +4785,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4647,7 +4805,7 @@
         "y": 108
       },
       "id": 73,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4668,6 +4826,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "ProcessTreeJVMRSSMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -4683,10 +4843,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"ProcessTreeJVMRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4714,8 +4876,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "ProcessTreePythonRSSMemory. Conditional to spark.executor.processTreeMetrics.enabled=true",
       "fieldConfig": {
@@ -4761,7 +4923,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4780,7 +4943,7 @@
         "y": 108
       },
       "id": 82,
-      "interval": "10s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4801,6 +4964,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(ProcessTreePythonRSSMemory_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -4816,10 +4981,12 @@
             }
           ],
           "hide": false,
+          "legendFormat": "__auto",
           "measurement": "threadpool.activeTasks",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(value) FROM \"ProcessTreePythonRSSMemory\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4873,8 +5040,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
       "fieldConfig": {
@@ -4920,7 +5087,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4939,7 +5107,7 @@
         "y": 121
       },
       "id": 50,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -4960,6 +5128,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "total_used_value{applicationid=\"$ApplicationId\", process!=\"driver\"}",
           "groupBy": [
             {
               "params": [
@@ -4974,10 +5144,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT mean(value) FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver'  GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5015,8 +5187,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Heap memory used per executor.  From MemoryMXBean.",
       "fieldConfig": {
@@ -5062,7 +5234,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5102,6 +5275,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "heap_used_value{applicationid=\"$ApplicationId\", process!=\"driver\"}",
           "groupBy": [
             {
               "params": [
@@ -5116,10 +5291,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT mean(value) FROM \"heap.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process != 'driver' GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5157,8 +5334,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
       "fieldConfig": {
@@ -5204,7 +5381,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5223,7 +5401,7 @@
         "y": 133
       },
       "id": 64,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -5244,6 +5422,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "total_used_value{applicationid=\"$ApplicationId\", process=\"driver\"}",
           "groupBy": [
             {
               "params": [
@@ -5258,10 +5438,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "heap.used",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT mean(value) FROM \"total.used\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter AND process = 'driver' GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5325,8 +5507,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "HDFS read throughput.",
       "fieldConfig": {
@@ -5372,7 +5554,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5391,7 +5574,7 @@
         "y": 144
       },
       "id": 16,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -5412,6 +5595,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(filesystem_hdfs_read_bytes_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -5426,10 +5611,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "filesystem.hdfs.read_bytes",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"filesystem.hdfs.read_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5467,8 +5654,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "HDFS write throughput.",
       "fieldConfig": {
@@ -5514,7 +5701,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5533,7 +5721,7 @@
         "y": 144
       },
       "id": 61,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -5554,6 +5742,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(filesystem_hdfs_write_bytes_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -5568,10 +5758,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "filesystem.hdfs.read_bytes",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"filesystem.hdfs.write_bytes\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($__interval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5609,8 +5801,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Shuffle read throughput.",
       "fieldConfig": {
@@ -5656,7 +5848,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5675,7 +5868,7 @@
         "y": 154
       },
       "id": 18,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -5696,6 +5889,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(shuffleTotalBytesRead_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -5710,10 +5905,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleTotalBytesRead.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"shuffleTotalBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($groupbyInterval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5751,8 +5948,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Shuffle write throughput.",
       "fieldConfig": {
@@ -5798,7 +5995,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5817,7 +6015,7 @@
         "y": 154
       },
       "id": 17,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -5838,6 +6036,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(shuffleBytesWritten_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -5852,10 +6052,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleBytesWritten.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"shuffleBytesWritten.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($groupbyInterval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -5893,8 +6095,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Details of shuffle I/O operations, local and remote.",
       "fieldConfig": {
@@ -5940,7 +6142,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -5959,7 +6162,7 @@
         "y": 165
       },
       "id": 22,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -5980,6 +6183,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(shuffleLocalBytesRead_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval]))",
           "groupBy": [
             {
               "params": [
@@ -5988,10 +6193,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleRemoteBytesRead.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) as perprocessval FROM \"shuffleRemoteBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval), process) GROUP BY time($groupbyInterval)\n",
+          "range": true,
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -6029,6 +6236,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "sum(rate(shuffleRemoteBytesRead_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval]))",
           "groupBy": [
             {
               "params": [
@@ -6037,10 +6246,12 @@
               "type": "time"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleLocalBytesRead.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "select sum(perprocessval) from (SELECT non_negative_derivative(last(\"value\"), 1s) as perprocessval FROM \"shuffleLocalBytesRead.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($groupbyInterval),  \"process\") GROUP BY time($groupbyInterval)",
+          "range": true,
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -6078,8 +6289,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
       "description": "Bytes spilled to disk per second",
       "fieldConfig": {
@@ -6125,7 +6336,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -6144,7 +6356,7 @@
         "y": 165
       },
       "id": 88,
-      "interval": "15s",
+      "interval": "5s",
       "options": {
         "legend": {
           "calcs": [],
@@ -6165,6 +6377,8 @@
             "type": "influxdb",
             "uid": "PAB4C6DB7858A5C06"
           },
+          "editorMode": "code",
+          "expr": "rate(diskBytesSpilled_count_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
           "groupBy": [
             {
               "params": [
@@ -6179,10 +6393,12 @@
               "type": "tag"
             }
           ],
+          "legendFormat": "__auto",
           "measurement": "shuffleBytesWritten.count",
           "orderByTime": "ASC",
           "policy": "autogen",
           "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"diskBytesSpilled.count\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY  time($groupbyInterval), process",
+          "range": true,
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -6219,7 +6435,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "1m",
+  "refresh": "10s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -6231,52 +6447,52 @@
           "value": "luca"
         },
         "datasource": {
-          "type": "influxdb",
-          "uid": "PAB4C6DB7858A5C06"
+          "type": "victoriametrics-datasource",
+          "uid": "P4169E866C3094E38"
         },
-        "definition": "",
+        "definition": "label_values(username)",
         "hide": 0,
         "includeAll": false,
         "label": "User",
         "multi": false,
         "name": "UserName",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY = \"username\"",
-        "refresh": 2,
+        "query": {
+          "query": "label_values(username)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 1,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "sort": 0,
+        "type": "query"
       },
       {
         "current": {
           "selected": false,
-          "text": "application_1709816012523_4307",
-          "value": "application_1709816012523_4307"
+          "text": "application_1710156516635_5882",
+          "value": "application_1710156516635_5882"
         },
         "datasource": {
-          "type": "influxdb",
-          "uid": "PAB4C6DB7858A5C06"
+          "type": "victoriametrics-datasource",
+          "uid": "P4169E866C3094E38"
         },
-        "definition": "",
+        "definition": "label_values({username=~\"$UserName\"}, applicationid)",
         "hide": 0,
         "includeAll": false,
         "label": "Spark Application Id",
         "multi": false,
         "name": "ApplicationId",
         "options": [],
-        "query": "SHOW TAG VALUES WITH KEY = \"applicationid\" WHERE \"username\" =~ /$UserName/ ",
-        "refresh": 2,
+        "query": {
+          "query": "label_values({username=~\"$UserName\"}, applicationid)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 2,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "sort": 4,
+        "type": "query"
       },
       {
         "current": {
@@ -6284,12 +6500,12 @@
           "text": "10s",
           "value": "10s"
         },
-        "description": "The group by interval range applied when aggregating task metrics. Use 10s (default) when your tasks run <= 10s, use a large value when you have long-running tasks.\n",
+        "description": "The aggregation time interval applied when aggregating task metrics. Use 10s (default) when your tasks run <= 10s, use a large value when you have long-running tasks.\n",
         "hide": 0,
         "includeAll": false,
         "label": "Task metrics time average",
         "multi": false,
-        "name": "groupbyInterval",
+        "name": "AggrInterval",
         "options": [
           {
             "selected": false,
@@ -6364,8 +6580,8 @@
     ]
   },
   "timezone": "",
-  "title": "Spark_Perf_Dashboard_v04",
-  "uid": "dNnGJjc4z",
+  "title": "Spark_Perf_Dashboard_v04_PromQL",
+  "uid": "cdfq4554jii9sa",
   "version": 1,
   "weekStart": ""
 }
