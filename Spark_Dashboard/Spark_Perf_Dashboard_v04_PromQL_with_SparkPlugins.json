@@ -27,10 +27,2675 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 92,
+      "panels": [
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Total executor CPU utilization computed from executors'  container cgroup instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "CPU Utilization (N# cores equivalent)",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 94,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "Container CPU - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CgroupMetrics_CPUTimeNanosec_value) / 1000000000",
+              "groupBy": [
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "jvmCpuTime",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  / 1000000000 FROM \"ch.cern.CgroupMetrics.CPUTimeNanosec\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process\n",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "non_negative_derivative"
+                  },
+                  {
+                    "params": [
+                      " / 1000000000"
+                    ],
+                    "type": "math"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Executors Container CPU Utilization (N# cores-equivalent)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Network bytes incoming, throughput from ch.cern.CgroupMetrics.NetworkBytesIn",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Network bytes in bytes/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 95,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "Network bytes in - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CgroupMetrics_NetworkBytesIn_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.NetworkBytesIn\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Network bytes in/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Network bytes outgoing, throughput metric from ch.cern.CgroupMetrics.NetworkBytesOut",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Network bytes out bytes/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "id": 96,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "network bytes out - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CgroupMetrics_NetworkBytesOut_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CgroupMetrics.NetworkBytesOut\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Network bytes out/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryRss.\nBytes of anonymous and swap cache memory.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Memory RSS bytes",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "id": 97,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "Container memory RSS - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CgroupMetrics_MemoryRss_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT mean(value)  FROM \"ch.cern.CgroupMetrics.MemoryRss\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Memory RSS",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Memory number of bytes of swap usage from ch.cern.CgroupMetrics.MemorySwap",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Memory Swap bytes",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 21
+          },
+          "id": 98,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "Memory swap - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CgroupMetrics_MemorySwap_value) ",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT mean(value)  FROM \"ch.cern.CgroupMetrics.MemorySwap\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Memory Swap Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Number of bytes of page cache memory from ch.cern.CgroupMetrics.MemoryCache",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Memory cache bytes",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 21
+          },
+          "id": 99,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "Memory page cache - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CgroupMetrics_MemoryCache_value) ",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT mean(value)  FROM \"ch.cern.CgroupMetrics.MemoryCache\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Memory Page Cache",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Spark Plugins: CGroup Metrics (use with Spark on K8S)",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 109,
+      "panels": [
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Cloud storage read throughput from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Cloud storage bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 110,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "bytes read - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CloudFSMetrics_bytesRead_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.bytesRead\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Cloud Storage bytes read/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Cloud storage write throughput from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Cloud storage bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 111,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "bytes written- Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CloudFSMetrics_bytesWritten_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.bytesWritten\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Cloud Storage bytes written/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Cloud storage read operations from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Cloud storage read ops/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 11
+          },
+          "id": 112,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "read ops - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CloudFSMetrics_readOps_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.readOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Cloud Storage read ops/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "Cloud storage read operations from ch.cern.CloudFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Cloud storage write ops/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 11
+          },
+          "id": 113,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "write ops - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_CloudFSMetrics_writeOps_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.CloudFSMetrics.writeOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "Cloud Storage write ops/sec ",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Spark Plugins: Cloud Storage (use with S3A, GS, WASB, etc)",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 100,
+      "panels": [
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 33
+          },
+          "id": 101,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "HDFS bytes read - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesRead_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesRead\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS bytes read/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS write throughput from ch.cern.HDFSMetrics.bytesWritten",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS bytes written/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 33
+          },
+          "id": 102,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "HDFS bytes written- Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesWritten_value) ",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesWritten\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS bytes written/sec",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS read ops from ch.cern.HDFSMetrics.readOps",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS read ops/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 43
+          },
+          "id": 103,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "HDFS read ops - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_readOps_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.readOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS read ops/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS large read ops from ch.cern.HDFSMetrics.largeReadOps",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS large read ops/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 43
+          },
+          "id": 104,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "HDFS large read ops - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_largeReadOps_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.largeReadOps\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS large read ops/sec ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesLocalHost",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 53
+          },
+          "id": 105,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "HDFS bytes read - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadLocalHost_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadLocalHost\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS bytes read localhost (bytes/sec) ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfOneOrTwo",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 53
+          },
+          "id": 107,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "hdfs bytes read - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfOneOrTwo_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadDistanceOfOneOrTwo\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS bytes read distance 1 or 2 (bytes/sec) ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfThreeOrFour",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 63
+          },
+          "id": 108,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "hdfs bytes read - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfThreeOrFour_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadDistanceOfThreeOrFour\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS bytes read distance 3 or 4 (bytes/sec) ",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-datasource",
+            "uid": "P4169E866C3094E38"
+          },
+          "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfFiveOrLarger",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "HDFS bytes read/sec",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "Bps"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 63
+          },
+          "id": 106,
+          "interval": "5s",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "alias": "HDFS bytes read - Executor $tag_process",
+              "datasource": {
+                "uid": "influx-graphite"
+              },
+              "editorMode": "code",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfFiveOrLarger_value)",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "process"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "legendFormat": "exec: {{executorid}}",
+              "measurement": "filesystem.hdfs.read_bytes",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT non_negative_derivative(mean(value), 1s)  FROM \"ch.cern.HDFSMetrics.bytesReadDistanceOfFiveOrLarger\" WHERE \"applicationid\" = '$ApplicationId' AND $timeFilter GROUP BY time($__interval), process",
+              "range": true,
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "15s"
+                    ],
+                    "type": "non_negative_derivative"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "applicationid",
+                  "operator": "=~",
+                  "value": "/^$ApplicationId$/"
+                }
+              ]
+            }
+          ],
+          "title": "HDFS bytes read distance 5 or larger (bytes/sec) ",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Spark Plugins: HDFS Advanced Statistics",
+      "type": "row"
+    },
     {
       "collapsed": false,
       "datasource": {
@@ -41,7 +2706,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 3
       },
       "id": 56,
       "panels": [],
@@ -93,7 +2758,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 4
       },
       "id": 85,
       "interval": "5",
@@ -208,7 +2873,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 1
+        "y": 4
       },
       "id": 83,
       "interval": "5s",
@@ -324,7 +2989,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 1
+        "y": 4
       },
       "id": 9,
       "interval": "5s",
@@ -436,7 +3101,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 1
+        "y": 4
       },
       "id": 46,
       "options": {
@@ -550,7 +3215,7 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 1
+        "y": 4
       },
       "id": 34,
       "interval": "5s",
@@ -659,7 +3324,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 1
+        "y": 4
       },
       "id": 79,
       "interval": "5s",
@@ -775,7 +3440,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 6
+        "y": 9
       },
       "hideTimeOverride": false,
       "id": 32,
@@ -897,7 +3562,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 6
+        "y": 9
       },
       "id": 86,
       "interval": "5s",
@@ -1012,7 +3677,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 6
+        "y": 9
       },
       "id": 87,
       "interval": "5s",
@@ -1127,7 +3792,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 6
+        "y": 9
       },
       "id": 89,
       "interval": "5s",
@@ -1242,7 +3907,7 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 6
+        "y": 9
       },
       "id": 44,
       "interval": "5s",
@@ -1349,7 +4014,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 6
+        "y": 9
       },
       "id": 42,
       "options": {
@@ -1458,7 +4123,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 11
+        "y": 14
       },
       "id": 41,
       "interval": "5s",
@@ -1564,7 +4229,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 11
+        "y": 14
       },
       "id": 90,
       "interval": "5s",
@@ -1670,7 +4335,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 11
+        "y": 14
       },
       "id": 57,
       "interval": "5s",
@@ -1786,7 +4451,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 11
+        "y": 14
       },
       "id": 84,
       "options": {
@@ -1894,7 +4559,7 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 11
+        "y": 14
       },
       "id": 13,
       "options": {
@@ -1982,7 +4647,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 19
       },
       "id": 28,
       "panels": [],
@@ -2064,7 +4729,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 20
       },
       "id": 2,
       "interval": "5s",
@@ -2202,7 +4867,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 20
       },
       "id": 33,
       "interval": "5",
@@ -2332,8 +4997,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2362,7 +5026,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 29
+        "y": 32
       },
       "id": 24,
       "interval": "5s",
@@ -2760,8 +5424,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2777,7 +5440,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 29
+        "y": 32
       },
       "id": 54,
       "interval": "5s",
@@ -2907,8 +5570,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2924,7 +5586,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 40
+        "y": 43
       },
       "id": 7,
       "interval": "5s",
@@ -3054,8 +5716,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3071,7 +5732,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 40
+        "y": 43
       },
       "id": 3,
       "interval": "5s",
@@ -3207,8 +5868,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3224,7 +5884,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 51
+        "y": 54
       },
       "id": 67,
       "interval": "5s",
@@ -3315,7 +5975,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 65
       },
       "id": 69,
       "panels": [],
@@ -3380,8 +6040,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3397,7 +6056,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 63
+        "y": 66
       },
       "id": 70,
       "interval": "5s",
@@ -3518,8 +6177,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3535,7 +6193,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 63
+        "y": 66
       },
       "id": 80,
       "interval": "5s",
@@ -3656,8 +6314,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3673,7 +6330,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 75
+        "y": 78
       },
       "id": 81,
       "interval": "5s",
@@ -3794,8 +6451,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3811,7 +6467,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 75
+        "y": 78
       },
       "id": 71,
       "interval": "5s",
@@ -3932,8 +6588,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3949,7 +6604,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 87
+        "y": 90
       },
       "id": 76,
       "interval": "5s",
@@ -4070,8 +6725,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4087,7 +6741,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 87
+        "y": 90
       },
       "id": 77,
       "interval": "5s",
@@ -4208,8 +6862,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4225,7 +6878,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 99
+        "y": 102
       },
       "id": 75,
       "interval": "5s",
@@ -4355,8 +7008,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4372,7 +7024,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 99
+        "y": 102
       },
       "id": 74,
       "interval": "5s",
@@ -4502,8 +7154,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4519,7 +7170,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 109
+        "y": 112
       },
       "id": 73,
       "interval": "5s",
@@ -4640,8 +7291,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4657,7 +7307,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 109
+        "y": 112
       },
       "id": 82,
       "interval": "5s",
@@ -4739,7 +7389,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 121
+        "y": 124
       },
       "id": 63,
       "panels": [],
@@ -4804,8 +7454,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4821,7 +7470,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 122
+        "y": 125
       },
       "id": 50,
       "interval": "5s",
@@ -4951,8 +7600,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4968,7 +7616,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 122
+        "y": 125
       },
       "id": 65,
       "interval": "15s",
@@ -5099,8 +7747,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5116,7 +7763,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 134
+        "y": 137
       },
       "id": 64,
       "interval": "5s",
@@ -5251,8 +7898,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5268,7 +7914,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 134
+        "y": 137
       },
       "id": 91,
       "interval": "5",
@@ -5356,7 +8002,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 144
+        "y": 147
       },
       "id": 60,
       "panels": [],
@@ -5421,8 +8067,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5438,7 +8083,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 145
+        "y": 148
       },
       "id": 16,
       "interval": "5s",
@@ -5568,8 +8213,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5585,7 +8229,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 145
+        "y": 148
       },
       "id": 61,
       "interval": "5s",
@@ -5715,8 +8359,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5732,7 +8375,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 155
+        "y": 158
       },
       "id": 18,
       "interval": "5s",
@@ -5862,8 +8505,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -5879,7 +8521,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 155
+        "y": 158
       },
       "id": 17,
       "interval": "5s",
@@ -6009,8 +8651,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -6026,7 +8667,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 166
+        "y": 169
       },
       "id": 22,
       "interval": "5s",
@@ -6203,8 +8844,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -6220,7 +8860,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 166
+        "y": 169
       },
       "id": 88,
       "interval": "5s",
@@ -6336,9 +8976,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "application_1710156516635_16013",
-          "value": "application_1710156516635_16013"
+          "selected": true,
+          "text": "spark-26669bff862048b180f8aa1d7c4d0ca5",
+          "value": "spark-26669bff862048b180f8aa1d7c4d0ca5"
         },
         "datasource": {
           "type": "victoriametrics-datasource",
@@ -6447,8 +9087,8 @@
     ]
   },
   "timezone": "",
-  "title": "Spark_Perf_Dashboard_v04_PromQL",
-  "uid": "cdfq4554jii9sa",
+  "title": "Spark_Perf_Dashboard_v04_PromQL_with_SparkPlugins",
+  "uid": "fqfq4554jii9sa",
   "version": 1,
   "weekStart": ""
 }
