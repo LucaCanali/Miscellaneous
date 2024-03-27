@@ -277,13 +277,16 @@ Reading from HDFS is an important part of this workload.
 In this graph you can see the measured throughput using HDFS instrumentation exported via the Spark metrics system
 into the dashboard.
 
-**Example of the CGROUP metrics instrumentation**
+---
+Examples of specialized dashboards
+
+**Example of the CGROUP metrics instrumentation with Spark Plugins**
 ![Graph: CGROUP metrics instrumentation](images/Graph_CGroup_Metrics_CPU_Network_Memory.png "CGROUP metrics instrumentation")
 This is an example of the CGROUP metrics instrumentation with Spark Plugins.
 The metrics are captured from the CGroup stats where Spark runs (Spark on Kubernetes) and show container
 metrics values for CPU usage, network traffic, and memory usage.
 
-**Example Grafana dashboard with annotations**  
+**Example Grafana dashboard with query time annotations**  
 ![Graph: Grafana dashboard with query start time annotations](images/Spark_dashboard_with_annotations.PNG "Grafana dashboard with annotations")
 This picture shows an example of Grafana dashboard displaying Spark metrics and augmented with annotations
 of query start time. Each vertical line is a new query being run. Details on the query id can be found
