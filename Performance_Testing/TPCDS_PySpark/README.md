@@ -53,9 +53,9 @@ TPCDS_PySpark runs on your laptop and/or shared notebook with minimal resources,
 **Notebooks:**  
 **[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS_PySpark get-started Jupyter notebook](Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**   
 **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> Run TPCDS_PySpark get-started on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Performance_Testing/TPCDS_PySpark/Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**    
-**[<img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" height="40"> TPCDS_PySpark get-started on Databricks](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3091984517757395/442806354506758/latest.html)**  
+**[<img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" height="60"> TPCDS_PySpark get-started on Databricks](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3091984517757395/442806354506758/latest.html)**    
+  
 **[![SWAN](https://swan.web.cern.ch/sites/swan.web.cern.ch/files/pictures/open_in_swan.svg) TPCDS_PySpark get-started on CERN-SWAN](https://cern.ch/swanserver/cgi-bin/go?projurl=https://github.com/cerndb/SparkTraining.git) (for CERN users)**    
-
 
 
 **Command line:**
