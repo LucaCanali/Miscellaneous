@@ -56,7 +56,7 @@ See also the blog post
 This describes 3 different and alternative methods to configure Spark to use Pyroscope
 
 ### A. Spark in local mode
-When using Spark in local mode, typically for develompment, you just need to configure the java agent:
+When using Spark in local mode, typically for development, you just need to configure the java agent:
 - Build or download the latest version of the pyroscope java agent, for example:
   - `wget https://repo1.maven.org/maven2/io/pyroscope/agent/0.12.0/agent-0.12.0.jar`
 - Configure using environment variables, 
