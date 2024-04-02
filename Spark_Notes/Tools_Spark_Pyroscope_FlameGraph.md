@@ -56,9 +56,9 @@ See also the blog post
 This describes 3 different and alternative methods to configure Spark to use Pyroscope
 
 ### A. Spark in local mode
-When using Spark in local mode, typically for develompment, you just need to configure the java agent:
+When using Spark in local mode, typically for development, you just need to configure the java agent:
 - Build or download the latest version of the pyroscope java agent, for example:
-  - `wget https://repo1.maven.org/maven2/io/pyroscope/agent/0.12.0/agent-0.12.0.jar`
+  - `wget https://repo1.maven.org/maven2/io/pyroscope/agent/0.13.0/agent-0.13.0.jar`
 - Configure using environment variables, 
   see also [java client configuration options](https://grafana.com/docs/pyroscope/latest/configure-client/language-sdks/java/#java-client-configuration-options):
   ```
@@ -66,7 +66,7 @@ When using Spark in local mode, typically for develompment, you just need to con
   export PYROSCOPE_SERVER_ADDRESS="http://<myhostname>:5040" # match to the server and port used when starting Pyroscope
   ``` 
 - Run Spark (PySpark, spark-submit, spark-shell,...) in local mode and configure the java agent:
-  - `bin/spark-shell --master local[*] --driver-java-options "-javaagent:./agent-0.12.0.jar"`
+  - `bin/spark-shell --master local[*] --driver-java-options "-javaagent:./agent-0.13.0.jar"`
     - note, match to the downloaded agent jar name and path 
 
 ### B. Spark on a cluster (YARN, Kubernetes, Standalone) with java agent
@@ -84,8 +84,8 @@ export PYROSCOPE_PROFILER_EVENT=itimer # other options: wall, alloc
 export PYROSCOPE_LABELS='hostname=`hostname`'
 
 bin/spark-shell --master yarn \ # edit master type when usingr k8s or a standalone cluster
---packages io.pyroscope:agent:0.12.0 \ # update to the agent's latest version
---conf spark.executor.extraJavaOptions="-javaagent:./io.pyroscope_agent-0.12.0.jar" \ # match to the agent version
+--packages io.pyroscope:agent:0.13.0 \ # update to the agent's latest version
+--conf spark.executor.extraJavaOptions="-javaagent:./io.pyroscope_agent-0.13.0.jar" \ # match to the agent version
 --conf spark.executorEnv.PYROSCOPE_APPLICATION_NAME=$PYROSCOPE_APPLICATION_NAME \
 --conf spark.executorEnv.PYROSCOPE_LABELS=$PYROSCOPE_LABELS \
 --conf spark.executorEnv.PYROSCOPE_PROFILER_EVENT=$PYROSCOPE_PROFILER_EVENT \
@@ -124,7 +124,7 @@ continuous monitoring. Example:
 
 # Spark Spark (spark-shell, PySpark, spark-submit
 bin/spark-shell --master yarn  \
-  --packages ch.cern.sparkmeasure:spark-plugins_2.12:0.3,io.pyroscope:agent:0.12.0 \ # update with latest versions
+  --packages ch.cern.sparkmeasure:spark-plugins_2.12:0.3,io.pyroscope:agent:0.13.0 \ # update with latest versions
   --conf spark.plugins=ch.cern.PyroscopePlugin \
   --conf spark.pyroscope.server="http://<myhostname>:5040" # match to the server and port used when starting Pyroscope
 ```
@@ -139,7 +139,7 @@ spark = (SparkSession.builder.
       .config("spark.executor.memory","16g")
       .config("spark.executor.cores","4")
       .config("spark.executor.instances", 2)
-      .config("spark.jars.packages", "ch.cern.sparkmeasure:spark-plugins_2.12:0.3,io.pyroscope:agent:0.12.0")
+      .config("spark.jars.packages", "ch.cern.sparkmeasure:spark-plugins_2.12:0.3,io.pyroscope:agent:0.13.0")
       .config("spark.plugins", "ch.cern.PyroscopePlugin")
       .config("spark.pyroscope.server", "http://<myhostname>:5040")
       .getOrCreate()
