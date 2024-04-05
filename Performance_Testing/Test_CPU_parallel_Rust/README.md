@@ -1,11 +1,7 @@
-## Load testing CPUs with parallel workers, Rust version
+## Load testing CPUs, Rust version
 
 This is the home of test_cpu_parallel, a Rust program to load test CPUs and measure job execution time as a function 
- of the number of parallel workers.  
-- The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
-- When run in full mode, the program will run a range of tests and output a cvs file with the measured values.  
-- This folder contains also example data collected with the tool and Jupyter notebooks used to analyze the data.  
-- See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
+of the number of parallel workers.  
 
 ### Contents
 - [**Container**](Container) - a container image and instructions for running test_cpu_parallel using Docker and Kubernetes
@@ -18,6 +14,12 @@ This is the home of test_cpu_parallel, a Rust program to load test CPUs and meas
   - Measure the scalability of the CPU using full mode and the provided analysis notebooks
   - Compare CPU load and scalability across systems
   - This is not a benchmark but rather a tool to generate CPU load and measure the scalability of the CPU on a system 
+
+### Notes
+- The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
+- When run in full mode, the program will run a range of tests and output a cvs file with the measured values.  
+- This folder contains also example data collected with the tool and Jupyter notebooks used to analyze the data.  
+- See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
  
 ### How to run [test_cpu_parallel](test_cpu_parallel)
   - Option 1, run from a contained image using Docker or Kubernetes, see [Container](Container) for details

@@ -1,9 +1,7 @@
-## Load testing CPUs with parallel workers, Python version
-This folder contains a Python script to load test CPUs and measure job execution time as a function of the number of parallel workers  
-- The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
-- When run in full mode, the script will run a range of tests and output a cvs file with the measured values.  
-- This folder contains also example Data collected with the tool and Jupyter notebooks used to analyze the data.  
-- See also the Rust version of this tool: [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust)
+## Load testing CPUs, Python version
+
+This is the home of test_CPU_parallel.py, a Python script to load test CPUs and measure
+job execution time as a function of the number of parallel workers.  
 
 ### Contents
 - [**test_CPU_parallel/test_CPU_parallel.py**](test_CPU_parallel/test_CPU_parallel.py) - the Python package and script used run the load test.
@@ -16,6 +14,12 @@ This folder contains a Python script to load test CPUs and measure job execution
   - Compare CPU load and scalability across systems
     - Note that when comparing different systems you want to use the same Python and glibc versions, as these can affect the results
   - This is not a benchmark but rather a tool to generate CPU load and measure the scalability of the CPU on a system
+
+### Notes
+- The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
+- When run in full mode, the script will run a range of tests and output a cvs file with the measured values.  
+- This folder contains also example Data collected with the tool and Jupyter notebooks used to analyze the data.  
+- See also the Rust version of this tool: [Test_CPU_parallel_Rust](../Test_CPU_parallel_Rust)
 
 ### How to install and run [**test_CPU_parallel.py**](test_CPU_parallel/test_CPU_parallel.py) for load testing:
   - Local install:
