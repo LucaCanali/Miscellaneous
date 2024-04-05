@@ -4,6 +4,11 @@
     "memory": "8gb",
     "storage": "16gb"
   },
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["Performance_Testing/TPCDS_PySpark/README.md"]
+    }
+  },
   "postCreateCommand": "pip install pyspark sparkmeasure tpcds_pyspark",
   "extensions": ["ms-python.python"]
 }

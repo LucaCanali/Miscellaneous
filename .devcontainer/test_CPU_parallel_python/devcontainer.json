@@ -4,7 +4,11 @@
     "memory": "8gb",
     "storage": "16gb"
   },
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["Performance_Testing/Test_CPU_parallel_Python/README.md"]
+    }
+  },
   "postCreateCommand": "pip install test_CPU_parallel",
   "extensions": ["ms-python.python"]
 }
-

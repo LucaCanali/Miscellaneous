@@ -15,9 +15,12 @@ Author and contact: Luca.Canali@cern.ch
 
 ### Contents
 - [Key Features and benefits](#key-features-and-benefits)
-- Getting started and examples
-  - [Getting started - start small and scale up](#getting-started---start-small-and-scale-up)
-  - [TPCDS at scale 10000G and analysis](#tpcds-at-scale-10000g-and-analysis)
+- [Getting started - start small and scale up](#getting-started---start-small-and-scale-up)
+  - [Notebooks](#notebooks)
+  - [Command line](#command-line)
+  - [TPCDS_PySpark in API mode](#tpcds_pyspark-in-api-mode)
+  - [Python script](#python-script)
+- [TPCDS at scale 10000G and analysis](#tpcds-at-scale-10000g-and-analysis)
 - Operational instructions 
   - [Installation](#installation)
   - [One tool, two modes of operation](#one-tool-two-modes-of-operation)
@@ -48,19 +51,22 @@ Author and contact: Luca.Canali@cern.ch
 You can start using TPCDS_PySpark by running the tool as a standalone Python script, from the command line, or by using it on a shared notebook service, like Colab.
 TPCDS_PySpark runs on your laptop and/or shared notebook with minimal resources, while it can also scale up to run TPCDS on a large Spark cluster.  
 
-**Python script: [download getstarted.py](Labs_and_Notes/getstarted.py)**  
-  
-**Notebooks:**  
+#### Notebooks  
 **[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS_PySpark get-started Jupyter notebook](Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**   
 **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> Run TPCDS_PySpark get-started on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Performance_Testing/TPCDS_PySpark/Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**    
 **[<img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" height="60"> TPCDS_PySpark get-started on Databricks](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3091984517757395/442806354506758/latest.html)**    
   
 **[![SWAN](https://swan.web.cern.ch/sites/swan.web.cern.ch/files/pictures/open_in_swan.svg) TPCDS_PySpark get-started on CERN-SWAN](https://cern.ch/swanserver/cgi-bin/go?projurl=https://github.com/cerndb/SparkTraining.git) (for CERN users)**    
 
+#### Command line
 
-**Command line:**
+- Run the following on local resources or cloud, for example use GitHub Codespaces from this repo
+  - [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/LucaCanali/Miscellaneous?devcontainer_path=.devcontainer%2Ftpcds_pyspark%2Fdevcontainer.json)
+
 ```
-# Get the tool
+# Install the tool and dependencies
+pip install pyspark 
+pip install sparkmeasure 
 pip install tpcds_pyspark 
 
 # Download the test data
@@ -84,7 +90,7 @@ spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.c
 wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/tpcds_100.zip
 ```
 
-**TPCDS_PySpark in API mode:**
+#### TPCDS_PySpark in API mode
 
 ```
 # Get the tool
@@ -104,6 +110,9 @@ tpcds.map_tables()
 tpcds.run_TPCDS()
 tpcds.print_test_results()
 ```
+
+#### Python script
+[download getstarted.py](Labs_and_Notes/getstarted.py)**  
 
 ## TPCDS at scale 10000G and analysis  
 This notebook demonstrates how to run TPCDS at scale 10000G and analyze the resulting performance metrics.

@@ -29,6 +29,10 @@ This folder contains a Python script to load test CPUs and measure job execution
       and on how to run it using Docker or Kubernetes
 
 ### test_CPU_parallel.py runtime options
+
+- Run the following on local resources or cloud, for example use GitHub Codespaces from this repo
+  - [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/LucaCanali/Miscellaneous?devcontainer_path=.devcontainer%2Ftest_CPU_parallel_python%2Fdevcontainer.json)
+
 ```
 test_CPU_parallel.py --help
 
@@ -41,7 +45,7 @@ The output are measurements of the CPU-burning loop execution time as a function
 or returned programmatically when used as a Python library.  
 
 Example:
-# Install with pip or clone from GitHub
+# Install from PyPi with pip or clone from GitHub
 pip install test-CPU-parallel
 
 # run one-off data collection with 2 concurrent workers
