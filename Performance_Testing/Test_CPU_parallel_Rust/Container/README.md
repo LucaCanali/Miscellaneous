@@ -7,16 +7,19 @@ This creates a docker image for test_cpu_parallel, a CPU load testing tool writt
     - See details of how to build in the [Code_test_CPU_Rust](../Code_test_CPU_Rust) folder
   - Option 2, download the binary executable from this link:
     ```
-    wget https://canali.web.cern.ch/res/test_cpu_parallel.gz
-    gunzip test_cpu_parallel.gz
+    wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
     chmod +x test_cpu_parallel
+    
+    # Checksum:
+    # sha256sum test_cpu_parallel
+    # 30d9782e35bb840f2054375ec438670f32d5e07b3c4565cdfc2461176f04ed91
     ```
 - Build the docker image with:
 ```
-docker build -t lucacanali/test_cpu_parallel:v1.0 .
-docker push lucacanali/test_cpu_parallel:v1.0
+docker build -t lucacanali/test_cpu_parallel:v1.1 .
+docker push lucacanali/test_cpu_parallel:v1.1
 
-docker tag lucacanali/test_cpu_parallel:v1.0 lucacanali/test_cpu_parallel:latest
+docker tag lucacanali/test_cpu_parallel:v1.1 lucacanali/test_cpu_parallel:latest
 docker push lucacanali/test_cpu_parallel:latest
 ```
 

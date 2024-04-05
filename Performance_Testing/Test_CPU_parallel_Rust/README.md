@@ -24,12 +24,15 @@ This is the home of test_cpu_parallel, a Rust program to load test CPUs and meas
     ```
     docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2 
     ```
-  - Option 2, download from [binary executable for Linux from this link](https://canali.web.cern.ch/res/test_cpu_parallel.gz) as in:
+  - Option 2, download the [binary executable for Linux from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel) as in:
     ```
-    wget https://canali.web.cern.ch/res/test_cpu_parallel.gz
-    gunzip test_cpu_parallel.gz
+    wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
     chmod +x test_cpu_parallel
     ./test_cpu_parallel -w 2 
+    
+    # Checksum:
+    # sha256sum test_cpu_parallel
+    # 30d9782e35bb840f2054375ec438670f32d5e07b3c4565cdfc2461176f04ed91
     ```
   - Option 3, compile from source code, see details in the [Code_test_CPU_Rust](Code_test_CPU_Rust) folder
 
@@ -43,7 +46,7 @@ Example:
 
 # Get the help message
 ./test_cpu_parallel --help
-test_cpu_parallel - A basic CPU workload generator written in Rust 1.0.1
+test_cpu_parallel - A basic CPU workload generator written in Rust 1.1.0
 Luca.Canali@cern.ch
 
 Use test_cpu_parallel to generate CPU-intensive load on a system by running single-threaded, or with

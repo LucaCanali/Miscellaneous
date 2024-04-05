@@ -4,6 +4,9 @@ test_cpu_parallel is basic CPU workload generator written in Rust
 - Compile with Rust: `cargo build`
   - note, using `cargo build --release` is not recommended for this tool, 
     as the optimizations play against the simple "CPU burning loop" implemented in the tool
+  - note, Cargo version has an impact on the performance of the tool
+    - test_cpu_parallel version 1.0.1 was compiled with Cargo for Linux version 1.68.2
+    - test_cpu_parallel version 1.1.0 was compiled with Cargo for Linux version 1.77.1
 - To compile a Rust project, you need to have the Rust programming language and its associated 
   tools installed on your system. If you haven't installed Rust yet, you can do so by following
   the instructions at https://www.rust-lang.org/tools/install
@@ -15,7 +18,7 @@ Examples:
 
 # Get the help message
 ./test_cpu_parallel --help
-test_cpu_parallel - A basic CPU workload generator written in Rust 1.0.1
+test_cpu_parallel - A basic CPU workload generator written in Rust 1.1.0
 Luca.Canali@cern.ch
 
 Use test_cpu_parallel to generate CPU-intensive load on a system by running single-threaded, or with

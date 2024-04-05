@@ -1,6 +1,6 @@
 [package]
 name = "test_cpu_parallel"
-version = "1.0.1"
+version = "1.1.0"
 
 [dependencies]
 rayon = "1.7.0"

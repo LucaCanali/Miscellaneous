@@ -12,6 +12,7 @@ How to run the tests:
 ```
 
 Results:  
+- Note these were gathered with test_cpu_parallel version 1.0.1 (compiled with Cargo 1.68.2)
 - [test_cpu_parallel_rust_HDP6.csv](test_cpu_parallel_rust_HDP6.csv)
 - [test_cpu_parallel_rust_RAC55.csv](test_cpu_parallel_rust_RAC55.csv)
 - [test_cpu_parallel_rust_RAC52.csv](test_cpu_parallel_rust_RAC52.csv)

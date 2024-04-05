@@ -12,7 +12,7 @@ use clap::{App, Arg};
 
 fn main() {
     let args = App::new("test_cpu_parallel - A basic CPU workload generator written in Rust")
-        .version("1.0.1")
+        .version("1.1.0")
         .author("Luca.Canali@cern.ch")
         .about(r#"
 Use test_cpu_parallel to generate CPU-intensive load on a system by running single-threaded, or with multiple threads in parallel.
