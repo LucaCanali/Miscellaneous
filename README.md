@@ -1,14 +1,14 @@
 # Miscellaneous projects and scripts.
-Author: Luca.Canali@cern.ch
+Author and contact: Luca.Canali@cern.ch
 
-## Spark and performance engineering
+## Spark and Performance Engineering
 
 | Folder                                                           | Description
 |------------------------------------------------------------------| -------------------------------------------------------------------------------------
-| [**Spark Dashboard**](Spark_Dashboard)                           | How to build a performance dashboard for Apache Spark, with examples.
+| [**Spark Dashboard**](Spark_Dashboard)                           | A tool for Apache monitoring, use to build a performance dashboard and troubleshoot Spark jobs.
 | [**Spark Notes**](Spark_Notes)                                   | Miscellaneous tips and code snippets about Apache Spark.
-| [**Spark for Physics**](Spark_Physics)                           | Examples of how Apache Spark can be used in the domain of High Energy Physics data analysis.
-| [**Performance Testing**](Performance_Testing)                   | Scripts, notebooks, and notes on performance testing, includes: <br>- TPCDS with PySpark<br>- Linux CPU load-testing kit<br>- Notes on performace tools 
+| [**Spark for Physics**](Spark_Physics)                           | Examples, with code and data of how Apache Spark can be used in the domain of High Energy Physics data analysis.
+| [**Performance Testing**](Performance_Testing)                   | Code and examples, includes: <br>- A tool to run TPCDS at scale with PySpark and collect execution metrics<br>- Tools for load-testing CPUs in writetn Python and Rust<br>- Notes on how to use tooling for performace measurements 
 
 
 ## Data Engineering and Data Science
@@ -23,4 +23,3 @@ Author: Luca.Canali@cern.ch
 | [**Impala_SQL_Jupyter**](Impala_SQL_Jupyter)                     | Examples of how to run SQL on Apache Impala using Jupyter/IPython notebooks.
 | [**SQL_color_Mandelbrot**](SQL_color_Mandelbrot)                 | How to use SQL to compute and display the Mandelbrot set with colors. Examples for Oracle and PostgreSQL.
 | [**PLSQL_Neural_Network**](PLSQL_Neural_Network)                 | An example of how to deploy a DL serving engine for Oracle using PL/SQL.
-
