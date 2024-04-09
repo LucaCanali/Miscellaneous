@@ -182,18 +182,23 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
 ---
 
 ## Notes on reading and converting data from ROOT format
-  - **How to convert from ROOT format to Apache Parquet or ORC:**
-     - You can use Spark and the Laurelin library, as detailed in [this note on converting from ROOT format](Spark_Root_data_preparation.md)
-     - You can use Python toolkits, notably uproot and awkward arrays, as in this [example of how to use uproot](Uproot_example.md)
-  - **How to read files via the XRootD protocol**
-    - This allows to read files from URLs like `root://eospublic.cern.ch/..`
-      - It is used extensively for HEP data and it is relevant for CERN opendata too
-      - CERN users can use this also to access [CERNBOx](https://cernbox.cern.ch)
-    - You can use Apache Spark with the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
-    - You can use the toolset from [XRootD project](https://xrootd.slac.stanford.edu/)
+### How to convert from ROOT format to Apache Parquet or ORC
+High Energy Physics uses the [ROOT](https://root.cern/) data format extensively. Here are a few notes on how to read and convert data from ROOT format to Apache Parquet or ORC:
+   - Spark and the [Laurelin library](https://github.com/spark-root/laurelin),
+     as detailed in [note on converting from ROOT format](Spark_Root_data_preparation.md)
+   - Python toolkits, notably uproot and awkward arrays, as in this [example of how to use uproot](Uproot_example.md)
+
+### How to read files via the XRootD protocol
+ - This allows to read files from URLs like `root://eospublic.cern.ch/..`
+   - It is used extensively for HEP data
+   - CERN users can read files stored in EOS also using [CERNBOx](https://cernbox.cern.ch)
+   - Use Apache Spark to read `root://` URLs using the [Hadoop-XRootD connector](https://github.com/cerndb/hadoop-xrootd)
+   - Use CLI to access XRootD using the toolset from [XRootD project](https://xrootd.slac.stanford.edu/)
       - CLI example: `xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .`
+   - CERN users can read files stored in EOS also using [CERNBOx](https://cernbox.cern.ch)
 
 ## Spark ML examples with Physics data
+A few related references on the topic of ML tools used with HEP data:
    - Machine learning is a key technique in HEP, here are a couple of basic examples on how to build classifiers for HEP events
    - [Higgs boson classifier](https://github.com/cerndb/SparkTraining/blob/master/notebooks/ML_Demo1_Classifier.ipynb)
    - [Particle classfier](https://github.com/cerndb/SparkDLTrigger/tree/master/Training_Spark_ML)

@@ -14,6 +14,12 @@ pip install uproot
 pip install awkward
 ```
 
+- Get a ROOT file to convert, for example:
+  - download and install XRootD from [XRootD download page](https://xrootd.slac.stanford.edu/dload.html)
+`````
+xrdcp root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root .
+```
+
 - From Python:
 
 ```
