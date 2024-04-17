@@ -56,7 +56,7 @@ TPCDS_PySpark runs on your laptop and/or shared notebook with minimal resources,
 **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> Run TPCDS_PySpark get-started on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Performance_Testing/TPCDS_PySpark/Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**    
 **[<img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" height="60"> TPCDS_PySpark get-started on Databricks](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3091984517757395/442806354506758/latest.html)**    
   
-**[![SWAN](https://swan.web.cern.ch/sites/swan.web.cern.ch/files/pictures/open_in_swan.svg) TPCDS_PySpark get-started on CERN-SWAN](https://cern.ch/swanserver/cgi-bin/go?projurl=https://github.com/cerndb/SparkTraining.git) (for CERN users)**    
+**(for CERN users) [![SWAN](https://swan.web.cern.ch/sites/swan.web.cern.ch/files/pictures/open_in_swan.svg) TPCDS_PySpark get-started on CERN-SWAN](https://cern.ch/swanserver/cgi-bin/go?projurl=https://github.com/cerndb/SparkTraining.git)**    
 
 #### Command line
 
@@ -112,7 +112,7 @@ tpcds.print_test_results()
 ```
 
 #### Python script
-[download getstarted.py](Labs_and_Notes/getstarted.py)**  
+**[download getstarted.py](Labs_and_Notes/getstarted.py)**  
 
 ## TPCDS at scale 10000G and analysis  
 This notebook demonstrates how to run TPCDS at scale 10000G and analyze the resulting performance metrics.
@@ -194,8 +194,8 @@ options:
 
 **API description: TPCDS**
 - **TPCDS(data_path, data_format, num_runs=2, queries_repeat_times, queries, sleep_time)**
-  - Defaults: data_path="./tpcds_10", data_format="parquet", num_runs=2, queries_repeat_times=3,
-              queries=tpcds_queries, queries_exclude=[], sleep_time=1
+  - Defaults: `data_path="./tpcds_10", data_format="parquet", num_runs=2, queries_repeat_times=3,
+              queries=tpcds_queries, queries_exclude=[], sleep_time=1`
 - data_path: path to the Parquet folder with TPCDS data used for testing
 - data_format: format of the TPCDS data, default: "parquet"
 - num_runs: number of runs, the TPCS workload will be run this number of times. Default: 2
