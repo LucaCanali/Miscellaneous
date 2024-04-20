@@ -20,7 +20,7 @@ Author and contact: Luca.Canali@cern.ch
   - [Command line](#command-line)
   - [TPCDS_PySpark in API mode](#tpcds_pyspark-in-api-mode)
   - [Python script](#python-script)
-- [TPCDS at scale 10000G and analysis](#tpcds-at-scale-10000g-and-analysis)
+- [TPCDS at scale 10000 GB and analysis](#tpcds-at-scale-10000-gb-and-analysis)
 - Operational instructions 
   - [Installation](#installation)
   - [One tool, two modes of operation](#one-tool-two-modes-of-operation)
@@ -33,7 +33,7 @@ Author and contact: Luca.Canali@cern.ch
   - [Download TPCDS Data](#download-tpcds-data)
   - [Generate TPCDS data with a configurable scale factor](#generate-tpcds-data-with-a-configurable-scale-factor)
 - [TPCDS_PySpark output](#tpcds_pyspark-output)
-  - [Example output, TPCDS scale 10000 G](#example-output-tpcds-scale-10000-g)
+  - [Example output, TPCDS scale 10000 GB](#example-output-tpcds-scale-10000-gb)
 - [Links and references](#links-and-references)
 
 ### Key Features and benefits
@@ -51,12 +51,12 @@ Author and contact: Luca.Canali@cern.ch
 You can start using TPCDS_PySpark by running the tool as a standalone Python script, from the command line, or by using it on a shared notebook service, like Colab.
 TPCDS_PySpark runs on your laptop and/or shared notebook with minimal resources, while it can also scale up to run TPCDS on a large Spark cluster.  
 
-#### Notebooks  
+#### Example notebooks  
 **[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS_PySpark get-started Jupyter notebook](Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**   
 **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> Run TPCDS_PySpark get-started on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Performance_Testing/TPCDS_PySpark/Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)**    
 **[<img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" height="60"> TPCDS_PySpark get-started on Databricks](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2061385495597958/3091984517757395/442806354506758/latest.html)**    
   
-**(for CERN users) [![SWAN](https://swan.web.cern.ch/sites/swan.web.cern.ch/files/pictures/open_in_swan.svg) TPCDS_PySpark get-started on CERN-SWAN](https://cern.ch/swanserver/cgi-bin/go?projurl=https://github.com/cerndb/SparkTraining.git)**    
+**[![SWAN](https://swan.web.cern.ch/sites/swan.web.cern.ch/files/pictures/open_in_swan.svg) TPCDS_PySpark get-started on CERN-SWAN](https://cern.ch/swanserver/cgi-bin/go?projurl=https://github.com/cerndb/SparkTraining.git)**    
 
 #### Command line
 
@@ -79,14 +79,15 @@ tpcds_pyspark_run.py -d tpcds_10 -n 1 -r 1 --queries q1,q2
 # 2. run all queries with default options
 tpcds_pyspark_run.py -d tpcds_10 
 
-# 3. Scale CPU up, by running all queries on a YARN cluster and save the metrics to a file
+# 3. Scale up and run on a cluster, save the metrics to a file
+#    This example is with YARN, no you need to set HADOOP_CONF_DIR
 TPCDS_PYSPARK=`which tpcds_pyspark_run.py`
 spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.cores=8 \
              --conf spark.executor.memory=32g --conf spark.driver.memory=4g --conf spark.executor.instances=4 \
              --packages ch.cern.sparkmeasure:spark-measure_2.12:0.24 \              
-              $TPCDS_PYSPARK -d <HDFS_PATH>/tpcds_10 -o ./tpcds_10_out.cvs
+              $TPCDS_PYSPARK -d <HDFS_PATH>/tpcds_10 -o ./tpcds_10_out.csv
 
-# 4. Scale data up with TPCDS scale 100G
+# 4. Use a largeer dataset, this downloads TPCDS scale 100 GB **
 wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/tpcds_100.zip
 ```
 
@@ -111,14 +112,8 @@ tpcds.run_TPCDS()
 tpcds.print_test_results()
 ```
 
-#### Python script
-**[download getstarted.py](Labs_and_Notes/getstarted.py)**  
-
-## TPCDS at scale 10000G and analysis  
-This notebook demonstrates how to run TPCDS at scale 10000G and analyze the resulting performance metrics.
-You will find analysis with graphs of the key metrics, such as query execution time, CPU usage, average active tasks, and more.
-
-**[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS 10000G performance metrics analysis](Labs_and_Notes/TPCDS_analysis_scale_10000G.ipynb)**
+#### Example Python script
+**[getstarted.py](Labs_and_Notes/getstarted.py)**  
 
 ---
 ## Installation:
@@ -184,7 +179,7 @@ options:
                --conf spark.executor.memory=32g --conf spark.driver.memory=4g \
                --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.24.jar \ 
                --conf spark.dynamicAllocation.enabled=false --conf spark.executor.instances=4 \
-               tpcds_pyspark_run.py -d tpcds_10 -o ./tpcds_10_out.cvs -n 1 -r 1 
+               tpcds_pyspark_run.py -d tpcds_10 -o ./tpcds_10_out.csv -n 1 -r 1 
    ```
   
 ### 2. How to use TPCDS PySpark from your Python code 
@@ -266,9 +261,17 @@ spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.c
 $TPCDS_PYSPARK --run_using_metastore -o ./tpcds_pyspark_YARN_CBO_.csv
 ```
 
+## TPCDS at scale 10000 GB and analysis  
+This notebook demonstrates how to analyze the results of running TPCDS at scale 10000 GB. 
+Data were obtained by running TPCDS_PySpark on a Spark cluster and collecting performance metrics, as detailed in the examples reported above (see test  on YARN at scale)
+You will find analysis with graphs of the key metrics, such as query execution time, CPU usage, average active tasks, and more.
+
+**[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS 10000G performance metrics analysis](Labs_and_Notes/TPCDS_analysis_scale_10000G.ipynb)**
+
+
 ### Notes on TPC-DS schema and queries
-- [Labs_and_Notes/TPCDS_schema.md](TPCDS_schema.md) contains a description of the TPCDS schema used by TPCDS_PySpark, with a list of the tables and details of their columns and data types
-- [Labs_and_Notes/TPCDS_queries](TPCDS_queries) contains a description of selected TPCDS queries used by TPCDS_PySpark, with a list of the queries and their SQL code
+- [TPCDS_schema](Labs_and_Notes/TPCDS_schema.md) contains a description of the TPCDS schema used by TPCDS_PySpark, with a list of the tables and details of their columns and data types
+- [TPCDS_queries](Labs_and_Notes/TPCDS_queries) contains a description of selected TPCDS queries used by TPCDS_PySpark, with a list of the queries and their SQL code
 
 ### Notes on Spark Metrics Instrumentation
 Spark is instrumented with several metrics, collected at task execution, they are described in the documentation:  
@@ -291,9 +294,9 @@ Some of the key metrics when looking at a sparkMeasure report are:
 ---
 ## Download TPCDS Data
 The tool requires TPCDS benchmark data in parquet or other format. 
-For convenience the TPCDS benchmark data at scale 10G and 100G have been made available for downloading:
+For convenience the TPCDS benchmark data at scale 10GB and 100GB have been made available for downloading:
 ```
-# Get TPCDS data at scale 10G
+# Get TPCDS data at scale 10GB
 wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/TPCDS/tpcds_10.zip
 unzip -q tpcds_10.zip
 
@@ -319,11 +322,11 @@ NOTES:
   - Each "core" in the executor spawns one dsdgen
   - This workloads is memory hungry, to avoid excessive GC activity, allocate abundant memory per executor core
 
-// Use this to generate partitioned data: scale 10000G partitioned
+// Use this to generate partitioned data: scale 10000 GB partitioned
 val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10000")
 tables.genData("/user/luca/TPCDS/tpcds_10000", "parquet", true, true, true, false, "", 100)
 
-// Use this instead to generate a smaller dataset for testing and development, non-partitioned: scale 10G non-partitioned
+// Use this instead to generate a smaller dataset for testing and development, non-partitioned: scale 10GB non-partitioned
 val tables = new com.databricks.spark.sql.perf.tpcds.TPCDSTables(spark.sqlContext, "/home/luca/tpcds-kit/tools", "10")
 tables.genData("/user/luca/TPCDS/tpcds_10_non_partiitoned", "parquet", true, false, false, false, "", 10)
 ```
@@ -363,7 +366,10 @@ There are 4 files in the output:
   - aggregated metrics: this contains the aggregated metrics for the entire workload, including the total elapsed time, executor run time, CPU time, and more
   - metadata: this contains the metadata of the test, including the configuration and the start and end times of the test
 
-## Example output, TPCDS scale 10000 G:
+## Example output, TPCDS scale 10000 GB:
+The output presented here has been condensed for clarity. Access the complete output at
+[tpcds_run_results](Labs_and_Notes/tpcds_run_results)
+
 ```
 ****************************************************************************************
 TPCDS with PySpark - workload configuration and metadata summary
