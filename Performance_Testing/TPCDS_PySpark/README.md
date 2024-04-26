@@ -36,6 +36,9 @@ Author and contact: Luca.Canali@cern.ch
   - [Example output, TPCDS scale 10000 GB](#example-output-tpcds-scale-10000-gb)
 - [Links and references](#links-and-references)
 
+### Resources
+- [![Watch the video](https://www.youtube.com/s/desktop/050e6796/img/favicon_32x32.png) Watch TPCDS-PySpark demo and tutorial](https://www.youtube.com/watch?v=1EjLCamuRl0)
+
 ### Key Features and benefits
 
 - **Comprehensive Benchmarking:** Execute the full suite of TPC-DS queries, in local mode or at scale on your Spark cluster(s)
