@@ -38,6 +38,7 @@ Author and contact: Luca.Canali@cern.ch
 
 ### Resources
 - [![Watch the video](https://www.youtube.com/s/desktop/050e6796/img/favicon_32x32.png) Watch TPCDS-PySpark demo and tutorial](https://www.youtube.com/watch?v=1EjLCamuRl0)
+- Blog on [building an Apache Spark Performance Lab](https://db-blog.web.cern.ch/node/195)
 
 ### Key Features and benefits
 
