@@ -5,6 +5,6 @@ How to build:
   - note, the first time you build with sbt it will download several packages and therefore will be slow   
    ```
    # build the jar
-   sbt clean package
+   sbt +clean +package
    ```
 

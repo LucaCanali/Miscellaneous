@@ -43,7 +43,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
 Multiple notebook solutions are provided, to illustrate different approaches with Apache Spark.  
 Notes on the execution environment:
  - The notebooks use the dataset with 61 million events (Except the SCALE test that uses 6.5 billion events)
- - Compatibility and tests: these notebooks have been tested using Spark 3.5.1
+ - Compatibility and tests: these notebooks have been developed with Spark 3.2.1 and tested up to Spark 3.5.1
     - For this we use Apache Spark vectorized reader for complex types in Parquet, mapInArrow UDF (introduced in Spark 3.3.0).
     - The server used for testing and measuring the execution time has 4 physical CPU cores, SSD disk storage , and 32 GB of RAM (which is more than the minimum requirements for running this workload)
 
@@ -78,23 +78,19 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
     - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
   - **53 million events** (16 GB), converted to Parquet: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
     - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet/` 
-  - **53 million events** (16 GB), converted to ORC: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.orc)
-    - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.orc/` 
-  - **7 million events** (2 GB) ORC format [Run2012B_SingleMu_sample.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.orc)  
   - **7 million events** (2 GB) Parquet format [Run2012B_SingleMu_sample.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet)
   
 ### Notebooks 
 
 Notes on the execution environment:
 - The notebooks can be run using the datasets with 53 million events for more accuracy or with the reduced dataset with 7 million events for faster execution
-- Compatibility and tests: these notebooks have been tested using Spark 3.3.0
-    - Notable features in Spark 3.3.0 used: Apache Spark vectorized reader for complex types in Parquet, mapInArrow UDF.
+-   - Compatibility and tests: these notebooks have been developed with Spark 3.2.1 and tested up to Spark 3.5.1
+    - Notable Spark features used: Apache Spark vectorized reader for complex types in Parquet, mapInArrow UDF.
     - The server used for testing and measuring the execution time has 4 physical CPU cores, SSD disk storage , and 32 GB of RAM (which is more than the minimum requirements for running this workload)
 
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                         | Short description                                                                                                                                                                                                                        |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [**Benchmark tasks 1 to 5, Parquet and SparkHistogram**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q1_Q5_Parquet_sparkhistogram.ipynb)                                                                                                                                                                                                             | The analysis is implemented using Apache Spark DataFrame API. It uses the dataset in Apache Parquet format and the histogram generation is done using the sparkhistogram package.                                                        |
-| [**Benchmark tasks 1 to 5, ORC**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q1_Q5.ipynb)                                                                                                                                                                                                                                                           | The analysis is implemented using Apache Spark DataFrame API and uses the dataset in Apache ORC format.                                                                                                                                  |
 | [**Benchmark task 6**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q6.ipynb)                                                                                                                                                                                                                                                                         | Three different solution are provided. This is the hardest task to implement in Spark. The proposed solutions use also Scala UDFs: link to [the Scala UDF code.](HEP_benchmark/scalaUDF/src/main/scala/ch/cern/udf/HEPBenchmarkQ6.scala) |
 | [**Benchmark task 7**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q7.ipynb)                                                                                                                                                                                                                                                                         | Two different solutions provided, one using the explode function, the other with Spark's higher order functions for array processing.                                                                                                    |
 | [**Benchmark task 8**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q8.ipynb)                                                                                                                                                                                                                                                                         | This combines Spark DataFrame API for filtering and Scala UDFs for processing. Link to [the Scala UDF code.](HEP_benchmark/scalaUDF/src/main/scala/ch/cern/udf/HEPBenchmarkQ8.scala)                                                     |
@@ -120,7 +116,7 @@ Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.science
 
 ### Notebooks
 
-  - Tested with Spark 3.2.1 and 3.3.0
+  - Compatibility and tests: these notebooks have been developed with Spark 3.2.1 and tested up to Spark 3.5.1
   - These analyses use a very small dataset and are mostly intended to show how the Spark API can be applied in this context,
     rather than its performance and scalability.
 
@@ -140,12 +136,13 @@ It is based on the original work on [cms opendata notebooks](https://github.com/
 Reference: link to the [original article with CMS Higgs boson discovery](https://inspirehep.net/record/1124338)
 
 ### Data
-- The original data in ROOT format is from the CMS open data
-   - download from [this folder](root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod)
-   - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
-  - The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format.
-    - Download from: [CMS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata)
-      - download all files (12 GB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata/`
+- The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format.
+  - Download from: [CMS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata)
+  - CLI command to download all files (12 GB):  
+    `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMS_Higgs_opendata/`
+  - The original data is from CMS open data and is stored in ROOT format
+    - See [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read ROOT data, download from this URL: 
+      `root://eospublic.cern.ch//eos/root-eos/cms_opendata_2012_nanoaod`
 
 ### Notebooks
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook | Short description                                                    |
@@ -159,9 +156,9 @@ This notebook provides an example of how to use Spark to perform a simple analys
 **Credits:**
 * The original text of this notebook, including all exercises, analysis, explanations and data have been developed by the 
 LHCb collaboration and are authored and shared by the LHCb collaboration in their open data and outreach efforts. See links:
-    * https://github.com/lhcb/opendata-project/blob/master/LHCb_Open_Data_Project.ipynb
-    * "Undergraduate Laboratory Experiment: Measuring Matter Antimatter Asymmetries at the Large Hadron Collide" https://cds.cern.ch/record/1994172?ln=en
-    * http://www.hep.manchester.ac.uk/u/parkes/LHCbAntimatterProjectWeb/LHCb_Matter_Antimatter_Asymmetries/Homepage.html
+    * [LHCb_Open_Data_Project](https://github.com/lhcb/opendata-project/blob/master/LHCb_Open_Data_Project.ipynb)
+    * [Undergraduate Laboratory Experiment: Measuring Matter Antimatter Asymmetries at the Large Hadron Collide](https://cds.cern.ch/record/1994172?ln=en)
+    * [LHCb_Matter_Antimatter_Asymmetries - Homepage](http://www.hep.manchester.ac.uk/u/parkes/LHCbAntimatterProjectWeb/LHCb_Matter_Antimatter_Asymmetries/Homepage.html)
   
 ### Data
   - The notebook presented here uses datasets in Apache Parquet format:
