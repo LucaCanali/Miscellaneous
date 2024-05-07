@@ -25,20 +25,32 @@ def computeHistogram(df: "DataFrame", value_col: str, min_val: float, max_val: f
         value: midpoint value of the given bucket
         count: number of values in the bucket        
     """
+    # Compute the step size for the histogram
     step = (max_val - min_val) / bins
-    # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+
+    # Get the Spark Session handle
     spark = SparkSession.getActiveSession()
-    df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
-    histdf = (df
-              .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket")
-              .groupBy("bucket")
-              .count()
-              .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
-              .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
-                          "nvl(count, 0) as count") # buckets with no values will have a count of 0
-              .orderBy("bucket")
-             )
-    return histdf
+
+    # df_buckets is the range of {bins} buckets as requested by the user
+    # It will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+    df_buckets = spark.range(bins).selectExpr("id + 1 as bucket")
+
+    # Group user data into buckets and count their population count
+    df_grouped = (df
+                   .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket")
+                   .groupBy("bucket")
+                   .count()
+                 )
+
+    # Join df_buckets with the grouped data to fill in missing buckets
+    df_hist = (df_buckets # note this will be typically broadcasted, the order of the join is important
+               .join(df_grouped, "bucket", "left_outer") # add missing buckets and remove buckets out of range
+               .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
+                           "nvl(count, 0) as count") # buckets with no values will have a count of 0
+               .orderBy("bucket")
+              )
+
+    return df_hist
 
 
 def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
@@ -64,17 +76,29 @@ def computeWeightedHistogram(df: "DataFrame", value_col: str, weight_col: str,
         value: midpoint value of the given bucket
         weighted_sum: weighted sum of the number of values in the bucket
     """
+    # Compute the step size for the histogram
     step = (max_val - min_val) / bins
-    # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+
+    # Get the Spark Session handle
     spark = SparkSession.getActiveSession()
-    df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
-    histdf = (df
-              .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket", f"{weight_col}")
-              .groupBy("bucket")
-              .agg(sum(f"{weight_col}").alias("weighted_sum"))  # sum the weights on the weight_col
-              .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
-              .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
-                          "nvl(weighted_sum, 0) as weighted_sum") # buckets with no values will have a sum of 0
-              .orderBy("bucket")
-              )
-    return histdf
+
+    # df_buckets is the range of {bins} buckets as requested by the user
+    # It will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+    df_buckets = spark.range(bins).selectExpr("id + 1 as bucket")
+
+    # Group user data into buckets and compute a weighted sum of the values
+    df_grouped = (df
+                  .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket", f"{weight_col}")
+                  .groupBy("bucket")
+                  .agg(sum(f"{weight_col}").alias("weighted_sum"))  # sum the weights on the weight_col
+                 )
+
+    # Join df_buckets with the grouped data to fill in missing buckets
+    df_hist = (df_buckets # note this will be typically broadcasted, the order of the join is important
+               .join(df_grouped, "bucket", "left_outer") # add missing buckets and remove buckets out of range
+               .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
+                           "nvl(weighted_sum, 0) as weighted_sum")  # buckets with no values will have a sum of 0
+               .orderBy("bucket")
+               )
+
+    return df_hist

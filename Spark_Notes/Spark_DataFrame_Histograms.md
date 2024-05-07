@@ -102,14 +102,14 @@ The following is a copy/paste from [histogram.py](https://github.com/LucaCanali/
 
 ```
 def computeHistogram(df: "DataFrame", value_col: str, min_val: float, max_val: float, bins: int) -> "DataFrame":
-    """ This is a function to compute the count/frequency histogram of a given DataFrame column
+    """ This is a dataframe function to compute the count/frequecy histogram of a column
         
         Parameters
         ----------
         df: the dataframe with the data to compute
         value_col: column name on which to compute the histogram
-        min_val: minimum value in the histogram
-        max_val: maximum value in the histogram
+        min: minimum value in the histogram
+        max: maximum value in the histogram
         bins: number of histogram buckets to compute
         
         Output DataFrame
@@ -118,20 +118,32 @@ def computeHistogram(df: "DataFrame", value_col: str, min_val: float, max_val: f
         value: midpoint value of the given bucket
         count: number of values in the bucket        
     """
+    # Compute the step size for the histogram
     step = (max_val - min_val) / bins
-    # this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+
+    # Get the Spark Session handle
     spark = SparkSession.getActiveSession()
-    df_buckets = spark.sql(f"select id+1 as bucket from range({bins})")
-    histdf = (df
-              .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket")
-              .groupBy("bucket")
-              .count()
-              .join(df_buckets, "bucket", "right_outer") # add missing buckets and remove buckets out of range
-              .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
-                          "nvl(count, 0) as count") # buckets with no values will have a count of 0
-              .orderBy("bucket")
-             )
-    return histdf
+
+    # df_buckets is the range of {bins} buckets as requested by the user
+    # It will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+    df_buckets = spark.range(bins).selectExpr("id + 1 as bucket")
+
+    # Group user data into buckets and count their population count
+    df_grouped = (df
+                   .selectExpr(f"width_bucket({value_col}, {min_val}, {max_val}, {bins}) as bucket")
+                   .groupBy("bucket")
+                   .count()
+                 )
+
+    # join df_buckets with the grouped data to fill in missing buckets
+    df_hist = (df_buckets # note this will be typically broadcasted, the order of the join is important
+               .join(df_grouped, "bucket", "left_outer") # add missing buckets and remove buckets out of range
+               .selectExpr("bucket", f"{min_val} + (bucket - 0.5) * {step} as value",  # use center value of the buckets
+                           "nvl(count, 0) as count") # buckets with no values will have a count of 0
+               .orderBy("bucket")
+              )
+
+    return df_hist
 ```
 
 
@@ -181,7 +193,7 @@ histogram.show
 |    11| 85.0|    7|
 +------+-----+-----+
 ```
-2. As an alternative you can define the `computeHistogram` (or `computeWeightedHistogram`) function in your code,
+2. As an alternative, you can define the `computeHistogram` (or `computeWeightedHistogram`) function in your code,
 as in this example: 
 ```
 Run from the Spark shell. Requires Spark 3.1.0 or higher.  
@@ -189,20 +201,29 @@ bin/spark-shell
 
 import org.apache.spark.sql.{DataFrame, Dataset}
 
-def computeHistogram(col: String, min: Long, max: Long, bins: Long)(df: DataFrame): DataFrame= {
-  val step = (max - min) / bins
-  // this will be used to fill in for missing buckets, i.e. buckets with no corresponding values
-  val df_buckets= spark.sql(s"select id+1 as bucket from range($bins)")
-    
-  df.
-    selectExpr(s"width_bucket($col, $min, $max, $bins) as bucket").
-    groupBy("bucket").
-    count().
-    join(df_buckets, Seq("bucket"), "right_outer"). // add missing buckets and remove buckets out of range
-    selectExpr("bucket", s"$min + (bucket - 1/2) * $step as value", // use center value of the buckets
-               "nvl(count, 0) as count").  // buckets with no values will have a count of 0
-    orderBy("bucket")         
-}
+def computeHistogram(col: String, min_val: Double, max_val: Double, bins: Long)(df: DataFrame): DataFrame= {
+    val step = (max_val - min_val) / bins
+
+    // df_buckets is the range of {bins} buckets as requested by the user
+    // It will be used to fill in for missing buckets, i.e. buckets with no corresponding values
+    val df_buckets = sparkSession.range(bins).selectExpr("id + 1 as bucket")
+
+    // Group user data into buckets and compute a weighted sum of the values
+    val df_grouped = (df
+                        .selectExpr(s"width_bucket($col, $min_val, $max_val, $bins) as bucket")
+                        .groupBy("bucket")
+                        .count()
+                     )
+
+    // Join df_buckets with the grouped data to fill in missing buckets
+    val df_hist = (df_buckets // note this will be typically broadcasted, the order of the join is important
+               .join(df_grouped, "bucket", "left_outer") // add missing buckets and remove buckets out of range
+               .selectExpr("bucket", s"$min_val + (bucket - 0.5) * $step as value",  // use center value of the buckets
+                           "nvl(count, 0) as count") // buckets with no values will have a count of 0
+               .orderBy("bucket")
+              )
+    df_hist
+  }
 
 // generate some data for demo purposes
 
@@ -215,8 +236,22 @@ val df = spark.sql(s"select random($seed) * $scale as random_value from range($n
 df.show(5)
 
 // compute the histogram
+import ch.cern.sparkhistogram.Histogram
+val hist = Histogram(spark)
+
 val histogram = df.transform(computeHistogram("random_value", -20, 90, 11))
 
+histogram.show()
+
+// Weighted histogram example
+val df = spark.sql("select random(4242) * 100 as random_value, random(4241) as weight from range(100)")
+
+df.show(5)
+
+import ch.cern.sparkhistogram.Histogram
+val hist = Histogram(spark)
+
+val histogram = df.transform(hist.computeWeightedHistogram("random_value", "weight", -20, 90, 11))
 histogram.show()
 ```
 
@@ -259,7 +294,7 @@ buckets as (
 select
     bucket, {min} + (bucket - 1/2) * {step} as value,
     nvl(cnt, 0) as count
-from hist right outer join buckets using(bucket)
+from buckets left outer join hist using(bucket)
 order by bucket
 """)
 
