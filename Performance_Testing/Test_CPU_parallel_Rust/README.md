@@ -22,7 +22,7 @@ of the number of parallel workers.
 - See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
  
 ### How to run [test_cpu_parallel](test_cpu_parallel)
-  - Option 1, run from a contained image using Docker or Kubernetes, see [Container](Container) for details
+  - Option 1, run from a container image using Docker or Kubernetes, see [Container](Container) for details
     ```
     docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2 
     ```
