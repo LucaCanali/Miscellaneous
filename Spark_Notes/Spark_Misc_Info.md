@@ -31,14 +31,14 @@ export PYSPARK_PYTHON=...
         # pip install findspark
 
         import findspark
-        findspark.init('/home/luca/Spark/spark-3.3.1-bin-hadoop3') #set path to SPARK_HOME
+        findspark.init('/home/luca/Spark/spark-3.5.1-bin-hadoop3') #set path to SPARK_HOME
      ```
   - note: when using bin/pyspark, this is not relevant,
     as pyspark from the current SPARK_HOME will be used in this case
 ---
 - Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)
 ```
-bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.22
+bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.24
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.sql("select count(*) from range(1000) cross join range(1000)").show)
 ```
@@ -527,21 +527,18 @@ root
 If you have a SparkContext, use `sc.setLogLevel(newLevel)`
 
 Otherwise, edit or create the file log4j.properties in $SPARK_CONF_DIR (default SPARK_HOME/conf)
-/bin/vi conf/log4j.properties
-  
-Example for the logging level of PySpark REPL  
-```
-log4j.logger.org.apache.spark.api.python.PythonGatewayServer=INFO
-#log4j.logger.org.apache.spark.api.python.PythonGatewayServer=DEBUG
-```
+/bin/vi conf/log4j2.properties
 
-Example for the logging level of the Scala REPL:  
-`log4j.logger.org.apache.spark.repl.Main=INFO`
+Example for the logging level of the Scala REPL:
+```
+logger.repl.name = org.apache.spark.repl.Main
+logger.repl.level = info
+```
 
 ---
 - Caching dataframes 
 - caching is lazy, so you need to trigger an action, as in `df.cache.count`
-- By default caching of Spark dataframes uses persist with level MEMORY_AND_DISK.
+- By default, caching of Spark dataframes uses persist with level MEMORY_AND_DISK.
 - Note this is different for rdd, caching on rdd uses by default MEMORY_ONLY
 - Scala:
   ```
@@ -593,7 +590,7 @@ df.coalesce(1).write.mode("overwrite").parquet("/home/luca/DoubleMuParked/Run201
 -A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35000 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp -s 10.1.0.0/16 --dport 35001 -j ACCEPT
 ```
-  - In addition clients, may want to access the port for the WebUI (4040 by default)
+  - In addition, clients may want to access the port for the WebUI (4040 by default)
     - configure with `spark.ui.port`  
  
 ---
@@ -1761,67 +1758,6 @@ Run spark-shell using the official Spark docker image
 Note currently does not work to pyspark  
 `docker run -it apache/spark /opt/spark/bin/spark-shell`
 
-----
-Parametrized SQL and "bind variables" in Spark  
-Use the integrated Python string formatter for SQL API in PySpark and Spark Scala API.  
-Introduced in Spark 3.3.0, this feature supports positional parameters in Python sql.
-See also [PySpark doc](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html#pyspark.sql.SparkSession.sql)    
-Note this allows to use a dataframe in SQL without explicitly registering it as temporary view  
-
-Python example:
-```
-# parametrized SQL
->>> spark.sql("select 1, :aa", {"aa" : 7}).show()
-+---+---+
-|  1|  7|
-+---+---+
-|  1|  7|
-+---+---+
-
-# String formatter substitution
->>> spark.sql("select 1, {aa}", aa=7).show()
-+---+---+
-|  1|  7|
-+---+---+
-|  1|  7|
-+---+---+
-
-spark.sql("SELECT * FROM range(10) WHERE id > {bound1} AND id < {bound2}", bound1=2, bound2=4).show()
-
-# Positional parameters example in Python SQL (from Spark 3.5.0)  
-mydf=spark.sql("select id a, id+1 b from range(10)")
-spark.sql("SELECT * FROM {df} WHERE {df[B]} > ? and ? < {df[A]}", args=[5, 2], df=mydf).show()
-
----
-# use DF in SQL without the need to register it as a temp table
-df = spark.sql("select id from range(10)")
-spark.sql("select 1 from {aa}", aa=df).show()
-
-mydf = spark.range(10)
-spark.sql("select id, {col} from {tbl}", tbl=mydf, col=mydf.id).show()
-
-# more complex example, from the Spark doc
-spark.sql('''
-  SELECT m1.a, m2.b
-  FROM {table1} m1 INNER JOIN {table2} m2
-  ON m1.key = m2.key
-  ORDER BY m1.a, m2.b''',
-  table1=spark.createDataFrame([(1, "a"), (2, "b")], ["a", "key"]),
-  table2=spark.createDataFrame([(3, "a"), (4, "b"), (5, "b")], ["b", "key"])).show()
-```
-
-Scala example - parametrized SQL:
-```
-spark.sql("select 1, :aa",Map("aa" -> 7)).show()
-
-scala> spark.sql("select 1, :aa",Map("aa" -> 7)).show()
-+---+---+
-|  1|  7|
-+---+---+
-|  1|  7|
-+---+---+
-```
-
 ---
 PySpark UDF profiler  
 See: https://issues.apache.org/jira/browse/SPARK-37443  
@@ -1885,4 +1821,120 @@ x_test2=x_test.reshape(10000,28*28)
 df=spark.createDataFrame(x_test2)
 
 the result is a df with 784 columns
+```
+
+----
+Parametrized SQL and bind variables in Spark 3.x
+
+Use the integrated Python string formatter for SQL API in PySpark and Spark Scala API.  
+Introduced in Spark 3.3.0, this feature supports positional parameters in Python sql.
+See also [PySpark doc](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html#pyspark.sql.SparkSession.sql)    
+Note this allows to use a dataframe in SQL without explicitly registering it as temporary view
+
+Python example:
+```
+# parametrized SQL
+>>> spark.sql("select 1, :aa", {"aa" : 7}).show()
++---+---+
+|  1|  7|
++---+---+
+|  1|  7|
++---+---+
+
+# String formatter substitution
+>>> spark.sql("select 1, {aa}", aa=7).show()
++---+---+
+|  1|  7|
++---+---+
+|  1|  7|
++---+---+
+
+spark.sql("SELECT * FROM range(10) WHERE id > {bound1} AND id < {bound2}", bound1=2, bound2=4).show()
+
+# Positional parameters example in Python SQL (from Spark 3.5.0)  
+mydf=spark.sql("select id a, id+1 b from range(10)")
+spark.sql("SELECT * FROM {df} WHERE {df[B]} > ? and ? < {df[A]}", args=[5, 2], df=mydf).show()
+
+---
+# use DF in SQL without the need to register it as a temp table
+# Note, Spark will do the temporary table registation for you even if you don't do it explicitly
+df = spark.sql("select id from range(10)")
+spark.sql("select 1 from {aa}", aa=df).show()
+
+mydf = spark.range(10)
+spark.sql("select id, {col} from {tbl}", tbl=mydf, col=mydf.id).show()
+
+# more complex example, from the Spark doc
+spark.sql('''
+  SELECT m1.a, m2.b
+  FROM {table1} m1 INNER JOIN {table2} m2
+  ON m1.key = m2.key
+  ORDER BY m1.a, m2.b''',
+  table1=spark.createDataFrame([(1, "a"), (2, "b")], ["a", "key"]),
+  table2=spark.createDataFrame([(3, "a"), (4, "b"), (5, "b")], ["b", "key"])).show()
+```
+
+Scala example - parametrized SQL:
+```
+spark.sql("select 1, :aa",Map("aa" -> 7)).show()
+
+scala> spark.sql("select 1, :aa",Map("aa" -> 7)).show()
++---+---+
+|  1|  7|
++---+---+
+|  1|  7|
++---+---+
+```
+
+---
+Bbind variables in SQL (Spark 4.x)
+
+Introduced in Spark 4.0.0, this feature supports bind variables in SQL queries.
+
+```
+spark.sql("execute immediate 'select :text' using('Hello World!' as text)").show()
++------------+
+|        text|
++------------+
+|Hello World!|
++------------+
+```
+---
+SQL variables (Spark 4.x)
+
+Introduced in Spark 4.0.0, this feature supports variable substitution in SQL queries.
+
+```
+spark.sql("declare mytext='Hello World!'")
+spark.sql("select mytext").show()
++------------+
+|      mytext|
++------------+
+|Hello World!|
++------------+
+
+spark.sql("DECLARE OR REPLACE VARIABLE myvar INT DEFAULT 42;")
+spark.sql("select myvar").show()
++-----+
+|myvar|
++-----+
+|   42|
++-----+
+
+spark.sql("SET VAR myvar = 12")
+spark.sql("select myvar").show()
++-----+
+|myvar|
++-----+
+|   12|
++-----+
+
+spark.sql("DECLARE mysqltext STRING")
+spark.sql("SET VAR mysqltext = 'select 42'")
+spark.sql("execute immediate mysqltext").show()
++---+
+| 42|
++---+
+| 42|
++---+
 ```
