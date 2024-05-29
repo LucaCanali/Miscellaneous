@@ -36,6 +36,19 @@ export PYSPARK_PYTHON=...
   - note: when using bin/pyspark, this is not relevant,
     as pyspark from the current SPARK_HOME will be used in this case
 ---
+Create some basic test DataFrame
+
+```
+df=spark.createDataFrame( [(1,),(2,)], "data long")
+df.show()
+
+df=spark.createDataFrame( [([1.1,2.2],),([11.1,12.2],)], "data array<float>")
+df.show()
+
+df=spark.sql("select 1 as id, 'a' as name")
+df=spark.sql("select id from range(10)")
+```
+---
 - Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)
 ```
 bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.24
