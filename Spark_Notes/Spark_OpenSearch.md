@@ -1,7 +1,7 @@
 ## Notes on using Apache Spark with OpenSearch
 
 These are notes and examples of how to use Spark with [OpenSearch](https://github.com/opensearch-project) with examples tested using the CERN OpenSearch service.  
-Version details: OpenSearch v2.2.1, Spark version 3.3.1, opensearch-hadoop library (built from GitHub main, Jan 2023)
+Version details: OpenSearch v2.11, Spark version 3.5.1, opensearch-hadoop library opensearch-spark-30 version 1.2.0
 
 ## Where to find the code and documentation
 - [OpenSearch](https://github.com/opensearch-project) is a community driven project which has started as a fork
@@ -15,50 +15,12 @@ of [Elasticsearch and Kibana](https://www.elastic.co/).
   - Elastic has a more detailed description, although beware of the different API naming at:
     [elastic and Spark](https://www.elastic.co/guide/en/elasticsearch/hadoop/current/spark.html) 
 
-## How to build the Spark libraries/jars for OpenSearch
-See the official releases on GitHub, for example:
-  - https://github.com/opensearch-project/opensearch-hadoop/releases/tag/v1.0.0
-
-Example of how to build from the GitHub repo:
-```
-git clone https://github.com/opensearch-project/opensearch-hadoop
-cd opensearch-hadoop
-
-# the project is built with gradle 
-# note, it needs java11 to build
-# it also needs to have JAVA 8 
-export JAVA8_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-
-# build with gradle
-./gradlew opensearch-spark-30:build
-```
-
-In my tests the gradle build throws errors, but it is still useful as it manages to build the
-jars needed for using Spark with OpenSearch:
-```
-spark/core/build/libs/opensearch-spark_2.12-3.0.0-SNAPSHOT-spark30scala212.jar
-spark/sql-30/build/libs/opensearch-spark-30_2.12-3.0.0-SNAPSHOT.jar
-thirdparty/build/libs/thirdparty-3.0.0-SNAPSHOT-all.jar
-```
 
 ## Apache Spark and OpenSearch
 
-### JARs and configurations
-
-Currently (Jan 2023), there are no published maven-central  packages for OpenSearch-Hadoop client libraries, 
-see above paragraph on how to build the project from source.   
-Note see also the paragraph below "How to create and configure OpenSearch at CERN"  
-This is an example of how I used spark-shell with OpenSearch:
-
 ```
-# Edit the JARs path with your local build
-# Stopgap: I have uploaded the jars on a personal website
-JAR1=http://canali.web.cern.ch/res/opensearch-spark_2.12-3.0.0-SNAPSHOT-spark30scala212.jar
-JAR2=http://canali.web.cern.ch/res/opensearch-spark-30_2.12-3.0.0-SNAPSHOT.jar
-JAR3=http://canali.web.cern.ch/res/thirdparty-3.0.0-SNAPSHOT-all.jar
-
 # Edit with the OpenSearch endpoint
-OPENSEARCH_URL="https://es-testspark1.cern.ch:443"
+OPENSEARCH_URL="https://os-testspark.cern.ch:443"
 
 # Edit with the authentication credentials
 # for OpenSearch basic authentication, 
@@ -67,12 +29,14 @@ USERNAME="test1"
 PASS="..."
 
 bin/spark-shell --master local[*] \
---jars $JAR1,$JAR2,$JAR3 \
---conf spark.opensearch.nodes= $OPENSEARCH_URL \
---conf spark.opensearch.nodes.path.prefix="/es" \
+--packages org.opensearch.client:opensearch-spark-30_2.12:1.2.0 \
+--conf spark.opensearch.nodes=$OPENSEARCH_URL \
+--conf spark.opensearch.nodes.path.prefix="/os" \
 --conf spark.opensearch.nodes.wan.only=true \
 --conf spark.opensearch.net.http.auth.user=$USERNAME \
---conf spark.opensearch.net.http.auth.pass=$PASS
+--conf spark.opensearch.net.http.auth.pass=$PASS \
+--conf spark.opensearch.net.ssl=true \
+--conf spark.opensearch.net.ssl.truststore.location="file:///etc/pki/ca-trust/extracted/java/cacerts"
 ```
 
 ### Additional configuration parameters
@@ -161,12 +125,14 @@ PySpark can be used in a similar way as with the Scala examples above:
 ```
 # Python example with PySpark
 bin/pyspark --master local[*] \
---jars $JAR1,$JAR2,$JAR3 \
+--packages org.opensearch.client:opensearch-spark-30_2.12:1.2.0 \
 --conf spark.opensearch.nodes= $OPENSEARCH_URL \
---conf spark.opensearch.nodes.path.prefix="/es" \
+--conf spark.opensearch.nodes.path.prefix="/os" \
 --conf spark.opensearch.nodes.wan.only=true \
 --conf spark.opensearch.net.http.auth.user=$USERNAME \
---conf spark.opensearch.net.http.auth.pass=$PASS
+--conf spark.opensearch.net.http.auth.pass=$PASS \
+--conf spark.opensearch.net.ssl=true \
+--conf spark.opensearch.net.ssl.truststore.location="file:///etc/pki/ca-trust/extracted/java/cacerts"
 
 # Write into OpenSearch using the Spark Dataframe Writer API 
 df.write.format("opensearch").mode("append").save("spark_docs1")
