@@ -110,24 +110,26 @@ The following table displays the performance of `test_CPU_parallel.py` using var
 
 > **Test System Configuration**:
 > - **HOST CPU**: 4-core CPU E5-1630 v3 @ 3.70GHz
-> - **HOST OS**: CentOS 7.9
+> - **HOST OS**: AlmaLinux 9.4
 > - **Docker Images**: Based on alpine3.19
 
 Tests were initiated with the command:
 ```
+IMAGE=lucacanali/test_cpu_parallel.py:py3.11
 docker run $IMAGE test_CPU_parallel.py
 ```
 
 | Python version | Median job runtime (s) | docker image name                            |
 |----------------|------------------------|----------------------------------------------|
 | 3.8            | 41 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.8  |
-| 3.9            | 39 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.9  |
+| 3.9            | 40 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.9  |
 | 3.10           | 35 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.10 |
-| 3.11           | 32 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.11 |
-| 3.12           | 42 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.12 |
+| 3.11           | 30 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.11 |
+| 3.12           | 39 sec                 | IMAGE=lucacanali/test_cpu_parallel.py:py3.12 |
 
 Note: While there seems to be a general trend of improved runtime performance (for this simple test) with newer Python versions,
-the results for Python 3.12 buck this trend. It's important to recognize that multiple variables might 
+the results for Python 3.12 buck this trend (see a discussion on this on [stackoverflow](https://stackoverflow.com/questions/77230983/why-does-it-take-longer-to-execute-a-simple-for-loop-in-python-3-12-than-in-pyth)).
+It's important to recognize that multiple variables might 
 influence these results and that these results should not be used as a Python benchmark. 
 
 ---   
