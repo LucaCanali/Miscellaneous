@@ -22,11 +22,20 @@ of the number of parallel workers.
 - See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
  
 ### How to run [test_cpu_parallel](test_cpu_parallel)
-  - Option 1, run from a container image using Docker or Kubernetes, see [Container](Container) for details
+  - **Run from a container image** using Docker or Kubernetes, see [Container](Container) for details
     ```
+    # Run with docker or podman:
     docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2 
     ```
-  - Option 2, download the [binary executable for Linux from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel) as in:
+    ```
+    # Run using Kubernetes
+    kubectl run test-cpu-parallel --image=lucacanali/test_cpu_parallel --restart=Never -- /opt/test_cpu_parallel -w 2
+
+    kubectl get pods
+    kubectl logs test-cpu-parallel
+    kubeclt delete pod test-cpu-parallel
+    ```
+  - Download and run the binary: download the [binary executable for Linux from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel) as in:
     ```
     wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
     chmod +x test_cpu_parallel
@@ -36,10 +45,13 @@ of the number of parallel workers.
     # sha256sum test_cpu_parallel
     # 30d9782e35bb840f2054375ec438670f32d5e07b3c4565cdfc2461176f04ed91
     ```
-  - Option 3, compile from source code, see details in the [Code_test_CPU_Rust](Code_test_CPU_Rust) folder
+  - Compile from source code and run the binary, see details in the [Code_test_CPU_Rust](Code_test_CPU_Rust) folder
 
 Example:
 ```
+wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
+chmod +x test_cpu_parallel
+
 # run one-off data collection with 2 concurrent workers
 ./test_cpu_parallel -w 2 
 
