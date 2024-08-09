@@ -22,20 +22,27 @@ of the number of parallel workers.
 - See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
  
 ### How to run [test_cpu_parallel](test_cpu_parallel)
-  - **Run from a container image** using Docker or Kubernetes, see [Container](Container) for details
+  - **Run from a container image** using Docker or podman, see [Container](Container) for details
     ```
-    # Run with docker or podman:
+    # Run with Docker or Podman:
     docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2 
     ```
+  - **Run using Kubernetes** see also [Container](Container) for details
     ```
-    # Run using Kubernetes
+    # Run using Kubernetes, basic
     kubectl run test-cpu-parallel --image=lucacanali/test_cpu_parallel --restart=Never -- /opt/test_cpu_parallel -w 2
 
     kubectl get pods
-    kubectl logs test-cpu-parallel
-    kubeclt delete pod test-cpu-parallel
+    kubectl logs -f test-cpu-parallel
+    kubectl delete pod test-cpu-parallel
+    
+    # Use a yaml file to specify CPU requests and limits:
+    cd Container
+    kubectl apply -f test_cpu_parallel.yaml
+    
     ```
-  - Download and run the binary: download the [binary executable for Linux from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel) as in:
+  - **Run the binary** 
+    Download the [binary executable for Linux from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel) and run it as in:
     ```
     wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
     chmod +x test_cpu_parallel
@@ -45,7 +52,7 @@ of the number of parallel workers.
     # sha256sum test_cpu_parallel
     # 30d9782e35bb840f2054375ec438670f32d5e07b3c4565cdfc2461176f04ed91
     ```
-  - Compile from source code and run the binary, see details in the [Code_test_CPU_Rust](Code_test_CPU_Rust) folder
+  - **Compile from source** code and run the binary, see details in the [Code_test_CPU_Rust](Code_test_CPU_Rust) folder
 
 Example:
 ```

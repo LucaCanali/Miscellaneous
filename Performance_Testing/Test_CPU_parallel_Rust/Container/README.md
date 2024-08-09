@@ -35,7 +35,7 @@ You can run test_cpu_parallel on a Kubernetes cluster as in:
 ```
 # delete pod if it already exists and start a new one with the test_cpu_parallely workload
 kubectl get pod test-cpu-pod && kubectl delete pod test-cpu-pod
-kubectl run test-cpu-pod --image=lucacanali/test_cpu_parallel --restart=Never -- test_cpu_parallel -w 2
+kubectl run test-cpu-pod --image=lucacanali/test_cpu_parallel --restart=Never -- /opt/test_cpu_parallel -w 2
 
 # get the output
 kubectl logs -f test-cpu-pod
