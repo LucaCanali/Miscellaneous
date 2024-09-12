@@ -30,6 +30,7 @@ of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__Nano
       - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
         - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
       - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet)
+        - `wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet`
       - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc)
     - **6.5 billion events** (200 GB, this is the 2GB dataset repeated 105 times)
       - original files, in ROOT format root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon
@@ -76,7 +77,7 @@ Solutions to the benchmark tasks are also directly inspired by the article [Eval
   - A list of the downloadable datasets for this analysis:
   - 53 million events (16 GB), original files in ROOT format: root://eospublic.cern.ch//eos/root-eos/benchmark/Run2012B_SingleMu.root
     - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
-  - **53 million events** (16 GB), converted to Parquet: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
+  - **53 million events** (16 GB), converted to Parquet: [Run2012B_SingleMu.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet)
     - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu.parquet/` 
   - **7 million events** (2 GB) Parquet format [Run2012B_SingleMu_sample.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012B_SingleMu_sample.parquet)
   
