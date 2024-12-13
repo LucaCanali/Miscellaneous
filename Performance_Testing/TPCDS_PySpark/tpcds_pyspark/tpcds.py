@@ -322,7 +322,7 @@ class TPCDS:
             num_executors = spark.conf.get("spark.executor.instances")
             print(f"Number of executors: {num_executors}", file=file_metadata)
         elif dynamic_allocation == "true":
-            num_min_executors = spark.conf.get("spark.dynamicAllocation.minExecutors")
+            num_min_executors = spark.conf.get("spark.dynamicAllocation.minExecutors", 0)
             print(f"Minimum Number of executors: {num_min_executors}", file=file_metadata)
             num_max_executors = spark.conf.get("spark.dynamicAllocation.maxExecutors")
             print(f"Maximum Number of executors: {num_max_executors}", file=file_metadata)
