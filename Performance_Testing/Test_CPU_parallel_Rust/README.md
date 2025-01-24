@@ -1,32 +1,39 @@
-## Load testing CPUs, Rust version
+# Load testing CPUs, Rust version
 
-`test_cpu_parallel` is a Rust program designed to load test CPUs and measure job execution times as
-a function of the number of parallel workers. It provides insights into CPU scalability and performance
-under varying workloads.
+This is the home of `test_cpu_parallel`, a CPU workload generator written in Rust designed to generate CPU-intensive or memory-intensive workloads, measure job execution times, and analyze CPU scalability across different systems.  
+Contact: Luca.Canali@cern.ch  
+First version, April 2023  
+Version: 1.2.0 - Jan 2025  
 
----
+## **Motivations and Limitations**
+- **Purpose**:
+    - Generate CPU-intensive load on a system.
+    - Measure CPU performance quickly and efficiently.
+    - Perform multithreaded tests and analyze results using Jupyter notebooks.
+    - Compare CPU scalability across different systems.
+- **Limitations**:
+    - This tool is not a benchmark but rather a load generator for evaluating CPU scalability.
 
-## **Contents**
+## Contents
 - [**Container**](Container): Instructions and a container image for running `test_cpu_parallel` using Docker and Kubernetes.
 - [**Code_test_CPU_Rust**](Code_test_CPU_Rust): Source code for the Rust program.
 - [**Data**](Data): Example datasets collected using the tool.
 - [**Notebooks**](Notebooks): Jupyter notebooks used to analyze the collected data.
 
----
-
-## **Motivations and Limitations**
-- Use this tool to generate CPU-intensive load on a system by running multiple threads in parallel.
-- Measure CPU scalability using full mode and analyze the results using the provided Jupyter notebooks.
-- Compare CPU load and scalability across different systems.
-- This is not intended to be a benchmark but rather a tool for generating load and evaluating CPU scalability.
+## **Key Features**
+- Generate and measure **CPU-intensive or memory-intensive** workloads.
+- Supports **configurable parallelism** with a flexible number of threads and inner loop iterations.
+- Outputs **performance metrics** as a function of parallel worker threads.
+- Easy deployment via Command line, Docker or Kubernetes.
 
 ### Notes
 - The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.  
 - When run in full mode, the program will run a range of tests and output a cvs file with the measured values.  
-- This folder contains also example data collected with the tool and Jupyter notebooks used to analyze the data.  
-- See also the Python version of the same tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
+- The folder Data contains examples of measurements collected with the tool and the Jupyter notebooks used to analyze the data.  
+- See also the Python tool: [Test_CPU_parallel_Python](../Test_CPU_parallel_Python)
  
-### Multiple ways to deploy [test_cpu_parallel](test_cpu_parallel)
+## How to deploy [test_cpu_parallel](test_cpu_parallel)
+There are multiple and alternative ways to deploy the tool, suitable for different use cases:
   - **Run from a container image** using Docker or podman, see [Container](Container) for details
     ```
     # Run with Docker or Podman:
@@ -59,7 +66,7 @@ under varying workloads.
     
     ```
 
-Examples:
+## Examples of usage
 ```
 wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
 chmod +x test_cpu_parallel
