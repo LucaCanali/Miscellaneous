@@ -1,9 +1,26 @@
 [package]
 name = "test_cpu_parallel"
-version = "1.1.0"
+version = "1.2.0"
+edition = "2021"
+
+authors = ["Luca Canali <Luca.Canali@cern.ch>"]
+description = "A Rust tool to generate CPU-intensive workloads for performance testing."
+license = "Apache 2.0"
+repository = "https://github.com/LucaCanali/Miscellaneous"
+homepage = "https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust"
+keywords = ["performance", "cpu", "benchmarking", "parallelism", "rust"]
+categories = ["performance", "parallel"]
 
 [dependencies]
-rayon = "1.7.0"
-clap = "3.2.25"
-statrs = "0.16.0"
-ctrlc = "3.4.0"
+# Libraries used in this project
+rayon = "1.10.0"            # High-performance data parallelism and thread pool library
+clap = "4.5.27"             # Command-line argument parsing made easy
+statrs = "0.18.0"           # Statistical functions and distributions for analysis
+ctrlc = "3.4.5"             # Graceful Ctrl+C handling
+rand = "0.8.5"                # Random number generation utilities
+
+[profile.release]
+opt-level = 0                       # Disable optimizations to avoid interference with benchmarking
+debug = false                       # Include debug information for profiling and analysis
+codegen-units = 1                   # Use a single codegen unit for more consistent benchmarks
+lto = false                         # Disable Link Time Optimization

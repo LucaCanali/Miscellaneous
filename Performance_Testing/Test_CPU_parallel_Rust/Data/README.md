@@ -1,7 +1,7 @@
 # Data - Tests Results
 
 ## test_CPU_parallel_Rust  
-Results of CPU load testing using test_cpu_parallel  
+Results of CPU load testing using test_cpu_parallel version 1.1.0
 
 How to run the tests:
 ```

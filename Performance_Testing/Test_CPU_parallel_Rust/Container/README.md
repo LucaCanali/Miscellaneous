@@ -1,8 +1,10 @@
 # How to create and use a docker image for running test_cpu_parallel
 
-This creates a docker image for test_cpu_parallel, a CPU load testing tool written in Rust.  
+This guide explains how to create a Docker image for `test_cpu_parallel`, a CPU load testing
+tool written in Rust.
 
-- Copy the test_cpu_parallel binary executable for Linux to this directory
+- Before building the container image, you need to have the `test_cpu_parallel` binary executable for Linux in the same directory as your `Dockerfile`. 
+  You can do this in one of two ways:
   - Option 1, build from source and copy the executable in this directory
     - See details of how to build in the [Code_test_CPU_Rust](../Code_test_CPU_Rust) folder
   - Option 2, download the binary executable from this link:
@@ -12,26 +14,28 @@ This creates a docker image for test_cpu_parallel, a CPU load testing tool writt
     
     # Checksum:
     # sha256sum test_cpu_parallel
-    # 30d9782e35bb840f2054375ec438670f32d5e07b3c4565cdfc2461176f04ed91
+    # 6feabf4c59765e463e65e7150cd5636063af9d946ab56b8b5b45151b712d27e2
     ```
 - Build the docker image with:
 ```
-docker build -t lucacanali/test_cpu_parallel:v1.1 .
-docker push lucacanali/test_cpu_parallel:v1.1
+docker build -t lucacanali/test_cpu_parallel:v1.2 .
+docker push lucacanali/test_cpu_parallel:v1.2
 
-docker tag lucacanali/test_cpu_parallel:v1.1 lucacanali/test_cpu_parallel:latest
+docker tag lucacanali/test_cpu_parallel:v1.2 lucacanali/test_cpu_parallel:latest
 docker push lucacanali/test_cpu_parallel:latest
 ```
 
-## Docker
+## Using the container image
 
-You can use the image to run test_cpu_parallel in a container as in:
+Once the container image is built or pulled from the registry, you can use it to run `test_cpu_parallel`:
 ```
 docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2
+
+podman run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2
 ```
 
 ## Kubernetes
-You can run test_cpu_parallel on a Kubernetes cluster as in:
+You can run `test_cpu_parallel` on a Kubernetes cluster as in:
 ```
 # delete pod if it already exists and start a new one with the test_cpu_parallely workload
 kubectl get pod test-cpu-pod && kubectl delete pod test-cpu-pod
