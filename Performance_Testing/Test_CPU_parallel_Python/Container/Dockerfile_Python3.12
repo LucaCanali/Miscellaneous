@@ -2,7 +2,7 @@
 # A basic CPU workload generator
 # See https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Python
 
-FROM python:3.12.3-alpine3.19
+FROM python:3.12.8-alpine3.21
 
 # The main goal of this container is to be used for running test_CPU_parallel.py
 RUN pip install test_CPU_parallel
