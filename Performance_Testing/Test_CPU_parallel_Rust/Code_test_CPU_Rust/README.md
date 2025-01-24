@@ -1,14 +1,15 @@
 ## CPU load testing kit in Rust
-test_cpu_parallel is basic CPU workload generator written in Rust
-- It runs a CPU-burning loop concurrently on the system, with configurable parallelism.
-- Compile with Rust: `cargo build`
-  - note, using `cargo build --release` is not recommended for this tool, 
+`test_cpu_parallel` is basic CPU workload generator written in Rust.
+It runs a CPU-burning loop using multithreading, with configurable parallelism degree.
+  - Compile the tool using Rust with: `cargo build`
+  - Using `cargo build --release` is not recommended for this tool, 
     as the optimizations play against the simple "CPU burning loop" implemented in the tool
-  - note, Cargo version has an impact on the performance of the tool
-    - Version 1.0.1 was compiled with Cargo for Linux version 1.68.2
-    - Version 1.1.0 was compiled with Cargo for Linux version 1.77.1
+  - The Cargo version used for compiling has an impact on the output, notably the performance of the tool.
     - Version 1.2.0 was compiled with Cargo for Linux version 1.84.0
-- To compile a Rust project, you need to have the Rust programming language and its associated 
+    - Version 1.1.0 with Cargo 1.77.1
+    - Version 1.0.1 with Cargo 1.68.2
+
+Note: To compile a Rust project, you need to have the Rust programming language and its associated 
   tools installed on your system. If you haven't installed Rust yet, you can do so by following
   the instructions at https://www.rust-lang.org/tools/install
 

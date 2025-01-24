@@ -18,5 +18,5 @@ Results:
 - [test_cpu_parallel_rust_RAC52.csv](test_cpu_parallel_rust_RAC52.csv)
 - [test_cpu_parallel_rust_RAC54.csv](test_cpu_parallel_rust_RAC54.csv)
 
-See also [Notebooks](../Notebooks) for analysis of the data.
+See also [Notebooks](../Notebooks) for data analysies.
 
