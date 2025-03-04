@@ -49,7 +49,7 @@ df=spark.sql("select 1 as id, 'a' as name")
 df=spark.sql("select id from range(10)")
 ```
 ---
-- Workload profile with [sparkMeasure](Spark_Performace_Tool_sparkMeasure.md)
+- Workload profile with [sparkMeasure](Spark_Performance_Tool_sparkMeasure.md)
 ```
 bin/spark-shell --packages ch.cern.sparkmeasure:spark-measure_2.12:0.24
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 

@@ -177,7 +177,7 @@ Note: instead of a table name you can specify a query as in
 #### What to check on the Spark side
 - Check the SPARK UI to see the progress of the job and how many tasks are being used concurrently
   - you should expect "numPartitions" tasks (1 tasks if you did not specify a value for this option)
-- measure the workload with [sparkMeasure as described in this doc](Spark_Performace_Tool_sparkMeasure.md)
+- measure the workload with [sparkMeasure as described in this doc](Spark_Performance_Tool_sparkMeasure.md)
 ```
 bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0 --packages ch.cern.sparkmeasure:spark-measure_2.12:0.18
 
