@@ -7,17 +7,52 @@ Find here also some notes on measuring performance, use of partitioning and also
 #### An example of how to create a Spark DataFrame that reads from and Oracle table/view/query using JDBC.
 See also [Spark documentation](https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases)  
 Test setup:
-  - run oracle xe on a container from gvenzl dockerhub repo https://github.com/gvenzl/oci-oracle-xe
-  - `docker run -d --name mydb1 -e ORACLE_PASSWORD=oracle -p 1521:1521 gvenzl/oracle-xe:latest # or use :slim`
-  - wait till the DB is started, check logs at: `docker logs -f mydb1`
+  - run Oracle free 23ai on a container from gvenzl dockerhub repo https://github.com/gvenzl/oci-oracle-free
+  - `docker run -d --name mydb1 -e ORACLE_PASSWORD=oracle -p 1521:1521 gvenzl/oracle-free:23-slim`
+  - wait till the DB is fully started by checking the progress of the startup log at: `docker logs -f mydb1`
 
+#### PySpark Example
+```
+# You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
+bin/pyspark --packages com.oracle.database.jdbc:ojdbc11:23.7.0.25.01
+
+# Edit with the target db username 
+db_user = "system"
+
+# dbserver:port/service_name
+db_connect_string = "localhost:1521/FREEPDB1" 
+
+db_pass = "oracle"
+
+# Edit with the query to extract data from the target database
+# This is a dummy query just for demo purposes
+myquery = "select rownum as id from dual connect by level<=10"
+
+# This maps the Oracle query/table to a Spark DataFrame
+
+df = (spark.read.format("jdbc").
+           option("url", f"jdbc:oracle:thin:@{db_connect_string}").
+           option("driver", "oracle.jdbc.driver.OracleDriver").
+           option("query", myquery).
+           option("user", db_user).
+           option("password", db_pass).
+           option("fetchsize", 10000).
+           load()
+     )
+
+# Show schema and data for testing purposes
+df.printSchema()
+df.show()
+```
+
+#### Spark shell (Scala) Examples
 **query mode:** run a query in Oracle via JDBC and map the results into a Spark DataFrame
 ```
 # You need an Oracle client JDBC jar, available in maven central or download from the Oracle website
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc11:23.7.0.25.01
 
 val db_user = "system"
-val db_connect_string = "localhost:1521/XEPDB1" // dbserver:port/service_name
+val db_connect_string = "localhost:1521/FREEPDB1" // dbserver:port/service_name
 val db_pass = "oracle"
 val myquery = "select rownum as id from dual connect by level<=10"
 
@@ -179,7 +214,7 @@ Note: instead of a table name you can specify a query as in
   - you should expect "numPartitions" tasks (1 tasks if you did not specify a value for this option)
 - measure the workload with [sparkMeasure as described in this doc](Spark_Performance_Tool_sparkMeasure.md)
 ```
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0 --packages ch.cern.sparkmeasure:spark-measure_2.12:0.18
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc11:23.7.0.25.01 --packages ch.cern.sparkmeasure:spark-measure_2.12:0.24
 
 val stageMetrics = ch.cern.sparkmeasure.StageMetrics(spark) 
 stageMetrics.runAndMeasure(spark.df.write.parquet("MYHDFS_TARGET_DIR/MYTABLENAME")
@@ -282,7 +317,7 @@ After each database session is opened to the remote DB, and before starting to r
 Example of usage, relevant to Oracle JDBC:
 
 ```
-bin/spark-shell --packages com.oracle.database.jdbc:ojdbc8:21.7.0.0
+bin/spark-shell --packages com.oracle.database.jdbc:ojdbc11:23.7.0.25.01
 
 // customize with the wanted session parameters and initialization
 // note no semicolon at the end of the SQL statement
