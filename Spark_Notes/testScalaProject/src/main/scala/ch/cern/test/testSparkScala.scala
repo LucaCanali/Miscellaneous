@@ -5,7 +5,7 @@ import org.apache.spark.sql._
 /**
   * Test Spark using a Scala object
   * This will run the method main of the object testSparkScala
-  * bin/spark-submit --class ch.cern.test.testSparkScala <path>/target/scala-2.11/testsparkscala_2.11-0.1.jar
+  * bin/spark-submit --class ch.cern.test.testSparkScala <path>/target/scala-2.12/testsparkscala_2.12-0.1.jar
   */
 object testSparkScala {
 
