@@ -999,6 +999,86 @@ spark.sql("""
 
 ```
 ---
+- Apache Spark Array Chunking Examples
+Below are three detailed examples demonstrating how to chunk an array column into an array of arrays in Apache Spark. The examples cover:
+
+1. Scala UDF Example
+
+```scala
+// Read the input DataFrame from a Parquet file.
+// The file "nxcals_value_elements" is expected to contain a column with arrays.
+val df = spark.read.parquet("nxcals_value_elements")
+
+// Define a generic function to chunk an array into smaller arrays of a given chunk size.
+// The function checks for null input to avoid null pointer exceptions.
+def chunkArray[T](arr: Seq[T], chunkSize: Int): Seq[Seq[T]] = {
+  if (arr == null) null
+  else arr.grouped(chunkSize).toSeq
+}
+
+// Register the chunking function as a Spark UDF.
+// This UDF is specialized for arrays of Long values.
+// It takes an array and a chunk size, and returns an array of arrays.
+val resizeArrayUDF = udf((arr: Seq[Long], chunkSize: Int) => chunkArray(arr, chunkSize))
+
+// Apply the UDF on the DataFrame to transform the 'array_col_to_chunk' column.
+// Here, we create a new column 'numbers_chunked' with subarrays of size 6.
+val resizedDF = df.withColumn("numbers_chunked", resizeArrayUDF($"array_col_to_chunk", lit(6)))
+
+// Display the resulting DataFrame without truncating the output.
+resizedDF.show(false)
+```
+2. Scala with Native Spark SQL Functions Example
+
+```scala
+// Read the input DataFrame from a Parquet file (assuming df is already loaded).
+// Define the desired chunk size.
+val chunkSize = 6
+
+// Use Spark SQL's built-in higher-order functions to chunk the array.
+// Explanation:
+// - size(array_col_to_chunk): Returns the number of elements in the array.
+// - sequence(1, size(array_col_to_chunk), chunkSize): Generates a sequence of start indices for the chunks.
+// - transform(..., x -> slice(array_col_to_chunk, x, chunkSize)):
+//     For each start index x in the sequence, slice extracts a subarray starting at x with length chunkSize.
+val dfWithChunked = df.withColumn("numbers_chunked", expr(
+  s"transform(sequence(1, size(array_col_to_chunk), $chunkSize), x -> slice(array_col_to_chunk, x, $chunkSize))"
+))
+
+// Show the DataFrame with the new 'numbers_chunked' column.
+dfWithChunked.show(false)
+```
+
+3. PySpark Example Using Native Spark SQL Functions
+```
+# Import the necessary module for Spark SQL expressions.
+from pyspark.sql.functions import expr
+
+# Read the input DataFrame from a Parquet file.
+df = spark.read.parquet("nxcals_value_elements")
+
+# Optionally, preview selected columns to inspect the data.
+df.select("array_col_to_chunk", "nxcals_value.dimensions").show(10, False)
+
+# Define the chunk size for splitting the array.
+chunk_size = 6
+
+# Use native Spark SQL functions to perform array chunking.
+# Breakdown of the expression:
+# - size(array_col_to_chunk): Computes the length of the array.
+# - sequence(1, size(array_col_to_chunk), chunk_size): Generates a sequence of starting indices for each chunk.
+# - transform(..., x -> slice(array_col_to_chunk, x, chunk_size)):
+#     Iterates over the sequence and applies the slice function to extract subarrays from array_col_to_chunk.
+df_with_chunked = df.withColumn(
+    "numbers_chunked",
+    expr(f"transform(sequence(1, size(array_col_to_chunk), {chunk_size}), x -> slice(array_col_to_chunk, x, {chunk_size}))")
+)
+
+# Display the resulting DataFrame with the new 'numbers_chunked' column.
+df_with_chunked.show(10, False)
+```
+
+---
 - Load numpy arrays into a Spark Dataframe
   - example load MNIST dataset from keras.datasets 
   - Note, Spark 3.4 has a new feature to load numpy arrays directly into a Spark Dataframe (see note below)
@@ -1900,7 +1980,7 @@ scala> spark.sql("select 1, :aa",Map("aa" -> 7)).show()
 ```
 
 ---
-Bbind variables in SQL (Spark 4.x)
+Bind variables in SQL (Spark 4.x)
 
 Introduced in Spark 4.0.0, this feature supports bind variables in SQL queries.
 
@@ -1951,3 +2031,4 @@ spark.sql("execute immediate mysqltext").show()
 | 42|
 +---+
 ```
+---
