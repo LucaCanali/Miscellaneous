@@ -1,7 +1,7 @@
-// This is a basic program to test CPU speed in Rust
+// test_cpu_parallel - A basic CPU workload generator written in Rust
 // Luca.Canali@cern.ch
 // April 2023
-// Last updated, January 2025
+// Last updated, April 2025
 
 extern crate rayon;
 extern crate clap;
@@ -14,16 +14,17 @@ use clap::{Command, Arg};
 
 fn main() {
     let args = Command::new("test_cpu_parallel - A basic CPU workload generator written in Rust")
-        .version("1.2.0")
+        .version("1.3.0")
         .author("Luca.Canali@cern.ch")
         .about(r#"
-Use test_cpu_parallel to generate CPU-intensive or memory-intensive load on a system by running single-threaded, or with multiple threads in parallel.
-The tool runs a workload loop concurrently on the system with configurable parallelism.
-The output includes measurements of the workload execution time as a function of load, to terminal or to a CSV file.
+Use test_cpu_parallel to generate CPU-intensive load on a system
+The tool runs multi-threaded loops with configurable parallelism
+Two workload types are implemented: CPU-intensive (default) and memory-intensive
+The output reports measurements of the workload execution time as a function of load
 Project homepage: https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust
 
 Example:
-./test_CPU_parallel --num_workers 2 --mode cpu
+./test_CPU_parallel --num_workers 2
         "#)
         .arg(
             Arg::new("full")
@@ -66,6 +67,12 @@ Example:
                 .long("worker_inner_loop_size")
                 .default_value("1000"),
         )
+        .arg(
+            Arg::new("memory_size")
+                .help("Size of the buffer used by the 'memory' mode in MiB, rounded to next power of 2 if needed.")
+                .long("memory_size")
+                .default_value("1024"),
+        )
         .get_matches();
 
     let num_workers = args
@@ -83,23 +90,29 @@ Example:
         .unwrap()
         .parse::<usize>()
         .unwrap();
+    let memory_size = args
+        .get_one::<String>("memory_size")
+        .unwrap()
+        .parse::<usize>()
+        .unwrap();
     let output_file = args
         .get_one::<String>("output_file")
         .unwrap_or(&"".to_string())
         .to_string();
     let mode = args.get_one::<String>("mode").unwrap();
 
-    println!("test_cpu_parallel - A basic CPU workload generator written in Rust");
-    println!("Use for testing and comparing CPU or memory performance [-h, --help] for help\n");
+    println!("test_cpu_parallel - A basic CPU-intensive workload generator written in Rust");
+    println!("Use for testing and comparing CPU performance across systems [-h, --help] for help\n");
 
     println!(
-        "Starting a test with num_workers = {}, num_job_execution_loops = {}, worker_inner_loop_size = {}, mode = {}, full = {}, output_file = {:?}",
+        "Starting a test with num_workers = {}, num_job_execution_loops = {}, worker_inner_loop_size = {}, mode = {}, \
+         full = {}, output_file = {:?}",
         num_workers,
         num_job_execution_loops,
         worker_inner_loop_size,
         mode,
         args.get_flag("full"),
-        output_file
+        output_file,
     );
 
     let test = TestCPUParallel::new(
@@ -107,6 +120,7 @@ Example:
         num_job_execution_loops,
         worker_inner_loop_size,
         output_file,
+        memory_size,
     );
 
     // Set a handler for Ctrl+C
@@ -126,9 +140,8 @@ Example:
         }
     } else {
         match test.test_one_load(None, mode) {
-            Ok((median, mean, stdev)) => {
+            Ok(_) => {
                 println!("Single test completed successfully.");
-                println!("Median: {:.2}s, Mean: {:.2}s, StdDev: {:.2}s", median, mean, stdev);
             }
             Err(e) => {
                 eprintln!("Error during single test: {}", e);
