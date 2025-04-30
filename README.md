@@ -1,4 +1,4 @@
-# Miscellaneous Projects, Tools and Scripts
+# Miscellaneous Projects, Tools, and Scripts
 [![DOI](https://zenodo.org/badge/41567115.svg)](https://doi.org/10.5281/zenodo.15313041)  
 Contact: Luca.Canali@cern.ch
 
