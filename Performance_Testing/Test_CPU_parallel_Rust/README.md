@@ -1,14 +1,16 @@
-# **Load Testing CPUs - Rust Version**
+# 🔥 CPU & Memory Load Testing with Rust – `test_cpu_parallel`
+[![crate](https://img.shields.io/crates/v/test_cpu_parallel.svg)](https://crates.io/crates/test_cpu_parallel)
 
-Welcome to the project home for `test_cpu_parallel`, a fast, self‑contained CPU / memory load generator written in Rust.
 
-**Goal**   Generate reproducible, highly‑parallel workloads so you can **measure raw CPU throughput**, study **scalability**, and compare **hardware & virtualization layers** with minimal friction.
+Welcome to `test_cpu_parallel`, a fast, self-contained load generator for benchmarking CPU and memory performance. 
+Written in Rust, this tool is ideal for exploring system scalability, evaluating raw CPU throughput, and comparing
+hardware or virtualization environments with minimal overhead.
 
-**Contact**: [Luca.Canali@cern.ch](mailto:Luca.Canali@cern.ch)  
-**Initial release**: April 2023  
-**Latest version**: 1.3.0 (April 2025)
+- **Author / Maintainer**: [Luca Canali](mailto:Luca.Canali@cern.ch)
+- **Initial Release**: April 2023
+- **Latest Version**: 1.3.1 (April 2025)
 
-## ✨ Features
+## 🚀 Key Features
 
 |                           | CPU Mode | Memory Mode |
 |---------------------------|:--------:|:-----------:|
@@ -20,46 +22,34 @@ Welcome to the project home for `test_cpu_parallel`, a fast, self‑contained CP
 
 ---
 
-## 📦 Installation
+## 📦 Installation Options
 
-| Method | Command                                                                                                                                         |
-|--------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Binary (Linux)** | `wget -O test_cpu_parallel https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel && chmod +x test_cpu_parallel` |
-| **Docker** | `docker run --rm lucacanali/test_cpu_parallel -w 2`                                                                                             |
-
-> *Windows*: grab [`test_cpu_parallel.exe`](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel.exe) or use WSL + cargo.
+| Method                  | Command                                                                                                                     |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| **Linux Binary**        | `curl -O https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel && chmod +x test_cpu_parallel` |
+| **Windows Binary**      | `curl -O https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel.exe`                         |
+| **Cargo / crates.io**   | `cargo install test_cpu_parallel`                                                                                           |
+| **Docker**              | `docker run --rm lucacanali/test_cpu_parallel -w 2`                                                                         |
 
 ---
 
 ## ⚡ Quick start
 
 ```bash
-# run a quick 4‑thread CPU burn
-$ test_cpu_parallel -w 4
+# Burn CPU with 4 threads
+./test_cpu_parallel -w 4
 
-# explore scalability 1 → 16 threads, save results
-$ test_cpu_parallel --num_workers 16 --full -o results.csv
+# Run a full scalability test from 1 to 16 threads
+./test_cpu_parallel --num_workers 16 --full -o results.csv
 
-# hammer the memory subsystem with 8 workers
-$ test_cpu_parallel -w 8 --mode memory
+# Stress test memory using 8 threads
+./test_cpu_parallel -w 8 --mode memory
 ```
 ---
  
 ## 🔧 Command‑line reference
 
 ```text
-./test_cpu_parallel --help
-
-Use test_cpu_parallel to generate CPU-intensive load on a system
-The tool runs multi-threaded loops with configurable parallelism
-Two workload types are implemented: CPU-intensive (default) and memory-intensive
-The output reports measurements of the workload execution time as a function of load
-Project homepage: https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust
-
-Example:
-./test_CPU_parallel --num_workers 2
-
-
 Usage: test_cpu_parallel [OPTIONS]
 
 Options:
@@ -84,36 +74,31 @@ Options:
 ```
 
 ---
-## Goals and Key Features
-`test_cpu_parallel` is a low-complexity CPU workload generator designed to:
-- **Generate CPU-intensive workloads** for quick and effective testing.
-- **Measure multithreaded CPU performance** efficiently.
-- **Support configurable parallelism**:
-    - Customize the number of concurrent threads and the size of inner loop iterations.
-- **Provide detailed performance metrics**:
-    - Outputs results to the console or saves them to a CSV file.
-    - Metrics are intended for scalability analysis and performance evaluation.
-- **Deploy easily across platforms**:
-    - Compatible with many Linux distributions and versions.
-    - Deployable using Docker or Kubernetes environments.
-    - Usable on Windows (natively or via WSL).
-- **Note**: This is **not a full benchmarking tool**.  
-  It is designed as a quick-load generator to evaluate CPU performance and multithreaded scalability, not to replace structured benchmarking solutions.
+## 🎯 Use Cases
+- Compare CPU speed across systems and configurations 
+  - new system vs. old CPUs, VM/container vs bare-metal performance, etc
+  - compare performance over time
+- Measure if the available CPU cores correspond to the expected performance
+  - e.g. 2 physical cores should provide 2x speedup, 4 cores should provide 4x speedup
+- Benchmark raw multithreaded CPU performance
+  - Profile speedup curves and find CPU load saturation points
+- Test memory throughput under parallel pressure
 
-## Contents
+---
+## 📁 Project Structure
 - [**Container**](Container): Instructions and a container image for running `test_cpu_parallel` using Docker and Kubernetes.
 - [**Code_test_CPU_Rust**](Code_test_CPU_Rust): Source code for the Rust program.
 - [**Data**](Data): Example datasets collected using the tool.
 - [**Notebooks**](Notebooks): Jupyter notebooks used to analyze the collected data.
  
-## Get started with test_CPU_parallel on Linux
+## 🐧 Running on Linux
 There are multiple and alternative ways to deploy the tool, suitable for different use cases:
   - **Run from a container image** using Docker or podman, see [Container](Container) for details
     ```
     # Run with Docker or Podman:
     docker run lucacanali/test_cpu_parallel /opt/test_cpu_parallel -w 2 
     ```
-  - **Run the binary executable directly**
+  - **Run the binary executable**
     Download the [binary executable for Linux from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel) and run it as in:
     ```
     wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
@@ -122,12 +107,13 @@ There are multiple and alternative ways to deploy the tool, suitable for differe
 
     # Note, you can check the integrity of the download with the sha256sum command
     sha256sum test_cpu_parallel
-    # Expected output for version 1.3.0:
-    94f904160b0d03dbbd3d6a56892271fc6c82ad09c1ab416fae69a94451a62f2e
+    # Expected output for version 1.3.1:
+    1e44586021199edc58d9d3ea3c026eb1eef84253f5ec391fa6c6f8fc2e28e9ce
     ```
+  
   - **Compile from source** code and run the binary
     - see details in the [Code_test_CPU_Rust](Code_test_CPU_Rust) folder
-
+  
   - **Run on a Kubernetes cluster** 
     - see also [Container](Container) for details
       ```
@@ -142,35 +128,35 @@ There are multiple and alternative ways to deploy the tool, suitable for differe
       cd Container
       kubectl apply -f test_cpu_parallel.yaml
       ```
-  - Binary versions of the tool for Linux:
-    - [test_cpu_parallel v. 1.3.0, Cargo 1.86.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.0)
+  - Available binaries for Linux:
+    - [test_cpu_parallel v. 1.3.1, Cargo 1.86.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.1)
     - [test_cpu_parallel v. 1.2.0, Cargo 1.84.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.2.0)
     - [test_cpu_parallel v. 1.1.0, Cargo 1.77.1](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.1.0)
     - [test_cpu_parallel v. 1.0.1, Cargo 1.68.21](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.0)
 
-## Windows users
- - Compile and run on Windows using the Rust toolchain.
- - Run using the Windows Subsystem for Linux (WSL)
- - Download the Windows [binary executable from this link](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel.exe):
- - Run the tool from the command line as in:
+## 🪟 Running on Windows
+You can run test_cpu_parallel on Windows via:
+- Rust toolchain (native build)
+- Windows Subsystem for Linux (WSL)
+- Or precompiled binary:
    ```
-   curl - O https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel.exe
+   curl -O https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel.exe
    test_cpu_parallel.exe -w 2
    ```
- - Validate the download with:
+ - Optional: validate hash
    ```
    certutil -hashfile test_cpu_parallel.exe SHA256
 
-   The expected output for version 1.3.0:
-   503b2e381fa5925c7b02c55d2057875ff9d73e4dc58c666ae3e580175e12d25b
+   Expected SHA256 (v1.3.1):
+   289110cf8c1964ae503cb085c322f32dc2c390bd3cecc493b7729732e34a5e4e
    ```
-- Binary versions of the tool for Windows:
-   - [test_cpu_parallel.exe v. 1.3.0, Cargo 1.86.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.0.exe)
+- Available binaries for Windows:
+   - [test_cpu_parallel.exe v. 1.3.1, Cargo 1.86.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.1.exe)
    - [test_cpu_parallel.exe v. 1.2.0, Cargo 1.84.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.2.0.exe)
 
 ---
 
-## 📈 Analysing the output
+## 📊 Output & Analysis
 
 The `--full` sweep writes a tidy CSV.  
 For example this run on a server with 32 cores:
@@ -197,10 +183,11 @@ Threads    Thread-Median Thread-Mean  Thread-Std   Batch-Median Batch-Mean   Bat
 When using the tool in full mode, the output is a CSV file with the measured job execution time as a function of the number of parallel workers.  
   - This allows for the analysis of the scalability of the system under test. For example, you can plot the speedup or efficiency of the system as a function of the number of workers.
   - See the [Notebooks](Notebooks) folder for examples of Jupyter notebooks used to analyze the collected data.  
-  - See the blog entry [CPU Load Testing Exercises: Tools and Analysis for Oracle Database Servers](https://db-blog.web.cern.ch/node/189) for more details
-    and examples of the analyses and plots that can be produced with the collected data. 
+  - Related blog: [CPU Load Testing Exercises: Tools and Analysis for Oracle Database Servers](https://db-blog.web.cern.ch/node/189) 
+    - for more details and examples of the analyses and plots that can be produced with the collected data. 
 
 ## Notes
+- This is not a full benchmarking suite, it is designed for quick load generation and multithreaded performance evaluation.
 - The tool will produce as output the measurement of the job execution time as a function of the number of parallel workers.
 - When run in full mode, the program will run a range of tests and output a cvs file with the measured values.
 - The folder Data contains examples of measurements collected with the tool and the Jupyter notebooks used to analyze the data.

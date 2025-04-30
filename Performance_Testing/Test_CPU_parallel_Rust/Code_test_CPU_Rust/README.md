@@ -1,57 +1,100 @@
-## CPU load testing kit in Rust
-`test_cpu_parallel` is basic CPU workload generator written in Rust.
-It runs a CPU-burning loop using multithreading, with configurable parallelism degree.
+# test_cpu_parallel – CPU & Memory Load Generator in Rust
 
-More Detailed instructions available at [Project homepage:](../README.md)
+[![crate](https://img.shields.io/crates/v/test_cpu_parallel.svg)](https://crates.io/crates/test_cpu_parallel)
+[![docs.rs](https://docs.rs/test_cpu_parallel/badge.svg)](https://docs.rs/test_cpu_parallel)
 
----- 
-Compile the tool using Rust with: `cargo build`
-  - Using `cargo build --release` is not recommended for this tool, 
-    as the optimizations play against the simple "CPU burning loop" implemented in the tool
-  - The Cargo version used for compiling has an impact on the output, notably the performance of the tool.
-    - Version 1.3.0, compiled with Cargo version 1.86.0
+`test_cpu_parallel` is a **small, zero‑dependency load‑testing kit**.  It can:
 
-Note: To compile a Rust project, you need to have the Rust programming language and its associated 
-  tools installed on your system. If you haven't installed Rust yet, you can do so by following
-  the instructions at https://www.rust-lang.org/tools/install
+* load cores to verify scaling or system/container limits
+* sweep 1 → *N* threads and export a tidy CSV for speed‑up plots
+* hammer the memory hierarchy with random‑access touches beyond the LLC
+* run **stand‑alone** from the CLI *or* be **embedded** in your own Rust code
 
-Examples:
+A two‑minute build, no external data files, works on Linux, macOS and Windows.
+
+Link to the [Project page](https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust)
+
+---
+## 📦 Installation
+
+| what you want                | command |
+|------------------------------|---------|
+| **CLI binary** (optimised)   | `cargo install test_cpu_parallel` |
+| **Library** in an app / lib  | `cargo add test_cpu_parallel` |
+| **Dev build from source**    | `git clone … && cargo build` |
+
+> **Note** For benchmark *accuracy* the CLI defaults to an **un‑optimised** `opt‑level = 0` build.  If you install with `cargo install` a `--release` build is produced; results will differ slightly.  Re‑compile locally with `cargo build` to reproduce blog numbers.
+
+---
+## ⚡ CLI quick‑start
+
+```bash
+# Burn four threads for a few seconds
+$ test_cpu_parallel -w 4
+
+# Sweep 1 → 16 threads, write CSV
+$ test_cpu_parallel --num_workers 16 --full -o results.csv
+
+# Stress memory with 8 workers and a 512 MiB buffer
+$ test_cpu_parallel -w 8 --mode memory --memory_size 512
 ```
-# Run data collection with parallelism 2
-./test_cpu_parallel -w 2 
 
-# Get the  help message
-./test_cpu_parallel --help
+Run `test_cpu_parallel --help` for the complete flag list (excerpt below).
 
-Use test_cpu_parallel to generate CPU-intensive load on a system
-The tool runs multi-threaded loops with configurable parallelism
-Two workload types are implemented: CPU-intensive (default) and memory-intensive
-The output reports measurements of the workload execution time as a function of load
-Project homepage: https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust
-
-Example:
-./test_CPU_parallel --num_workers 2
-
-
+```text
 Usage: test_cpu_parallel [OPTIONS]
-
-Options:
-  -f, --full
-          Full mode will test all the values of num_workers from 1 to the value set with --num_workers, use this to collect speedup test measurements and create plots, default = False
-  -w, --num_workers <num_workers>
-          Number of parallel threads running concurrently [default: 2]
-  -o, --output_file <output_file>
-          Optional output file, applies only to the full mode [default: ]
-  -m, --mode <mode>
-          Specifies the workload mode: 'cpu' for CPU-intensive or 'memory' for memory-intensive [default: cpu] [possible values: cpu, memory]
-      --num_job_execution_loops <num_job_execution_loops>
-          Number of times the execution loop is run on each worker [default: 3]
-      --worker_inner_loop_size <worker_inner_loop_size>
-          Number of iterations in the inner loop of the worker thread [default: 1000]
-      --memory_size <memory_size>
-          Size of the buffer used by the 'memory' mode in MB, rounded to next power of 2 if needed. [default: 1024]
-  -h, --help
-          Print help
-  -V, --version
-          Print version
+  -w, --num_workers <N>        parallel threads      (default 2)
+  -m, --mode <cpu|memory>      workload type         (default cpu)
+  -f, --full                   sweep 1‥=N threads
+  -o, --output_file <PATH>     write CSV (full mode)
+      --memory_size <MiB>      buffer for memory test (default 1024)
 ```
+
+---
+## 📚 Library usage
+
+Embed the engine in unit tests, benchmarks or monitoring agents:
+
+```rust
+use test_cpu_parallel::TestCPUParallel;
+
+fn main() -> anyhow::Result<()> {
+    // 4 workers, one batch, memory workload, 64 MiB buffer
+    let bench = TestCPUParallel::new(4, 1, 1_000, "", 64);
+    let (thread_stats, batch_stats) = bench.test_one_load(None, "memory")?;
+    println!("Per‑thread  stats: {thread_stats:?}");
+    println!("Per‑batch   stats: {batch_stats:?}");
+    Ok(())
+}
+```
+
+API docs are hosted on **[docs.rs/test_cpu_parallel](https://docs.rs/test_cpu_parallel)**.
+
+---
+## 🔧 Building from source
+
+```bash
+# Clone and build a debug binary (recommended for comparable timings)
+$ git clone https://github.com/LucaCanali/Miscellaneous.git
+$ cd Miscellaneous/Performance_Testing/Test_CPU_parallel_Rust
+$ cargo build            # ≈ 35 s on a modern laptop
+```
+
+* Tested on Rust **1.74+** – that is the MSRV.
+* Setting `cargo build --release` enables heavy optimisations and changes loop timing; avoid if you care about exact comparability.
+
+---
+## 📊 Analysing the CSV
+
+Full‑mode output is a single CSV line per thread count, ready to feed into
+Python/pandas, gnuplot or Excel.  See the `Notebooks/` directory in the repo for ready‑made Jupyter notebooks that plot speed‑up and efficiency curves.
+
+---
+## More
+
+* Project page & extended docs – <https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust>
+* Blog article that motivated the tool – <https://db-blog.web.cern.ch/node/189>
+* Licence – **Apache‑2.0**
+
+Enjoy hacking your CPUs 🔥
+

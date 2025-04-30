@@ -1,6 +1,6 @@
 [package]
 name         = "test_cpu_parallel"
-version      = "1.3.0"          # bump every time you publish
+version      = "1.3.1"          # bump every time you publish
 edition      = "2021"
 rust-version = "1.74"           # MSRV; pick the oldest version you test on
 description  = "Generate CPU- or memory-intensive workloads for benchmarking."
@@ -19,6 +19,9 @@ include = [
     "README.md",
     "LICENSE"
 ]
+
+[lib]
+path = "src/lib.rs"
 
 [dependencies]
 # Libraries used in this project

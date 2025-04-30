@@ -14,7 +14,7 @@ use clap::{Command, Arg};
 
 fn main() {
     let args = Command::new("test_cpu_parallel - A basic CPU workload generator written in Rust")
-        .version("1.3.0")
+        .version("1.3.1")
         .author("Luca.Canali@cern.ch")
         .about(r#"
 Use test_cpu_parallel to generate CPU-intensive load on a system
