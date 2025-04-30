@@ -1,5 +1,6 @@
 # Miscellaneous projects and scripts.
-Author and contact: Luca.Canali@cern.ch
+[![DOI](https://zenodo.org/badge/41567115.svg)](https://doi.org/10.5281/zenodo.15313041)  
+Contact: Luca.Canali@cern.ch
 
 ## Performance Engineering and Apache Spark
 
@@ -8,7 +9,7 @@ Author and contact: Luca.Canali@cern.ch
 | [**Spark Dashboard**](Spark_Dashboard)                           | A tool for Apache monitoring, use to build a performance dashboard and troubleshoot Spark jobs.
 | [**Spark Notes**](Spark_Notes)                                   | Miscellaneous tips and code snippets about Apache Spark.
 | [**Spark for Physics**](Spark_Physics)                           | Examples, with code and data of using Apache Spark for High Energy Physics data analysis.
-| [**Performance Testing**](Performance_Testing)                   | Code and examples, includes: <br>- A tool to run TPCDS at scale with PySpark and collect execution metrics<br>- Tools for load-testing CPUs in Python and Rust<br>- Notes on how to use various tools for performance investigations 
+| [**Performance Testing**](Performance_Testing)                   | Includes: <br>- TPCDS-PySpark, run TPCDS bemchmark at scale with PySpark and collect execution metrics<br>- Load testing tools for CPU benchmarking, in Python and Rust<br>- Notes on how to use various tools for performance investigations 
 
 
 ## Data Engineering and Data Science
