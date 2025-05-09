@@ -4,9 +4,9 @@ This note outlines the main steps for building a performance dashboard for Apach
 
 ### Key Features
 - You can find here all the components to deploy a monitoring application for Apache Spark
-- Spark-dashboard collects metrics from Spark and visualizes them in a Grafana   
+- Spark-dashboard collects metrics from Spark and visualizes them in a Grafana Dashboard  
 - This tool is intended for performance troubleshooting and DevOps monitoring of Spark workloads.
-- Use it with Spark 2.4 and higher (3.x)
+- Compatibility: deploy with Spark 4.x, 3.x and 2.4
 
 ### Deploy using container technology
 - [Spark Dashboard](https://github.com/cerndb/spark-dashboard) is a repository that contains code and instructions to streamline the deployment of the Spark dashboard using InfluxDB and Grafana using container technology.
@@ -143,7 +143,7 @@ package to generate a TPC-DS workload and test the dashboard.
 TPCDS_PYSPARK=`which tpcds_pyspark_run.py`
 
 spark-submit --master yarn --conf spark.log.level=error --conf spark.executor.cores=8 --conf spark.executor.memory=64g \
---conf spark.driver.memory=16g --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.24.jar \
+--conf spark.driver.memory=16g --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.25.jar \
 --conf spark.dynamicAllocation.enabled=false --conf spark.executor.instances=32 --conf spark.sql.shuffle.partitions=512 \
 $TPCDS_PYSPARK -d hdfs://<PATH>/tpcds_10000_parquet_1.13.1
 ```
@@ -154,7 +154,7 @@ TPCDS_PYSPARK=`which tpcds_pyspark_run.py`
 
 spark-submit --master k8s://https://xxx.xxx.xxx.xxx:6443 --conf spark.kubernetes.container.image=<URL>/spark:v3.5.1 --conf spark.kubernetes.namespace=xxx \
 --conf spark.eventLog.enabled=false --conf spark.task.maxDirectResultSize=2000000000 --conf spark.shuffle.service.enabled=false --conf spark.executor.cores=8 --conf spark.executor.memory=32g --conf spark.driver.memory=4g \
---packages org.apache.hadoop:hadoop-aws:3.3.4,ch.cern.sparkmeasure:spark-measure_2.12:0.24,ch.cern.sparkmeasure:spark-plugins_2.12:0.3 --conf spark.plugins=ch.cern.HDFSMetrics,ch.cern.CgroupMetrics,ch.cern.CloudFSMetrics \
+--packages org.apache.hadoop:hadoop-aws:3.3.4,ch.cern.sparkmeasure:spark-measure_2.12:0.25,ch.cern.sparkmeasure:spark-plugins_2.12:0.4 --conf spark.plugins=ch.cern.HDFSMetrics,ch.cern.CgroupMetrics,ch.cern.CloudFSMetrics \
 --conf spark.cernSparkPlugin.cloudFsName=s3a \
 --conf spark.dynamicAllocation.enabled=false --conf spark.executor.instances=4 \
 --conf spark.hadoop.fs.s3a.secret.key=$SECRET_KEY \
@@ -215,7 +215,7 @@ For this use [sparkMeasure](https://github.com/LucaCanali/sparkMeasure) in Fligh
 with [InfluxDB Sink](https://github.com/LucaCanali/sparkMeasure/blob/master/docs/Flight_recorder_DBwrite.md)
 as in this example:
 ```
-bin/spark-shell --master local[*] --packages ch.cern.sparkmeasure:spark-measure_2.12:0.24 \
+bin/spark-shell --master local[*] --packages ch.cern.sparkmeasure:spark-measure_2.12:0.25 \
 --conf spark.sparkmeasure.influxdbURL="http://myInfluxDB:8086" 
 --conf spark.extraListeners=ch.cern.sparkmeasure.InfluxDBSink
 ```

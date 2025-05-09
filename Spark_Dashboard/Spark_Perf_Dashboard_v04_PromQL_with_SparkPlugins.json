@@ -27,9 +27,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": true,
@@ -43,7 +42,7 @@
       "panels": [
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Total executor CPU utilization computed from executors'  container cgroup instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
@@ -90,8 +89,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -119,6 +117,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -131,7 +130,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CgroupMetrics_CPUTimeNanosec_value) / 1000000000",
+              "expr": "rate(ch_cern_CgroupMetrics_CPUTimeNanosec_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000000000",
               "groupBy": [
                 {
                   "params": [
@@ -186,7 +185,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Network bytes incoming, throughput from ch.cern.CgroupMetrics.NetworkBytesIn",
@@ -233,8 +232,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -262,6 +260,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -274,7 +273,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CgroupMetrics_NetworkBytesIn_value)",
+              "expr": "rate(ch_cern_CgroupMetrics_NetworkBytesIn_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -332,7 +331,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Network bytes outgoing, throughput metric from ch.cern.CgroupMetrics.NetworkBytesOut",
@@ -379,8 +378,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -408,6 +406,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -420,7 +419,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CgroupMetrics_NetworkBytesOut_value)",
+              "expr": "rate(ch_cern_CgroupMetrics_NetworkBytesOut_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -478,7 +477,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Memory RSS from ch.cern.CgroupMetrics.MemoryRss.\nBytes of anonymous and swap cache memory.",
@@ -525,8 +524,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -554,6 +552,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -566,7 +565,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CgroupMetrics_MemoryRss_value)",
+              "expr": "rate(ch_cern_CgroupMetrics_MemoryRss_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -624,7 +623,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Memory number of bytes of swap usage from ch.cern.CgroupMetrics.MemorySwap",
@@ -671,8 +670,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -700,6 +698,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -712,7 +711,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CgroupMetrics_MemorySwap_value) ",
+              "expr": "rate(ch_cern_CgroupMetrics_MemorySwap_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) ",
               "groupBy": [
                 {
                   "params": [
@@ -770,7 +769,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Number of bytes of page cache memory from ch.cern.CgroupMetrics.MemoryCache",
@@ -817,8 +816,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -846,6 +844,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -858,7 +857,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CgroupMetrics_MemoryCache_value) ",
+              "expr": "rate(ch_cern_CgroupMetrics_MemoryCache_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) ",
               "groupBy": [
                 {
                   "params": [
@@ -930,7 +929,7 @@
       "panels": [
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Cloud storage read throughput from ch.cern.CloudFSMetrics",
@@ -977,8 +976,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -994,7 +992,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 1
+            "y": 2
           },
           "id": 110,
           "interval": "5s",
@@ -1006,6 +1004,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1018,7 +1017,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CloudFSMetrics_bytesRead_value)",
+              "expr": "rate(ch_cern_CloudFSMetrics_bytesRead_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -1076,7 +1075,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Cloud storage write throughput from ch.cern.CloudFSMetrics",
@@ -1123,8 +1122,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1140,7 +1138,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 1
+            "y": 2
           },
           "id": 111,
           "interval": "5s",
@@ -1152,6 +1150,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1164,7 +1163,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CloudFSMetrics_bytesWritten_value)",
+              "expr": "rate(ch_cern_CloudFSMetrics_bytesWritten_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -1222,7 +1221,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Cloud storage read operations from ch.cern.CloudFSMetrics",
@@ -1269,8 +1268,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1286,7 +1284,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 11
+            "y": 12
           },
           "id": 112,
           "interval": "5s",
@@ -1298,6 +1296,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1310,7 +1309,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CloudFSMetrics_readOps_value)",
+              "expr": "rate(ch_cern_CloudFSMetrics_readOps_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -1368,7 +1367,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "Cloud storage read operations from ch.cern.CloudFSMetrics",
@@ -1415,8 +1414,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1432,7 +1430,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 11
+            "y": 12
           },
           "id": 113,
           "interval": "5s",
@@ -1444,6 +1442,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1456,7 +1455,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_CloudFSMetrics_writeOps_value)",
+              "expr": "rate(ch_cern_CloudFSMetrics_writeOps_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -1528,7 +1527,7 @@
       "panels": [
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS read throughput from ch.cern.HDFSMetrics",
@@ -1575,8 +1574,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1592,7 +1590,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 33
+            "y": 3
           },
           "id": 101,
           "interval": "5s",
@@ -1604,6 +1602,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1616,7 +1615,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_bytesRead_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesRead_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -1674,7 +1673,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS write throughput from ch.cern.HDFSMetrics.bytesWritten",
@@ -1721,8 +1720,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1738,7 +1736,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 33
+            "y": 3
           },
           "id": 102,
           "interval": "5s",
@@ -1750,6 +1748,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1762,7 +1761,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_bytesWritten_value) ",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesWritten_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) ",
               "groupBy": [
                 {
                   "params": [
@@ -1820,7 +1819,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS read ops from ch.cern.HDFSMetrics.readOps",
@@ -1867,8 +1866,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1884,7 +1882,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 43
+            "y": 13
           },
           "id": 103,
           "interval": "5s",
@@ -1896,6 +1894,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -1908,7 +1907,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_readOps_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_readOps_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -1966,7 +1965,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS large read ops from ch.cern.HDFSMetrics.largeReadOps",
@@ -2013,8 +2012,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2030,7 +2028,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 43
+            "y": 13
           },
           "id": 104,
           "interval": "5s",
@@ -2042,6 +2040,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -2054,7 +2053,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_largeReadOps_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_largeReadOps_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -2112,7 +2111,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesLocalHost",
@@ -2159,8 +2158,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2176,7 +2174,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 53
+            "y": 23
           },
           "id": 105,
           "interval": "5s",
@@ -2188,6 +2186,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -2200,7 +2199,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_bytesReadLocalHost_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadLocalHost_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -2258,7 +2257,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfOneOrTwo",
@@ -2305,8 +2304,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2322,7 +2320,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 53
+            "y": 23
           },
           "id": 107,
           "interval": "5s",
@@ -2334,6 +2332,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -2346,7 +2345,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfOneOrTwo_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfOneOrTwo_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -2404,7 +2403,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfThreeOrFour",
@@ -2467,7 +2466,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 63
+            "y": 33
           },
           "id": 108,
           "interval": "5s",
@@ -2479,6 +2478,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -2491,7 +2491,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfThreeOrFour_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfThreeOrFour_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -2549,7 +2549,7 @@
         },
         {
           "datasource": {
-            "type": "victoriametrics-datasource",
+            "type": "victoriametrics-metrics-datasource",
             "uid": "P4169E866C3094E38"
           },
           "description": "HDFS read throughput from ch.cern.HDFSMetrics.bytesReadDistanceOfFiveOrLarger",
@@ -2612,7 +2612,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 63
+            "y": 33
           },
           "id": 106,
           "interval": "5s",
@@ -2624,6 +2624,7 @@
               "showLegend": true
             },
             "tooltip": {
+              "maxHeight": 600,
               "mode": "multi",
               "sort": "none"
             }
@@ -2636,7 +2637,7 @@
                 "uid": "influx-graphite"
               },
               "editorMode": "code",
-              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfFiveOrLarger_value)",
+              "expr": "rate(ch_cern_HDFSMetrics_bytesReadDistanceOfFiveOrLarger_value{applicationid=\"$ApplicationId\"}[$AggrInterval])",
               "groupBy": [
                 {
                   "params": [
@@ -2698,10 +2699,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2710,21 +2707,12 @@
       },
       "id": 56,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Summary metrics",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total task Run Time from task metrics in the selected time range. \n",
@@ -2767,6 +2755,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2779,7 +2768,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2839,7 +2828,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Executor CPU time computed from executor metrics for the selected time range. Displays CPU time used by all the executors' JVMs active in the selected time filter interval. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection. Note, values from executors that are no more active in the selected time window are not accounted for.",
@@ -2882,6 +2871,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2894,7 +2884,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2955,10 +2945,10 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
-      "description": "Total task CPU usage from task metrics in the selected time range. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
+      "description": "Driver CPU time computed from executor metrics for the selected time range. ",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2991,13 +2981,14 @@
         "x": 8,
         "y": 4
       },
-      "id": 9,
+      "id": 114,
       "interval": "5s",
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3010,7 +3001,124 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PAB4C6DB7858A5C06"
+          },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\", executorid=\"driver\"}[$__range]) \r\n  - \r\n  min_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\", executorid=\"driver\"}[$__range])\r\n)",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "legendFormat": "__auto",
+          "measurement": "jvmCpuTime",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select sum(lastvalperprocess) - sum(firstvalperprocess) from \n( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process),\n( SELECT process, first(value) as firstvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' and $timeFilter GROUP BY process) ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "title": "Driver CPU time",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "P4169E866C3094E38"
+      },
+      "description": "Total task CPU usage from task metrics in the selected time range. Displays CPU time used for all the completed tasks, from the task metrics data source. Note, values from executors that are no more active in the selected time window are not counted.\n",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ns"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 4
+      },
+      "id": 9,
+      "interval": "5s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3100,7 +3208,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 12,
+        "x": 16,
         "y": 4
       },
       "id": 46,
@@ -3109,6 +3217,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "last"
@@ -3121,7 +3230,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3181,7 +3290,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Number of completed tasks, from JVM threadpool metrics in the selected time range. Note, values from executors that are no more active in the selected time window are not counted.",
@@ -3214,7 +3323,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 16,
+        "x": 20,
         "y": 4
       },
       "id": 34,
@@ -3224,6 +3333,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "last"
@@ -3236,7 +3346,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3290,117 +3400,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
-        "uid": "P4169E866C3094E38"
-      },
-      "description": "Number of running stages from the DAG scheduler.",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 20,
-        "y": 4
-      },
-      "id": 79,
-      "interval": "5s",
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "editorMode": "code",
-          "expr": "stage_runningStages_value{applicationid=\"$ApplicationId\"}",
-          "groupBy": [
-            {
-              "params": [
-                "process"
-              ],
-              "type": "tag"
-            }
-          ],
-          "hide": false,
-          "legendFormat": "__auto",
-          "measurement": "stage.failedStages",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"value\" FROM \"stage.runningStages\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
-          "range": true,
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            }
-          ]
-        }
-      ],
-      "title": "Current N# of Running Stages - latest value",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Latest value of the % of heap memory used, averaging over executors and driver. JVM metric from MemoryMXBean. Conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource",
@@ -3442,7 +3442,6 @@
         "x": 0,
         "y": 9
       },
-      "hideTimeOverride": false,
       "id": 32,
       "interval": "5s",
       "options": {
@@ -3461,7 +3460,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3528,7 +3527,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total number of bytes read from task metrics in the selected time range. \n",
@@ -3571,6 +3570,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3583,7 +3583,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3643,7 +3643,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total number of bytes written from task metrics in the selected time range. \n",
@@ -3686,6 +3686,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3698,7 +3699,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3758,7 +3759,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total number of shuffle bytes written from task metrics in the selected time range. \n",
@@ -3801,6 +3802,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3813,7 +3815,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -3873,7 +3875,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Failed tasks for the appStatus metrics. Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
@@ -3916,6 +3918,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "last"
@@ -3928,7 +3931,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -4022,6 +4025,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -4034,7 +4038,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -4089,7 +4093,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Latest sample of the value of number of active tasks, summed over all executors",
@@ -4132,6 +4136,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -4144,7 +4149,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -4152,7 +4157,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "sum(last_over_time(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"}[$__range]))",
+          "expr": "sum(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"})",
           "groupBy": [
             {
               "params": [
@@ -4195,7 +4200,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Average value of number of active tasks",
@@ -4238,6 +4243,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -4250,7 +4256,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -4258,7 +4264,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "sum(avg_over_time(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"}[$__range]))\r\n",
+          "expr": "sum(avg_over_time(threadpool_activeTasks_value{applicationid=\"$ApplicationId\"}[$__range]))",
           "groupBy": [
             {
               "params": [
@@ -4301,126 +4307,10 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
-      "description": "Total executor CPU time, from executor metrics since the start of the Spark application. Displays CPU time used by all the executors' JVMs for the duration of the application. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection.",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "ns"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 8,
-        "y": 14
-      },
-      "id": 57,
-      "interval": "5s",
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "editorMode": "code",
-          "expr": "sum(max_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}[$__range]))",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "legendFormat": "__auto",
-          "measurement": "jvmCpuTime",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "select sum(lastvalperprocess) as JCMCPU from ( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' GROUP BY process) ",
-          "range": true,
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "applicationid",
-              "operator": "=~",
-              "value": "/^$ApplicationId$/"
-            }
-          ]
-        }
-      ],
-      "title": "Total - CPU Time, Executors",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "victoriametrics-datasource",
-        "uid": "P4169E866C3094E38"
-      },
-      "description": "Number of completed tasks, from JVM threadpool metrics since the start of the Spark application.",
+      "description": "Number of running stages from the DAG scheduler.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -4450,15 +4340,17 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 12,
+        "x": 8,
         "y": 14
       },
-      "id": 84,
+      "id": 79,
+      "interval": "5s",
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "last"
@@ -4471,7 +4363,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -4479,7 +4371,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "sum(max_over_time(threadpool_completeTasks_value{applicationid=\"$ApplicationId\"}))",
+          "expr": "stage_runningStages_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -4488,11 +4380,12 @@
               "type": "tag"
             }
           ],
+          "hide": false,
           "legendFormat": "__auto",
-          "measurement": "threadpool.completeTasks",
+          "measurement": "stage.failedStages",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select sum(lastperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' GROUP BY process)",
+          "query": "SELECT \"value\" FROM \"stage.runningStages\" WHERE (\"applicationid\" =~ /^$ApplicationId$/) AND $timeFilter ",
           "range": true,
           "rawQuery": true,
           "refId": "A",
@@ -4507,7 +4400,7 @@
               },
               {
                 "params": [],
-                "type": "last"
+                "type": "sum"
               }
             ]
           ],
@@ -4520,12 +4413,12 @@
           ]
         }
       ],
-      "title": "Total - N# of Tasks, Completed ",
+      "title": "Current N# of Running Stages - latest value",
       "type": "stat"
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Number of succeeded jobs, from the appStatus metric (introduced in Spark 3.0). Conditional to spark.metrics.appStatusSource.enabled=true (default is false)",
@@ -4558,7 +4451,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 16,
+        "x": 12,
         "y": 14
       },
       "id": 13,
@@ -4567,6 +4460,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -4579,7 +4473,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -4638,11 +4532,233 @@
       "type": "stat"
     },
     {
-      "collapsed": false,
       "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "P4169E866C3094E38"
       },
+      "description": "Number of completed tasks, from JVM threadpool metrics since the start of the Spark application.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 14
+      },
+      "id": 84,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PAB4C6DB7858A5C06"
+          },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(threadpool_completeTasks_value{applicationid=\"$ApplicationId\"}[10d]) \r\n  - \r\n  min_over_time(threadpool_completeTasks_value{applicationid=\"$ApplicationId\"}[10d])\r\n)",
+          "groupBy": [
+            {
+              "params": [
+                "process"
+              ],
+              "type": "tag"
+            }
+          ],
+          "legendFormat": "__auto",
+          "measurement": "threadpool.completeTasks",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select sum(lastperprocessval) from \n(SELECT process, last(\"value\") as lastperprocessval FROM \"threadpool.completeTasks\" WHERE \"applicationid\" = '$ApplicationId' GROUP BY process)",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "title": "Total - N# of Tasks, Completed ",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "P4169E866C3094E38"
+      },
+      "description": "Total executor CPU time, from executor metrics since the start of the Spark application. Displays CPU time used by all the executors' JVMs for the duration of the application. It contains CPU time used for executing tasks and for other activities in the JVM, notably garbage collection.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ns"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 14
+      },
+      "id": 57,
+      "interval": "5s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PAB4C6DB7858A5C06"
+          },
+          "editorMode": "code",
+          "expr": "sum (\r\n  max_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}[10d]) \r\n  - \r\n  min_over_time(jvmCpuTime_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}[10d])\r\n)",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "legendFormat": "__auto",
+          "measurement": "jvmCpuTime",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "select sum(lastvalperprocess) as JCMCPU from ( SELECT process, last(value) as lastvalperprocess FROM jvmCpuTime WHERE \"applicationid\" = '$ApplicationId' GROUP BY process) ",
+          "range": true,
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "applicationid",
+              "operator": "=~",
+              "value": "/^$ApplicationId$/"
+            }
+          ]
+        }
+      ],
+      "title": "Total - CPU Time, Executors",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -4651,21 +4767,12 @@
       },
       "id": 28,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Spark workload metrics",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Number of active tasks per executor.\n",
@@ -4681,6 +4788,7 @@
             "axisLabel": "N# Active Tasks",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -4741,11 +4849,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "N# active tasks - Executor $tag_process",
@@ -4803,7 +4913,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total executor CPU utilization computed from executors' JVM instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
@@ -4819,6 +4929,7 @@
             "axisLabel": "CPU Utilization (N# cores equivalent)",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -4879,11 +4990,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "JVM CPU - Executor $tag_process",
@@ -4893,7 +5006,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(jvmCpuTime_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}[$AggrInterval]) / 1000000000",
+          "expr": "rate(jvmCpuTime_value{applicationid=\"$ApplicationId\"}[$AggrInterval]) / 1000000000",
           "format": "time_series",
           "groupBy": [
             {
@@ -4950,7 +5063,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Executor run time and wait time components compared. The run time spent by Spark executors is aggregated per area of activity. The difference between run time measurements and wait time measurements can be interpreted as due to time not instrumented (e.g. HDFS/filesystem I/O wait time). The values are normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would yield an equivalent value for the given metric.",
@@ -5038,6 +5151,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -5377,7 +5491,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Time the Executor has spent running tasks, including idle time and wait time (for I/O or other event). The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% running tasks that would give an equivalent result.",
@@ -5452,6 +5566,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -5523,7 +5638,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Time the JVM process has spent in garbage collection. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on GC that would give an equivalent result.",
@@ -5598,6 +5713,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -5669,7 +5785,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total task CPU utilization computed from task metrics. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.",
@@ -5744,6 +5860,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -5821,7 +5938,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Time the Executor has spent writing shuffle data. The value is normalized in \"N# of core equivalent\", that is the hypothetical number of cores working at 100% on shuffle writing that would give an equivalent result.",
@@ -5896,6 +6013,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -5967,10 +6085,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -5979,21 +6093,12 @@
       },
       "id": 69,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Spark Executors Memory Metrics (Spark 3.0)",
+      "title": "Spark Memory Metrics",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "JVM Heap Memory",
@@ -6068,6 +6173,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6081,7 +6187,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "JVMHeapMemory_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}",
+          "expr": "JVMHeapMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -6130,7 +6236,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "JVM Off Heap Memory",
@@ -6205,6 +6311,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6267,7 +6374,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "OnHeapUnifiedMemory",
@@ -6342,6 +6449,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6355,7 +6463,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "OnHeapUnifiedMemory_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}",
+          "expr": "OnHeapUnifiedMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -6404,7 +6512,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "OffHeapUnifiedMemory",
@@ -6479,6 +6587,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6492,7 +6601,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "OffHeapUnifiedMemory_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}",
+          "expr": "OffHeapUnifiedMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -6541,7 +6650,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "OnHeapExecutionMemory",
@@ -6616,6 +6725,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6629,7 +6739,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "OnHeapExecutionMemory_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}",
+          "expr": "OnHeapExecutionMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -6678,7 +6788,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "OnHeap Storage Memory",
@@ -6753,6 +6863,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6766,7 +6877,7 @@
             "uid": "PAB4C6DB7858A5C06"
           },
           "editorMode": "code",
-          "expr": "OnHeapStorageMemory_value{applicationid=\"$ApplicationId\", executorid!=\"driver\"}",
+          "expr": "OnHeapStorageMemory_value{applicationid=\"$ApplicationId\"}",
           "groupBy": [
             {
               "params": [
@@ -6815,7 +6926,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "MinorGCTime",
@@ -6890,6 +7001,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -6961,7 +7073,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "MajorGCTime",
@@ -7036,6 +7148,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7107,7 +7220,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "ProcessTreeJVMRSSMemory. Conditional to --conf spark.executor.processTreeMetrics.enabled=true",
@@ -7182,6 +7295,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7244,7 +7358,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "ProcessTreePythonRSSMemory. Conditional to --conf spark.executor.processTreeMetrics.enabled=true",
@@ -7319,6 +7433,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7381,10 +7496,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -7393,21 +7504,12 @@
       },
       "id": 63,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "JVM source  memory metrics (conditional to spark.metrics.conf.*.source.jvm.class=org.apache.spark.metrics.source.JvmSource)",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total memory (heap + non-heap) used per executor.  From MemoryMXBean.",
@@ -7482,6 +7584,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7553,7 +7656,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Heap memory used per executor.  From MemoryMXBean.",
@@ -7628,6 +7731,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7699,7 +7803,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Total memory (heap + non-heap) used by the driver.  From MemoryMXBean.",
@@ -7775,6 +7879,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7846,7 +7951,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Driver CPU utilization computed from the JVM instrumentation. The value is normalized in \"N# of core equivalent\", that is the number of cores running at 100% that would give an equivalent value of CPU utilization.\n",
@@ -7926,6 +8031,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -7994,10 +8100,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PAB4C6DB7858A5C06"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -8006,21 +8108,12 @@
       },
       "id": 60,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PAB4C6DB7858A5C06"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Spark I/O metrics",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "HDFS read throughput.",
@@ -8166,7 +8259,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "HDFS write throughput.",
@@ -8312,7 +8405,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Shuffle read throughput.",
@@ -8458,7 +8551,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Shuffle write throughput.",
@@ -8604,7 +8697,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Details of shuffle I/O operations, local and remote.",
@@ -8797,7 +8890,7 @@
     },
     {
       "datasource": {
-        "type": "victoriametrics-datasource",
+        "type": "victoriametrics-metrics-datasource",
         "uid": "P4169E866C3094E38"
       },
       "description": "Bytes spilled to disk per second",
@@ -8942,26 +9035,24 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "10s",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "luca",
           "value": "luca"
         },
         "datasource": {
-          "type": "victoriametrics-datasource",
+          "type": "victoriametrics-metrics-datasource",
           "uid": "P4169E866C3094E38"
         },
         "definition": "label_values(username)",
-        "hide": 0,
         "includeAll": false,
         "label": "User",
-        "multi": false,
         "name": "UserName",
         "options": [],
         "query": {
@@ -8970,25 +9061,20 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
-          "text": "spark-26669bff862048b180f8aa1d7c4d0ca5",
-          "value": "spark-26669bff862048b180f8aa1d7c4d0ca5"
+          "text": "spark-31dc4d49b2174993a08435fdb8ef8db3",
+          "value": "spark-31dc4d49b2174993a08435fdb8ef8db3"
         },
         "datasource": {
-          "type": "victoriametrics-datasource",
+          "type": "victoriametrics-metrics-datasource",
           "uid": "P4169E866C3094E38"
         },
         "definition": "label_values({username=~\"$UserName\"}, applicationid)",
-        "hide": 0,
         "includeAll": false,
         "label": "Spark Application Id",
-        "multi": false,
         "name": "ApplicationId",
         "options": [],
         "query": {
@@ -8997,21 +9083,17 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 4,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
-          "text": "20s",
-          "value": "20s"
+          "text": "10s",
+          "value": "10s"
         },
         "description": "The aggregation time interval applied when aggregating task metrics. Use 10s (default) when your tasks run <= 10s, use a large value when you have long-running tasks.\n",
-        "hide": 0,
         "includeAll": false,
         "label": "Task metrics time average",
-        "multi": false,
         "name": "AggrInterval",
         "options": [
           {
@@ -9020,12 +9102,12 @@
             "value": "2s"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "10s",
             "value": "10s"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "20s",
             "value": "20s"
           },
@@ -9051,8 +9133,6 @@
           }
         ],
         "query": "2s, 10s, 20s, 30s, 1m, 2m, 5m",
-        "queryValue": "20s",
-        "skipUrlSync": false,
         "type": "custom"
       }
     ]
@@ -9061,31 +9141,7 @@
     "from": "now-5m",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
   "title": "Spark_Perf_Dashboard_v04_PromQL_with_SparkPlugins",
   "uid": "fqfq4554jii9sa",
