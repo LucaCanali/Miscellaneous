@@ -55,13 +55,25 @@
     - cachestat, iosnoop, ..., **https://github.com/brendangregg/perf-tools/tree/master/bin**
     - funccount -d 5 'sys_read'
     - bin/syscount -cp <pid>
+  
   - perf http://www.brendangregg.com/perf.html
+
   - **BPF-based performance tools**
     - bcc-tools: https://github.com/iovisor/bcc and https://github.com/iovisor/bcc/tree/master/tools
     - bpftrace: https://github.com/iovisor/bpftrace
     - see also https://github.com/goldshtn/linux-tracing-workshop
+
   - Ftrace
-  
-- Misc
+
   - https://github.com/LucaCanali/Linux_tracing_scripts
+
+  - pmu_tools by Andy Kleen
+     - download pmu_tools by Andy Kleen from: [pmu-tools](https://github.com/andikleen/pmu-tools)
+     - Toplev is a tool for performance data gathering for Intel CPUs
+       - `pmu-tools/toplev.py -l2 sleep 2`
+       - `pmu-tools/toplev.py -m --global --no-desc -v -- sleep 2`
+
+  - [0x.tools](https://0x.tools/) by [Tanel Poder](https://tanelpoder.com/)
+    - see `xcapture-bpf` and `xtop`
+
 

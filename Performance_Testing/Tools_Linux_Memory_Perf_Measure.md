@@ -650,13 +650,12 @@ Solution Validates: avg error less than 1.000000e-13 on all three arrays
 ```
 
 ---
-## Example [pmu-tools](https://github.com/andikleen/pmu-tools)
+## Example of using pmu_tools
+- download pmu_tools by Andy Kleen from: [pmu-tools](https://github.com/andikleen/pmu-tools)
 
-The "ocperf" wrapper to "perf" that provides a full core performance counter event list for common Intel CPUs.
+- The "ocperf" wrapper to "perf" that provides a full core performance counter event list for common Intel CPUs.
+  - example: `pmu-tools//ocperf.py list`
 
-Example
-
-`./ocperf.py list`
-
-`./toplev.py -l2 sleep 2`
-
+- Toplev is a tool for performance data gathering for Intel CPUs
+  - `pmu-tools//toplev.py -l3 sleep 2`
+  - `pmu-tools/toplev.py -m --global --no-desc -v -- <app with args>`
