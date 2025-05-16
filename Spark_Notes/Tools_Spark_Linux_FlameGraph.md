@@ -3,6 +3,11 @@
 In this note you can find a few links and basic examples relevant to using FlameGraphs for profiling Apache Spark workloads
 running in the JVM on Linux. This covers profiling the JVM and profiling Python (notably for Python UDFs in Spark). 
 
+## Note on Spark 4.x
+Spark 4.0 comes with a new feature for the Web UI that allows you to visualize the Flame Graphs directly in the Spark UI.
+This is a great addition, as it simplifies the process of analyzing performance issues and provides a more integrated experience for users.
+It is managed cia a parameter in the Spark configuration: `spark.ui.threadDump.flamegraphEnabled=true` (by default it is set to true).
+
 ## TL;DR use async-profiler for profiling JVM and py-spy for Python
 
 See also
