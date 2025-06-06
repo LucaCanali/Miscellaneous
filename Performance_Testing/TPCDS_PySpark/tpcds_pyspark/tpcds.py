@@ -56,8 +56,7 @@ class TPCDS:
         tpcds_pyspark_files = files('tpcds_pyspark')
         self.queries_path = tpcds_pyspark_files.joinpath('Queries') # Path to the TPCDS queries on the filesystem
         # Path to sparkMeasure bundled jar
-        # TODO: handle the embedded sparkMeasure jar for scala 2.12 and 2.13 in the same code
-        sparkMeasure_jar = tpcds_pyspark_files.joinpath('spark-measure_2.12-0.24.jar')
+        sparkMeasure_jar = tpcds_pyspark_files.joinpath('spark-measure_2.13-0.25.jar')
 
         print(f"sparkMeasure jar path: {sparkMeasure_jar}")
         print(f"TPCDS queries path: {self.queries_path}")

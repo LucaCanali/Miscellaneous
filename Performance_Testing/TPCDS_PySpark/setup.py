@@ -25,7 +25,7 @@ The tool runs also on notebooks, for example Colab.
 1. **Get started Python script:** [getstarted.py](Labs_and_Notes/getstarted.py)
 2. **Get started Notebooks:**  
 [<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> TPCDS_PySpark get-started on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Performance_Testing/TPCDS_PySpark/Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)  
-[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS_PySpark get-started](Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> TPCDS_PySpark get-started](https://github.com/LucaCanali/Miscellaneous/blob/master/Performance_Testing/TPCDS_PySpark/Labs_and_Notes/TPCDS_PySpark_getstarted.ipynb)
 
 ## Installation and requirements:
 ```
@@ -50,7 +50,7 @@ tpcds_pyspark_run.py -d tpcds_10 -n 1 -r 1 --queries q1,q2
 # 3. A more complex example, run all queries on a YARN cluster and save the metrics to a file
 spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.cores=8 \
              --conf spark.executor.memory=32g --conf spark.driver.memory=4g \
-             --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.23.jar \ 
+             --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.13-0.25.jar \ 
              --conf spark.dynamicAllocation.enabled=false --conf spark.executor.instances=4 \
               tpcds_pyspark_run.py -d HDFS_PATH/tpcds_100 -o ./tpcds_100_out.cvs
 ```
@@ -177,7 +177,7 @@ unzip tpcds_100.zip
 """
 
 setup(name='TPCDS_PySpark',
-    version='1.0.5',
+    version='1.0.6',
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -189,7 +189,7 @@ setup(name='TPCDS_PySpark',
     scripts=['tpcds_pyspark/tpcds_pyspark_run.py'],
     packages=find_packages(),
     package_data={
-        'tpcds_pyspark': ['spark-measure_2.12-0.24.jar', 'Queries/*'],
+        'tpcds_pyspark': ['spark-measure_2.13-0.25.jar', 'Queries/*'],
     },
     zip_safe=False,
     python_requires='>=3.9',

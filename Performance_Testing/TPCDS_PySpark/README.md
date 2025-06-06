@@ -88,7 +88,7 @@ tpcds_pyspark_run.py -d tpcds_10
 TPCDS_PYSPARK=`which tpcds_pyspark_run.py`
 spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.cores=8 \
              --conf spark.executor.memory=32g --conf spark.driver.memory=4g --conf spark.executor.instances=4 \
-             --packages ch.cern.sparkmeasure:spark-measure_2.12:0.25 \              
+             --packages ch.cern.sparkmeasure:spark-measure_2.13:0.25 \              
               $TPCDS_PYSPARK -d <HDFS_PATH>/tpcds_10 -o ./tpcds_10_out.csv
 
 # 4. Use a larger dataset, this downloads TPCDS scale 100 GB **
@@ -230,11 +230,11 @@ options:
 # Path to the tpcds_pyspark_run.py script
 TPCDS_PYSPARK=`which tpcds_pyspark_run.py`
 
-spark-submit --master k8s://https://..... --conf spark.kubernetes.container.image=..../myregistry/spark:v3.5.5 \
+spark-submit --master k8s://https://..... --conf spark.kubernetes.container.image=apache/spark \
 --conf spark.task.maxDirectResultSize=2000000000 --conf spark.shuffle.service.enabled=false --conf spark.executor.cores=8 \
 --conf spark.executor.memory=64g --conf spark.driver.memory=16g \
---conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.25.jar \
---conf spark.executor.instances=4 --packages org.apache.hadoop:hadoop-aws:3.3.4 \
+--conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.13-0.25.jar \
+--conf spark.executor.instances=4 --packages org.apache.hadoop:hadoop-aws:3.3.6 \
 --conf spark.hadoop.fs.s3a.secret.key=$SECRET_KEY \
 --conf spark.hadoop.fs.s3a.access.key=$ACCESS_KEY \
 --conf spark.hadoop.fs.s3a.endpoint="https://s3.cern.ch" \
@@ -253,13 +253,13 @@ TPCDS_PYSPARK=`which tpcds_pyspark_run.py`
 
 # Map tables to the Spark catalog
 spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.cores=8 --conf spark.executor.memory=64g \
---conf spark.driver.memory=16g --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.25.jar \
+--conf spark.driver.memory=16g --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.13-0.25.jar \
 --conf spark.executor.instances=32 --conf spark.sql.shuffle.partitions=512 --conf spark.sql.catalogImplementation=hive \
- $TPCDS_PYSPARK -d /project/spark/TPCDS/tpcds_10000_parquet_1.13.1  --create_metastore_tables_and_compute_statistics
+ $TPCDS_PYSPARK -d /project/spark/TPCDS/tpcds_10000_parquet_1.15.2  --create_metastore_tables_and_compute_statistics
 
 # test with metastore statistics
 spark-submit --master yarn --conf spark.log.level=error  --conf spark.executor.cores=8 --conf spark.executor.memory=64g \
---conf spark.driver.memory=16g --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.12-0.25.jar \
+--conf spark.driver.memory=16g --conf spark.driver.extraClassPath=tpcds_pyspark/spark-measure_2.13-0.25.jar \
 --conf spark.executor.instances=32 --conf spark.sql.shuffle.partitions=512 --conf spark.sql.catalogImplementation=hive \
 --conf spark.sql.cbo.enabled=true \
 $TPCDS_PYSPARK --run_using_metastore -o ./tpcds_pyspark_YARN_CBO_.csv
@@ -339,10 +339,10 @@ You can also use the following code to copy TPCDS data and potentially convert i
 ```
 bin/spark-shell --master yarn --driver-memory 4g --executor-memory 64g --executor-cores 8 --conf spark.sql.shuffle.partitions=400
 
-val inpath="/project/spark/TPCDS/tpcds_10000_parquet_1.13.1/"
+val inpath="/project/spark/TPCDS/tpcds_10000_parquet_1.15.2/"
 val format="orc"
 val compression_type="zstd"
-val outpath="/user/luca/TPCDS/tpcds_10000_orc_1.9.1/"
+val outpath="/user/luca/TPCDS/tpcds_10000_orc_2.1.2/"
 
 val tables_partition=List(("catalog_returns","cr_returned_date_sk"), ("catalog_sales","cs_sold_date_sk"), ("inventory","inv_date_sk"), ("store_returns","sr_returned_date_sk"), ("store_sales","ss_sold_date_sk"), ("web_returns","wr_returned_date_sk"), ("web_sales","ws_sold_date_sk"))
 for (t <- tables_partition) {
