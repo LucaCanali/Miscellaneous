@@ -1,0 +1,68 @@
+#!/usr/bin/env bpftrace
+/*
+ * blockio_rq_issue_pylatencymap.bt
+ * bpftrace port of your SystemTap script: issue -> complete latency histograms.
+ *
+ * Default window INTERVAL=3s; override with:
+ *   sudo bpftrace -DINTERVAL=10 blockio_rq_issue_pylatencymap.bt
+ */
+
+#ifndef INTERVAL
+#define INTERVAL 3
+#endif
+
+BEGIN
+{
+  @interval = INTERVAL;   // scalar map
+  @ticks = 0;             // scalar map
+  printf("I/O latency tracing (issue->complete), interval=%d s\n", (int)@interval);
+}
+
+/* Request issued */
+kprobe:blk_account_io_start
+{
+  @start[args->rq] = nsecs;   // per-request start time (ns)
+}
+
+/* Request completed */
+kprobe:blk_account_io_done
+{
+  s = @start[args->rq];
+  if (s) {
+    dt_us = (nsecs - s) / 1000;   // latency in microseconds
+    @dist = hist(dt_us);          // log2 histogram for current window
+    delete(@start[args->rq]);
+  }
+}
+
+/* Print a frame every @interval seconds */
+profile:s:1
+{
+  @ticks = @ticks + 1;
+  if (@ticks >= @interval) {
+    printf("\n<begin record>\n");
+    printf("timestamp, microsec, %d, %s\n", (int)(nsecs/1000), time("%F %T"));
+    printf("label, Latency of block I/O requests measured with bpftrace\n");
+    printf("latencyunit, microsec\n");
+    printf("datasource, bpftrace\n");
+    print(@dist);
+    printf("\n<end record>\n");
+    clear(@dist);
+    @ticks = 0;
+  }
+}
+
+/* Final flush */
+END
+{
+  printf("\n<begin record>\n");
+  printf("timestamp, microsec, %d, %s\n", (int)(nsecs/1000), time("%F %T"));
+  printf("label, Latency of block I/O requests (final flush)\n");
+  printf("latencyunit, microsec\n");
+  printf("datasource, bpftrace\n");
+  print(@dist);
+  printf("\n<end record>\n");
+  clear(@dist);
+  clear(@start);
+}
+

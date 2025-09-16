@@ -1,0 +1,8 @@
+In this directory you can find Systemtap scripts to collect I/O latency histograms data for visualization with PyLatencyMap
+To get started see the provided example scripts in particular the family Example9*
+Run SystemTap scripts as root
+Install SystemTap on Fedora/RHEL/CentOS with:
+
+sudo bash
+dnf install -y systemtap systemtap-runtime
+stap-prep

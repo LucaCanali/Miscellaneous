@@ -1,0 +1,79 @@
+#!/usr/bin/stap
+#
+# oracle_event_pylatencymap.stp
+#
+# This is a SystemTap script to gather Oracle wait event measurements directly from Oracle binaries  
+# and print wait event latency histograms to be consumed by PyLatencyMap for heatmap visualization
+#
+#
+# Use: stap -v oracle_event_pylatencymap.stp <event_num>
+#
+# Note optionally add -x <pid> to limit data collection to 1 process
+#
+# Note: in case of error ERROR: Skipped too many probes and for a system with many Oracle processes 
+#       incrase the max number of UPROBES. For example:
+#       stap -v -DMAXUPROBES=1500 oracle_event_latency.stp <event_num>
+#
+# Find teh value of <event_num> of interest using Oracle sqlplus. Exmaples:
+#   select event#,name from v$event_name where name='db file sequential read';
+#   select event#,name from v$event_name where name='log file sync';
+#
+# Dependencies: 
+#    Needs systemtap 2.5 or higher
+#    Kernel must have support for uprobes or utrace (use RHEL7.x or RHEL6.x)
+#    The oracle executable needs to be in the path, i.e. add $ORACLE_HOME/bin to $PATH
+#
+# Tested on: RHEL6.5, 6.6. and 7.0, Oracle 11.2.0.4, 12.1.0.1, 12.1.0.2
+#            note, currently does not work with RHEL 7.1.
+#
+# Author: Luca.Canali@cern.ch (@LucaCanaliDB)
+# Additional credits for original contributions: @FritsHoogland
+# Version 1.0, March 2015. 
+# Based on previous work on Oracle tracing with SystemTap by Luca.Canali@cern.ch, Aug 2014 
+#
+# Note: this is experimental code, use at your own risk
+# 
+
+global eventlatency
+global waittime[10000]
+global eventnum
+
+probe begin {
+   if (argv_1 != "") {
+       eventnum = strtol(argv_1, 10)
+       printf("Now sampling event N# %d\n", eventnum)
+   }
+   else {
+       printf("Usage: stap -v oracle_event_latency.stp <event_num>\n")
+       exit()       
+   }   
+}
+
+# gather and aggregate wait event latency details into a histogram
+probe process("oracle").function("kews_update_wait_time") {
+   waittime[pid()] = u32_arg(2)      # update the wait time, the wait event number is captured in the call to kskthewt
+}
+
+
+probe process("oracle").function("kskthewt") {
+   # the event number is in arg2
+   if ((u32_arg(2) == eventnum) && (waittime[pid()] > 0)) {
+       eventlatency <<< waittime[pid()]  # the wait_time was previously recorded into the waittime array
+       delete waittime[pid()]
+   }
+}
+
+
+# print histogram details every 3 seconds in a format recognized by Pylatencymap
+# change to a different repetition rate if you prefer
+probe timer.sec(3) {
+   printf("\n<begin record>\n")
+   printf("timestamp, microsec, %d, %s\n",gettimeofday_us(),tz_ctime(gettimeofday_s()))
+   printf("label, event N# %d latency measured with SystemTap\n", eventnum)
+   printf("latencyunit, microsec\n")
+   printf("datasource, systemtap\n")
+   if (@count(eventlatency) > 0)
+       println(@hist_log(eventlatency))
+   printf("\n<end record>\n")
+}
+

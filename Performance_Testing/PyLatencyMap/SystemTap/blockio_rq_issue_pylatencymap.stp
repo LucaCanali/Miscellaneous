@@ -1,0 +1,44 @@
+#!/usr/bin/stap
+#
+# blockio_rq_issue_basic_pylatencymap.stp
+#
+# This is a SystemTap script to gather block I/O latency from the Linux kernel block I/O interface
+# and print I/O latency histograms to be consumed by PyLatencyMap for heatmap visualization
+#
+# By Luca.Canali@cern.ch, March 2015
+#
+# This script is based on original ideas of biolatency-nd.stp of systemtap-lwtools
+# by Brendan Gregg
+#
+# Note the use of kernel.trace("block_rq_issue") and kernel.trace("block_rq_complete") instead of
+# ioblock.request and ioblock_end, the probe works without the need to have kernel debuginfo.
+#
+
+global latencyTimes, requestTime
+
+probe kernel.trace("block_rq_issue") {
+        requestTime[$rq] = gettimeofday_us()
+
+}
+
+probe kernel.trace("block_rq_complete") {
+   t = gettimeofday_us()
+   s = requestTime[$rq]
+   if (s > 0) {
+       latencyTimes <<< (t-s)
+       delete requestTime[$rq]
+   }
+}
+
+# Print a PyLatencyMap record every `interval` (first script argument) seconds
+probe timer.sec($1) {
+   printf("\n<begin record>\n")
+   printf("timestamp, microsec, %d, %s\n",gettimeofday_us(),tz_ctime(gettimeofday_s()))
+   printf("label, Latency of block I/O requests measured with SystemTap\n")
+   printf("latencyunit, microsec\n")
+   printf("datasource, systemtap\n")
+   if (@count(latencyTimes) > 0)
+       println(@hist_log(latencyTimes))
+   printf("\n<end record>\n")
+}
+

@@ -1,17 +1,15 @@
-# Performance Testing
+# Performance Troubleshooting and Testing
 This folder contains notes, scripts, and resources related to performance testing, load generation, and performnace analysis.
 
-## Testing Toolkits
+## Toolkits
 
 ### [**Test_CPU_parallel_Rust**](Test_CPU_parallel_Rust)
-- A toolkit for load testing using **Rust**.
+- A toolkit for CPU load testing using **Rust**.
 - Generates and measures **CPU-intensive multi-threaded workloads**.
 - Designed for evaluating CPU scalability and performance across systems.
 
 ### [**Test_CPU_parallel_Python**](Test_CPU_parallel_Python)
-- A Python-based toolkit for load testing.
-
----
+- A Python-based toolkit for CPU load testing.
 
 ### [**TPC-DS at Scale with PySpark**](TPCDS_PySpark)
 - A benchmarking kit for running **TPC-DS benchmark queries** with **Apache Spark**.
@@ -19,6 +17,11 @@ This folder contains notes, scripts, and resources related to performance testin
     - Written in Python (PySpark).
     - Instrumented with **sparkMeasure** to collect detailed performance metrics.
     - Suitable for testing the scalability and efficiency of Spark clusters.
+
+### [**PyLatencyMap**](PyLatencyMap)
+- PyLatencyMap is a terminal-based visualizer for latency histograms.
+- It’s intended to help with performance tuning and troubleshooting.
+- Works from the command line and plays nicely with sources that output latency histograms (Oracle wait histograms, BPF/bcc, DTrace, SystemTap, tracefiles, etc.).
 
 ### [**Spark_CPU_memory_load_testkit**](Spark_CPU_memory_load_testkit)
 - A toolkit for generating **CPU- and memory-intensive workloads** using **Apache Spark**.

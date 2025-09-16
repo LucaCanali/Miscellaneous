@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyLatencyMap"
+version = "1.3.1"
+description = "Visualize latency distributions over time in your terminal with frequency and intensity heat maps."
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [{ name = "Luca Canali", email = "Luca.Canali@cern.ch" }]
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+keywords = ["latency", "heatmap", "cli", "performance", "histogram", "monitoring", "observability"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: System :: Monitoring",
+  "Topic :: Utilities",
+  "Natural Language :: English",
+]
+
+[project.urls]
+Homepage = "https://github.com/LucaCanali/PyLatencyMap"
+Repository = "https://github.com/LucaCanali/PyLatencyMap"
+Issues = "https://github.com/LucaCanali/PyLatencyMap/issues"
+Changelog = "https://github.com/LucaCanali/PyLatencyMap/releases"
+
+# Single-file module
+[tool.setuptools]
+py-modules = ["LatencyMap"]
+
+# Console entry point (preferred over invoking `python -m`)
+[project.scripts]
+latencymap = "LatencyMap:main"
+

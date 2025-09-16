@@ -1,0 +1,1324 @@
+
+<begin record>
+timestamp, microsec, 1426358407973575, Sat Mar 14 19:40:07 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                     0
+    128 |                                                     0
+    256 |                                                     2
+    512 |                                                    16
+   1024 |@                                                   30
+   2048 |@@@@@@@@@@@@                                       229
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   873
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             404
+  16384 |@                                                   22
+  32768 |                                                     6
+  65536 |                                                    12
+ 131072 |                                                     9
+ 262144 |                                                     0
+ 524288 |                                                     2
+1048576 |                                                     6
+2097152 |                                                     0
+4194304 |                                                     0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358410974075, Sat Mar 14 19:40:10 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                      2
+    512 |                                                     23
+   1024 |@                                                    47
+   2048 |@@@@@@@@@@@@@                                       534
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  2031
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              933
+  16384 |@                                                    57
+  32768 |                                                     16
+  65536 |                                                     27
+ 131072 |                                                     36
+ 262144 |                                                      7
+ 524288 |                                                      2
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358413973379, Sat Mar 14 19:40:13 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                      2
+    512 |                                                     26
+   1024 |@                                                    72
+   2048 |@@@@@@@@@@@@                                        881
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  3399
+   8192 |@@@@@@@@@@@@@@@@@@@@@@@                            1570
+  16384 |@                                                    99
+  32768 |                                                     23
+  65536 |                                                     34
+ 131072 |                                                     46
+ 262144 |                                                     14
+ 524288 |                                                      2
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358416973168, Sat Mar 14 19:40:16 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                      8
+    512 |                                                     67
+   1024 |@                                                   156
+   2048 |@@@@@@@@@@@@@                                      1182
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  4430
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             2045
+  16384 |@                                                   131
+  32768 |                                                     30
+  65536 |                                                     52
+ 131072 |                                                     61
+ 262144 |                                                     14
+ 524288 |                                                     10
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358419973231, Sat Mar 14 19:40:19 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                      8
+    512 |                                                     75
+   1024 |@                                                   179
+   2048 |@@@@@@@@@@@@@                                      1443
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  5443
+   8192 |@@@@@@@@@@@@@@@@@@@@@@@                            2512
+  16384 |@                                                   160
+  32768 |                                                     51
+  65536 |                                                     59
+ 131072 |                                                     68
+ 262144 |                                                     25
+ 524288 |                                                     16
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358422973241, Sat Mar 14 19:40:22 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                      8
+    512 |                                                     88
+   1024 |@                                                   216
+   2048 |@@@@@@@@@@@@@                                      1816
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  6831
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             3107
+  16384 |@                                                   209
+  32768 |                                                     67
+  65536 |                                                     65
+ 131072 |                                                     72
+ 262144 |                                                     28
+ 524288 |                                                     21
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358425973241, Sat Mar 14 19:40:25 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                      9
+    512 |                                                    110
+   1024 |@                                                   250
+   2048 |@@@@@@@@@@@@@                                      2064
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  7779
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             3540
+  16384 |@                                                   237
+  32768 |                                                     76
+  65536 |                                                     74
+ 131072 |                                                     84
+ 262144 |                                                     33
+ 524288 |                                                     26
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358428973339, Sat Mar 14 19:40:28 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                      0
+    128 |                                                      0
+    256 |                                                     10
+    512 |                                                    122
+   1024 |@                                                   282
+   2048 |@@@@@@@@@@@@@                                      2423
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  9178
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             4167
+  16384 |@                                                   293
+  32768 |                                                     87
+  65536 |                                                     78
+ 131072 |                                                     94
+ 262144 |                                                     39
+ 524288 |                                                     31
+1048576 |                                                      6
+2097152 |                                                      0
+4194304 |                                                      0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358431973207, Sat Mar 14 19:40:31 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      11
+    512 |                                                     135
+   1024 |@                                                    318
+   2048 |@@@@@@@@@@@@@                                       2675
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  10155
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              4573
+  16384 |@                                                    321
+  32768 |                                                      93
+  65536 |                                                      79
+ 131072 |                                                      96
+ 262144 |                                                      57
+ 524288 |                                                      37
+1048576 |                                                       6
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358434973535, Sat Mar 14 19:40:34 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      11
+    512 |                                                     155
+   1024 |@                                                    372
+   2048 |@@@@@@@@@@@@@                                       2994
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  11348
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              5081
+  16384 |@                                                    364
+  32768 |                                                     111
+  65536 |                                                      85
+ 131072 |                                                     108
+ 262144 |                                                      60
+ 524288 |                                                      43
+1048576 |                                                       6
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358437973208, Sat Mar 14 19:40:37 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      12
+    512 |                                                     180
+   1024 |@                                                    412
+   2048 |@@@@@@@@@@@@@                                       3256
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  12270
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              5510
+  16384 |@                                                    405
+  32768 |                                                     123
+  65536 |                                                      97
+ 131072 |                                                     111
+ 262144 |                                                      66
+ 524288 |                                                      51
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358440973310, Sat Mar 14 19:40:40 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      13
+    512 |                                                     205
+   1024 |@                                                    458
+   2048 |@@@@@@@@@@@@@                                       3494
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  13284
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              5973
+  16384 |@                                                    448
+  32768 |                                                     143
+  65536 |                                                     111
+ 131072 |                                                     121
+ 262144 |                                                      78
+ 524288 |                                                      52
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358443973798, Sat Mar 14 19:40:43 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      16
+    512 |                                                     220
+   1024 |@                                                    504
+   2048 |@@@@@@@@@@@@@                                       3726
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  14280
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              6383
+  16384 |@                                                    472
+  32768 |                                                     158
+  65536 |                                                     117
+ 131072 |                                                     126
+ 262144 |                                                      91
+ 524288 |                                                      55
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358446973215, Sat Mar 14 19:40:46 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      21
+    512 |                                                     255
+   1024 |@                                                    587
+   2048 |@@@@@@@@@@@@@                                       4134
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  15725
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              7057
+  16384 |@                                                    527
+  32768 |                                                     172
+  65536 |                                                     140
+ 131072 |                                                     128
+ 262144 |                                                      97
+ 524288 |                                                      55
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358449973245, Sat Mar 14 19:40:49 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      23
+    512 |                                                     265
+   1024 |@                                                    609
+   2048 |@@@@@@@@@@@@@                                       4503
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  17119
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              7683
+  16384 |@                                                    572
+  32768 |                                                     183
+  65536 |                                                     147
+ 131072 |                                                     144
+ 262144 |                                                     103
+ 524288 |                                                      55
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358452973372, Sat Mar 14 19:40:52 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      23
+    512 |                                                     273
+   1024 |@                                                    645
+   2048 |@@@@@@@@@@@@@                                       4916
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  18568
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              8309
+  16384 |@                                                    615
+  32768 |                                                     211
+  65536 |                                                     159
+ 131072 |                                                     152
+ 262144 |                                                     107
+ 524288 |                                                      55
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358455973347, Sat Mar 14 19:40:55 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      25
+    512 |                                                     281
+   1024 |@                                                    670
+   2048 |@@@@@@@@@@@@@                                       5320
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 20200
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              9022
+  16384 |@                                                    659
+  32768 |                                                     221
+  65536 |                                                     169
+ 131072 |                                                     157
+ 262144 |                                                     109
+ 524288 |                                                      55
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358458973425, Sat Mar 14 19:40:58 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      25
+    512 |                                                     293
+   1024 |@                                                    708
+   2048 |@@@@@@@@@@@@@                                       5640
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  21559
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                              9630
+  16384 |@                                                    701
+  32768 |                                                     230
+  65536 |                                                     182
+ 131072 |                                                     167
+ 262144 |                                                     116
+ 524288 |                                                      55
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358461973236, Sat Mar 14 19:41:01 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      27
+    512 |                                                     304
+   1024 |@                                                    733
+   2048 |@@@@@@@@@@@@@                                       5968
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  22643
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             10160
+  16384 |@                                                    751
+  32768 |                                                     253
+  65536 |                                                     193
+ 131072 |                                                     182
+ 262144 |                                                     120
+ 524288 |                                                      60
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358464973430, Sat Mar 14 19:41:04 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      30
+    512 |                                                     331
+   1024 |@                                                    832
+   2048 |@@@@@@@@@@@@@                                       6409
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  24041
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             10801
+  16384 |@                                                    802
+  32768 |                                                     257
+  65536 |                                                     195
+ 131072 |                                                     191
+ 262144 |                                                     128
+ 524288 |                                                      60
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358467973369, Sat Mar 14 19:41:07 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      30
+    512 |                                                     338
+   1024 |@                                                    860
+   2048 |@@@@@@@@@@@@@                                       6754
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  25510
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             11432
+  16384 |@                                                    862
+  32768 |                                                     276
+  65536 |                                                     211
+ 131072 |                                                     201
+ 262144 |                                                     131
+ 524288 |                                                      60
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358470973336, Sat Mar 14 19:41:10 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      32
+    512 |                                                     381
+   1024 |@                                                    971
+   2048 |@@@@@@@@@@@@@                                       7142
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  26636
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             11914
+  16384 |@                                                    906
+  32768 |                                                     289
+  65536 |                                                     225
+ 131072 |                                                     228
+ 262144 |                                                     135
+ 524288 |                                                      60
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358473973274, Sat Mar 14 19:41:13 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      32
+    512 |                                                     395
+   1024 |@                                                    992
+   2048 |@@@@@@@@@@@@@                                       7432
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  27718
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             12382
+  16384 |@                                                    941
+  32768 |                                                     301
+  65536 |                                                     232
+ 131072 |                                                     246
+ 262144 |                                                     146
+ 524288 |                                                      62
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358476973242, Sat Mar 14 19:41:16 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      33
+    512 |                                                     432
+   1024 |@                                                   1053
+   2048 |@@@@@@@@@@@@@                                       7792
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  29212
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             12952
+  16384 |@                                                    982
+  32768 |                                                     317
+  65536 |                                                     245
+ 131072 |                                                     258
+ 262144 |                                                     150
+ 524288 |                                                      62
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358479973703, Sat Mar 14 19:41:19 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      35
+    512 |                                                     449
+   1024 |@                                                   1099
+   2048 |@@@@@@@@@@@@@                                       8058
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  30204
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             13415
+  16384 |@                                                   1033
+  32768 |                                                     327
+  65536 |                                                     248
+ 131072 |                                                     262
+ 262144 |                                                     164
+ 524288 |                                                      66
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358482973561, Sat Mar 14 19:41:22 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      41
+    512 |                                                     493
+   1024 |@                                                   1199
+   2048 |@@@@@@@@@@@@@                                       8419
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  31406
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             13951
+  16384 |@                                                   1084
+  32768 |                                                     334
+  65536 |                                                     250
+ 131072 |                                                     271
+ 262144 |                                                     180
+ 524288 |                                                      66
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358485973393, Sat Mar 14 19:41:25 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      42
+    512 |                                                     516
+   1024 |@                                                   1234
+   2048 |@@@@@@@@@@@@@                                       8790
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  32830
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             14526
+  16384 |@                                                   1123
+  32768 |                                                     350
+  65536 |                                                     268
+ 131072 |                                                     290
+ 262144 |                                                     181
+ 524288 |                                                      66
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358488973430, Sat Mar 14 19:41:28 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      49
+    512 |                                                     555
+   1024 |@                                                   1316
+   2048 |@@@@@@@@@@@@@                                       9170
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  34092
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             15016
+  16384 |@                                                   1155
+  32768 |                                                     364
+  65536 |                                                     276
+ 131072 |                                                     305
+ 262144 |                                                     191
+ 524288 |                                                      66
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358491973208, Sat Mar 14 19:41:31 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      51
+    512 |                                                     578
+   1024 |@                                                   1360
+   2048 |@@@@@@@@@@@@@                                       9503
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  35249
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             15533
+  16384 |@                                                   1188
+  32768 |                                                     384
+  65536 |                                                     284
+ 131072 |                                                     312
+ 262144 |                                                     205
+ 524288 |                                                      66
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358494973462, Sat Mar 14 19:41:34 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      54
+    512 |                                                     605
+   1024 |@                                                   1440
+   2048 |@@@@@@@@@@@@@                                       9819
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  36227
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             16023
+  16384 |@                                                   1237
+  32768 |                                                     391
+  65536 |                                                     285
+ 131072 |                                                     317
+ 262144 |                                                     215
+ 524288 |                                                      73
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358497973292, Sat Mar 14 19:41:37 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      54
+    512 |                                                     607
+   1024 |@                                                   1462
+   2048 |@@@@@@@@@@@@@                                      10093
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  37284
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             16525
+  16384 |@                                                   1267
+  32768 |                                                     405
+  65536 |                                                     292
+ 131072 |                                                     337
+ 262144 |                                                     226
+ 524288 |                                                      75
+1048576 |                                                       7
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358500973214, Sat Mar 14 19:41:40 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      55
+    512 |                                                     610
+   1024 |@                                                   1477
+   2048 |@@@@@@@@@@@@@                                      10197
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  37806
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             16798
+  16384 |@                                                   1284
+  32768 |                                                     410
+  65536 |                                                     295
+ 131072 |                                                     347
+ 262144 |                                                     241
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358503973229, Sat Mar 14 19:41:43 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     64 |                                                       0
+    128 |                                                       0
+    256 |                                                      56
+    512 |                                                     621
+   1024 |@                                                   1517
+   2048 |@@@@@@@@@@@@@                                      10570
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  39213
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             17407
+  16384 |@                                                   1333
+  32768 |                                                     421
+  65536 |                                                     312
+ 131072 |                                                     359
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358506973530, Sat Mar 14 19:41:46 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     32 |                                                       0
+     64 |                                                       0
+    128 |                                                       1
+    256 |                                                      58
+    512 |                                                     664
+   1024 |@                                                   1609
+   2048 |@@@@@@@@@@@@@                                      10921
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40411
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18010
+  16384 |@                                                   1373
+  32768 |                                                     436
+  65536 |                                                     325
+ 131072 |                                                     371
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358509973300, Sat Mar 14 19:41:49 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     32 |                                                       0
+     64 |                                                       0
+    128 |                                                       4
+    256 |                                                      98
+    512 |                                                     714
+   1024 |@@                                                  1625
+   2048 |@@@@@@@@@@@@@                                      10949
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40528
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18072
+  16384 |@                                                   1375
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     371
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358512973221, Sat Mar 14 19:41:52 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      16
+    256 |                                                     209
+    512 |                                                     773
+   1024 |@@                                                  1643
+   2048 |@@@@@@@@@@@@@                                      10975
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40645
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18144
+  16384 |@                                                   1376
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     371
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358515973168, Sat Mar 14 19:41:55 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      25
+    256 |                                                     273
+    512 |@                                                    847
+   1024 |@@                                                  1655
+   2048 |@@@@@@@@@@@@@                                      11000
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40773
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18213
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     371
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358518973183, Sat Mar 14 19:41:58 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      34
+    256 |                                                     585
+    512 |@                                                    989
+   1024 |@@                                                  1682
+   2048 |@@@@@@@@@@@@@                                      11014
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40833
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18241
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     371
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358521973266, Sat Mar 14 19:42:01 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      34
+    256 |                                                     626
+    512 |@                                                   1011
+   1024 |@@                                                  1687
+   2048 |@@@@@@@@@@@@@                                      11021
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40887
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18259
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     371
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358524974230, Sat Mar 14 19:42:04 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      34
+    256 |                                                     640
+    512 |@                                                   1031
+   1024 |@@                                                  1690
+   2048 |@@@@@@@@@@@@@                                      11027
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40914
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18271
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358527973518, Sat Mar 14 19:42:07 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      38
+    256 |                                                     692
+    512 |@                                                   1052
+   1024 |@@                                                  1696
+   2048 |@@@@@@@@@@@@@                                      11033
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40945
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18282
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358530973170, Sat Mar 14 19:42:10 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      49
+    256 |@                                                    859
+    512 |@                                                   1172
+   1024 |@@                                                  1718
+   2048 |@@@@@@@@@@@@@                                      11046
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40993
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18307
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358533973723, Sat Mar 14 19:42:13 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      51
+    256 |@                                                    864
+    512 |@                                                   1173
+   1024 |@@                                                  1719
+   2048 |@@@@@@@@@@@@@                                      11047
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  40999
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18313
+  16384 |@                                                   1378
+  32768 |                                                     436
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358536973174, Sat Mar 14 19:42:16 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      69
+    256 |@                                                   1194
+    512 |@                                                   1262
+   1024 |@@                                                  1733
+   2048 |@@@@@@@@@@@@@                                      11057
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  41029
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18342
+  16384 |@                                                   1379
+  32768 |                                                     438
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358539973727, Sat Mar 14 19:42:19 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      73
+    256 |@                                                   1295
+    512 |@                                                   1300
+   1024 |@@                                                  1738
+   2048 |@@@@@@@@@@@@@                                      11057
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  41033
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18344
+  16384 |@                                                   1379
+  32768 |                                                     438
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358542973172, Sat Mar 14 19:42:22 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      76
+    256 |@                                                   1301
+    512 |@                                                   1304
+   1024 |@@                                                  1738
+   2048 |@@@@@@@@@@@@@                                      11057
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  41033
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18344
+  16384 |@                                                   1379
+  32768 |                                                     438
+  65536 |                                                     327
+ 131072 |                                                     372
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358545973537, Sat Mar 14 19:42:25 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      76
+    256 |@                                                   1302
+    512 |@                                                   1304
+   1024 |@@                                                  1738
+   2048 |@@@@@@@@@@@@@                                      11057
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  41038
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18346
+  16384 |@                                                   1379
+  32768 |                                                     438
+  65536 |                                                     327
+ 131072 |                                                     373
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>
+
+<begin record>
+timestamp, microsec, 1426358548973407, Sat Mar 14 19:42:28 2015 CET
+label, Latency of block I/O 8KB read requests measured with SystemTap
+latencyunit, microsec
+datasource, systemtap
+  value |-------------------------------------------------- count
+     16 |                                                       0
+     32 |                                                       0
+     64 |                                                       2
+    128 |                                                      77
+    256 |@                                                   1310
+    512 |@                                                   1307
+   1024 |@@                                                  1739
+   2048 |@@@@@@@@@@@@@                                      11057
+   4096 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  41039
+   8192 |@@@@@@@@@@@@@@@@@@@@@@                             18347
+  16384 |@                                                   1379
+  32768 |                                                     438
+  65536 |                                                     327
+ 131072 |                                                     373
+ 262144 |                                                     246
+ 524288 |                                                      75
+1048576 |                                                      15
+2097152 |                                                       0
+4194304 |                                                       0
+
+
+<end record>

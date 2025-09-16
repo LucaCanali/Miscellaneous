@@ -1,0 +1,2661 @@
+<begin record>
+timestamp, microsec, 52011653754,26-AUG-13 04.26.51.653754 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4129312
+2, 4875183
+4, 381505
+8, 2126029
+16, 3307878
+32, 1553160
+64, 510426
+128, 72691
+256, 3592
+512, 68531
+1024, 45557
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52014671464,26-AUG-13 04.26.54.671464 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4131014
+2, 4877809
+4, 382286
+8, 2130620
+16, 3314223
+32, 1555165
+64, 510790
+128, 72709
+256, 3592
+512, 68531
+1024, 45582
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52017691244,26-AUG-13 04.26.57.691244 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4132848
+2, 4880016
+4, 383017
+8, 2135064
+16, 3320654
+32, 1557277
+64, 511146
+128, 72725
+256, 3592
+512, 68543
+1024, 45612
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52020709194,26-AUG-13 04.27.00.709194 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4134606
+2, 4882163
+4, 383890
+8, 2139507
+16, 3327001
+32, 1559398
+64, 511541
+128, 72736
+256, 3592
+512, 68549
+1024, 45650
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52023732996,26-AUG-13 04.27.03.732996 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4136680
+2, 4884158
+4, 384677
+8, 2143860
+16, 3333263
+32, 1561367
+64, 511859
+128, 72757
+256, 3592
+512, 68589
+1024, 45671
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52026753849,26-AUG-13 04.27.06.753849 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4138508
+2, 4885715
+4, 385366
+8, 2147731
+16, 3338561
+32, 1562937
+64, 512169
+128, 72765
+256, 3592
+512, 68590
+1024, 45743
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52029771726,26-AUG-13 04.27.09.771726 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4140790
+2, 4887895
+4, 386128
+8, 2152056
+16, 3344840
+32, 1565019
+64, 512527
+128, 72783
+256, 3592
+512, 68603
+1024, 45810
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52032794049,26-AUG-13 04.27.12.794049 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4142700
+2, 4889991
+4, 387027
+8, 2156405
+16, 3351174
+32, 1567056
+64, 512869
+128, 72798
+256, 3592
+512, 68618
+1024, 45832
+2048, 4860
+4096, 8
+1, 2681431
+2, 226750
+4, 108086
+8, 168317
+16, 86731
+32, 13303
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52035811866,26-AUG-13 04.27.15.811866 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4144971
+2, 4892182
+4, 387932
+8, 2160977
+16, 3358051
+32, 1569276
+64, 513281
+128, 72806
+256, 3592
+512, 68618
+1024, 45858
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86731
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52038836316,26-AUG-13 04.27.18.836316 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86731
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+1, 4147695
+2, 4894369
+4, 388803
+8, 2165648
+16, 3364836
+32, 1571468
+64, 513673
+128, 72823
+256, 3592
+512, 68631
+1024, 45883
+2048, 4860
+4096, 8
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52041857359,26-AUG-13 04.27.21.857359 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4149815
+2, 4896198
+4, 389620
+8, 2170130
+16, 3371440
+32, 1573541
+64, 514064
+128, 72839
+256, 3592
+512, 68635
+1024, 45909
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86731
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52044877371,26-AUG-13 04.27.24.877371 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4152440
+2, 4898633
+4, 390423
+8, 2174623
+16, 3377719
+32, 1575399
+64, 514418
+128, 72849
+256, 3592
+512, 68659
+1024, 45936
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52047898153,26-AUG-13 04.27.27.898153 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4154444
+2, 4900680
+4, 391284
+8, 2178938
+16, 3384141
+32, 1577414
+64, 514795
+128, 72861
+256, 3592
+512, 68673
+1024, 45985
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52050916879,26-AUG-13 04.27.30.916879 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4156503
+2, 4902483
+4, 392240
+8, 2183418
+16, 3390815
+32, 1579593
+64, 515206
+128, 72877
+256, 3592
+512, 68687
+1024, 46003
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52053938925,26-AUG-13 04.27.33.938925 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4158546
+2, 4904120
+4, 393106
+8, 2187562
+16, 3396863
+32, 1581315
+64, 515460
+128, 72891
+256, 3593
+512, 68712
+1024, 46060
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52056959810,26-AUG-13 04.27.36.959810 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4161158
+2, 4906723
+4, 393896
+8, 2192321
+16, 3403694
+32, 1583431
+64, 515861
+128, 72904
+256, 3593
+512, 68730
+1024, 46069
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52059978196,26-AUG-13 04.27.39.978196 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4163672
+2, 4909122
+4, 394678
+8, 2196863
+16, 3410181
+32, 1585470
+64, 516242
+128, 72919
+256, 3593
+512, 68730
+1024, 46094
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52063001969,26-AUG-13 04.27.43.001969 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4166107
+2, 4911435
+4, 395455
+8, 2201269
+16, 3416578
+32, 1587402
+64, 516566
+128, 72935
+256, 3593
+512, 68746
+1024, 46150
+2048, 4860
+4096, 8
+1, 2681435
+2, 226750
+4, 108086
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52066019718,26-AUG-13 04.27.46.019718 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4168022
+2, 4913736
+4, 396444
+8, 2205534
+16, 3422717
+32, 1589275
+64, 516896
+128, 72945
+256, 3593
+512, 68751
+1024, 46204
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52069043491,26-AUG-13 04.27.49.043491 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4170289
+2, 4915900
+4, 397385
+8, 2209990
+16, 3429231
+32, 1591324
+64, 517280
+128, 72964
+256, 3593
+512, 68763
+1024, 46235
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52072064369,26-AUG-13 04.27.52.064369 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4172283
+2, 4917750
+4, 398364
+8, 2214584
+16, 3435954
+32, 1593535
+64, 517678
+128, 72977
+256, 3593
+512, 68772
+1024, 46248
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52075083090,26-AUG-13 04.27.55.083090 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4174969
+2, 4920014
+4, 399195
+8, 2218855
+16, 3442276
+32, 1595528
+64, 518038
+128, 72989
+256, 3593
+512, 68790
+1024, 46290
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52078103882,26-AUG-13 04.27.58.103882 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4177786
+2, 4922212
+4, 399942
+8, 2223302
+16, 3448451
+32, 1597469
+64, 518413
+128, 73003
+256, 3593
+512, 68797
+1024, 46301
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52081122623,26-AUG-13 04.28.01.122623 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4180221
+2, 4924344
+4, 400754
+8, 2227874
+16, 3455028
+32, 1599597
+64, 518779
+128, 73025
+256, 3594
+512, 68798
+1024, 46363
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52084146299,26-AUG-13 04.28.04.146299 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4182138
+2, 4926205
+4, 401594
+8, 2232122
+16, 3461028
+32, 1601486
+64, 519049
+128, 73042
+256, 3594
+512, 68849
+1024, 46395
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52087167582,26-AUG-13 04.28.07.167582 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4184133
+2, 4927911
+4, 402520
+8, 2236735
+16, 3467661
+32, 1603679
+64, 519376
+128, 73053
+256, 3594
+512, 68859
+1024, 46418
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52090187458,26-AUG-13 04.28.10.187458 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4186843
+2, 4929970
+4, 403436
+8, 2241395
+16, 3474535
+32, 1605949
+64, 519743
+128, 73070
+256, 3594
+512, 68869
+1024, 46437
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52093207968,26-AUG-13 04.28.13.207968 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4189436
+2, 4931920
+4, 404224
+8, 2245569
+16, 3480302
+32, 1607640
+64, 519960
+128, 73084
+256, 3594
+512, 68931
+1024, 46467
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52096225359,26-AUG-13 04.28.16.225359 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4192059
+2, 4934613
+4, 405073
+8, 2250105
+16, 3486843
+32, 1609815
+64, 520314
+128, 73111
+256, 3595
+512, 68931
+1024, 46499
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52099248341,26-AUG-13 04.28.19.248341 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4194202
+2, 4936625
+4, 405894
+8, 2254572
+16, 3493293
+32, 1611949
+64, 520667
+128, 73124
+256, 3595
+512, 68936
+1024, 46538
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52102270203,26-AUG-13 04.28.22.270203 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4196168
+2, 4938636
+4, 406866
+8, 2258715
+16, 3499227
+32, 1613688
+64, 520899
+128, 73136
+256, 3595
+512, 68971
+1024, 46579
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52105287935,26-AUG-13 04.28.25.287935 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4198458
+2, 4940937
+4, 407798
+8, 2263236
+16, 3505587
+32, 1615724
+64, 521245
+128, 73150
+256, 3595
+512, 68988
+1024, 46617
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52108310632,26-AUG-13 04.28.28.310632 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4200503
+2, 4942649
+4, 408632
+8, 2267655
+16, 3512080
+32, 1617854
+64, 521599
+128, 73173
+256, 3598
+512, 69003
+1024, 46645
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52111328396,26-AUG-13 04.28.31.328396 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4203853
+2, 4945063
+4, 409466
+8, 2272184
+16, 3518742
+32, 1620043
+64, 522001
+128, 73191
+256, 3598
+512, 69008
+1024, 46667
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52114351263,26-AUG-13 04.28.34.351263 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4207070
+2, 4947519
+4, 410271
+8, 2276615
+16, 3524849
+32, 1621881
+64, 522315
+128, 73204
+256, 3602
+512, 69028
+1024, 46712
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52117371922,26-AUG-13 04.28.37.371922 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4209659
+2, 4949874
+4, 411111
+8, 2281301
+16, 3531606
+32, 1624081
+64, 522766
+128, 73218
+256, 3602
+512, 69042
+1024, 46721
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52120388555,26-AUG-13 04.28.40.388555 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4211215
+2, 4951429
+4, 411926
+8, 2285705
+16, 3537731
+32, 1626246
+64, 523109
+128, 73230
+256, 3602
+512, 69047
+1024, 46750
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52123413541,26-AUG-13 04.28.43.413541 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+1, 4213244
+2, 4953037
+4, 412846
+8, 2290314
+16, 3544048
+32, 1628211
+64, 523395
+128, 73243
+256, 3602
+512, 69076
+1024, 46797
+2048, 4860
+4096, 8
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52126432614,26-AUG-13 04.28.46.432614 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4215960
+2, 4955085
+4, 413738
+8, 2295073
+16, 3550891
+32, 1630455
+64, 523758
+128, 73263
+256, 3602
+512, 69086
+1024, 46806
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52129454417,26-AUG-13 04.28.49.454417 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4218582
+2, 4957210
+4, 414545
+8, 2299640
+16, 3557236
+32, 1632577
+64, 524108
+128, 73278
+256, 3602
+512, 69110
+1024, 46832
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52132476494,26-AUG-13 04.28.52.476494 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4220804
+2, 4958871
+4, 415328
+8, 2304057
+16, 3563531
+32, 1634599
+64, 524398
+128, 73290
+256, 3602
+512, 69132
+1024, 46867
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52135494629,26-AUG-13 04.28.55.494629 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4223278
+2, 4961405
+4, 416059
+8, 2308510
+16, 3569892
+32, 1636681
+64, 524714
+128, 73301
+256, 3602
+512, 69159
+1024, 46892
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52138516653,26-AUG-13 04.28.58.516653 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4225416
+2, 4963528
+4, 416955
+8, 2312719
+16, 3575882
+32, 1638434
+64, 524993
+128, 73312
+256, 3602
+512, 69190
+1024, 46940
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52141533165,26-AUG-13 04.29.01.533165 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4227334
+2, 4965352
+4, 417916
+8, 2317342
+16, 3582497
+32, 1640595
+64, 525343
+128, 73330
+256, 3602
+512, 69194
+1024, 46962
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52144557865,26-AUG-13 04.29.04.557865 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4229386
+2, 4966832
+4, 418675
+8, 2321546
+16, 3588370
+32, 1642244
+64, 525623
+128, 73353
+256, 3603
+512, 69227
+1024, 47025
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52147578718,26-AUG-13 04.29.07.578718 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4232254
+2, 4968865
+4, 419455
+8, 2325950
+16, 3594563
+32, 1644140
+64, 525932
+128, 73368
+256, 3603
+512, 69237
+1024, 47051
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52150596495,26-AUG-13 04.29.10.596495 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4235022
+2, 4971581
+4, 420230
+8, 2330380
+16, 3600933
+32, 1646180
+64, 526266
+128, 73387
+256, 3603
+512, 69241
+1024, 47087
+2048, 4860
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52153620526,26-AUG-13 04.29.13.620526 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4237156
+2, 4973414
+4, 421014
+8, 2334479
+16, 3606614
+32, 1647832
+64, 526516
+128, 73396
+256, 3605
+512, 69275
+1024, 47152
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52156639080,26-AUG-13 04.29.16.639080 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4238941
+2, 4975059
+4, 421893
+8, 2338899
+16, 3612731
+32, 1649807
+64, 526868
+128, 73413
+256, 3605
+512, 69295
+1024, 47196
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52159660758,26-AUG-13 04.29.19.660758 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4241710
+2, 4977309
+4, 422898
+8, 2343385
+16, 3619302
+32, 1651821
+64, 527223
+128, 73425
+256, 3605
+512, 69304
+1024, 47234
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52162681655,26-AUG-13 04.29.22.681655 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4244099
+2, 4979193
+4, 423689
+8, 2347603
+16, 3625414
+32, 1653615
+64, 527502
+128, 73438
+256, 3605
+512, 69309
+1024, 47283
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52165699248,26-AUG-13 04.29.25.699248 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4246400
+2, 4980893
+4, 424415
+8, 2352002
+16, 3631474
+32, 1655434
+64, 527795
+128, 73452
+256, 3605
+512, 69330
+1024, 47327
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52168724245,26-AUG-13 04.29.28.724245 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4249370
+2, 4983363
+4, 425199
+8, 2356631
+16, 3637984
+32, 1657460
+64, 528145
+128, 73466
+256, 3605
+512, 69340
+1024, 47385
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52171745007,26-AUG-13 04.29.31.745007 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4251845
+2, 4985329
+4, 426092
+8, 2361054
+16, 3644266
+32, 1659407
+64, 528495
+128, 73480
+256, 3605
+512, 69360
+1024, 47418
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52174763063,26-AUG-13 04.29.34.763063 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4254231
+2, 4987695
+4, 427055
+8, 2365512
+16, 3650664
+32, 1661559
+64, 528817
+128, 73496
+256, 3605
+512, 69392
+1024, 47429
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52177786533,26-AUG-13 04.29.37.786533 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4256284
+2, 4989240
+4, 427917
+8, 2369710
+16, 3656736
+32, 1663507
+64, 529095
+128, 73512
+256, 3605
+512, 69397
+1024, 47498
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52180803236,26-AUG-13 04.29.40.803236 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4258282
+2, 4990761
+4, 428769
+8, 2374133
+16, 3663177
+32, 1665583
+64, 529453
+128, 73537
+256, 3611
+512, 69397
+1024, 47526
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52183827402,26-AUG-13 04.29.43.827402 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4260736
+2, 4992823
+4, 429579
+8, 2378424
+16, 3669613
+32, 1667456
+64, 529713
+128, 73548
+256, 3611
+512, 69431
+1024, 47571
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52186850776,26-AUG-13 04.29.46.850776 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4263460
+2, 4994889
+4, 430404
+8, 2383001
+16, 3676173
+32, 1669567
+64, 530102
+128, 73565
+256, 3611
+512, 69441
+1024, 47599
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52189870635,26-AUG-13 04.29.49.870635 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4265618
+2, 4996937
+4, 431284
+8, 2387342
+16, 3682437
+32, 1671568
+64, 530407
+128, 73584
+256, 3611
+512, 69447
+1024, 47648
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52192900295,26-AUG-13 04.29.52.900295 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4268646
+2, 4999504
+4, 432223
+8, 2391654
+16, 3688724
+32, 1673605
+64, 530743
+128, 73596
+256, 3611
+512, 69460
+1024, 47669
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52195916924,26-AUG-13 04.29.55.916924 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4271205
+2, 5001867
+4, 433156
+8, 2396683
+16, 3695701
+32, 1675938
+64, 531180
+128, 73610
+256, 3611
+512, 69482
+1024, 47674
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52198941466,26-AUG-13 04.29.58.941466 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4274214
+2, 5004003
+4, 433987
+8, 2401507
+16, 3702575
+32, 1678296
+64, 531573
+128, 73629
+256, 3612
+512, 69493
+1024, 47678
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52201961967,26-AUG-13 04.30.01.961967 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4276536
+2, 5006017
+4, 434797
+8, 2406025
+16, 3709233
+32, 1680480
+64, 531935
+128, 73654
+256, 3612
+512, 69517
+1024, 47688
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52204978325,26-AUG-13 04.30.04.978325 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4279304
+2, 5008330
+4, 435658
+8, 2410905
+16, 3716479
+32, 1682941
+64, 532329
+128, 73678
+256, 3612
+512, 69517
+1024, 47688
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52208004242,26-AUG-13 04.30.08.004242 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4281590
+2, 5010341
+4, 436539
+8, 2415444
+16, 3723046
+32, 1685027
+64, 532688
+128, 73696
+256, 3612
+512, 69539
+1024, 47707
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52211021794,26-AUG-13 04.30.11.021794 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+1, 4283965
+2, 5012474
+4, 437491
+8, 2419898
+16, 3729388
+32, 1687086
+64, 533032
+128, 73721
+256, 3612
+512, 69539
+1024, 47745
+2048, 4864
+4096, 8
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52214044551,26-AUG-13 04.30.14.044551 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4285868
+2, 5013703
+4, 438181
+8, 2423149
+16, 3733800
+32, 1688067
+64, 533130
+128, 73725
+256, 3612
+512, 69574
+1024, 47761
+2048, 4864
+4096, 8
+1, 2681437
+2, 226750
+4, 108088
+8, 168318
+16, 86732
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52217067396,26-AUG-13 04.30.17.067396 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4286191
+2, 5013707
+4, 438189
+8, 2423183
+16, 3733835
+32, 1688069
+64, 533130
+128, 73725
+256, 3612
+512, 69574
+1024, 47761
+2048, 4864
+4096, 8
+1, 2681470
+2, 226751
+4, 108089
+8, 168319
+16, 86740
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52220084453,26-AUG-13 04.30.20.084453 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4286252
+2, 5013707
+4, 438189
+8, 2423187
+16, 3733842
+32, 1688069
+64, 533130
+128, 73725
+256, 3612
+512, 69574
+1024, 47761
+2048, 4864
+4096, 8
+1, 2681470
+2, 226751
+4, 108089
+8, 168319
+16, 86740
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52223106772,26-AUG-13 04.30.23.106772 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4286252
+2, 5013707
+4, 438189
+8, 2423187
+16, 3733842
+32, 1688069
+64, 533130
+128, 73725
+256, 3612
+512, 69574
+1024, 47761
+2048, 4864
+4096, 8
+1, 2681470
+2, 226751
+4, 108089
+8, 168319
+16, 86740
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+
+
+PL/SQL procedure successfully completed.
+
+<begin record>
+timestamp, microsec, 52226120610,26-AUG-13 04.30.26.120610 PM +02:00
+label,db file sequential read latency data from gv$event_histogram
+latencyunit, millisec
+1, 4286252
+2, 5013707
+4, 438189
+8, 2423187
+16, 3733842
+32, 1688069
+64, 533130
+128, 73725
+256, 3612
+512, 69574
+1024, 47761
+2048, 4864
+4096, 8
+1, 2681470
+2, 226751
+4, 108089
+8, 168319
+16, 86740
+32, 13304
+64, 2847
+128, 541
+256, 1468
+512, 459
+1024, 28
+2048, 4
+4096, 1
+<end record>
+
+31 rows selected.
+

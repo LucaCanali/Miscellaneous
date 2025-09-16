@@ -1,0 +1,48 @@
+#!/usr/bin/stap
+#
+# pread_pylatencymap.stp
+#
+# This is a SystemTap script to gather pread I/O latency from the Linux kernel syscall
+# and print I/O latency histograms to be consumed by PyLatencyMap for heatmap visualization
+#
+# By Luca.Canali@cern.ch, March 2015
+#
+# This script is based on original ideas of biolatency-nd.stp of systemtap-lwtools
+# by Brendan Gregg 
+#
+# Note: this probe does not need to have kernel debug info installed
+#
+# Usage: stap -v pread_pylatencymap.stp <interval>
+#
+# Example: stap -v pread_pylatencymap.stp 3
+#
+
+global latencyTimes, requestTime
+
+
+probe nd_syscall.pread {
+   requestTime[tid()] = gettimeofday_us()
+}
+
+probe nd_syscall.pread.return {
+   t = gettimeofday_us()
+   s = requestTime[tid()]
+   if (s > 0) {
+       latencyTimes <<< (t-s)
+       delete requestTime[tid()]
+   }
+}
+
+
+probe timer.sec($1) {
+   printf("\n<begin record>\n")
+   printf("timestamp, microsec, %d, %s\n",gettimeofday_us(),tz_ctime(gettimeofday_s()))
+   printf("label, pread latency measured with SystemTap\n")
+   printf("latencyunit, microsec\n")
+   printf("datasource, systemtap\n")
+   if (@count(latencyTimes) > 0)
+       println(@hist_log(latencyTimes))
+   printf("\n<end record>\n")
+}
+
+

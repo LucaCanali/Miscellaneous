@@ -1,0 +1,804 @@
+ CPU     ID                    FUNCTION:NAME
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006592395604,2013 Aug 27 10:54:53
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         0        
+          131072 |                                         10       
+          262144 |@@@@@@@@@@@@                             12889    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@                   23806    
+         1048576 |@@@@@                                    5253     
+         2097152 |                                         380      
+         4194304 |                                         45       
+         8388608 |                                         27       
+        16777216 |                                         4        
+        33554432 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006602395547,2013 Aug 27 10:55:03
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         1        
+          131072 |                                         21       
+          262144 |@@@@@@@@@@@@                             24591    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@                  48677    
+         1048576 |@@@@@                                    10245    
+         2097152 |                                         650      
+         4194304 |                                         97       
+         8388608 |                                         42       
+        16777216 |                                         5        
+        33554432 |                                         0        
+        67108864 |                                         1        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006612395606,2013 Aug 27 10:55:13
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         1        
+          131072 |                                         21       
+          262144 |@@@@@@@@@@@                              33597    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@                 75663    
+         1048576 |@@@@@                                    15294    
+         2097152 |                                         848      
+         4194304 |                                         129      
+         8388608 |                                         52       
+        16777216 |                                         5        
+        33554432 |                                         0        
+        67108864 |                                         1        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006622395558,2013 Aug 27 10:55:23
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         3        
+          131072 |                                         26       
+          262144 |@@@@@@@@@@                               43753    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                102927   
+         1048576 |@@@@@                                    19405    
+         2097152 |                                         1001     
+         4194304 |                                         161      
+         8388608 |                                         65       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006632395589,2013 Aug 27 10:55:33
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         3        
+          131072 |                                         29       
+          262144 |@@@@@@@@@@@                              55250    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                129527   
+         1048576 |@@@@@                                    23872    
+         2097152 |                                         1223     
+         4194304 |                                         178      
+         8388608 |                                         66       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006642395580,2013 Aug 27 10:55:43
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         3        
+          131072 |                                         31       
+          262144 |@@@@@@@@@@@                              66929    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                156431   
+         1048576 |@@@@                                     28281    
+         2097152 |                                         1377     
+         4194304 |                                         194      
+         8388608 |                                         71       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006652395633,2013 Aug 27 10:55:53
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         3        
+          131072 |                                         31       
+          262144 |@@@@@@@@@@@                              78762    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                183923   
+         1048576 |@@@@                                     32209    
+         2097152 |                                         1529     
+         4194304 |                                         222      
+         8388608 |                                         75       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006662395572,2013 Aug 27 10:56:03
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         4        
+          131072 |                                         32       
+          262144 |@@@@@@@@@@@                              90569    
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                211578   
+         1048576 |@@@@                                     36170    
+         2097152 |                                         1668     
+         4194304 |                                         250      
+         8388608 |                                         76       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006672395536,2013 Aug 27 10:56:13
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            8192 |                                         0        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         4        
+          131072 |                                         32       
+          262144 |@@@@@@@@@@@                              101145   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                239784   
+         1048576 |@@@@                                     40195    
+         2097152 |                                         1829     
+         4194304 |                                         281      
+         8388608 |                                         82       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006682395538,2013 Aug 27 10:56:23
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         5        
+          131072 |                                         49       
+          262144 |@@@@@@@@@@                               110805   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                267305   
+         1048576 |@@@@                                     44780    
+         2097152 |                                         2003     
+         4194304 |                                         302      
+         8388608 |                                         84       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006692395560,2013 Aug 27 10:56:33
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         5        
+          131072 |                                         49       
+          262144 |@@@@@@@@@@                               121754   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                294954   
+         1048576 |@@@@                                     49134    
+         2097152 |                                         2207     
+         4194304 |                                         324      
+         8388608 |                                         90       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006702395531,2013 Aug 27 10:56:43
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         5        
+          131072 |                                         61       
+          262144 |@@@@@@@@@@                               132836   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                321935   
+         1048576 |@@@@                                     53600    
+         2097152 |                                         2422     
+         4194304 |                                         359      
+         8388608 |                                         99       
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006712395559,2013 Aug 27 10:56:53
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         0        
+           65536 |                                         5        
+          131072 |                                         67       
+          262144 |@@@@@@@@@@                               144039   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                349107   
+         1048576 |@@@@                                     58116    
+         2097152 |                                         2596     
+         4194304 |                                         378      
+         8388608 |                                         103      
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         2        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006722395537,2013 Aug 27 10:57:03
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         1        
+           65536 |                                         5        
+          131072 |                                         71       
+          262144 |@@@@@@@@@@                               154714   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                376532   
+         1048576 |@@@@                                     62701    
+         2097152 |                                         2812     
+         4194304 |                                         382      
+         8388608 |                                         103      
+        16777216 |                                         13       
+        33554432 |                                         9        
+        67108864 |                                         3        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006732395566,2013 Aug 27 10:57:13
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         1        
+           65536 |                                         7        
+          131072 |                                         78       
+          262144 |@@@@@@@@@@                               164295   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                402801   
+         1048576 |@@@@                                     67565    
+         2097152 |                                         3106     
+         4194304 |                                         440      
+         8388608 |                                         123      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006742395542,2013 Aug 27 10:57:23
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         1        
+           65536 |                                         7        
+          131072 |                                         79       
+          262144 |@@@@@@@@@@                               178120   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                429737   
+         1048576 |@@@@                                     71961    
+         2097152 |                                         3311     
+         4194304 |                                         483      
+         8388608 |                                         123      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006752395574,2013 Aug 27 10:57:33
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         1        
+           65536 |                                         9        
+          131072 |                                         88       
+          262144 |@@@@@@@@@@                               190769   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                457109   
+         1048576 |@@@@                                     76711    
+         2097152 |                                         3477     
+         4194304 |                                         492      
+         8388608 |                                         123      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006762395538,2013 Aug 27 10:57:43
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         1        
+           65536 |                                         9        
+          131072 |                                         88       
+          262144 |@@@@@@@@@@                               199078   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                483693   
+         1048576 |@@@@                                     82077    
+         2097152 |                                         3711     
+         4194304 |                                         510      
+         8388608 |                                         139      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006772395531,2013 Aug 27 10:57:53
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         1        
+           65536 |                                         14       
+          131072 |                                         95       
+          262144 |@@@@@@@@@@@                              215707   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                510853   
+         1048576 |@@@@                                     85651    
+         2097152 |                                         3891     
+         4194304 |                                         549      
+         8388608 |                                         144      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006782395537,2013 Aug 27 10:58:03
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         14       
+          131072 |                                         96       
+          262144 |@@@@@@@@@@@                              232135   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                537664   
+         1048576 |@@@@                                     89299    
+         2097152 |                                         4149     
+         4194304 |                                         594      
+         8388608 |                                         148      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006792395554,2013 Aug 27 10:58:13
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         15       
+          131072 |                                         111      
+          262144 |@@@@@@@@@@@                              246945   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                565138   
+         1048576 |@@@@                                     93416    
+         2097152 |                                         4344     
+         4194304 |                                         615      
+         8388608 |                                         152      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006802395579,2013 Aug 27 10:58:23
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         15       
+          131072 |                                         111      
+          262144 |@@@@@@@@@@@                              262894   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                592348   
+         1048576 |@@@@                                     97297    
+         2097152 |                                         4502     
+         4194304 |                                         641      
+         8388608 |                                         152      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006812395555,2013 Aug 27 10:58:33
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         15       
+          131072 |                                         116      
+          262144 |@@@@@@@@@@@                              280613   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                619336   
+         1048576 |@@@@                                     100763   
+         2097152 |                                         4647     
+         4194304 |                                         662      
+         8388608 |                                         152      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006822395547,2013 Aug 27 10:58:43
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         15       
+          131072 |                                         116      
+          262144 |@@@@@@@@@@@                              296892   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                646236   
+         1048576 |@@@@                                     104131   
+         2097152 |                                         4797     
+         4194304 |                                         680      
+         8388608 |                                         152      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006832395593,2013 Aug 27 10:58:53
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         15       
+          131072 |                                         117      
+          262144 |@@@@@@@@@@@                              312127   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@                 673393   
+         1048576 |@@@@                                     108031   
+         2097152 |                                         4990     
+         4194304 |                                         686      
+         8388608 |                                         152      
+        16777216 |                                         16       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006842395573,2013 Aug 27 10:59:03
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         16       
+          131072 |                                         117      
+          262144 |@@@@@@@@@@@                              318329   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                699083   
+         1048576 |@@@@                                     114216   
+         2097152 |                                         5323     
+         4194304 |                                         703      
+         8388608 |                                         156      
+        16777216 |                                         17       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006852395594,2013 Aug 27 10:59:13
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         16       
+          131072 |                                         120      
+          262144 |@@@@@@@@@@@                              326500   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                725839   
+         1048576 |@@@@                                     119494   
+         2097152 |                                         5582     
+         4194304 |                                         713      
+         8388608 |                                         156      
+        16777216 |                                         17       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006862395549,2013 Aug 27 10:59:23
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         16       
+          131072 |                                         120      
+          262144 |@@@@@@@@@@@                              333797   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                752528   
+         1048576 |@@@@                                     125030   
+         2097152 |                                         5824     
+         4194304 |                                         731      
+         8388608 |                                         157      
+        16777216 |                                         17       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006872395536,2013 Aug 27 10:59:33
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         16       
+          131072 |                                         124      
+          262144 |@@@@@@@@@@@                              346667   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                779472   
+         1048576 |@@@@                                     129479   
+         2097152 |                                         6035     
+         4194304 |                                         756      
+         8388608 |                                         157      
+        16777216 |                                         17       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006882396025,2013 Aug 27 10:59:43
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         16       
+          131072 |                                         124      
+          262144 |@@@@@@@@@@@                              350343   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                794054   
+         1048576 |@@@@                                     132586   
+         2097152 |                                         6204     
+         4194304 |                                         771      
+         8388608 |                                         164      
+        16777216 |                                         17       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>
+   3  72639                        :tick-10s 
+<begin record>
+timestamp,microsec,1006892396393,2013 Aug 27 10:59:53
+label, pread latency measured with DTrace
+latencyunit, nanosec
+  myhistogram                                       
+           value  ------------- Distribution ------------- count    
+            4096 |                                         0        
+            8192 |                                         1        
+           16384 |                                         2        
+           32768 |                                         2        
+           65536 |                                         16       
+          131072 |                                         124      
+          262144 |@@@@@@@@@@@                              350346   
+          524288 |@@@@@@@@@@@@@@@@@@@@@@@@@                794055   
+         1048576 |@@@@                                     132586   
+         2097152 |                                         6204     
+         4194304 |                                         771      
+         8388608 |                                         164      
+        16777216 |                                         17       
+        33554432 |                                         9        
+        67108864 |                                         5        
+       134217728 |                                         4        
+       268435456 |                                         0        
+
+
+<end record>

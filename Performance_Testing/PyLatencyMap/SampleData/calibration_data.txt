@@ -1,0 +1,57 @@
+
+This is calibration data for PyLatencyMap
+
+<begin record>
+timestamp, microsec, 1426348439000000, Sat Mar 14 00:00:0 2015 CET
+label, Calibration data
+latencyunit,microsec
+datasource, systemtap
+64,1
+128,1
+256,1
+512,1
+1024,1
+2048,1
+4096,1
+8192,1
+16384,1
+32768,1
+<end record>
+
+<begin record>
+timestamp, microsec, 1426348440000000, Sat Mar 14 00:00:01 2015 CET
+label, Calibration data
+latencyunit,microsec
+datasource, systemtap
+64,2
+128,2
+256,2
+512,2
+1024,2
+2048,2
+4096,2
+8192,2
+16384,2
+32768,2
+<end record>
+
+<begin record>
+timestamp, microsec, 1426348441000000, Sat Mar 14 00:00:01 2015 CET
+label, Calibration data
+latencyunit,microsec
+datasource, systemtap
+64,3
+128,3
+256,3
+512,3
+1024,3
+2048,3
+4096,3
+8192,3
+16384,3
+32768,3
+<end record>
+
+
+
+
