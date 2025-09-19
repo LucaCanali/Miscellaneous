@@ -1,13 +1,13 @@
 # Apache Spark for High Energy Physics
   
-This collects a few simple examples of how Apache Spark can be used in the domain of High Energy Physics data analysis.  
+This collects a few examples of how Apache Spark can be used in the domain of High Energy Physics data analysis.  
 Most of the examples are just for education purposes, use a small subset of data and can be run on laptop-sized computing resources.  
 See also the blog post [Can High Energy Physics Analysis Profit from Apache Spark APIs?](https://db-blog.web.cern.ch/node/186)  
 
 ### Contents:
  1. **[Dimuon mass spectrum analysis](#1-dimuon-mass-spectrum-analysis)**
- 2. **[HEP analysis benchmark](#2-hep-analysis-benchmark)**
- 3. **[ATLAS Higgs analysis](#3-atlas-higgs-boson-analysis---outreach-style)**
+ 2. **[ATLAS Higgs analysis](#2-atlas-higgs-boson-analysis---outreach-style)**
+ 3. **[HEP analysis benchmark](#3-hep-analysis-benchmark)**
  4. **[CMS Higgs analysis](#4-cms-higgs-boson-analysis---outreach-style)**
  5. **[LHCb matter antimatter analysis](#5-lhcb-matter-antimatter-asymmetries-analysis---outreach-style)**
  6. **[Spark ML on HEP data](#spark-ml-examples-with-physics-data)** 
@@ -17,53 +17,87 @@ See also the blog post [Can High Energy Physics Analysis Profit from Apache Spar
 ## 1. Dimuon mass spectrum analysis
   
 This is a sort of "Hello World!" example for High Energy Physics analysis.  
-The implementations proposed here using Apache Spark APIs are a direct "Spark translation"
-of a [tutorial using ROOT DataFrame](https://root.cern.ch/doc/master/df102__NanoAODDimuonAnalysis_8py.html)
+The implementations proposed here using Apache Spark APIs stem from the
+[ROOT DataFrame tutorials](https://root.cern.ch/doc/master/df102__NanoAODDimuonAnalysis_8py.html)
+
 
 ### Data
-  - These examples use CMS open data from 2012:  
-    - [DOI: 10.7483/OPENDATA.CMS.YLIC.86ZZ](http://opendata.cern.ch/record/6004)
-      and [DOI: 10.7483/OPENDATA.CMS.M5AD.Y3V3)](http://opendata.cern.ch/record/6030) 
-  - Data has been converted and made available for this work in snappy-compressed Apache Parquet and Apache ORC formats
-  - You can download the following datasets:
-    - **61 million events** (2 GB)
-      - original files in ROOT format: root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root
-        - see [notes](#notes-on-reading-and-converting-data-from-root-format) on how to access data using the XRootD protocol (`root://`) and how to read it.
-      - dataset converted to **Parquet**: [Run2012BC_DoubleMuParked_Muons.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet)
-        - `wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet`
-      - dataset converted to **ORC**: [Run2012BC_DoubleMuParked_Muons.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc)
-    - **6.5 billion events** (200 GB, this is the 2GB dataset repeated 105 times)
-      - original files, in ROOT format root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon
-      - dataset converted to **Parquet**: [CMSOpenDataDimuon_large.parquet](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet)
-          - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/`
-      - dataset converted to **ORC**: [CMSOpenDataDimuon_large.orc](https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc)
-        - download using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/`
 
-      
+- **Source (CMS Open Data, 2012)** DOI: [10.7483/OPENDATA.CMS.YLIC.86ZZ](http://opendata.cern.ch/record/6004) and DOI: [10.7483/OPENDATA.CMS.M5AD.Y3V3](http://opendata.cern.ch/record/6030)  
+- **Formats** Original: ROOT, Converted: Apache Parquet and Apache ORC
+- Dataset A — 61 million events (~2 GB)
+  - **ROOT (XRootD):**  
+    `root://eospublic.cern.ch//eos/opendata/cms/derived-data/AOD2NanoAODOutreachTool/Run2012BC_DoubleMuParked_Muons.root`  
+    _See [notes](#notes-on-reading-and-converting-data-from-root-format) for accessing `root://` and reading instructions._
+  - **Parquet (single file):**  
+    `wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.parquet`
+  - **ORC (single file):**  
+    `wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/Run2012BC_DoubleMuParked_Muons.orc`
+- Dataset B — 6.5 billion events (~200 GB, Dataset A replicated 105×)_
+  - **ROOT (directory over XRootD):**  
+    `root://eospublic.cern.ch//eos/root-eos/benchmark/CMSOpenDataDimuon`
+  - **Parquet (directory):**  https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/  
+    ```bash
+    wget -r -np -R "index.html*" -e robots=off \
+      https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.parquet/
+  - **ORC (directory):** https://sparkdltrigger.web.cern.ch/sparkdltrigger/CMSOpenDataDimuon_large.orc/ 
+
+---      
 ### Notebooks 
 Multiple notebook solutions are provided, to illustrate different approaches with Apache Spark.  
 Notes on the execution environment:
  - The notebooks use the dataset with 61 million events (Except the SCALE test that uses 6.5 billion events)
- - Compatibility and tests: these notebooks have been developed with Spark 3.2.1 and tested up to Spark 3.5.1
-    - For this we use Apache Spark vectorized reader for complex types in Parquet, mapInArrow UDF (introduced in Spark 3.3.0).
-    - The server used for testing and measuring the execution time has 4 physical CPU cores, SSD disk storage , and 32 GB of RAM (which is more than the minimum requirements for running this workload)
+ - Compatibility and tests: these notebooks have been tested up to Spark version 4.0.1 (originally developed using Spark 3.2.1)
+    - The server used for testing 4 physical CPU cores, SSD disk storage, and 32 GB of RAM
 
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                                                  | Run Time  | Short description                                                                                                                                                                                                                                     |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [**1. DataFrame API, Parquet**](Dimuon_mass_spectrum/1.Dimuon_mass_spectrum_histogram_Spark_DataFrame_Parquet.ipynb)                                                                                                                                                                                                                                                    | 11 sec    | The analysis is implemented using Apache Spark DataFrame API. This uses the dataset in Apache Parquet format                                                                                                                                          |
-| [**2. DataFrame API, ORC**](Dimuon_mass_spectrum/2.Dimuon_mass_spectrum_histogram_Spark_DataFrame_ORC.ipynb)                                                                                                                                                                                                                                                            | 11 sec    | Same as 1a., with the exception that this uses the dataset in Apache ORC format                                                                                                                                                                       |
-| [**3. Spark SQL, Parquet**](Dimuon_mass_spectrum/3.Dimuon_mass_spectrum_histogram_Spark_SQL.ipynb)                                                                                                                                                                                                                                                                      | 11 sec    | The analysis is implemented using Spark SQL                                                                                                                                                                                                           |
-| [**4. Scala UDF**](Dimuon_mass_spectrum/4.Dimuon_mass_spectrum_histogram_Spark_Scala_UDF.ipynb)                                                                                                                                                                                                                                                                         | 12 sec    | Implementation that mixes DataFrame API and Scala UDF. The dimuon invariant mass formula computation is implemented using a UDF written in Scala. Link to [Scala UDF code](Dimuon_mass_spectrum/scalaUDF/src/main/scala/ch/cern/udf/DimuonMass.scala) |
-| [**5a. Pandas UDF flattened data**](Dimuon_mass_spectrum/5a.Dimuon_mass_spectrum_histogram_Spark_Pandas_flattened_data_UDF.ipynb)                                                                                                                                                                                                                                       | 19 sec    | Implementation that mixes DataFrame API and Python Pandas UDF. The dimuon invariant mass formula computation is implemented using a  Pandas UDF                                                                                                       |
-| [**5b. Pandas UDF data arrays**](Dimuon_mass_spectrum/5b.Dimuon_mass_spectrum_histogram_Spark_Pandas_full_formula_with_arrays_UDF.ipynb)                                                                                                                                                                                                                                | 82 sec    | Same as 5a, but the Pandas UDF in this case uses data in arrays and lists                                                                                                                                                                             |
-| [**6. MapInArrow flattened data**](Dimuon_mass_spectrum/6.Dimuon_mass_spectrum_histogram_Spark_UDF_MapInArrow_flattened_data.ipynb)                                                                                                                                                                                                                                     | 22 sec    | This uses mapInArrow, introduced in [SPARK-37227](https://issues.apache.org/jira/browse/SPARK-37227)                                                                                                                                                  |
-| [**7. RumbleDB on Spark**](Dimuon_mass_spectrum/7.Dimuon_mass_spectrum_histogram_RumbleDB_on_Spark.ipynb)                                                                                                                                                                                                                                                               | 155 sec   | This implementation runs with RumbleDB query engine on top of Apache Spark. RumbleDB implements the JSONiq language.                                                                                                                                  |
+| [**1. DataFrame API, Parquet**](Dimuon_mass_spectrum/1.Dimuon_mass_spectrum_histogram_Spark_DataFrame_Parquet.ipynb)                                                                                                                                                                                                                                                    | 10 sec    | The analysis is implemented using Apache Spark DataFrame API. This uses the dataset in Apache Parquet format                                                                                                                                          |
+| [**2. DataFrame API, ORC**](Dimuon_mass_spectrum/2.Dimuon_mass_spectrum_histogram_Spark_DataFrame_ORC.ipynb)                                                                                                                                                                                                                                                            | 10 sec    | Same as 1a., with the exception that this uses the dataset in Apache ORC format                                                                                                                                                                       |
+| [**3. Spark SQL, Parquet**](Dimuon_mass_spectrum/3.Dimuon_mass_spectrum_histogram_Spark_SQL.ipynb)                                                                                                                                                                                                                                                                      | 10 sec    | The analysis is implemented using Spark SQL                                                                                                                                                                                                           |
+| [**4. Scala UDF**](Dimuon_mass_spectrum/4.Dimuon_mass_spectrum_histogram_Spark_Scala_UDF.ipynb)                                                                                                                                                                                                                                                                         | 10 sec    | Implementation that mixes DataFrame API and Scala UDF. The dimuon invariant mass formula computation is implemented using a UDF written in Scala. Link to [Scala UDF code](Dimuon_mass_spectrum/scalaUDF/src/main/scala/ch/cern/udf/DimuonMass.scala) |
+| [**5a. Pandas UDF flattened data**](Dimuon_mass_spectrum/5a.Dimuon_mass_spectrum_histogram_Spark_Pandas_flattened_data_UDF.ipynb)                                                                                                                                                                                                                                       | 27 sec    | Implementation that mixes DataFrame API and Python Pandas UDF. The dimuon invariant mass formula computation is implemented using a  Pandas UDF                                                                                                       |
+| [**5b. Pandas UDF data arrays**](Dimuon_mass_spectrum/5b.Dimuon_mass_spectrum_histogram_Spark_Pandas_full_formula_with_arrays_UDF.ipynb)                                                                                                                                                                                                                                | 98 sec    | Same as 5a, but the Pandas UDF in this case uses data in arrays and lists                                                                                                                                                                             |
+| [**6. MapInArrow flattened data**](Dimuon_mass_spectrum/6.Dimuon_mass_spectrum_histogram_Spark_UDF_MapInArrow_flattened_data.ipynb)                                                                                                                                                                                                                                     | 17 sec    | This uses mapInArrow, introduced in [SPARK-37227](https://issues.apache.org/jira/browse/SPARK-37227)                                                                                                                                                  |
+| [**7. RumbleDB on Spark**](Dimuon_mass_spectrum/7.Dimuon_mass_spectrum_histogram_RumbleDB_on_Spark.ipynb)                                                                                                                                                                                                                                                               | 226 sec   | This implementation runs with RumbleDB query engine on top of Apache Spark. RumbleDB implements the JSONiq language.                                                                                                                                  |
 | [**<span style="color:red">8. DataFrame API at scale, Parquet</span>**](Dimuon_mass_spectrum/8.Dimuon_mass_spectrum_histogram_Spark_DataFrame_Parquet_vectorized-Large_SCALE.ipynb)                                                                                                                                                                                     | (*)35 sec | (*)This has processed 6.5 billion events, at scale on a cluster using 200 CPU cores.                                                                                                                                                                  |
 | **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> Dimuon spectrum analysis on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/Dimuon_mass_spectrum/Dimuon_mass_spectrum_histogram_Spark_DataFrame_Colab_version.ipynb)**                              | -         | You can run this on Google's Colaboratory                                                                                                                                                                                                             |
 | **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Dimuon spectrum analysis on CERN SWAN](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/Dimuon_mass_spectrum/Dimuon_mass_spectrum_histogram_Spark_DataFrame_CERNSWAN_version.ipynb)** | -         | You can run this on CERN SWAN (requires CERN SSO credentials)                                                                                                                                                                                         |               
+---
+
+## 2. ATLAS Higgs boson analysis - outreach-style
+This is an example analysis of the Higgs boson detection via the decay channel H &rarr; ZZ* &rarr; 4l
+From the decay products measured at the ATLAS experiment and provided as open data, you will be able to produce a few histograms,
+comparing experimental data and Monte Carlo (simulation) data. From there you can infer the invariant mass of the Higgs boson.  
+Disclaimer: this is for educational purposes only, it is not the code nor the data of the official Higgs boson discovery paper.   
+References: 
+- ATLAS paper on the [discovery of the Higgs boson](https://www.sciencedirect.com/science/article/pii/S037026931200857X) (mostly Section 4 and 4.1)
+- This code is based on [ATLAS outreach notebooks](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/tree/master/13-TeV-examples/uproot_python)
+and derived [work at this repo](https://github.com/gordonwatts/pyhep-2021-SX-OpenDataDemo) and [this work](https://root.cern/doc/master/df106__HiggsToFourLeptons_8py.html)   
+
+### Data
+  - The original data in ROOT format is from the [ATLAS Open Datasets](https://opendata.atlas.cern/)
+  - The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format. 
+    - Download from: [ATLAS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata)
+      - download all files (200 MB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata/`
+
+### Notebooks
+
+  - Compatibility and tests: these notebooks have been developed with Spark 3.2.1 and tested up to Spark 4.0.1
+  - These analyses use a very small dataset and are mostly intended to show how the Spark API can be applied in this context,
+    rather than its performance and scalability.
+
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                                  | Short description                                                                                                                                                                                       |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **[1. ATLAS opendata Higgs H-ZZ*-4l basic analysis](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic_experiment_data.ipynb)**                                                                                                                                                                                                                                | Basic analysis with experiment (detector) data.                                                                                                                                                         |
+| **[2. H-ZZ*-4l basic analysis with additional filters and cuts](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_extra_cuts_montecarlo_data.ipynb)**                                                                                                                                                                                                               | Analysis with extra cuts and data operations, this uses Monte Carlo (simulation) data.                                                                                                                  |
+| **[3. H-ZZ*-4l reproduce Fig 2 of the paper - with experiment data and monte carlo](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_data_and_monte_carlo_Fig2_Higgs_paper.ipynb)**                                                                                                                                                                                | Analysis with extra cuts and data operations, this uses experiment (detector) data and Monte Carlo (simulation) data for signal and backgroud. It roughly reproduces Figure 2 of the ATLAS Higgs paper. |
+| **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50">Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic_experiment_data.ipynb)**             | Basic analysis with experiment (detector) data. This notebook opens on Google's Colab.                                                                                                                  |
+| **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on CERN SWAN](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic.ipynb)** | Basic analysis with experiment (detector) data. This notebook opens on CERN's SWAN notebook service (requires CERN SSO credentials)                                                                     |
 
 ---
-## 2. HEP analysis benchmark
+
+## 3. HEP analysis benchmark
   
 Here you will find an implementation of the High Energy Physics benchmark tasks using Apache Spark.    
 It follows the [IRIS-HEP benchmark](https://github.com/iris-hep/adl-benchmarks-index) specifications
@@ -97,37 +131,6 @@ Notes on the execution environment:
 | [**Benchmark task 8**](HEP_benchmark/ADL_HEP_Query_Benchmark_Q8.ipynb)                                                                                                                                                                                                                                                                         | This combines Spark DataFrame API for filtering and Scala UDFs for processing. Link to [the Scala UDF code.](HEP_benchmark/scalaUDF/src/main/scala/ch/cern/udf/HEPBenchmarkQ8.scala)                                                     |
 | **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50"> Benchmark tasks 1 to 5 on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/HEP_benchmark/ADL_HEP_Query_Benchmark_Q1_Q5_Colab_Version.ipynb)**                               | You can run this on Google's Colaboratory.                                                                                                                                                                                               |
 | **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Benchmark tasks 1 to 5 on CERN SWAN](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/HEP_benchmark/ADL_HEP_Query_Benchmark_Q1_Q5_CERNSWAN_Version.ipynb)** | You can run this on CERN SWAN (requires CERN SSO credentials).                                                                                                                                                                           |                     
-
----
-## 3. ATLAS Higgs boson analysis - outreach-style
-This is an example analysis of the Higgs boson detection via the decay channel H &rarr; ZZ* &rarr; 4l
-From the decay products measured at the ATLAS experiment and provided as open data, you will be able to produce a few histograms,
-comparing experimental data and Monte Carlo (simulation) data. From there you can infer the invariant mass of the Higgs boson.  
-Disclaimer: this is for educational purposes only, it is not the code nor the data of the official Higgs boson discovery paper.  
-It is based on the original work on [ATLAS outreach notebooks](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/tree/master/13-TeV-examples/uproot_python)
-and derived [work at this repo](https://github.com/gordonwatts/pyhep-2021-SX-OpenDataDemo) and [this work](https://root.cern/doc/master/df106__HiggsToFourLeptons_8py.html) 
-Reference: ATLAS paper on the [discovery of the Higgs boson](https://www.sciencedirect.com/science/article/pii/S037026931200857X) (mostly Section 4 and 4.1)   
-
-### Data
-  - The original data in ROOT format is from the [ATLAS Open Datasets](http://opendata.atlas.cern/release/2020/documentation/)
-    - direct link: [ATLAS open data events selected with at least four leptons (electron or muon)](https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep.zip)
-  - The notebooks presented here use datasets from the original open data events converted to snappy-compressed Apache Parquet format. 
-    - Download from: [ATLAS Higgs notebook opendata in Parquet format](https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata)
-      - download all files (200 MB) using `wget -r -np -R "index.html*" -e robots=off https://sparkdltrigger.web.cern.ch/sparkdltrigger/ATLAS_Higgs_opendata/`
-
-### Notebooks
-
-  - Compatibility and tests: these notebooks have been developed with Spark 3.2.1 and tested up to Spark 3.5.1
-  - These analyses use a very small dataset and are mostly intended to show how the Spark API can be applied in this context,
-    rather than its performance and scalability.
-
-| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                                  | Short description                                                                                                                                                                                       |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **[1. ATLAS opendata Higgs H-ZZ*-4l basic analysis](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic_experiment_data.ipynb)**                                                                                                                                                                                                                                | Basic analysis with experiment (detector) data.                                                                                                                                                         |
-| **[2. H-ZZ*-4l basic analysis with additional filters and cuts](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_extra_cuts_montecarlo_data.ipynb)**                                                                                                                                                                                                               | Analysis with extra cuts and data operations, this uses Monte Carlo (simulation) data.                                                                                                                  |
-| **[3. H-ZZ*-4l reproduce Fig 2 of the paper - with experiment data and monte carlo](ATLAS_Higgs_opendata/H_ZZ_4l_analysis_data_and_monte_carlo_Fig2_Higgs_paper.ipynb)**                                                                                                                                                                                | Analysis with extra cuts and data operations, this uses experiment (detector) data and Monte Carlo (simulation) data for signal and backgroud. It roughly reproduces Figure 2 of the ATLAS Higgs paper. |
-| **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50">Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic_experiment_data.ipynb)**             | Basic analysis with experiment (detector) data. This notebook opens on Google's Colab.                                                                                                                  |
-| **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run ATLAS opendata Higgs H-ZZ*-4l basic analysis on CERN SWAN](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/ATLAS_Higgs_opendata/H_ZZ_4l_analysis_basic.ipynb)** | Basic analysis with experiment (detector) data. This notebook opens on CERN's SWAN notebook service (requires CERN SSO credentials)                                                                     |
 
 ---
 ## 4. CMS Higgs boson analysis - outreach-style
@@ -173,18 +176,18 @@ LHCb collaboration and are authored and shared by the LHCb collaboration in thei
 ### Notebooks
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/250px-Jupyter_logo.svg.png" height="50"> Notebook                                                                                                                                                                                                            | Short description                                                                 |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| **[LHCb outreach analysis](LHCb_opendata/LHCb_OpenData_Spark.ipynb)**                                                                                                                                                                                                                                                                             | LHCb analysis notebook using open data                                            |
  | **[<img src="https://raw.githubusercontent.com/googlecolab/open_in_colab/master/images/icon128.png" height="50">Run LHCb opendata analysis notebook on Colab](https://colab.research.google.com/github/LucaCanali/Miscellaneous/blob/master/Spark_Physics/LHCb_opendata/LHCb_OpenData_Spark.ipynb)**                                              | This notebook opens on Google's Colab                                |
 | **[<img src="https://swanserver.web.cern.ch/swanserver/images/badge_swan_white_150.png" height="30"> Run LHCb opendata analysis notebook on CERN SWAN](https://cern.ch/swanserver/cgi-bin/go/?projurl=https://raw.githubusercontent.com/LucaCanali/Miscellaneous/master/Spark_Physics/LHCb_opendata/LHCb_OpenData_Spark_CERNSWAN_Version.ipynb)** | This notebook opens on CERN SWAN notebook service (requires CERN SSO credentials) |
+| **[LHCb outreach analysis](LHCb_opendata/LHCb_OpenData_Spark.ipynb)**                                                                                                                                                                                                                                                                             | LHCb analysis notebook using open data                                            |
 
 ---
 
 ## Notes on reading and converting data from ROOT format
 ### How to convert from ROOT format to Apache Parquet or ORC
 High Energy Physics uses the [ROOT](https://root.cern/) data format extensively. Here are a few notes on how to read and convert data from ROOT format to Apache Parquet or ORC:
-   - Spark and the [Laurelin library](https://github.com/spark-root/laurelin),
-     as detailed in [note on converting from ROOT format](Spark_Root_data_preparation.md)
-   - Python toolkits, notably uproot and awkward arrays, as in this [example of how to use uproot](Uproot_example.md)
+   - Use the [PySpark Python datasource](https://github.com/cerndb/pyspark-root-datasource) to read ROOT files into Spark dataframes
+   - See also the [note on converting from ROOT format](Spark_Root_data_preparation.md)
+   - You can also use native Python toolkits, notably uproot and awkward arrays, as in this [example of how to use uproot](Uproot_example.md)
 
 ### How to read files via the XRootD protocol
  - This allows to read files from URLs like `root://eospublic.cern.ch/..`
