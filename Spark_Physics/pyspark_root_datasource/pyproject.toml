@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspark-root-datasource"
+version = "0.1.0"
+description = "Python DataSource for Apache Spark 4 to read ROOT files (used in High Energy Physics) as DataFrames"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Luca Canali", email = "Luca.Canali@cern.ch" }]
+license = { text = "Apache-2.0" }
+keywords = ["spark", "datasource", "root", "hep", "uproot", "awkward", "pyarrow", "xrootd"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Software Development :: Libraries",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "pyspark>=4.0.0",
+  "uproot>=5.3.0",
+  "awkward>=2.6.0",
+  "pyarrow>=15.0.0",
+]
+
+[project.optional-dependencies]
+# Support for reading root:// URLs
+xrootd = [
+  "fsspec>=2024.3.0",
+  "fsspec-xrootd>=0.3.0",
+  "XRootD>=5.6.0",
+]
+# Dev extras: linters, tests, formatting
+dev = [
+  "pytest>=8",
+  "pytest-cov>=5",
+  "ruff>=0.4.0",
+  "black>=24.3.0",
+  "mypy>=1.8.0",
+  "types-setuptools>=69.0.0.0",
+]
+test = [
+  "pytest>=8",
+  "pytest-cov>=5",
+  "pyspark>=4.0.0",
+ "uproot>=5.3.0",
+  "awkward>=2.6.0",
+  "pyarrow>=15.0.0"
+] 
+
+[project.urls]
+Homepage = "https://github.com/cerndb/pyspark-root-datasource"
+Repository = "https://github.com/cerndb/pyspark-root-datasource"
+Issues = "https://github.com/cerndb/pyspark-root-datasource/issues"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pyspark_root_datasource*"]
+
+# --- Tooling (optional but handy) ---
+
+[tool.pytest.ini_options]
+addopts = "-ra -q --strict-markers --disable-warnings"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["pyspark_root_datasource"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+extend-select = ["B", "C4", "I", "W", "UP", "RUF"]
+exclude = ["build", "dist", ".venv"]
