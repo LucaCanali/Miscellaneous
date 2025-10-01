@@ -1,6 +1,6 @@
 # Notes on converting from ROOT format
 
-## PySpark Python datasource for ROOT
+## 1. PySpark Python datasource for ROOT
 
 The [PySpark Python datasource for ROOT](https://github.com/cerndb/pyspark-root-datasource) runs on Spark 4 and
 allows to read ROOT files into Spark dataframes.
@@ -47,9 +47,10 @@ df2.printSchema()
 More details and examples at the project home page: [PySpark Python datasource for ROOT](https://github.com/cerndb/pyspark-root-datasource) 
 
 
-## Laurelin
+## 2. Laurelin
 
-Note, when using Laurelin 1.6.0 with Spark 3.x, use Java 8 (Java 11 and Java 17 do not appear to work with that version). Example:  
+Laurelin is an implementation of a Spark Datasource V2 written in Java.  
+Note: Laurelin 1.6.0 with Spark 3.x, requires Java 8 (Java 11 and Java 17 do not appear to work with that version). Example:  
 
 ```
 export JAVA_HOME=<path to java 8 home>
