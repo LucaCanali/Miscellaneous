@@ -3,4 +3,5 @@
 //! See the README for a quick example.
 
 pub mod test_cpu_parallel;
-pub use test_cpu_parallel::TestCPUParallel;
+pub use crate::test_cpu_parallel::{TestCPUParallel, WorkloadMode};
+

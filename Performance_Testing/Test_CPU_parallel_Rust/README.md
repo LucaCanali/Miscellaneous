@@ -8,7 +8,7 @@ hardware or virtualization environments with minimal overhead.
 
 - **Author / Maintainer**: [Luca Canali](mailto:Luca.Canali@cern.ch)
 - **Initial Release**: April 2023
-- **Latest Version**: 1.3.1 (April 2025)
+- **Latest Version**: 1.3.2 (December 2025)
 
 ## 🚀 Key Features
 
@@ -28,8 +28,9 @@ hardware or virtualization environments with minimal overhead.
 |-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | **Linux Binary**        | `curl -O https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel && chmod +x test_cpu_parallel` |
 | **Windows Binary**      | `curl -O https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel.exe`                         |
-| **Cargo / crates.io**   | `cargo install test_cpu_parallel`                                                                                           |
 | **Docker**              | `docker run --rm lucacanali/test_cpu_parallel -w 2`                                                                         |
+| **Cargo / crates.io**   | `cargo install test_cpu_parallel`                                                                                           |
+| **Build locally**       | `git clone this repo + cargo build --release`                                                                               |
 
 ---
 
@@ -107,8 +108,8 @@ There are multiple and alternative ways to deploy the tool, suitable for differe
 
     # Note, you can check the integrity of the download with the sha256sum command
     sha256sum test_cpu_parallel
-    # Expected output for version 1.3.1:
-    1e44586021199edc58d9d3ea3c026eb1eef84253f5ec391fa6c6f8fc2e28e9ce
+    # Expected output for version 1.3.2:
+    4617c06fdbcc4fbcce05f9a5ddd9c733b70c6a5cafd22d1b0090464af6e44e29
     ```
   
   - **Compile from source** code and run the binary
@@ -129,6 +130,7 @@ There are multiple and alternative ways to deploy the tool, suitable for differe
       kubectl apply -f test_cpu_parallel.yaml
       ```
   - Available binaries for Linux:
+    - [test_cpu_parallel v. 1.3.2, Cargo 1.91.1](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.2)
     - [test_cpu_parallel v. 1.3.1, Cargo 1.86.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.1)
     - [test_cpu_parallel v. 1.2.0, Cargo 1.84.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.2.0)
     - [test_cpu_parallel v. 1.1.0, Cargo 1.77.1](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.1.0)
@@ -147,10 +149,11 @@ You can run test_cpu_parallel on Windows via:
    ```
    certutil -hashfile test_cpu_parallel.exe SHA256
 
-   Expected SHA256 (v1.3.1):
-   289110cf8c1964ae503cb085c322f32dc2c390bd3cecc493b7729732e34a5e4e
+   Expected SHA256 (v1.3.2):
+   503b2e381fa5925c7b02c55d2057875ff9d73e4dc58c666ae3e580175e12d25b
    ```
 - Available binaries for Windows:
+   - [test_cpu_parallel.exe v. 1.3.2, Cargo 1.91.1](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.2.exe)
    - [test_cpu_parallel.exe v. 1.3.1, Cargo 1.86.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.3.1.exe)
    - [test_cpu_parallel.exe v. 1.2.0, Cargo 1.84.0](https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel_v1.2.0.exe)
 
@@ -159,7 +162,7 @@ You can run test_cpu_parallel on Windows via:
 ## 📊 Output & Analysis
 
 The `--full` sweep writes a tidy CSV.  
-For example this run on a server with 32 cores:
+For example this run on a server with 32 cores using test_cpu_parallel_v1.3.1:
 `./test_cpu_parallel -w 16 --worker_inner_loop_size 2000 -f -o CPU_measure_0_16_20250430.csv`
 
 ```csv
@@ -183,8 +186,9 @@ Threads    Thread-Median Thread-Mean  Thread-Std   Batch-Median Batch-Mean   Bat
 When using the tool in full mode, the output is a CSV file with the measured job execution time as a function of the number of parallel workers.  
   - This allows for the analysis of the scalability of the system under test. For example, you can plot the speedup or efficiency of the system as a function of the number of workers.
   - See the [Notebooks](Notebooks) folder for examples of Jupyter notebooks used to analyze the collected data.  
-  - Related blog: [CPU Load Testing Exercises: Tools and Analysis for Oracle Database Servers](https://db-blog.web.cern.ch/node/189) 
-    - for more details and examples of the analyses and plots that can be produced with the collected data. 
+  - Related blogs:
+    - [CPU Load Testing Exercises: Tools and Analysis for Oracle Database Servers](https://db-blog.web.cern.ch/node/189) 
+    - [Are you Happy with your CPU Performance? Quickly measure and load-test your CPUs with a simple Rust tool](https://externaltable.blogspot.com/2025/12/are-you-happy-with-your-cpus-performance.html)
 
 ## Notes
 - This is not a full benchmarking suite, it is designed for quick load generation and multithreaded performance evaluation.

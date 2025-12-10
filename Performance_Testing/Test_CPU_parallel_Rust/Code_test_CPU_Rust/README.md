@@ -21,9 +21,9 @@ Link to the [Project page](https://github.com/LucaCanali/Miscellaneous/tree/mast
 |------------------------------|---------|
 | **CLI binary** (optimised)   | `cargo install test_cpu_parallel` |
 | **Library** in an app / lib  | `cargo add test_cpu_parallel` |
-| **Dev build from source**    | `git clone … && cargo build` |
+| **Build from source**    | `git clone … && cargo build --release` |
 
-> **Note** For benchmark *accuracy* the CLI defaults to an **un‑optimised** `opt‑level = 0` build.  If you install with `cargo install` a `--release` build is produced; results will differ slightly.  Re‑compile locally with `cargo build` to reproduce blog numbers.
+> **Note** Note The tool intentionally disables compiler optimizations using an unoptimized build for `cargo build --release` and `cargo install` (by setting `opt-level = 0)`. While `cargo build` also generates an unoptimized binary for debug, it is not equivalent to a --release build. For consistent performance comparisons, avoid mixing cargo build binaries with --release binaries.
 
 ---
 ## ⚡ CLI quick‑start
@@ -77,11 +77,8 @@ API docs are hosted on **[docs.rs/test_cpu_parallel](https://docs.rs/test_cpu_pa
 # Clone and build a debug binary (recommended for comparable timings)
 $ git clone https://github.com/LucaCanali/Miscellaneous.git
 $ cd Miscellaneous/Performance_Testing/Test_CPU_parallel_Rust
-$ cargo build            # ≈ 35 s on a modern laptop
+$ cargo build --release
 ```
-
-* Tested on Rust **1.74+** – that is the MSRV.
-* Setting `cargo build --release` enables heavy optimisations and changes loop timing; avoid if you care about exact comparability.
 
 ---
 ## 📊 Analysing the CSV

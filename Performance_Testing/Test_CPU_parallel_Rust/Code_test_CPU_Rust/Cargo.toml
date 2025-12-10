@@ -1,16 +1,15 @@
 [package]
 name         = "test_cpu_parallel"
-version      = "1.3.1"          # bump every time you publish
+version      = "1.3.2"
 edition      = "2021"
-rust-version = "1.74"           # MSRV; pick the oldest version you test on
+rust-version = "1.91.1"
 description  = "Generate CPU- or memory-intensive workloads for benchmarking."
 authors      = ["Luca Canali <Luca.Canali@cern.ch>"]
-license      = "Apache-2.0"     # use the SPDX identifier, dash not space
+license      = "Apache-2.0"
 repository   = "https://github.com/LucaCanali/Miscellaneous"
 homepage     = "https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Rust"
 readme       = "README.md"
 keywords     = ["benchmark", "cpu", "parallelism", "workload", "performance"]
-
 categories   = ["concurrency"]
 
 include = [
@@ -25,12 +24,13 @@ path = "src/lib.rs"
 
 [dependencies]
 # Libraries used in this project
-rayon = "1.10.0"            # High-performance data parallelism and thread pool library
-clap = "4.5.37"             # Command-line argument parsing made easy
+rayon = "1.11.0"            # High-performance data parallelism and thread pool library
+clap   = { version = "4.5.53", features = ["derive"] } #  CLI parsing, enable derive API
 statrs = "0.18.0"           # Statistical functions and distributions for analysis
-ctrlc = "3.4.5"             # Graceful Ctrl+C handling
+ctrlc = "3.5.1"             # Graceful Ctrl+C handling
 
 [profile.release]
+# Need to skip compiler optimizations when cargo build --release
 opt-level = 0                       # Disable optimizations to avoid interference with benchmarking
 debug = false                       # Include debug information for profiling and analysis
 codegen-units = 1                   # Use a single codegen unit for more consistent benchmarks

@@ -12,9 +12,9 @@ tool written in Rust.
     wget https://sparkdltrigger.web.cern.ch/sparkdltrigger/test_cpu_parallel/test_cpu_parallel
     chmod +x test_cpu_parallel
     
-    # Checksum for test_cpu_parallel V 1.3.0:
+    # Checksum for test_cpu_parallel V 1.3.2:
     # sha256sum test_cpu_parallel
-    # 94f904160b0d03dbbd3d6a56892271fc6c82ad09c1ab416fae69a94451a62f2e
+    # 4617c06fdbcc4fbcce05f9a5ddd9c733b70c6a5cafd22d1b0090464af6e44e29
     ```
 - Build the docker image with:
 ```

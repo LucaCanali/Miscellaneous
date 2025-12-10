@@ -1,9 +1,16 @@
 use rayon::prelude::*;
-use std::time::Instant;
-use std::io::{BufWriter, Write};
+use statrs::statistics::{Data, Median, Statistics};
 use std::fs::File;
+use std::io::{BufWriter, Write};
 use std::path::Path;
-use statrs::statistics::{Data, Median, Distribution};
+use std::time::{Duration, Instant};
+
+/// Workload type to run.
+#[derive(Copy, Clone, Debug)]
+pub enum WorkloadMode {
+    Cpu,
+    Memory,
+}
 
 /// Represents the configuration and functionality for CPU- or memory-intensive tests.
 pub struct TestCPUParallel {
@@ -20,7 +27,7 @@ pub struct TestCPUParallel {
     output_csv_file: Option<String>,
 
     /// Size *in MiB* of the buffer used by the memory workload.
-    memory_size: usize,
+    memory_size_mib: usize,
 }
 
 /// Very small xorshift RNG: 3 shifts + 2 xors = one “random” `u64`.
@@ -40,27 +47,25 @@ impl TestCPUParallel {
         max_num_workers: usize,
         num_job_execution_loops: usize,
         worker_inner_loop_size: usize,
-        output_csv_file: String,
-        memory_size: usize,
+        output_csv_file: Option<String>,
+        memory_size_mib: usize,
     ) -> Self {
         Self {
             max_num_workers,
             num_job_execution_loops,
             worker_inner_loop_size,
-            output_csv_file: if output_csv_file.is_empty() {
-                None
-            } else {
-                Some(output_csv_file)
-            },
-            memory_size,
+            output_csv_file,
+            memory_size_mib,
         }
     }
 
     /// Memory-plus-CPU workload: random touches beyond L2 size.
+    ///
+    /// Returns elapsed time in seconds.
     pub fn memory_cpu_intensive_inner_loop(&self, iterations: usize) -> f64 {
         // Convert MiB → bytes and round to next power-of-two so we can mask.
-        let size_bytes = (self.memory_size * 1024 * 1024).next_power_of_two();
-        let mut array: Vec<usize> = vec![0; size_bytes / 8];
+        let size_bytes = (self.memory_size_mib * 1024 * 1024).next_power_of_two();
+        let mut array: Vec<usize> = vec![0; size_bytes / std::mem::size_of::<usize>()];
         let len_mask = array.len() - 1;
         let mut rng_state = 0x0055_aa55_f00d_f00d_u64; // non-zero seed
 
@@ -82,8 +87,14 @@ impl TestCPUParallel {
                         }
                     }};
                 }
-                touch!(); touch!(); touch!(); touch!();
-                touch!(); touch!(); touch!(); touch!();
+                touch!();
+                touch!();
+                touch!();
+                touch!();
+                touch!();
+                touch!();
+                touch!();
+                touch!();
             }
         }
 
@@ -92,7 +103,9 @@ impl TestCPUParallel {
     }
 
     /// Pure CPU-heavy loop.
-    fn cpu_intensive_inner_loop(&self, iterations: usize) -> f64 {
+    ///
+    /// Returns elapsed time in seconds.
+    pub fn cpu_intensive_inner_loop(&self, iterations: usize) -> f64 {
         let start = Instant::now();
         let mut val: usize = 0;
 
@@ -106,45 +119,72 @@ impl TestCPUParallel {
         start.elapsed().as_secs_f64()
     }
 
+ 
+    fn summarize(samples: Vec<f64>) -> (f64, f64, f64) {
+        if samples.is_empty() {
+            return (0.0, 0.0, 0.0);
+        }
+
+        // Median via `Data` + `Median` trait
+        let data = Data::new(samples.clone());
+        let median = data.median();
+
+        // Mean and std dev via slice + `Statistics` trait
+        let slice = samples.as_slice();
+        let mean = slice.mean();
+        let std_dev = slice.std_dev();
+
+        (median, mean, std_dev)
+    }
+
     /// Run one load and return *thread* **and** *batch* statistics.
-    pub fn test_one_load(&self, threads: Option<usize>, mode: &str)
-        -> Result<((f64, f64, f64), (f64, f64, f64)), String>
-    {
+    pub fn test_one_load(
+        &self,
+        threads: Option<usize>,
+        mode: WorkloadMode,
+    ) -> Result<((f64, f64, f64), (f64, f64, f64)), String> {
         let load = threads.unwrap_or(self.max_num_workers);
         let mut thread_times = Vec::with_capacity(self.num_job_execution_loops * load);
-        let mut batch_times  = Vec::with_capacity(self.num_job_execution_loops);
-        const BATCH_DELAY: std::time::Duration = std::time::Duration::from_millis(500);
+        let mut batch_times = Vec::with_capacity(self.num_job_execution_loops);
+        const BATCH_DELAY: Duration = Duration::from_millis(500);
 
         println!(
-            "Starting test with {load} worker threads for {} batches (mode: {mode}).",
-            self.num_job_execution_loops
+            "Starting test with {load} worker threads for {} batches (mode: {:?}).",
+            self.num_job_execution_loops, mode
         );
 
-        let inner_loop: Box<dyn Fn(usize) -> f64 + Send + Sync> = match mode {
-            "cpu"    => Box::new(|it| self.cpu_intensive_inner_loop(it)),
-            "memory" => Box::new(|it| self.memory_cpu_intensive_inner_loop(it)),
-            _ => return Err(format!("Invalid mode '{mode}'. Use 'cpu' or 'memory'.")),
-        };
+        let pool = rayon::ThreadPoolBuilder::new()
+            .num_threads(load)
+            .build()
+            .map_err(|e| format!("Failed to build thread pool: {e}"))?;
 
         for batch_idx in 0..self.num_job_execution_loops {
-            println!("Running batch {}/{} with {} threads", batch_idx + 1, self.num_job_execution_loops, load);
+            println!(
+                "Running batch {}/{} with {} threads",
+                batch_idx + 1,
+                self.num_job_execution_loops,
+                load
+            );
             std::thread::sleep(BATCH_DELAY);
 
             let batch_start = Instant::now();
 
-            let pool = rayon::ThreadPoolBuilder::new()
-                .num_threads(load)
-                .build()
-                .map_err(|e| format!("Failed to build thread pool: {e}"))?;
-
             let results: Vec<f64> = pool.install(|| {
-                (0..load).into_par_iter()
-                          .map(|worker_id| {
-                              let t = inner_loop(self.worker_inner_loop_size);
-                              println!("Thread {worker_id} finished, Δt = {t:.2}s");
-                              t
-                          })
-                          .collect()
+                (0..load)
+                    .into_par_iter()
+                    .map(|worker_id| {
+                        let t = match mode {
+                            WorkloadMode::Cpu => {
+                                self.cpu_intensive_inner_loop(self.worker_inner_loop_size)
+                            }
+                            WorkloadMode::Memory => {
+                                self.memory_cpu_intensive_inner_loop(self.worker_inner_loop_size)
+                            }
+                        };
+                        println!("Thread {worker_id} finished, Δt = {t:.2}s");
+                        t
+                    })
+                    .collect()
             });
 
             let batch_elapsed = batch_start.elapsed().as_secs_f64();
@@ -154,33 +194,28 @@ impl TestCPUParallel {
             batch_times.push(batch_elapsed);
         }
 
-        // ----- statistics -----
-        let thread_stats = Data::new(thread_times);
-        let batch_stats  = Data::new(batch_times);
-
-        let t = (
-            thread_stats.median(),
-            thread_stats.mean().unwrap_or_default(),
-            thread_stats.std_dev().unwrap_or_default(),
-        );
-        let b = (
-            batch_stats.median(),
-            batch_stats.mean().unwrap_or_default(),
-            batch_stats.std_dev().unwrap_or_default(),
-        );
+        let thread_stats = Self::summarize(thread_times);
+        let batch_stats = Self::summarize(batch_times);
 
         println!(
-            "Statistics → Threads  median {0:.2}s, mean {1:.2}s, stdev {2:.2}s\nStatistics → Batches  median {3:.2}s, mean {4:.2}s, stdev {5:.2}s",
-            t.0, t.1, t.2, b.0, b.1, b.2
+            "Statistics → Threads  median {0:.2}s, mean {1:.2}s, stdev {2:.2}s\n\
+             Statistics → Batches  median {3:.2}s, mean {4:.2}s, stdev {5:.2}s",
+            thread_stats.0,
+            thread_stats.1,
+            thread_stats.2,
+            batch_stats.0,
+            batch_stats.1,
+            batch_stats.2
         );
 
-        Ok((t, b))
+        Ok((thread_stats, batch_stats))
     }
 
     /// Sweep 1‥=max_num_workers and print both thread- and batch-level summaries.
-    pub fn test_full(&self, mode: &str) -> Result<(), String> {
+    pub fn test_full(&self, mode: WorkloadMode) -> Result<(), String> {
         println!(
-            "Starting full test, threads 1→{} (mode: {}).", self.max_num_workers, mode
+            "Starting full test, threads 1→{} (mode: {:?}).",
+            self.max_num_workers, mode
         );
 
         // (threads, t_med, t_mean, t_std, b_med, b_mean, b_std)
@@ -201,7 +236,13 @@ impl TestCPUParallel {
     fn print_test_results(&self, r: &[(usize, f64, f64, f64, f64, f64, f64)]) {
         println!(
             "{:<10} {:<12} {:<12} {:<12} {:<12} {:<12} {:<12}",
-            "Threads", "Thread-Median", "Thread-Mean", "Thread-Std", "Batch-Median", "Batch-Mean", "Batch-Std"
+            "Threads",
+            "Thread-Median",
+            "Thread-Mean",
+            "Thread-Std",
+            "Batch-Median",
+            "Batch-Mean",
+            "Batch-Std"
         );
         println!("{}", "-".repeat(88));
         for (w, t_med, t_mean, t_std, b_med, b_mean, b_std) in r {
@@ -212,11 +253,15 @@ impl TestCPUParallel {
         }
     }
 
-    fn write_results_to_csv(&self, r: &[(usize, f64, f64, f64, f64, f64, f64)]) -> Result<(), String> {
+    fn write_results_to_csv(
+        &self,
+        r: &[(usize, f64, f64, f64, f64, f64, f64)],
+    ) -> Result<(), String> {
         let Some(path_str) = &self.output_csv_file else {
             println!("No output file specified — skipping CSV export.");
             return Ok(());
         };
+
         let path = Path::new(path_str);
         let file = File::create(path)
             .map_err(|e| format!("Failed to create CSV '{}': {e}", path.display()))?;
@@ -225,17 +270,19 @@ impl TestCPUParallel {
         writeln!(
             writer,
             "NumThreads,ThreadMedian,ThreadMean,ThreadStd,BatchMedian,BatchMean,BatchStd"
-        ).map_err(|e| format!("Failed to write header: {e}"))?;
+        )
+        .map_err(|e| format!("Failed to write header: {e}"))?;
 
         for (w, t_med, t_mean, t_std, b_med, b_mean, b_std) in r {
             writeln!(
                 writer,
                 "{},{:.2},{:.2},{:.2},{:.2},{:.2},{:.2}",
                 w, t_med, t_mean, t_std, b_med, b_mean, b_std
-            ).map_err(|e| format!("Failed to write row: {e}"))?;
+            )
+            .map_err(|e| format!("Failed to write row: {e}"))?;
         }
 
-        println!("Results → '{}'", path.display());
+        println!("Results written to '{}'", path.display());
         Ok(())
     }
 }
