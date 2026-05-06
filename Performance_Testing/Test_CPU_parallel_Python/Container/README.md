@@ -1,48 +1,93 @@
-# How to create and use a docker image for running test_CPU_parallel.py
+# Build and run a Docker image for `test_CPU_parallel.py`
 
-This creates a docker image for test_CPU_parallel.py, a CPU load testing tool written in Python.  
+This directory contains the files needed to build a container image for
+`test_CPU_parallel.py`, a simple Python CPU load-testing tool.
 
-- Link or copy the test_CPU_parallel binary executable for Linux to this directory
-    ```
-    ln -s ../test_CPU_parallel/test_CPU_parallel.py .
-    ```
-- Build the docker image with:
+Project source:
+
+https://github.com/LucaCanali/Miscellaneous/tree/master/Performance_Testing/Test_CPU_parallel_Python
+
+## Build the image
+
+Build the image for Python 3.13:
+
+```bash
+docker build \
+  --build-arg PYTHON_VERSION=3.13 \
+  -t lucacanali/test_cpu_parallel.py:py3.13 \
+  .
 ```
-docker build -t lucacanali/test_cpu_parallel.py:py3.11 -f Dockerfile_Python3.11 .
-docker push lucacanali/test_cpu_parallel.py:py3.11
 
-# optional, tag as latest
-docker tag lucacanali/test_cpu_parallel.py:py3.11 lucacanali/test_cpu_parallel.py:latest
+Push the image:
+
+```bash
+docker push lucacanali/test_cpu_parallel.py:py3.13
+```
+
+Optionally tag it as `latest`:
+
+```bash
+docker tag lucacanali/test_cpu_parallel.py:py3.13 lucacanali/test_cpu_parallel.py:latest
 docker push lucacanali/test_cpu_parallel.py:latest
 ```
 
-## Docker
-You can use the image to run test_CPU_parallel in a container as in:
-```
-docker run lucacanali/test_cpu_parallel.py:py3.11 test_CPU_parallel.py -w 2
+## Available image tags
+
+Example tags:
+
+```text
+lucacanali/test_cpu_parallel.py:py3.12
+lucacanali/test_cpu_parallel.py:py3.13
+lucacanali/test_cpu_parallel.py:latest
 ```
 
-You can choose the number of workers to run in parallel with the `-w` option, see also the help for test_CPU_parallel.py  
-Multiple images are available for different versions of Python, see the [Dockerfile](Dockerfile) for details: 
-`lucacanali/test_cpu_parallel.py:py3.11`, `lucacanali/test_cpu_parallel.py:py3.10`, `lucacanali/test_cpu_parallel.py:py3.9`
+## Run with Docker
 
-## Kubernetes
-You can run test_CPU_parallel.py on a Kubernetes cluster as in:
+Run the workload with two parallel workers:
+
+```bash
+docker run --rm lucacanali/test_cpu_parallel.py:py3.13 test_CPU_parallel.py -w 2
 ```
-# delete pod if it already exists and start a new one with the test_CPU_parallel.py workload
-kubectl get pod test-cpu-pod && kubectl delete pod test-cpu-pod
-kubectl run test-cpu-pod --image=lucacanali/test_cpu_parallel.py:py3.11 --restart=Never -- test_CPU_parallel.py -w 2
 
-# get the output
+The number of parallel workers can be configured with the `-w` option.
+
+To display the command help:
+
+```bash
+docker run --rm lucacanali/test_cpu_parallel.py:py3.13 test_CPU_parallel.py --help
+```
+
+## Run on Kubernetes
+
+Create a test pod:
+
+```bash
+kubectl delete pod test-cpu-pod --ignore-not-found
+
+kubectl run test-cpu-pod \
+  --image=lucacanali/test_cpu_parallel.py:py3.13 \
+  --restart=Never \
+  -- test_CPU_parallel.py -w 2
+```
+
+Follow the logs:
+
+```bash
 kubectl logs -f test-cpu-pod
 ```
 
-Or you can use the [yaml file](test_CPU_parallel.yaml) to create a pod and run the test as in:
-```
-# delete pod if it already exists and start a new one with the test_CPU_parallel.py workload
-kubectl get pod test-cpu-pod && kubectl delete pod test-cpu-pod
-kubectl apply -f test_CPU_parallel.yaml
+Delete the pod when finished:
 
-# get the output
+```bash
+kubectl delete pod test-cpu-pod
+```
+
+## Run on Kubernetes with YAML
+
+You can also use the provided Kubernetes manifest:
+
+```bash
+kubectl delete pod test-cpu-pod --ignore-not-found
+kubectl apply -f test_CPU_parallel.yaml
 kubectl logs -f test-cpu-pod
 ```
